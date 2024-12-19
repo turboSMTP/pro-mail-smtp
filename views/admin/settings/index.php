@@ -14,7 +14,6 @@
                     <th class="column-priority"><?php _e('Label', 'free_mail_smtp'); ?></th>
                     <th class="column-priority"><?php _e('Priority', 'free_mail_smtp'); ?></th>
                     <th class="column-provider"><?php _e('Provider', 'free_mail_smtp'); ?></th>
-                    <th class="column-status"><?php _e('Status', 'free_mail_smtp'); ?></th>
                     <th class="column-status"><?php _e('Required Actions', 'free_mail_smtp'); ?></th>
                     <th class="column-actions"><?php _e('Actions', 'free_mail_smtp'); ?></th>
                 </tr>
@@ -35,9 +34,6 @@
                             </td>
                             <td class="column-provider">
                                 <strong><?php echo esc_html($providers_list[$config['provider']]); ?></strong>
-                            </td>
-                            <td class="column-status">
-                                <span class="status-active">Active</span>
                             </td>
                             <td>
                             <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_token2')): ?>

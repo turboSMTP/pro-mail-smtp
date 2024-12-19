@@ -40,11 +40,12 @@
                     <label for="client_secret">Client Secret</label>
                 </th>
                 <td>
-                    <input type="text" 
+                    <input type="password" 
                            name="config_keys[client_secret]" 
                            id="client_secret" 
                            class="regular-text" 
                            required>
+                    <button type="button" id="toggle_client_secret" class="button">Show</button>
                 </td>
             </tr>
             <tr>
@@ -84,4 +85,10 @@
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }
+    jQuery('#toggle_client_secret').on('click', function() {
+        var input = jQuery('#client_secret');
+        var type = input.attr('type') === 'password' ? 'text' : 'password';
+        input.attr('type', type);
+        jQuery(this).text(type === 'password' ? 'Show' : 'Hide');
+    });
 </script>

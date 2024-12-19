@@ -6,15 +6,15 @@ class Settings
 {
     private $providers = [
         'turbosmtp' => 'TurboSMTP',
-        'sendgrid' => 'SendGrid', // not available
-        'mailgun' => 'Mailgun', // not available
-        'postmark' => 'Postmark',// not available
-        'gmail' => 'Gmail', // not available
-        'outlook' => '365/Outlook',// not available
+        // 'sendgrid' => 'SendGrid', // not available yet
+        // 'mailgun' => 'Mailgun', // not available yet
+        // 'postmark' => 'Postmark',// not available yet
+        // 'gmail' => 'Gmail', // not available yet
+        // 'outlook' => '365/Outlook',// not available yet
         'smtp2go' => 'SMTP2GO',
-        'sparkpost' => 'SparkPost',// not available
+        // 'sparkpost' => 'SparkPost',// not available yet
         'brevo' => 'Brevo',
-        'other' => 'Other SMTP',// not available
+        // 'other' => 'Other SMTP',// not available yet
 
     ];
 

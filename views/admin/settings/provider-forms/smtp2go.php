@@ -27,11 +27,12 @@
                     <label for="api_key">API Key</label>
                 </th>
                 <td>
-                    <input type="text" 
+                    <input type="password" 
                            name="config_keys[api_key]" 
                            id="api_key" 
                            class="regular-text" 
                            required>
+                     <button type="button" id="toggle_api_key" class="button">Show</button>
                 </td>
             </tr>
             <tr>
@@ -70,4 +71,10 @@
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }
+    jQuery('#toggle_api_key').on('click', function() {
+        var input = jQuery('#api_key');
+        var type = input.attr('type') === 'password' ? 'text' : 'password';
+        input.attr('type', type);
+        jQuery(this).text(type === 'password' ? 'Show' : 'Hide');
+    });
 </script>

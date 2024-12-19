@@ -8,12 +8,16 @@
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }
-    console.log('turbosmtp');
+    jQuery('#toggle_consumer_secret').on('click', function() {
+        var input = jQuery('#consumer_secret');
+        var type = input.attr('type') === 'password' ? 'text' : 'password';
+        input.attr('type', type);
+        jQuery(this).text(type === 'password' ? 'Show' : 'Hide');
+    });
 </script>
 <div class="wizard-step">
     <h3><?php echo isset($is_edit) ? 'Edit Turbo SMTP Configuration' : 'Add Turbo SMTP Provider'; ?></h3>
     <p class="description">Enter your Turbo SMTP API credentials below.</p>
-    <?php echo $is_edit; ?>
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
         
@@ -51,11 +55,12 @@
                     <label for="consumer_secret">Consumer Secret</label>
                 </th>
                 <td>
-                    <input type="text" 
+                    <input type="password" 
                            name="config_keys[consumer_secret]" 
                            id="consumer_secret" 
                            class="regular-text" 
                            required>
+                    <button type="button" id="toggle_consumer_secret" class="button">Show</button>
                 </td>
             </tr>
             <tr>
