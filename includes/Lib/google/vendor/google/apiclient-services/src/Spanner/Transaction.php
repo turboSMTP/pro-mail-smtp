@@ -23,8 +23,6 @@ class Transaction extends \Google\Model
    * @var string
    */
   public $id;
-  protected $precommitTokenType = MultiplexedSessionPrecommitToken::class;
-  protected $precommitTokenDataType = '';
   /**
    * @var string
    */
@@ -43,20 +41,6 @@ class Transaction extends \Google\Model
   public function getId()
   {
     return $this->id;
-  }
-  /**
-   * @param MultiplexedSessionPrecommitToken
-   */
-  public function setPrecommitToken(MultiplexedSessionPrecommitToken $precommitToken)
-  {
-    $this->precommitToken = $precommitToken;
-  }
-  /**
-   * @return MultiplexedSessionPrecommitToken
-   */
-  public function getPrecommitToken()
-  {
-    return $this->precommitToken;
   }
   /**
    * @param string

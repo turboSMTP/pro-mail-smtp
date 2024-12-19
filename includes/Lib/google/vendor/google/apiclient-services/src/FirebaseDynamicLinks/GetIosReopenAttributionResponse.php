@@ -17,9 +17,8 @@
 
 namespace Google\Service\FirebaseDynamicLinks;
 
-class GetIosReopenAttributionResponse extends \Google\Collection
+class GetIosReopenAttributionResponse extends \Google\Model
 {
-  protected $collection_key = 'warning';
   /**
    * @var string
    */
@@ -56,8 +55,6 @@ class GetIosReopenAttributionResponse extends \Google\Collection
    * @var string
    */
   public $utmTerm;
-  protected $warningType = DynamicLinkWarning::class;
-  protected $warningDataType = 'array';
 
   /**
    * @param string
@@ -184,20 +181,6 @@ class GetIosReopenAttributionResponse extends \Google\Collection
   public function getUtmTerm()
   {
     return $this->utmTerm;
-  }
-  /**
-   * @param DynamicLinkWarning[]
-   */
-  public function setWarning($warning)
-  {
-    $this->warning = $warning;
-  }
-  /**
-   * @return DynamicLinkWarning[]
-   */
-  public function getWarning()
-  {
-    return $this->warning;
   }
 }
 

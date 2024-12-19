@@ -29,10 +29,6 @@ class ReportWorkItemStatusRequest extends \Google\Collection
    */
   public $location;
   /**
-   * @var string
-   */
-  public $projectNumber;
-  /**
    * @var array[]
    */
   public $unifiedWorkerRequest;
@@ -70,20 +66,6 @@ class ReportWorkItemStatusRequest extends \Google\Collection
   public function getLocation()
   {
     return $this->location;
-  }
-  /**
-   * @param string
-   */
-  public function setProjectNumber($projectNumber)
-  {
-    $this->projectNumber = $projectNumber;
-  }
-  /**
-   * @return string
-   */
-  public function getProjectNumber()
-  {
-    return $this->projectNumber;
   }
   /**
    * @param array[]

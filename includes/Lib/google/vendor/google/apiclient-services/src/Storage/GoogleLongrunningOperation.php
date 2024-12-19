@@ -26,10 +26,6 @@ class GoogleLongrunningOperation extends \Google\Model
   protected $errorType = GoogleRpcStatus::class;
   protected $errorDataType = '';
   /**
-   * @var string
-   */
-  public $kind;
-  /**
    * @var array[]
    */
   public $metadata;
@@ -41,10 +37,6 @@ class GoogleLongrunningOperation extends \Google\Model
    * @var array[]
    */
   public $response;
-  /**
-   * @var string
-   */
-  public $selfLink;
 
   /**
    * @param bool
@@ -73,20 +65,6 @@ class GoogleLongrunningOperation extends \Google\Model
   public function getError()
   {
     return $this->error;
-  }
-  /**
-   * @param string
-   */
-  public function setKind($kind)
-  {
-    $this->kind = $kind;
-  }
-  /**
-   * @return string
-   */
-  public function getKind()
-  {
-    return $this->kind;
   }
   /**
    * @param array[]
@@ -129,20 +107,6 @@ class GoogleLongrunningOperation extends \Google\Model
   public function getResponse()
   {
     return $this->response;
-  }
-  /**
-   * @param string
-   */
-  public function setSelfLink($selfLink)
-  {
-    $this->selfLink = $selfLink;
-  }
-  /**
-   * @return string
-   */
-  public function getSelfLink()
-  {
-    return $this->selfLink;
   }
 }
 

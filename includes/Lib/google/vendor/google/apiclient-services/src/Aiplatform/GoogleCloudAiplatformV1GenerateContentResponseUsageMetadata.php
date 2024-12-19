@@ -22,10 +22,6 @@ class GoogleCloudAiplatformV1GenerateContentResponseUsageMetadata extends \Googl
   /**
    * @var int
    */
-  public $cachedContentTokenCount;
-  /**
-   * @var int
-   */
   public $candidatesTokenCount;
   /**
    * @var int
@@ -36,20 +32,6 @@ class GoogleCloudAiplatformV1GenerateContentResponseUsageMetadata extends \Googl
    */
   public $totalTokenCount;
 
-  /**
-   * @param int
-   */
-  public function setCachedContentTokenCount($cachedContentTokenCount)
-  {
-    $this->cachedContentTokenCount = $cachedContentTokenCount;
-  }
-  /**
-   * @return int
-   */
-  public function getCachedContentTokenCount()
-  {
-    return $this->cachedContentTokenCount;
-  }
   /**
    * @param int
    */

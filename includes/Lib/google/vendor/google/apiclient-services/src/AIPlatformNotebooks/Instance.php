@@ -32,10 +32,6 @@ class Instance extends \Google\Collection
    * @var bool
    */
   public $disableProxyAccess;
-  /**
-   * @var bool
-   */
-  public $enableThirdPartyIdentity;
   protected $gceSetupType = GceSetup::class;
   protected $gceSetupDataType = '';
   /**
@@ -66,14 +62,6 @@ class Instance extends \Google\Collection
    * @var string
    */
   public $proxyUri;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
   /**
    * @var string
    */
@@ -130,20 +118,6 @@ class Instance extends \Google\Collection
   public function getDisableProxyAccess()
   {
     return $this->disableProxyAccess;
-  }
-  /**
-   * @param bool
-   */
-  public function setEnableThirdPartyIdentity($enableThirdPartyIdentity)
-  {
-    $this->enableThirdPartyIdentity = $enableThirdPartyIdentity;
-  }
-  /**
-   * @return bool
-   */
-  public function getEnableThirdPartyIdentity()
-  {
-    return $this->enableThirdPartyIdentity;
   }
   /**
    * @param GceSetup
@@ -256,34 +230,6 @@ class Instance extends \Google\Collection
   public function getProxyUri()
   {
     return $this->proxyUri;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
   }
   /**
    * @param string

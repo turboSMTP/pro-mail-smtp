@@ -26,10 +26,6 @@ class ForwardingRuleInfo extends \Google\Model
   /**
    * @var string
    */
-  public $loadBalancerName;
-  /**
-   * @var string
-   */
   public $matchedPortRange;
   /**
    * @var string
@@ -39,18 +35,6 @@ class ForwardingRuleInfo extends \Google\Model
    * @var string
    */
   public $networkUri;
-  /**
-   * @var string
-   */
-  public $pscGoogleApiTarget;
-  /**
-   * @var string
-   */
-  public $pscServiceAttachmentUri;
-  /**
-   * @var string
-   */
-  public $region;
   /**
    * @var string
    */
@@ -77,20 +61,6 @@ class ForwardingRuleInfo extends \Google\Model
   public function getDisplayName()
   {
     return $this->displayName;
-  }
-  /**
-   * @param string
-   */
-  public function setLoadBalancerName($loadBalancerName)
-  {
-    $this->loadBalancerName = $loadBalancerName;
-  }
-  /**
-   * @return string
-   */
-  public function getLoadBalancerName()
-  {
-    return $this->loadBalancerName;
   }
   /**
    * @param string
@@ -133,48 +103,6 @@ class ForwardingRuleInfo extends \Google\Model
   public function getNetworkUri()
   {
     return $this->networkUri;
-  }
-  /**
-   * @param string
-   */
-  public function setPscGoogleApiTarget($pscGoogleApiTarget)
-  {
-    $this->pscGoogleApiTarget = $pscGoogleApiTarget;
-  }
-  /**
-   * @return string
-   */
-  public function getPscGoogleApiTarget()
-  {
-    return $this->pscGoogleApiTarget;
-  }
-  /**
-   * @param string
-   */
-  public function setPscServiceAttachmentUri($pscServiceAttachmentUri)
-  {
-    $this->pscServiceAttachmentUri = $pscServiceAttachmentUri;
-  }
-  /**
-   * @return string
-   */
-  public function getPscServiceAttachmentUri()
-  {
-    return $this->pscServiceAttachmentUri;
-  }
-  /**
-   * @param string
-   */
-  public function setRegion($region)
-  {
-    $this->region = $region;
-  }
-  /**
-   * @return string
-   */
-  public function getRegion()
-  {
-    return $this->region;
   }
   /**
    * @param string

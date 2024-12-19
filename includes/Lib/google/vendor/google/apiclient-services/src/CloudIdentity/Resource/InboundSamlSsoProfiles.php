@@ -32,11 +32,7 @@ use Google\Service\CloudIdentity\Operation;
 class InboundSamlSsoProfiles extends \Google\Service\Resource
 {
   /**
-   * Creates an InboundSamlSsoProfile for a customer. When the target customer has
-   * enabled [Multi-party approval for sensitive
-   * actions](https://support.google.com/a/answer/13790448), the `Operation` in
-   * the response will have `"done": false`, it will not have a response, and the
-   * metadata will have `"state": "awaiting-multi-party-approval"`.
+   * Creates an InboundSamlSsoProfile for a customer.
    * (inboundSamlSsoProfiles.create)
    *
    * @param InboundSamlSsoProfile $postBody
@@ -116,12 +112,7 @@ class InboundSamlSsoProfiles extends \Google\Service\Resource
     return $this->call('list', [$params], ListInboundSamlSsoProfilesResponse::class);
   }
   /**
-   * Updates an InboundSamlSsoProfile. When the target customer has enabled
-   * [Multi-party approval for sensitive
-   * actions](https://support.google.com/a/answer/13790448), the `Operation` in
-   * the response will have `"done": false`, it will not have a response, and the
-   * metadata will have `"state": "awaiting-multi-party-approval"`.
-   * (inboundSamlSsoProfiles.patch)
+   * Updates an InboundSamlSsoProfile. (inboundSamlSsoProfiles.patch)
    *
    * @param string $name Output only. [Resource
    * name](https://cloud.google.com/apis/design/resource_names) of the SAML SSO

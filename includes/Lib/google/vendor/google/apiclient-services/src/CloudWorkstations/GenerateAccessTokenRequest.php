@@ -24,10 +24,6 @@ class GenerateAccessTokenRequest extends \Google\Model
    */
   public $expireTime;
   /**
-   * @var int
-   */
-  public $port;
-  /**
    * @var string
    */
   public $ttl;
@@ -45,20 +41,6 @@ class GenerateAccessTokenRequest extends \Google\Model
   public function getExpireTime()
   {
     return $this->expireTime;
-  }
-  /**
-   * @param int
-   */
-  public function setPort($port)
-  {
-    $this->port = $port;
-  }
-  /**
-   * @return int
-   */
-  public function getPort()
-  {
-    return $this->port;
   }
   /**
    * @param string

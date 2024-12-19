@@ -94,7 +94,8 @@ class ProjectsLocationsJobs extends \Google\Service\Resource
    * @opt_param string pageToken A token identifying a page of results the server
    * will return. To request the first page results, page_token must be empty. To
    * request the next page of results, page_token must be the value of
-   * next_page_token returned from the previous call to ListJobs.
+   * next_page_token returned from the previous call to ListJobs. It is an error
+   * to switch the value of filter or order_by while iterating through pages.
    * @return ListJobsResponse
    * @throws \Google\Service\Exception
    */

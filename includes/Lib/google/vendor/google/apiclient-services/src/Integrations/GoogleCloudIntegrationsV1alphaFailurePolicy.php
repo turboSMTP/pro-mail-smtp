@@ -22,10 +22,6 @@ class GoogleCloudIntegrationsV1alphaFailurePolicy extends \Google\Model
   /**
    * @var string
    */
-  public $condition;
-  /**
-   * @var string
-   */
   public $intervalTime;
   /**
    * @var int
@@ -36,20 +32,6 @@ class GoogleCloudIntegrationsV1alphaFailurePolicy extends \Google\Model
    */
   public $retryStrategy;
 
-  /**
-   * @param string
-   */
-  public function setCondition($condition)
-  {
-    $this->condition = $condition;
-  }
-  /**
-   * @return string
-   */
-  public function getCondition()
-  {
-    return $this->condition;
-  }
   /**
    * @param string
    */

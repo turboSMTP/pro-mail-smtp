@@ -36,8 +36,6 @@ class InternalRange extends \Google\Collection
    * @var string[]
    */
   public $labels;
-  protected $migrationType = Migration::class;
-  protected $migrationDataType = '';
   /**
    * @var string
    */
@@ -130,20 +128,6 @@ class InternalRange extends \Google\Collection
   public function getLabels()
   {
     return $this->labels;
-  }
-  /**
-   * @param Migration
-   */
-  public function setMigration(Migration $migration)
-  {
-    $this->migration = $migration;
-  }
-  /**
-   * @return Migration
-   */
-  public function getMigration()
-  {
-    return $this->migration;
   }
   /**
    * @param string

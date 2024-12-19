@@ -29,10 +29,6 @@ class ReleaseChannelConfig extends \Google\Collection
    */
   public $defaultVersion;
   /**
-   * @var string
-   */
-  public $upgradeTargetVersion;
-  /**
    * @var string[]
    */
   public $validVersions;
@@ -64,20 +60,6 @@ class ReleaseChannelConfig extends \Google\Collection
   public function getDefaultVersion()
   {
     return $this->defaultVersion;
-  }
-  /**
-   * @param string
-   */
-  public function setUpgradeTargetVersion($upgradeTargetVersion)
-  {
-    $this->upgradeTargetVersion = $upgradeTargetVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getUpgradeTargetVersion()
-  {
-    return $this->upgradeTargetVersion;
   }
   /**
    * @param string[]

@@ -31,8 +31,6 @@ class GoogleCloudAiplatformV1TuningJob extends \Google\Model
    * @var string
    */
   public $description;
-  protected $encryptionSpecType = GoogleCloudAiplatformV1EncryptionSpec::class;
-  protected $encryptionSpecDataType = '';
   /**
    * @var string
    */
@@ -51,10 +49,6 @@ class GoogleCloudAiplatformV1TuningJob extends \Google\Model
    * @var string
    */
   public $name;
-  /**
-   * @var string
-   */
-  public $serviceAccount;
   /**
    * @var string
    */
@@ -119,20 +113,6 @@ class GoogleCloudAiplatformV1TuningJob extends \Google\Model
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function setEncryptionSpec(GoogleCloudAiplatformV1EncryptionSpec $encryptionSpec)
-  {
-    $this->encryptionSpec = $encryptionSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function getEncryptionSpec()
-  {
-    return $this->encryptionSpec;
   }
   /**
    * @param string
@@ -203,20 +183,6 @@ class GoogleCloudAiplatformV1TuningJob extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string
-   */
-  public function setServiceAccount($serviceAccount)
-  {
-    $this->serviceAccount = $serviceAccount;
-  }
-  /**
-   * @return string
-   */
-  public function getServiceAccount()
-  {
-    return $this->serviceAccount;
   }
   /**
    * @param string

@@ -26,15 +26,7 @@ class DeliverInfo extends \Google\Model
   /**
    * @var string
    */
-  public $pscGoogleApiTarget;
-  /**
-   * @var string
-   */
   public $resourceUri;
-  /**
-   * @var string
-   */
-  public $storageBucket;
   /**
    * @var string
    */
@@ -57,20 +49,6 @@ class DeliverInfo extends \Google\Model
   /**
    * @param string
    */
-  public function setPscGoogleApiTarget($pscGoogleApiTarget)
-  {
-    $this->pscGoogleApiTarget = $pscGoogleApiTarget;
-  }
-  /**
-   * @return string
-   */
-  public function getPscGoogleApiTarget()
-  {
-    return $this->pscGoogleApiTarget;
-  }
-  /**
-   * @param string
-   */
   public function setResourceUri($resourceUri)
   {
     $this->resourceUri = $resourceUri;
@@ -81,20 +59,6 @@ class DeliverInfo extends \Google\Model
   public function getResourceUri()
   {
     return $this->resourceUri;
-  }
-  /**
-   * @param string
-   */
-  public function setStorageBucket($storageBucket)
-  {
-    $this->storageBucket = $storageBucket;
-  }
-  /**
-   * @return string
-   */
-  public function getStorageBucket()
-  {
-    return $this->storageBucket;
   }
   /**
    * @param string

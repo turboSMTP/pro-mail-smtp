@@ -19,8 +19,6 @@ namespace Google\Service\BigQueryConnectionService;
 
 class ConnectorConfiguration extends \Google\Model
 {
-  protected $assetType = ConnectorConfigurationAsset::class;
-  protected $assetDataType = '';
   protected $authenticationType = ConnectorConfigurationAuthentication::class;
   protected $authenticationDataType = '';
   /**
@@ -32,20 +30,6 @@ class ConnectorConfiguration extends \Google\Model
   protected $networkType = ConnectorConfigurationNetwork::class;
   protected $networkDataType = '';
 
-  /**
-   * @param ConnectorConfigurationAsset
-   */
-  public function setAsset(ConnectorConfigurationAsset $asset)
-  {
-    $this->asset = $asset;
-  }
-  /**
-   * @return ConnectorConfigurationAsset
-   */
-  public function getAsset()
-  {
-    return $this->asset;
-  }
   /**
    * @param ConnectorConfigurationAuthentication
    */

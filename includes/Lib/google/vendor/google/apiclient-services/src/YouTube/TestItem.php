@@ -20,10 +20,6 @@ namespace Google\Service\YouTube;
 class TestItem extends \Google\Model
 {
   /**
-   * @var string
-   */
-  public $etag;
-  /**
    * @var bool
    */
   public $featuredPart;
@@ -38,20 +34,6 @@ class TestItem extends \Google\Model
   protected $snippetType = TestItemTestItemSnippet::class;
   protected $snippetDataType = '';
 
-  /**
-   * @param string
-   */
-  public function setEtag($etag)
-  {
-    $this->etag = $etag;
-  }
-  /**
-   * @return string
-   */
-  public function getEtag()
-  {
-    return $this->etag;
-  }
   /**
    * @param bool
    */

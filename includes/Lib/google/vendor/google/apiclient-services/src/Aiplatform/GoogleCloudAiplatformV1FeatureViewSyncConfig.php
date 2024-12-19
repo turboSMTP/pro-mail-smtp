@@ -20,28 +20,10 @@ namespace Google\Service\Aiplatform;
 class GoogleCloudAiplatformV1FeatureViewSyncConfig extends \Google\Model
 {
   /**
-   * @var bool
-   */
-  public $continuous;
-  /**
    * @var string
    */
   public $cron;
 
-  /**
-   * @param bool
-   */
-  public function setContinuous($continuous)
-  {
-    $this->continuous = $continuous;
-  }
-  /**
-   * @return bool
-   */
-  public function getContinuous()
-  {
-    return $this->continuous;
-  }
   /**
    * @param string
    */

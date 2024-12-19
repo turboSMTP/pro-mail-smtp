@@ -38,10 +38,6 @@ class Reservation extends \Google\Model
    */
   public $ignoreIdleSlots;
   /**
-   * @var string[]
-   */
-  public $labels;
-  /**
    * @var bool
    */
   public $multiRegionAuxiliary;
@@ -139,20 +135,6 @@ class Reservation extends \Google\Model
   public function getIgnoreIdleSlots()
   {
     return $this->ignoreIdleSlots;
-  }
-  /**
-   * @param string[]
-   */
-  public function setLabels($labels)
-  {
-    $this->labels = $labels;
-  }
-  /**
-   * @return string[]
-   */
-  public function getLabels()
-  {
-    return $this->labels;
   }
   /**
    * @param bool

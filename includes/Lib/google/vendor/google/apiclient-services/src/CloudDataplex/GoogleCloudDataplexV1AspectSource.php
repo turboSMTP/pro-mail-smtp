@@ -26,10 +26,6 @@ class GoogleCloudDataplexV1AspectSource extends \Google\Model
   /**
    * @var string
    */
-  public $dataVersion;
-  /**
-   * @var string
-   */
   public $updateTime;
 
   /**
@@ -45,20 +41,6 @@ class GoogleCloudDataplexV1AspectSource extends \Google\Model
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  /**
-   * @param string
-   */
-  public function setDataVersion($dataVersion)
-  {
-    $this->dataVersion = $dataVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getDataVersion()
-  {
-    return $this->dataVersion;
   }
   /**
    * @param string

@@ -55,10 +55,6 @@ class GoogleCloudAiplatformV1PipelineJob extends \Google\Collection
    */
   public $pipelineSpec;
   /**
-   * @var bool
-   */
-  public $preflightValidations;
-  /**
    * @var string[]
    */
   public $reservedIpRanges;
@@ -230,20 +226,6 @@ class GoogleCloudAiplatformV1PipelineJob extends \Google\Collection
   public function getPipelineSpec()
   {
     return $this->pipelineSpec;
-  }
-  /**
-   * @param bool
-   */
-  public function setPreflightValidations($preflightValidations)
-  {
-    $this->preflightValidations = $preflightValidations;
-  }
-  /**
-   * @return bool
-   */
-  public function getPreflightValidations()
-  {
-    return $this->preflightValidations;
   }
   /**
    * @param string[]

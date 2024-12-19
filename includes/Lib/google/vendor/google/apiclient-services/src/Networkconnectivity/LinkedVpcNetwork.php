@@ -19,19 +19,11 @@ namespace Google\Service\Networkconnectivity;
 
 class LinkedVpcNetwork extends \Google\Collection
 {
-  protected $collection_key = 'producerVpcSpokes';
+  protected $collection_key = 'excludeExportRanges';
   /**
    * @var string[]
    */
   public $excludeExportRanges;
-  /**
-   * @var string[]
-   */
-  public $includeExportRanges;
-  /**
-   * @var string[]
-   */
-  public $producerVpcSpokes;
   /**
    * @var string
    */
@@ -50,34 +42,6 @@ class LinkedVpcNetwork extends \Google\Collection
   public function getExcludeExportRanges()
   {
     return $this->excludeExportRanges;
-  }
-  /**
-   * @param string[]
-   */
-  public function setIncludeExportRanges($includeExportRanges)
-  {
-    $this->includeExportRanges = $includeExportRanges;
-  }
-  /**
-   * @return string[]
-   */
-  public function getIncludeExportRanges()
-  {
-    return $this->includeExportRanges;
-  }
-  /**
-   * @param string[]
-   */
-  public function setProducerVpcSpokes($producerVpcSpokes)
-  {
-    $this->producerVpcSpokes = $producerVpcSpokes;
-  }
-  /**
-   * @return string[]
-   */
-  public function getProducerVpcSpokes()
-  {
-    return $this->producerVpcSpokes;
   }
   /**
    * @param string

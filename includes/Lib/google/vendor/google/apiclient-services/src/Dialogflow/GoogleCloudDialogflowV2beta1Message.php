@@ -17,9 +17,8 @@
 
 namespace Google\Service\Dialogflow;
 
-class GoogleCloudDialogflowV2beta1Message extends \Google\Collection
+class GoogleCloudDialogflowV2beta1Message extends \Google\Model
 {
-  protected $collection_key = 'responseMessages';
   /**
    * @var string
    */
@@ -46,8 +45,6 @@ class GoogleCloudDialogflowV2beta1Message extends \Google\Collection
    * @var string
    */
   public $participantRole;
-  protected $responseMessagesType = GoogleCloudDialogflowV2beta1ResponseMessage::class;
-  protected $responseMessagesDataType = 'array';
   /**
    * @var string
    */
@@ -152,20 +149,6 @@ class GoogleCloudDialogflowV2beta1Message extends \Google\Collection
   public function getParticipantRole()
   {
     return $this->participantRole;
-  }
-  /**
-   * @param GoogleCloudDialogflowV2beta1ResponseMessage[]
-   */
-  public function setResponseMessages($responseMessages)
-  {
-    $this->responseMessages = $responseMessages;
-  }
-  /**
-   * @return GoogleCloudDialogflowV2beta1ResponseMessage[]
-   */
-  public function getResponseMessages()
-  {
-    return $this->responseMessages;
   }
   /**
    * @param string

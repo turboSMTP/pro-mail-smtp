@@ -60,8 +60,6 @@ class NodeGroupNode extends \Google\Collection
   public $status;
   protected $totalResourcesType = InstanceConsumptionInfo::class;
   protected $totalResourcesDataType = '';
-  protected $upcomingMaintenanceType = UpcomingMaintenance::class;
-  protected $upcomingMaintenanceDataType = '';
 
   /**
    * @param AcceleratorConfig[]
@@ -244,20 +242,6 @@ class NodeGroupNode extends \Google\Collection
   public function getTotalResources()
   {
     return $this->totalResources;
-  }
-  /**
-   * @param UpcomingMaintenance
-   */
-  public function setUpcomingMaintenance(UpcomingMaintenance $upcomingMaintenance)
-  {
-    $this->upcomingMaintenance = $upcomingMaintenance;
-  }
-  /**
-   * @return UpcomingMaintenance
-   */
-  public function getUpcomingMaintenance()
-  {
-    return $this->upcomingMaintenance;
   }
 }
 

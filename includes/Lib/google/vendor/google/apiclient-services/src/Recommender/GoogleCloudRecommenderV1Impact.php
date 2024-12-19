@@ -17,25 +17,18 @@
 
 namespace Google\Service\Recommender;
 
-class GoogleCloudRecommenderV1Impact extends \Google\Collection
+class GoogleCloudRecommenderV1Impact extends \Google\Model
 {
-  protected $collection_key = 'impactComponents';
   /**
    * @var string
    */
   public $category;
   protected $costProjectionType = GoogleCloudRecommenderV1CostProjection::class;
   protected $costProjectionDataType = '';
-  protected $impactComponentsType = GoogleCloudRecommenderV1Impact::class;
-  protected $impactComponentsDataType = 'array';
   protected $reliabilityProjectionType = GoogleCloudRecommenderV1ReliabilityProjection::class;
   protected $reliabilityProjectionDataType = '';
   protected $securityProjectionType = GoogleCloudRecommenderV1SecurityProjection::class;
   protected $securityProjectionDataType = '';
-  /**
-   * @var string
-   */
-  public $service;
   protected $sustainabilityProjectionType = GoogleCloudRecommenderV1SustainabilityProjection::class;
   protected $sustainabilityProjectionDataType = '';
 
@@ -68,20 +61,6 @@ class GoogleCloudRecommenderV1Impact extends \Google\Collection
     return $this->costProjection;
   }
   /**
-   * @param GoogleCloudRecommenderV1Impact[]
-   */
-  public function setImpactComponents($impactComponents)
-  {
-    $this->impactComponents = $impactComponents;
-  }
-  /**
-   * @return GoogleCloudRecommenderV1Impact[]
-   */
-  public function getImpactComponents()
-  {
-    return $this->impactComponents;
-  }
-  /**
    * @param GoogleCloudRecommenderV1ReliabilityProjection
    */
   public function setReliabilityProjection(GoogleCloudRecommenderV1ReliabilityProjection $reliabilityProjection)
@@ -108,20 +87,6 @@ class GoogleCloudRecommenderV1Impact extends \Google\Collection
   public function getSecurityProjection()
   {
     return $this->securityProjection;
-  }
-  /**
-   * @param string
-   */
-  public function setService($service)
-  {
-    $this->service = $service;
-  }
-  /**
-   * @return string
-   */
-  public function getService()
-  {
-    return $this->service;
   }
   /**
    * @param GoogleCloudRecommenderV1SustainabilityProjection

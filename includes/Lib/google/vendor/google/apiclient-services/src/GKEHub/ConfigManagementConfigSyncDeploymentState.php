@@ -38,15 +38,7 @@ class ConfigManagementConfigSyncDeploymentState extends \Google\Model
   /**
    * @var string
    */
-  public $otelCollector;
-  /**
-   * @var string
-   */
   public $reconcilerManager;
-  /**
-   * @var string
-   */
-  public $resourceGroupControllerManager;
   /**
    * @var string
    */
@@ -115,20 +107,6 @@ class ConfigManagementConfigSyncDeploymentState extends \Google\Model
   /**
    * @param string
    */
-  public function setOtelCollector($otelCollector)
-  {
-    $this->otelCollector = $otelCollector;
-  }
-  /**
-   * @return string
-   */
-  public function getOtelCollector()
-  {
-    return $this->otelCollector;
-  }
-  /**
-   * @param string
-   */
   public function setReconcilerManager($reconcilerManager)
   {
     $this->reconcilerManager = $reconcilerManager;
@@ -139,20 +117,6 @@ class ConfigManagementConfigSyncDeploymentState extends \Google\Model
   public function getReconcilerManager()
   {
     return $this->reconcilerManager;
-  }
-  /**
-   * @param string
-   */
-  public function setResourceGroupControllerManager($resourceGroupControllerManager)
-  {
-    $this->resourceGroupControllerManager = $resourceGroupControllerManager;
-  }
-  /**
-   * @return string
-   */
-  public function getResourceGroupControllerManager()
-  {
-    return $this->resourceGroupControllerManager;
   }
   /**
    * @param string

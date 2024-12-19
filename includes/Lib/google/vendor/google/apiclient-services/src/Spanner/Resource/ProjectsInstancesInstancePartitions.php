@@ -115,9 +115,7 @@ class ProjectsInstancesInstancePartitions extends \Google\Service\Resource
    * (instancePartitions.listProjectsInstancesInstancePartitions)
    *
    * @param string $parent Required. The instance whose instance partitions should
-   * be listed. Values are of the form `projects//instances/`. Use `{instance} =
-   * '-'` to list instance partitions for all Instances in a project, e.g.,
-   * `projects/myproject/instances/-`.
+   * be listed. Values are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string instancePartitionDeadline Optional. Deadline used while

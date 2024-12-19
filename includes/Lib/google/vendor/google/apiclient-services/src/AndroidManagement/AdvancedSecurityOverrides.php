@@ -27,10 +27,6 @@ class AdvancedSecurityOverrides extends \Google\Collection
   /**
    * @var string
    */
-  public $contentProtectionPolicy;
-  /**
-   * @var string
-   */
   public $developerSettings;
   /**
    * @var string
@@ -62,20 +58,6 @@ class AdvancedSecurityOverrides extends \Google\Collection
   public function getCommonCriteriaMode()
   {
     return $this->commonCriteriaMode;
-  }
-  /**
-   * @param string
-   */
-  public function setContentProtectionPolicy($contentProtectionPolicy)
-  {
-    $this->contentProtectionPolicy = $contentProtectionPolicy;
-  }
-  /**
-   * @return string
-   */
-  public function getContentProtectionPolicy()
-  {
-    return $this->contentProtectionPolicy;
   }
   /**
    * @param string

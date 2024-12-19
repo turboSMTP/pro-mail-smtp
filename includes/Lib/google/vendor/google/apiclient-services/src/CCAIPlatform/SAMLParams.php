@@ -17,13 +17,8 @@
 
 namespace Google\Service\CCAIPlatform;
 
-class SAMLParams extends \Google\Collection
+class SAMLParams extends \Google\Model
 {
-  protected $collection_key = 'authenticationContexts';
-  /**
-   * @var string[]
-   */
-  public $authenticationContexts;
   /**
    * @var string
    */
@@ -45,20 +40,6 @@ class SAMLParams extends \Google\Collection
    */
   public $userEmail;
 
-  /**
-   * @param string[]
-   */
-  public function setAuthenticationContexts($authenticationContexts)
-  {
-    $this->authenticationContexts = $authenticationContexts;
-  }
-  /**
-   * @return string[]
-   */
-  public function getAuthenticationContexts()
-  {
-    return $this->authenticationContexts;
-  }
   /**
    * @param string
    */

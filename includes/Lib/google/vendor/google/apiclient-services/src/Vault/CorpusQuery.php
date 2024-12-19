@@ -19,8 +19,6 @@ namespace Google\Service\Vault;
 
 class CorpusQuery extends \Google\Model
 {
-  protected $calendarQueryType = HeldCalendarQuery::class;
-  protected $calendarQueryDataType = '';
   protected $driveQueryType = HeldDriveQuery::class;
   protected $driveQueryDataType = '';
   protected $groupsQueryType = HeldGroupsQuery::class;
@@ -32,20 +30,6 @@ class CorpusQuery extends \Google\Model
   protected $voiceQueryType = HeldVoiceQuery::class;
   protected $voiceQueryDataType = '';
 
-  /**
-   * @param HeldCalendarQuery
-   */
-  public function setCalendarQuery(HeldCalendarQuery $calendarQuery)
-  {
-    $this->calendarQuery = $calendarQuery;
-  }
-  /**
-   * @return HeldCalendarQuery
-   */
-  public function getCalendarQuery()
-  {
-    return $this->calendarQuery;
-  }
   /**
    * @param HeldDriveQuery
    */

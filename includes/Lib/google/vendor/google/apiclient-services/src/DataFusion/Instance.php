@@ -80,8 +80,6 @@ class Instance extends \Google\Collection
    * @var string[]
    */
   public $labels;
-  protected $maintenancePolicyType = MaintenancePolicy::class;
-  protected $maintenancePolicyDataType = '';
   /**
    * @var string
    */
@@ -386,20 +384,6 @@ class Instance extends \Google\Collection
   public function getLabels()
   {
     return $this->labels;
-  }
-  /**
-   * @param MaintenancePolicy
-   */
-  public function setMaintenancePolicy(MaintenancePolicy $maintenancePolicy)
-  {
-    $this->maintenancePolicy = $maintenancePolicy;
-  }
-  /**
-   * @return MaintenancePolicy
-   */
-  public function getMaintenancePolicy()
-  {
-    return $this->maintenancePolicy;
   }
   /**
    * @param string

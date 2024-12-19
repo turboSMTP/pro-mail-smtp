@@ -26,8 +26,6 @@ class ComplianceOccurrence extends \Google\Collection
   public $nonComplianceReason;
   protected $nonCompliantFilesType = NonCompliantFile::class;
   protected $nonCompliantFilesDataType = 'array';
-  protected $versionType = ComplianceVersion::class;
-  protected $versionDataType = '';
 
   /**
    * @param string
@@ -56,20 +54,6 @@ class ComplianceOccurrence extends \Google\Collection
   public function getNonCompliantFiles()
   {
     return $this->nonCompliantFiles;
-  }
-  /**
-   * @param ComplianceVersion
-   */
-  public function setVersion(ComplianceVersion $version)
-  {
-    $this->version = $version;
-  }
-  /**
-   * @return ComplianceVersion
-   */
-  public function getVersion()
-  {
-    return $this->version;
   }
 }
 

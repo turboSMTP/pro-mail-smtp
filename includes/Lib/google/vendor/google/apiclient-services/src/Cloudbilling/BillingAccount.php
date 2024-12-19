@@ -22,10 +22,6 @@ class BillingAccount extends \Google\Model
   /**
    * @var string
    */
-  public $currencyCode;
-  /**
-   * @var string
-   */
   public $displayName;
   /**
    * @var string
@@ -44,20 +40,6 @@ class BillingAccount extends \Google\Model
    */
   public $parent;
 
-  /**
-   * @param string
-   */
-  public function setCurrencyCode($currencyCode)
-  {
-    $this->currencyCode = $currencyCode;
-  }
-  /**
-   * @return string
-   */
-  public function getCurrencyCode()
-  {
-    return $this->currencyCode;
-  }
   /**
    * @param string
    */

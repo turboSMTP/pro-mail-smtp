@@ -23,10 +23,6 @@ class VmwareSourceVmDetails extends \Google\Collection
   /**
    * @var string
    */
-  public $architecture;
-  /**
-   * @var string
-   */
   public $committedStorageBytes;
   protected $disksType = VmwareDiskDetails::class;
   protected $disksDataType = 'array';
@@ -37,20 +33,6 @@ class VmwareSourceVmDetails extends \Google\Collection
   protected $vmCapabilitiesInfoType = VmCapabilities::class;
   protected $vmCapabilitiesInfoDataType = '';
 
-  /**
-   * @param string
-   */
-  public function setArchitecture($architecture)
-  {
-    $this->architecture = $architecture;
-  }
-  /**
-   * @return string
-   */
-  public function getArchitecture()
-  {
-    return $this->architecture;
-  }
   /**
    * @param string
    */

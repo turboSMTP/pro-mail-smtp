@@ -19,13 +19,15 @@ namespace Google\Service\DataprocMetastore\Resource;
 
 use Google\Service\DataprocMetastore\Policy;
 use Google\Service\DataprocMetastore\SetIamPolicyRequest;
+use Google\Service\DataprocMetastore\TestIamPermissionsRequest;
+use Google\Service\DataprocMetastore\TestIamPermissionsResponse;
 
 /**
  * The "tables" collection of methods.
  * Typical usage is:
  *  <code>
  *   $metastoreService = new Google\Service\DataprocMetastore(...);
- *   $tables = $metastoreService->projects_locations_services_databases_tables;
+ *   $tables = $metastoreService->tables;
  *  </code>
  */
 class ProjectsLocationsServicesDatabasesTables extends \Google\Service\Resource
@@ -52,7 +54,6 @@ class ProjectsLocationsServicesDatabasesTables extends \Google\Service\Resource
    * IAM policies, see the IAM documentation
    * (https://cloud.google.com/iam/help/conditions/resource-policies).
    * @return Policy
-   * @throws \Google\Service\Exception
    */
   public function getIamPolicy($resource, $optParams = [])
   {
@@ -72,13 +73,33 @@ class ProjectsLocationsServicesDatabasesTables extends \Google\Service\Resource
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
-   * @throws \Google\Service\Exception
    */
   public function setIamPolicy($resource, SetIamPolicyRequest $postBody, $optParams = [])
   {
     $params = ['resource' => $resource, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('setIamPolicy', [$params], Policy::class);
+  }
+  /**
+   * Returns permissions that a caller has on the specified resource. If the
+   * resource does not exist, this will return an empty set of permissions, not a
+   * NOT_FOUND error.Note: This operation is designed to be used for building
+   * permission-aware UIs and command-line tools, not for authorization checking.
+   * This operation may "fail open" without warning. (tables.testIamPermissions)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy detail is
+   * being requested. See Resource names
+   * (https://cloud.google.com/apis/design/resource_names) for the appropriate
+   * value for this field.
+   * @param TestIamPermissionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return TestIamPermissionsResponse
+   */
+  public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
+  {
+    $params = ['resource' => $resource, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('testIamPermissions', [$params], TestIamPermissionsResponse::class);
   }
 }
 

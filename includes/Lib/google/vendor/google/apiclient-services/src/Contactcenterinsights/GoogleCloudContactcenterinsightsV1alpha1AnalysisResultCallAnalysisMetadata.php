@@ -30,8 +30,6 @@ class GoogleCloudContactcenterinsightsV1alpha1AnalysisResultCallAnalysisMetadata
   protected $issueModelResultDataType = '';
   protected $phraseMatchersType = GoogleCloudContactcenterinsightsV1alpha1PhraseMatchData::class;
   protected $phraseMatchersDataType = 'map';
-  protected $qaScorecardResultsType = GoogleCloudContactcenterinsightsV1alpha1QaScorecardResult::class;
-  protected $qaScorecardResultsDataType = 'array';
   protected $sentimentsType = GoogleCloudContactcenterinsightsV1alpha1ConversationLevelSentiment::class;
   protected $sentimentsDataType = 'array';
   protected $silenceType = GoogleCloudContactcenterinsightsV1alpha1ConversationLevelSilence::class;
@@ -106,20 +104,6 @@ class GoogleCloudContactcenterinsightsV1alpha1AnalysisResultCallAnalysisMetadata
   public function getPhraseMatchers()
   {
     return $this->phraseMatchers;
-  }
-  /**
-   * @param GoogleCloudContactcenterinsightsV1alpha1QaScorecardResult[]
-   */
-  public function setQaScorecardResults($qaScorecardResults)
-  {
-    $this->qaScorecardResults = $qaScorecardResults;
-  }
-  /**
-   * @return GoogleCloudContactcenterinsightsV1alpha1QaScorecardResult[]
-   */
-  public function getQaScorecardResults()
-  {
-    return $this->qaScorecardResults;
   }
   /**
    * @param GoogleCloudContactcenterinsightsV1alpha1ConversationLevelSentiment[]

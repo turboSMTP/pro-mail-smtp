@@ -27,10 +27,6 @@ class GoogleCloudDiscoveryengineV1alphaAnswerReferenceUnstructuredDocumentInfo e
    */
   public $document;
   /**
-   * @var array[]
-   */
-  public $structData;
-  /**
    * @var string
    */
   public $title;
@@ -66,20 +62,6 @@ class GoogleCloudDiscoveryengineV1alphaAnswerReferenceUnstructuredDocumentInfo e
   public function getDocument()
   {
     return $this->document;
-  }
-  /**
-   * @param array[]
-   */
-  public function setStructData($structData)
-  {
-    $this->structData = $structData;
-  }
-  /**
-   * @return array[]
-   */
-  public function getStructData()
-  {
-    return $this->structData;
   }
   /**
    * @param string

@@ -17,13 +17,8 @@
 
 namespace Google\Service\ManufacturerCenter;
 
-class Issue extends \Google\Collection
+class Issue extends \Google\Model
 {
-  protected $collection_key = 'applicableCountries';
-  /**
-   * @var string[]
-   */
-  public $applicableCountries;
   /**
    * @var string
    */
@@ -57,20 +52,6 @@ class Issue extends \Google\Collection
    */
   public $type;
 
-  /**
-   * @param string[]
-   */
-  public function setApplicableCountries($applicableCountries)
-  {
-    $this->applicableCountries = $applicableCountries;
-  }
-  /**
-   * @return string[]
-   */
-  public function getApplicableCountries()
-  {
-    return $this->applicableCountries;
-  }
   /**
    * @param string
    */

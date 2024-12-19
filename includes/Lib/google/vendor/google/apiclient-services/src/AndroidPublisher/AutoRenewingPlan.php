@@ -23,8 +23,6 @@ class AutoRenewingPlan extends \Google\Model
    * @var bool
    */
   public $autoRenewEnabled;
-  protected $installmentDetailsType = InstallmentPlan::class;
-  protected $installmentDetailsDataType = '';
   protected $priceChangeDetailsType = SubscriptionItemPriceChangeDetails::class;
   protected $priceChangeDetailsDataType = '';
 
@@ -41,20 +39,6 @@ class AutoRenewingPlan extends \Google\Model
   public function getAutoRenewEnabled()
   {
     return $this->autoRenewEnabled;
-  }
-  /**
-   * @param InstallmentPlan
-   */
-  public function setInstallmentDetails(InstallmentPlan $installmentDetails)
-  {
-    $this->installmentDetails = $installmentDetails;
-  }
-  /**
-   * @return InstallmentPlan
-   */
-  public function getInstallmentDetails()
-  {
-    return $this->installmentDetails;
   }
   /**
    * @param SubscriptionItemPriceChangeDetails

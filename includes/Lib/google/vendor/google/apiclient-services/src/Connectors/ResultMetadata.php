@@ -24,10 +24,6 @@ class ResultMetadata extends \Google\Model
    */
   public $dataType;
   /**
-   * @var array
-   */
-  public $defaultValue;
-  /**
    * @var string
    */
   public $description;
@@ -37,10 +33,6 @@ class ResultMetadata extends \Google\Model
    * @var string
    */
   public $name;
-  /**
-   * @var bool
-   */
-  public $nullable;
 
   /**
    * @param string
@@ -55,20 +47,6 @@ class ResultMetadata extends \Google\Model
   public function getDataType()
   {
     return $this->dataType;
-  }
-  /**
-   * @param array
-   */
-  public function setDefaultValue($defaultValue)
-  {
-    $this->defaultValue = $defaultValue;
-  }
-  /**
-   * @return array
-   */
-  public function getDefaultValue()
-  {
-    return $this->defaultValue;
   }
   /**
    * @param string
@@ -111,20 +89,6 @@ class ResultMetadata extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param bool
-   */
-  public function setNullable($nullable)
-  {
-    $this->nullable = $nullable;
-  }
-  /**
-   * @return bool
-   */
-  public function getNullable()
-  {
-    return $this->nullable;
   }
 }
 

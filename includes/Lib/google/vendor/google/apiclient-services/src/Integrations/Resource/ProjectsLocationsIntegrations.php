@@ -17,7 +17,6 @@
 
 namespace Google\Service\Integrations\Resource;
 
-use Google\Service\Integrations\ExecuteEventRequestContent;
 use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaExecuteEventResponse;
 use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaExecuteIntegrationsRequest;
 use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaExecuteIntegrationsResponse;
@@ -27,6 +26,7 @@ use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaScheduleIntegratio
 use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaTestIntegrationsRequest;
 use Google\Service\Integrations\GoogleCloudIntegrationsV1alphaTestIntegrationsResponse;
 use Google\Service\Integrations\GoogleProtobufEmpty;
+use Google\Service\Integrations\GoogleProtobufStruct;
 
 /**
  * The "integrations" collection of methods.
@@ -80,7 +80,7 @@ class ProjectsLocationsIntegrations extends \Google\Service\Resource
    *
    * @param string $name Required. The integration resource name. Format:
    * projects/{gcp_project_id}/locations/{location}/integrations/{integration_id}
-   * @param ExecuteEventRequestContent $postBody
+   * @param GoogleProtobufStruct $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string triggerId Required. Id of the integration trigger config.
@@ -90,7 +90,7 @@ class ProjectsLocationsIntegrations extends \Google\Service\Resource
    * @return GoogleCloudIntegrationsV1alphaExecuteEventResponse
    * @throws \Google\Service\Exception
    */
-  public function executeEvent($name, ExecuteEventRequestContent $postBody, $optParams = [])
+  public function executeEvent($name, GoogleProtobufStruct $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);

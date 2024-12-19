@@ -22,10 +22,6 @@ class VmwareVmDetails extends \Google\Model
   /**
    * @var string
    */
-  public $architecture;
-  /**
-   * @var string
-   */
   public $bootOption;
   /**
    * @var string
@@ -72,20 +68,6 @@ class VmwareVmDetails extends \Google\Model
    */
   public $vmId;
 
-  /**
-   * @param string
-   */
-  public function setArchitecture($architecture)
-  {
-    $this->architecture = $architecture;
-  }
-  /**
-   * @return string
-   */
-  public function getArchitecture()
-  {
-    return $this->architecture;
-  }
   /**
    * @param string
    */

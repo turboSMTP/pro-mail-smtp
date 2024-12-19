@@ -69,17 +69,7 @@ class CloudComposer extends \Google\Service
         'environments',
         [
           'methods' => [
-            'checkUpgrade' => [
-              'path' => 'v1/{+environment}:checkUpgrade',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'environment' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'create' => [
+            'create' => [
               'path' => 'v1/{+parent}/environments',
               'httpMethod' => 'POST',
               'parameters' => [

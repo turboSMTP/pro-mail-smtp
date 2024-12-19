@@ -80,9 +80,7 @@ class ProjectsLocationsWorkstationClustersWorkstationConfigsWorkstations extends
   }
   /**
    * Returns a short-lived credential that can be used to send authenticated and
-   * authorized traffic to a workstation. Once generated this token cannot be
-   * revoked and is good for the lifetime of the token.
-   * (workstations.generateAccessToken)
+   * authorized traffic to a workstation. (workstations.generateAccessToken)
    *
    * @param string $workstation Required. Name of the workstation for which the
    * access token should be generated.

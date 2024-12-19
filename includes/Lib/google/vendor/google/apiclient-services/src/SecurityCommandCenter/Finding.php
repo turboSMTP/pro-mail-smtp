@@ -54,20 +54,12 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $createTime;
-  protected $dataAccessEventsType = DataAccessEvent::class;
-  protected $dataAccessEventsDataType = 'array';
-  protected $dataFlowEventsType = DataFlowEvent::class;
-  protected $dataFlowEventsDataType = 'array';
-  protected $dataRetentionDeletionEventsType = DataRetentionDeletionEvent::class;
-  protected $dataRetentionDeletionEventsDataType = 'array';
   protected $databaseType = Database::class;
   protected $databaseDataType = '';
   /**
    * @var string
    */
   public $description;
-  protected $diskType = Disk::class;
-  protected $diskDataType = '';
   /**
    * @var string
    */
@@ -86,8 +78,6 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $findingClass;
-  protected $groupMembershipsType = GroupMembership::class;
-  protected $groupMembershipsDataType = 'array';
   protected $iamBindingsType = IamBinding::class;
   protected $iamBindingsDataType = 'array';
   protected $indicatorType = Indicator::class;
@@ -110,8 +100,6 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $mute;
-  protected $muteInfoType = MuteInfo::class;
-  protected $muteInfoDataType = '';
   /**
    * @var string
    */
@@ -162,8 +150,6 @@ class Finding extends \Google\Collection
    * @var string
    */
   public $state;
-  protected $toxicCombinationType = ToxicCombination::class;
-  protected $toxicCombinationDataType = '';
   protected $vulnerabilityType = Vulnerability::class;
   protected $vulnerabilityDataType = '';
 
@@ -364,48 +350,6 @@ class Finding extends \Google\Collection
     return $this->createTime;
   }
   /**
-   * @param DataAccessEvent[]
-   */
-  public function setDataAccessEvents($dataAccessEvents)
-  {
-    $this->dataAccessEvents = $dataAccessEvents;
-  }
-  /**
-   * @return DataAccessEvent[]
-   */
-  public function getDataAccessEvents()
-  {
-    return $this->dataAccessEvents;
-  }
-  /**
-   * @param DataFlowEvent[]
-   */
-  public function setDataFlowEvents($dataFlowEvents)
-  {
-    $this->dataFlowEvents = $dataFlowEvents;
-  }
-  /**
-   * @return DataFlowEvent[]
-   */
-  public function getDataFlowEvents()
-  {
-    return $this->dataFlowEvents;
-  }
-  /**
-   * @param DataRetentionDeletionEvent[]
-   */
-  public function setDataRetentionDeletionEvents($dataRetentionDeletionEvents)
-  {
-    $this->dataRetentionDeletionEvents = $dataRetentionDeletionEvents;
-  }
-  /**
-   * @return DataRetentionDeletionEvent[]
-   */
-  public function getDataRetentionDeletionEvents()
-  {
-    return $this->dataRetentionDeletionEvents;
-  }
-  /**
    * @param Database
    */
   public function setDatabase(Database $database)
@@ -432,20 +376,6 @@ class Finding extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param Disk
-   */
-  public function setDisk(Disk $disk)
-  {
-    $this->disk = $disk;
-  }
-  /**
-   * @return Disk
-   */
-  public function getDisk()
-  {
-    return $this->disk;
   }
   /**
    * @param string
@@ -530,20 +460,6 @@ class Finding extends \Google\Collection
   public function getFindingClass()
   {
     return $this->findingClass;
-  }
-  /**
-   * @param GroupMembership[]
-   */
-  public function setGroupMemberships($groupMemberships)
-  {
-    $this->groupMemberships = $groupMemberships;
-  }
-  /**
-   * @return GroupMembership[]
-   */
-  public function getGroupMemberships()
-  {
-    return $this->groupMemberships;
   }
   /**
    * @param IamBinding[]
@@ -670,20 +586,6 @@ class Finding extends \Google\Collection
   public function getMute()
   {
     return $this->mute;
-  }
-  /**
-   * @param MuteInfo
-   */
-  public function setMuteInfo(MuteInfo $muteInfo)
-  {
-    $this->muteInfo = $muteInfo;
-  }
-  /**
-   * @return MuteInfo
-   */
-  public function getMuteInfo()
-  {
-    return $this->muteInfo;
   }
   /**
    * @param string
@@ -894,20 +796,6 @@ class Finding extends \Google\Collection
   public function getState()
   {
     return $this->state;
-  }
-  /**
-   * @param ToxicCombination
-   */
-  public function setToxicCombination(ToxicCombination $toxicCombination)
-  {
-    $this->toxicCombination = $toxicCombination;
-  }
-  /**
-   * @return ToxicCombination
-   */
-  public function getToxicCombination()
-  {
-    return $this->toxicCombination;
   }
   /**
    * @param Vulnerability

@@ -23,10 +23,6 @@ class GoogleCloudChannelV1CheckCloudIdentityAccountsExistRequest extends \Google
    * @var string
    */
   public $domain;
-  /**
-   * @var string
-   */
-  public $primaryAdminEmail;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class GoogleCloudChannelV1CheckCloudIdentityAccountsExistRequest extends \Google
   public function getDomain()
   {
     return $this->domain;
-  }
-  /**
-   * @param string
-   */
-  public function setPrimaryAdminEmail($primaryAdminEmail)
-  {
-    $this->primaryAdminEmail = $primaryAdminEmail;
-  }
-  /**
-   * @return string
-   */
-  public function getPrimaryAdminEmail()
-  {
-    return $this->primaryAdminEmail;
   }
 }
 

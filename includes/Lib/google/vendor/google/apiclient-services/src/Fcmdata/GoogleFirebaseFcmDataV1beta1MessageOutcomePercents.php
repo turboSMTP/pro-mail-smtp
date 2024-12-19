@@ -22,10 +22,6 @@ class GoogleFirebaseFcmDataV1beta1MessageOutcomePercents extends \Google\Model
   /**
    * @var float
    */
-  public $collapsed;
-  /**
-   * @var float
-   */
   public $delivered;
   /**
    * @var float
@@ -42,26 +38,8 @@ class GoogleFirebaseFcmDataV1beta1MessageOutcomePercents extends \Google\Model
   /**
    * @var float
    */
-  public $droppedTtlExpired;
-  /**
-   * @var float
-   */
   public $pending;
 
-  /**
-   * @param float
-   */
-  public function setCollapsed($collapsed)
-  {
-    $this->collapsed = $collapsed;
-  }
-  /**
-   * @return float
-   */
-  public function getCollapsed()
-  {
-    return $this->collapsed;
-  }
   /**
    * @param float
    */
@@ -117,20 +95,6 @@ class GoogleFirebaseFcmDataV1beta1MessageOutcomePercents extends \Google\Model
   public function getDroppedTooManyPendingMessages()
   {
     return $this->droppedTooManyPendingMessages;
-  }
-  /**
-   * @param float
-   */
-  public function setDroppedTtlExpired($droppedTtlExpired)
-  {
-    $this->droppedTtlExpired = $droppedTtlExpired;
-  }
-  /**
-   * @return float
-   */
-  public function getDroppedTtlExpired()
-  {
-    return $this->droppedTtlExpired;
   }
   /**
    * @param float

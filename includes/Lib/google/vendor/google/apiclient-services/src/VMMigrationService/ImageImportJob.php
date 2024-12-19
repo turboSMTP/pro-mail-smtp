@@ -40,8 +40,6 @@ class ImageImportJob extends \Google\Collection
   public $endTime;
   protected $errorsType = Status::class;
   protected $errorsDataType = 'array';
-  protected $machineImageTargetDetailsType = MachineImageTargetDetails::class;
-  protected $machineImageTargetDetailsDataType = '';
   /**
    * @var string
    */
@@ -138,20 +136,6 @@ class ImageImportJob extends \Google\Collection
   public function getErrors()
   {
     return $this->errors;
-  }
-  /**
-   * @param MachineImageTargetDetails
-   */
-  public function setMachineImageTargetDetails(MachineImageTargetDetails $machineImageTargetDetails)
-  {
-    $this->machineImageTargetDetails = $machineImageTargetDetails;
-  }
-  /**
-   * @return MachineImageTargetDetails
-   */
-  public function getMachineImageTargetDetails()
-  {
-    return $this->machineImageTargetDetails;
   }
   /**
    * @param string

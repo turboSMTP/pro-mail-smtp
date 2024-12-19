@@ -26,8 +26,6 @@ class Target extends \Google\Collection
   public $annotations;
   protected $anthosClusterType = AnthosCluster::class;
   protected $anthosClusterDataType = '';
-  protected $associatedEntitiesType = AssociatedEntities::class;
-  protected $associatedEntitiesDataType = 'map';
   /**
    * @var string
    */
@@ -106,20 +104,6 @@ class Target extends \Google\Collection
   public function getAnthosCluster()
   {
     return $this->anthosCluster;
-  }
-  /**
-   * @param AssociatedEntities[]
-   */
-  public function setAssociatedEntities($associatedEntities)
-  {
-    $this->associatedEntities = $associatedEntities;
-  }
-  /**
-   * @return AssociatedEntities[]
-   */
-  public function getAssociatedEntities()
-  {
-    return $this->associatedEntities;
   }
   /**
    * @param string

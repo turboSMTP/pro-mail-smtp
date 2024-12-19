@@ -42,9 +42,7 @@ class Firebasestorage extends \Google\Service
   const FIREBASE =
       "https://www.googleapis.com/auth/firebase";
 
-  public $projects;
   public $projects_buckets;
-  public $projects_defaultBucket;
   public $rootUrlTemplate;
 
   /**
@@ -64,36 +62,6 @@ class Firebasestorage extends \Google\Service
     $this->version = 'v1beta';
     $this->serviceName = 'firebasestorage';
 
-    $this->projects = new Firebasestorage\Resource\Projects(
-        $this,
-        $this->serviceName,
-        'projects',
-        [
-          'methods' => [
-            'deleteDefaultBucket' => [
-              'path' => 'v1beta/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'getDefaultBucket' => [
-              'path' => 'v1beta/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->projects_buckets = new Firebasestorage\Resource\ProjectsBuckets(
         $this,
         $this->serviceName,
@@ -143,26 +111,6 @@ class Firebasestorage extends \Google\Service
               'httpMethod' => 'POST',
               'parameters' => [
                 'bucket' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_defaultBucket = new Firebasestorage\Resource\ProjectsDefaultBucket(
-        $this,
-        $this->serviceName,
-        'defaultBucket',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1beta/{+parent}/defaultBucket',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

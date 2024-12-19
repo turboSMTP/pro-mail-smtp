@@ -54,19 +54,7 @@ class WebAppConfig extends \Google\Model
   /**
    * @var string
    */
-  public $projectNumber;
-  /**
-   * @var string
-   */
-  public $realtimeDatabaseUrl;
-  /**
-   * @var string
-   */
   public $storageBucket;
-  /**
-   * @var string
-   */
-  public $version;
 
   /**
    * @param string
@@ -183,34 +171,6 @@ class WebAppConfig extends \Google\Model
   /**
    * @param string
    */
-  public function setProjectNumber($projectNumber)
-  {
-    $this->projectNumber = $projectNumber;
-  }
-  /**
-   * @return string
-   */
-  public function getProjectNumber()
-  {
-    return $this->projectNumber;
-  }
-  /**
-   * @param string
-   */
-  public function setRealtimeDatabaseUrl($realtimeDatabaseUrl)
-  {
-    $this->realtimeDatabaseUrl = $realtimeDatabaseUrl;
-  }
-  /**
-   * @return string
-   */
-  public function getRealtimeDatabaseUrl()
-  {
-    return $this->realtimeDatabaseUrl;
-  }
-  /**
-   * @param string
-   */
   public function setStorageBucket($storageBucket)
   {
     $this->storageBucket = $storageBucket;
@@ -221,20 +181,6 @@ class WebAppConfig extends \Google\Model
   public function getStorageBucket()
   {
     return $this->storageBucket;
-  }
-  /**
-   * @param string
-   */
-  public function setVersion($version)
-  {
-    $this->version = $version;
-  }
-  /**
-   * @return string
-   */
-  public function getVersion()
-  {
-    return $this->version;
   }
 }
 

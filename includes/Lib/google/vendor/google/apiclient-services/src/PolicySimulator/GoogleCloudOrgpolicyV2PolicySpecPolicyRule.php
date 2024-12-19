@@ -33,10 +33,6 @@ class GoogleCloudOrgpolicyV2PolicySpecPolicyRule extends \Google\Model
    * @var bool
    */
   public $enforce;
-  /**
-   * @var array[]
-   */
-  public $parameters;
   protected $valuesType = GoogleCloudOrgpolicyV2PolicySpecPolicyRuleStringValues::class;
   protected $valuesDataType = '';
 
@@ -95,20 +91,6 @@ class GoogleCloudOrgpolicyV2PolicySpecPolicyRule extends \Google\Model
   public function getEnforce()
   {
     return $this->enforce;
-  }
-  /**
-   * @param array[]
-   */
-  public function setParameters($parameters)
-  {
-    $this->parameters = $parameters;
-  }
-  /**
-   * @return array[]
-   */
-  public function getParameters()
-  {
-    return $this->parameters;
   }
   /**
    * @param GoogleCloudOrgpolicyV2PolicySpecPolicyRuleStringValues

@@ -23,15 +23,7 @@ class GoogleCloudDiscoveryengineV1alphaSession extends \Google\Collection
   /**
    * @var string
    */
-  public $displayName;
-  /**
-   * @var string
-   */
   public $endTime;
-  /**
-   * @var bool
-   */
-  public $isPinned;
   /**
    * @var string
    */
@@ -54,20 +46,6 @@ class GoogleCloudDiscoveryengineV1alphaSession extends \Google\Collection
   /**
    * @param string
    */
-  public function setDisplayName($displayName)
-  {
-    $this->displayName = $displayName;
-  }
-  /**
-   * @return string
-   */
-  public function getDisplayName()
-  {
-    return $this->displayName;
-  }
-  /**
-   * @param string
-   */
   public function setEndTime($endTime)
   {
     $this->endTime = $endTime;
@@ -78,20 +56,6 @@ class GoogleCloudDiscoveryengineV1alphaSession extends \Google\Collection
   public function getEndTime()
   {
     return $this->endTime;
-  }
-  /**
-   * @param bool
-   */
-  public function setIsPinned($isPinned)
-  {
-    $this->isPinned = $isPinned;
-  }
-  /**
-   * @return bool
-   */
-  public function getIsPinned()
-  {
-    return $this->isPinned;
   }
   /**
    * @param string

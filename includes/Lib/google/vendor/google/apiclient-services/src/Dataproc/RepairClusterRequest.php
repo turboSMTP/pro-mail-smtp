@@ -20,8 +20,6 @@ namespace Google\Service\Dataproc;
 class RepairClusterRequest extends \Google\Collection
 {
   protected $collection_key = 'nodePools';
-  protected $clusterType = ClusterToRepair::class;
-  protected $clusterDataType = '';
   /**
    * @var string
    */
@@ -41,20 +39,6 @@ class RepairClusterRequest extends \Google\Collection
    */
   public $requestId;
 
-  /**
-   * @param ClusterToRepair
-   */
-  public function setCluster(ClusterToRepair $cluster)
-  {
-    $this->cluster = $cluster;
-  }
-  /**
-   * @return ClusterToRepair
-   */
-  public function getCluster()
-  {
-    return $this->cluster;
-  }
   /**
    * @param string
    */

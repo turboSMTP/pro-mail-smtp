@@ -21,10 +21,6 @@ class Preview extends \Google\Collection
 {
   protected $collection_key = 'tfErrors';
   /**
-   * @var string[]
-   */
-  public $annotations;
-  /**
    * @var string
    */
   public $artifactsGcsBucket;
@@ -83,30 +79,8 @@ class Preview extends \Google\Collection
   /**
    * @var string
    */
-  public $tfVersion;
-  /**
-   * @var string
-   */
-  public $tfVersionConstraint;
-  /**
-   * @var string
-   */
   public $workerPool;
 
-  /**
-   * @param string[]
-   */
-  public function setAnnotations($annotations)
-  {
-    $this->annotations = $annotations;
-  }
-  /**
-   * @return string[]
-   */
-  public function getAnnotations()
-  {
-    return $this->annotations;
-  }
   /**
    * @param string
    */
@@ -330,34 +304,6 @@ class Preview extends \Google\Collection
   public function getTfErrors()
   {
     return $this->tfErrors;
-  }
-  /**
-   * @param string
-   */
-  public function setTfVersion($tfVersion)
-  {
-    $this->tfVersion = $tfVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getTfVersion()
-  {
-    return $this->tfVersion;
-  }
-  /**
-   * @param string
-   */
-  public function setTfVersionConstraint($tfVersionConstraint)
-  {
-    $this->tfVersionConstraint = $tfVersionConstraint;
-  }
-  /**
-   * @return string
-   */
-  public function getTfVersionConstraint()
-  {
-    return $this->tfVersionConstraint;
   }
   /**
    * @param string

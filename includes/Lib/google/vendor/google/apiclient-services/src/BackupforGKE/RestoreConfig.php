@@ -19,7 +19,7 @@ namespace Google\Service\BackupforGKE;
 
 class RestoreConfig extends \Google\Collection
 {
-  protected $collection_key = 'volumeDataRestorePolicyBindings';
+  protected $collection_key = 'transformationRules';
   /**
    * @var bool
    */
@@ -40,8 +40,6 @@ class RestoreConfig extends \Google\Collection
    * @var bool
    */
   public $noNamespaces;
-  protected $restoreOrderType = RestoreOrder::class;
-  protected $restoreOrderDataType = '';
   protected $selectedApplicationsType = NamespacedNames::class;
   protected $selectedApplicationsDataType = '';
   protected $selectedNamespacesType = Namespaces::class;
@@ -54,8 +52,6 @@ class RestoreConfig extends \Google\Collection
    * @var string
    */
   public $volumeDataRestorePolicy;
-  protected $volumeDataRestorePolicyBindingsType = VolumeDataRestorePolicyBinding::class;
-  protected $volumeDataRestorePolicyBindingsDataType = 'array';
 
   /**
    * @param bool
@@ -142,20 +138,6 @@ class RestoreConfig extends \Google\Collection
     return $this->noNamespaces;
   }
   /**
-   * @param RestoreOrder
-   */
-  public function setRestoreOrder(RestoreOrder $restoreOrder)
-  {
-    $this->restoreOrder = $restoreOrder;
-  }
-  /**
-   * @return RestoreOrder
-   */
-  public function getRestoreOrder()
-  {
-    return $this->restoreOrder;
-  }
-  /**
    * @param NamespacedNames
    */
   public function setSelectedApplications(NamespacedNames $selectedApplications)
@@ -224,20 +206,6 @@ class RestoreConfig extends \Google\Collection
   public function getVolumeDataRestorePolicy()
   {
     return $this->volumeDataRestorePolicy;
-  }
-  /**
-   * @param VolumeDataRestorePolicyBinding[]
-   */
-  public function setVolumeDataRestorePolicyBindings($volumeDataRestorePolicyBindings)
-  {
-    $this->volumeDataRestorePolicyBindings = $volumeDataRestorePolicyBindings;
-  }
-  /**
-   * @return VolumeDataRestorePolicyBinding[]
-   */
-  public function getVolumeDataRestorePolicyBindings()
-  {
-    return $this->volumeDataRestorePolicyBindings;
   }
 }
 

@@ -19,7 +19,7 @@ namespace Google\Service\Compute;
 
 class BackendBucket extends \Google\Collection
 {
-  protected $collection_key = 'usedBy';
+  protected $collection_key = 'customResponseHeaders';
   /**
    * @var string
    */
@@ -66,8 +66,6 @@ class BackendBucket extends \Google\Collection
    * @var string
    */
   public $selfLink;
-  protected $usedByType = BackendBucketUsedBy::class;
-  protected $usedByDataType = 'array';
 
   /**
    * @param string
@@ -236,20 +234,6 @@ class BackendBucket extends \Google\Collection
   public function getSelfLink()
   {
     return $this->selfLink;
-  }
-  /**
-   * @param BackendBucketUsedBy[]
-   */
-  public function setUsedBy($usedBy)
-  {
-    $this->usedBy = $usedBy;
-  }
-  /**
-   * @return BackendBucketUsedBy[]
-   */
-  public function getUsedBy()
-  {
-    return $this->usedBy;
   }
 }
 

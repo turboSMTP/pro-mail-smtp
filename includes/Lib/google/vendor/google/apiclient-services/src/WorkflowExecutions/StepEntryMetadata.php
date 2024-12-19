@@ -22,10 +22,6 @@ class StepEntryMetadata extends \Google\Model
   /**
    * @var string
    */
-  public $expectedIteration;
-  /**
-   * @var string
-   */
   public $progressNumber;
   /**
    * @var string
@@ -36,20 +32,6 @@ class StepEntryMetadata extends \Google\Model
    */
   public $threadId;
 
-  /**
-   * @param string
-   */
-  public function setExpectedIteration($expectedIteration)
-  {
-    $this->expectedIteration = $expectedIteration;
-  }
-  /**
-   * @return string
-   */
-  public function getExpectedIteration()
-  {
-    return $this->expectedIteration;
-  }
   /**
    * @param string
    */

@@ -31,8 +31,6 @@ class Question extends \Google\Model
    * @var string
    */
   public $questionId;
-  protected $ratingQuestionType = RatingQuestion::class;
-  protected $ratingQuestionDataType = '';
   /**
    * @var bool
    */
@@ -115,20 +113,6 @@ class Question extends \Google\Model
   public function getQuestionId()
   {
     return $this->questionId;
-  }
-  /**
-   * @param RatingQuestion
-   */
-  public function setRatingQuestion(RatingQuestion $ratingQuestion)
-  {
-    $this->ratingQuestion = $ratingQuestion;
-  }
-  /**
-   * @return RatingQuestion
-   */
-  public function getRatingQuestion()
-  {
-    return $this->ratingQuestion;
   }
   /**
    * @param bool

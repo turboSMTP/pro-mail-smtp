@@ -28,10 +28,6 @@ class GlobalSetPolicyRequest extends \Google\Collection
   public $etag;
   protected $policyType = Policy::class;
   protected $policyDataType = '';
-  /**
-   * @var string
-   */
-  public $updateMask;
 
   /**
    * @param Binding[]
@@ -74,20 +70,6 @@ class GlobalSetPolicyRequest extends \Google\Collection
   public function getPolicy()
   {
     return $this->policy;
-  }
-  /**
-   * @param string
-   */
-  public function setUpdateMask($updateMask)
-  {
-    $this->updateMask = $updateMask;
-  }
-  /**
-   * @return string
-   */
-  public function getUpdateMask()
-  {
-    return $this->updateMask;
   }
 }
 

@@ -51,10 +51,6 @@ class ConnectionProfile extends \Google\Model
    * @var string
    */
   public $provider;
-  /**
-   * @var string
-   */
-  public $role;
   protected $sqlserverType = SqlServerConnectionProfile::class;
   protected $sqlserverDataType = '';
   /**
@@ -219,20 +215,6 @@ class ConnectionProfile extends \Google\Model
   public function getProvider()
   {
     return $this->provider;
-  }
-  /**
-   * @param string
-   */
-  public function setRole($role)
-  {
-    $this->role = $role;
-  }
-  /**
-   * @return string
-   */
-  public function getRole()
-  {
-    return $this->role;
   }
   /**
    * @param SqlServerConnectionProfile

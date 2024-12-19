@@ -17,32 +17,13 @@
 
 namespace Google\Service\CloudDeploy;
 
-class AdvanceRolloutRequest extends \Google\Collection
+class AdvanceRolloutRequest extends \Google\Model
 {
-  protected $collection_key = 'overrideDeployPolicy';
-  /**
-   * @var string[]
-   */
-  public $overrideDeployPolicy;
   /**
    * @var string
    */
   public $phaseId;
 
-  /**
-   * @param string[]
-   */
-  public function setOverrideDeployPolicy($overrideDeployPolicy)
-  {
-    $this->overrideDeployPolicy = $overrideDeployPolicy;
-  }
-  /**
-   * @return string[]
-   */
-  public function getOverrideDeployPolicy()
-  {
-    return $this->overrideDeployPolicy;
-  }
   /**
    * @param string
    */

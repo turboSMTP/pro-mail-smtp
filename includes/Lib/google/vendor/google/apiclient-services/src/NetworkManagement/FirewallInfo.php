@@ -45,10 +45,6 @@ class FirewallInfo extends \Google\Collection
    */
   public $policy;
   /**
-   * @var string
-   */
-  public $policyUri;
-  /**
    * @var int
    */
   public $priority;
@@ -148,20 +144,6 @@ class FirewallInfo extends \Google\Collection
   public function getPolicy()
   {
     return $this->policy;
-  }
-  /**
-   * @param string
-   */
-  public function setPolicyUri($policyUri)
-  {
-    $this->policyUri = $policyUri;
-  }
-  /**
-   * @return string
-   */
-  public function getPolicyUri()
-  {
-    return $this->policyUri;
   }
   /**
    * @param int

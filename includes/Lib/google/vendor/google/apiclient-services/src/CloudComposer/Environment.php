@@ -36,10 +36,6 @@ class Environment extends \Google\Model
   /**
    * @var bool
    */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
   public $satisfiesPzs;
   /**
    * @var string
@@ -111,20 +107,6 @@ class Environment extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
   }
   /**
    * @param bool

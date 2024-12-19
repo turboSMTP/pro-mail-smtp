@@ -22,8 +22,6 @@ class RunReportRequest extends \Google\Collection
   protected $collection_key = 'orderBys';
   protected $cohortSpecType = CohortSpec::class;
   protected $cohortSpecDataType = '';
-  protected $comparisonsType = Comparison::class;
-  protected $comparisonsDataType = 'array';
   /**
    * @var string
    */
@@ -78,20 +76,6 @@ class RunReportRequest extends \Google\Collection
   public function getCohortSpec()
   {
     return $this->cohortSpec;
-  }
-  /**
-   * @param Comparison[]
-   */
-  public function setComparisons($comparisons)
-  {
-    $this->comparisons = $comparisons;
-  }
-  /**
-   * @return Comparison[]
-   */
-  public function getComparisons()
-  {
-    return $this->comparisons;
   }
   /**
    * @param string

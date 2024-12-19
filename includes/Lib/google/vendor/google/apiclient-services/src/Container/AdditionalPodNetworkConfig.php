@@ -24,10 +24,6 @@ class AdditionalPodNetworkConfig extends \Google\Model
   /**
    * @var string
    */
-  public $networkAttachment;
-  /**
-   * @var string
-   */
   public $secondaryPodRange;
   /**
    * @var string
@@ -47,20 +43,6 @@ class AdditionalPodNetworkConfig extends \Google\Model
   public function getMaxPodsPerNode()
   {
     return $this->maxPodsPerNode;
-  }
-  /**
-   * @param string
-   */
-  public function setNetworkAttachment($networkAttachment)
-  {
-    $this->networkAttachment = $networkAttachment;
-  }
-  /**
-   * @return string
-   */
-  public function getNetworkAttachment()
-  {
-    return $this->networkAttachment;
   }
   /**
    * @param string

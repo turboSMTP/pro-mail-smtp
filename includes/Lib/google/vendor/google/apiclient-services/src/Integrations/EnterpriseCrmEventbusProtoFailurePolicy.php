@@ -30,10 +30,6 @@ class EnterpriseCrmEventbusProtoFailurePolicy extends \Google\Model
   /**
    * @var string
    */
-  public $retryCondition;
-  /**
-   * @var string
-   */
   public $retryStrategy;
 
   /**
@@ -63,20 +59,6 @@ class EnterpriseCrmEventbusProtoFailurePolicy extends \Google\Model
   public function getMaxNumRetries()
   {
     return $this->maxNumRetries;
-  }
-  /**
-   * @param string
-   */
-  public function setRetryCondition($retryCondition)
-  {
-    $this->retryCondition = $retryCondition;
-  }
-  /**
-   * @return string
-   */
-  public function getRetryCondition()
-  {
-    return $this->retryCondition;
   }
   /**
    * @param string

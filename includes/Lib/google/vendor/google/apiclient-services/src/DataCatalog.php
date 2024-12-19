@@ -41,8 +41,6 @@ class DataCatalog extends \Google\Service
 
   public $catalog;
   public $entries;
-  public $organizations_locations;
-  public $projects_locations;
   public $projects_locations_entryGroups;
   public $projects_locations_entryGroups_entries;
   public $projects_locations_entryGroups_entries_tags;
@@ -115,76 +113,6 @@ class DataCatalog extends \Google\Service
                 'sqlResource' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->organizations_locations = new DataCatalog\Resource\OrganizationsLocations(
-        $this,
-        $this->serviceName,
-        'locations',
-        [
-          'methods' => [
-            'retrieveConfig' => [
-              'path' => 'v1/{+name}:retrieveConfig',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'retrieveEffectiveConfig' => [
-              'path' => 'v1/{+name}:retrieveEffectiveConfig',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'setConfig' => [
-              'path' => 'v1/{+name}:setConfig',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations = new DataCatalog\Resource\ProjectsLocations(
-        $this,
-        $this->serviceName,
-        'locations',
-        [
-          'methods' => [
-            'retrieveEffectiveConfig' => [
-              'path' => 'v1/{+name}:retrieveEffectiveConfig',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'setConfig' => [
-              'path' => 'v1/{+name}:setConfig',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],

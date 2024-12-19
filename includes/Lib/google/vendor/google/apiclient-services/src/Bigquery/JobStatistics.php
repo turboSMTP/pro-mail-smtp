@@ -35,10 +35,6 @@ class JobStatistics extends \Google\Collection
   /**
    * @var string
    */
-  public $edition;
-  /**
-   * @var string
-   */
   public $endTime;
   protected $extractType = JobStatistics4::class;
   protected $extractDataType = '';
@@ -138,20 +134,6 @@ class JobStatistics extends \Google\Collection
   public function getDataMaskingStatistics()
   {
     return $this->dataMaskingStatistics;
-  }
-  /**
-   * @param string
-   */
-  public function setEdition($edition)
-  {
-    $this->edition = $edition;
-  }
-  /**
-   * @return string
-   */
-  public function getEdition()
-  {
-    return $this->edition;
   }
   /**
    * @param string

@@ -23,10 +23,6 @@ class EnterpriseConfig extends \Google\Model
    * @var string
    */
   public $clusterTier;
-  /**
-   * @var string
-   */
-  public $desiredTier;
 
   /**
    * @param string
@@ -41,20 +37,6 @@ class EnterpriseConfig extends \Google\Model
   public function getClusterTier()
   {
     return $this->clusterTier;
-  }
-  /**
-   * @param string
-   */
-  public function setDesiredTier($desiredTier)
-  {
-    $this->desiredTier = $desiredTier;
-  }
-  /**
-   * @return string
-   */
-  public function getDesiredTier()
-  {
-    return $this->desiredTier;
   }
 }
 

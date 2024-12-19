@@ -182,17 +182,7 @@ class RecaptchaEnterprise extends \Google\Service
         'keys',
         [
           'methods' => [
-            'addIpOverride' => [
-              'path' => 'v1/{+name}:addIpOverride',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'create' => [
+            'create' => [
               'path' => 'v1/{+parent}/keys',
               'httpMethod' => 'POST',
               'parameters' => [
@@ -250,24 +240,6 @@ class RecaptchaEnterprise extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'listIpOverrides' => [
-              'path' => 'v1/{+parent}:listIpOverrides',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
             ],'migrate' => [
               'path' => 'v1/{+name}:migrate',
               'httpMethod' => 'POST',
@@ -290,16 +262,6 @@ class RecaptchaEnterprise extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],'removeIpOverride' => [
-              'path' => 'v1/{+name}:removeIpOverride',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],'retrieveLegacySecretKey' => [

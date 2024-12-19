@@ -17,9 +17,8 @@
 
 namespace Google\Service\ServiceNetworking;
 
-class MetricDescriptorMetadata extends \Google\Collection
+class MetricDescriptorMetadata extends \Google\Model
 {
-  protected $collection_key = 'timeSeriesResourceHierarchyLevel';
   /**
    * @var string
    */
@@ -32,10 +31,6 @@ class MetricDescriptorMetadata extends \Google\Collection
    * @var string
    */
   public $samplePeriod;
-  /**
-   * @var string[]
-   */
-  public $timeSeriesResourceHierarchyLevel;
 
   /**
    * @param string
@@ -78,20 +73,6 @@ class MetricDescriptorMetadata extends \Google\Collection
   public function getSamplePeriod()
   {
     return $this->samplePeriod;
-  }
-  /**
-   * @param string[]
-   */
-  public function setTimeSeriesResourceHierarchyLevel($timeSeriesResourceHierarchyLevel)
-  {
-    $this->timeSeriesResourceHierarchyLevel = $timeSeriesResourceHierarchyLevel;
-  }
-  /**
-   * @return string[]
-   */
-  public function getTimeSeriesResourceHierarchyLevel()
-  {
-    return $this->timeSeriesResourceHierarchyLevel;
   }
 }
 

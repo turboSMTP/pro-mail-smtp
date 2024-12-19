@@ -48,10 +48,6 @@ class NodeGroup extends \Google\Model
   /**
    * @var string
    */
-  public $maintenanceInterval;
-  /**
-   * @var string
-   */
   public $maintenancePolicy;
   protected $maintenanceWindowType = NodeGroupMaintenanceWindow::class;
   protected $maintenanceWindowDataType = '';
@@ -179,20 +175,6 @@ class NodeGroup extends \Google\Model
   public function getLocationHint()
   {
     return $this->locationHint;
-  }
-  /**
-   * @param string
-   */
-  public function setMaintenanceInterval($maintenanceInterval)
-  {
-    $this->maintenanceInterval = $maintenanceInterval;
-  }
-  /**
-   * @return string
-   */
-  public function getMaintenanceInterval()
-  {
-    return $this->maintenanceInterval;
   }
   /**
    * @param string

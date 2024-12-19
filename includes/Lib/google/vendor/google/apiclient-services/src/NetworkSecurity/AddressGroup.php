@@ -19,7 +19,7 @@ namespace Google\Service\NetworkSecurity;
 
 class AddressGroup extends \Google\Collection
 {
-  protected $collection_key = 'purpose';
+  protected $collection_key = 'items';
   /**
    * @var int
    */
@@ -44,10 +44,6 @@ class AddressGroup extends \Google\Collection
    * @var string
    */
   public $name;
-  /**
-   * @var string[]
-   */
-  public $purpose;
   /**
    * @var string
    */
@@ -144,20 +140,6 @@ class AddressGroup extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string[]
-   */
-  public function setPurpose($purpose)
-  {
-    $this->purpose = $purpose;
-  }
-  /**
-   * @return string[]
-   */
-  public function getPurpose()
-  {
-    return $this->purpose;
   }
   /**
    * @param string

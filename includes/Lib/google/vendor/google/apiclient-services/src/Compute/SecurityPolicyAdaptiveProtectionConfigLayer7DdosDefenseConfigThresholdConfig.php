@@ -17,9 +17,8 @@
 
 namespace Google\Service\Compute;
 
-class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig extends \Google\Collection
+class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfig extends \Google\Model
 {
-  protected $collection_key = 'trafficGranularityConfigs';
   /**
    * @var float
    */
@@ -37,23 +36,9 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConf
    */
   public $autoDeployLoadThreshold;
   /**
-   * @var float
-   */
-  public $detectionAbsoluteQps;
-  /**
-   * @var float
-   */
-  public $detectionLoadThreshold;
-  /**
-   * @var float
-   */
-  public $detectionRelativeToBaselineQps;
-  /**
    * @var string
    */
   public $name;
-  protected $trafficGranularityConfigsType = SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig::class;
-  protected $trafficGranularityConfigsDataType = 'array';
 
   /**
    * @param float
@@ -112,48 +97,6 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConf
     return $this->autoDeployLoadThreshold;
   }
   /**
-   * @param float
-   */
-  public function setDetectionAbsoluteQps($detectionAbsoluteQps)
-  {
-    $this->detectionAbsoluteQps = $detectionAbsoluteQps;
-  }
-  /**
-   * @return float
-   */
-  public function getDetectionAbsoluteQps()
-  {
-    return $this->detectionAbsoluteQps;
-  }
-  /**
-   * @param float
-   */
-  public function setDetectionLoadThreshold($detectionLoadThreshold)
-  {
-    $this->detectionLoadThreshold = $detectionLoadThreshold;
-  }
-  /**
-   * @return float
-   */
-  public function getDetectionLoadThreshold()
-  {
-    return $this->detectionLoadThreshold;
-  }
-  /**
-   * @param float
-   */
-  public function setDetectionRelativeToBaselineQps($detectionRelativeToBaselineQps)
-  {
-    $this->detectionRelativeToBaselineQps = $detectionRelativeToBaselineQps;
-  }
-  /**
-   * @return float
-   */
-  public function getDetectionRelativeToBaselineQps()
-  {
-    return $this->detectionRelativeToBaselineQps;
-  }
-  /**
    * @param string
    */
   public function setName($name)
@@ -166,20 +109,6 @@ class SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConf
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig[]
-   */
-  public function setTrafficGranularityConfigs($trafficGranularityConfigs)
-  {
-    $this->trafficGranularityConfigs = $trafficGranularityConfigs;
-  }
-  /**
-   * @return SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfigThresholdConfigTrafficGranularityConfig[]
-   */
-  public function getTrafficGranularityConfigs()
-  {
-    return $this->trafficGranularityConfigs;
   }
 }
 

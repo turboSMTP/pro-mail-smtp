@@ -26,10 +26,6 @@ class RouterInterface extends \Google\Model
   /**
    * @var string
    */
-  public $ipVersion;
-  /**
-   * @var string
-   */
   public $linkedInterconnectAttachment;
   /**
    * @var string
@@ -69,20 +65,6 @@ class RouterInterface extends \Google\Model
   public function getIpRange()
   {
     return $this->ipRange;
-  }
-  /**
-   * @param string
-   */
-  public function setIpVersion($ipVersion)
-  {
-    $this->ipVersion = $ipVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getIpVersion()
-  {
-    return $this->ipVersion;
   }
   /**
    * @param string

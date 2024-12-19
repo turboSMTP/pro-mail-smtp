@@ -19,7 +19,7 @@ namespace Google\Service\CloudAlloyDBAdmin;
 
 class Instance extends \Google\Collection
 {
-  protected $collection_key = 'outboundPublicIpAddresses';
+  protected $collection_key = 'nodes';
   /**
    * @var string[]
    */
@@ -76,10 +76,6 @@ class Instance extends \Google\Collection
   protected $networkConfigDataType = '';
   protected $nodesType = Node::class;
   protected $nodesDataType = 'array';
-  /**
-   * @var string[]
-   */
-  public $outboundPublicIpAddresses;
   protected $pscInstanceConfigType = PscInstanceConfig::class;
   protected $pscInstanceConfigDataType = '';
   /**
@@ -336,20 +332,6 @@ class Instance extends \Google\Collection
   public function getNodes()
   {
     return $this->nodes;
-  }
-  /**
-   * @param string[]
-   */
-  public function setOutboundPublicIpAddresses($outboundPublicIpAddresses)
-  {
-    $this->outboundPublicIpAddresses = $outboundPublicIpAddresses;
-  }
-  /**
-   * @return string[]
-   */
-  public function getOutboundPublicIpAddresses()
-  {
-    return $this->outboundPublicIpAddresses;
   }
   /**
    * @param PscInstanceConfig

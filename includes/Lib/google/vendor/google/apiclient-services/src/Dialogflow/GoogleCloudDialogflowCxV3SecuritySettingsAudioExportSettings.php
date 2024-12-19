@@ -35,10 +35,6 @@ class GoogleCloudDialogflowCxV3SecuritySettingsAudioExportSettings extends \Goog
    * @var string
    */
   public $gcsBucket;
-  /**
-   * @var bool
-   */
-  public $storeTtsAudio;
 
   /**
    * @param string
@@ -95,20 +91,6 @@ class GoogleCloudDialogflowCxV3SecuritySettingsAudioExportSettings extends \Goog
   public function getGcsBucket()
   {
     return $this->gcsBucket;
-  }
-  /**
-   * @param bool
-   */
-  public function setStoreTtsAudio($storeTtsAudio)
-  {
-    $this->storeTtsAudio = $storeTtsAudio;
-  }
-  /**
-   * @return bool
-   */
-  public function getStoreTtsAudio()
-  {
-    return $this->storeTtsAudio;
   }
 }
 

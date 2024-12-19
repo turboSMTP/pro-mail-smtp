@@ -17,9 +17,8 @@
 
 namespace Google\Service\WorkloadManager;
 
-class Execution extends \Google\Collection
+class Execution extends \Google\Model
 {
-  protected $collection_key = 'ruleResults';
   /**
    * @var string
    */
@@ -28,8 +27,6 @@ class Execution extends \Google\Collection
    * @var string
    */
   public $evaluationId;
-  protected $externalDataSourcesType = ExternalDataSources::class;
-  protected $externalDataSourcesDataType = 'array';
   /**
    * @var string
    */
@@ -42,12 +39,6 @@ class Execution extends \Google\Collection
    * @var string
    */
   public $name;
-  protected $noticesType = Notice::class;
-  protected $noticesDataType = 'array';
-  protected $resultSummaryType = Summary::class;
-  protected $resultSummaryDataType = '';
-  protected $ruleResultsType = RuleExecutionResult::class;
-  protected $ruleResultsDataType = 'array';
   /**
    * @var string
    */
@@ -90,20 +81,6 @@ class Execution extends \Google\Collection
     return $this->evaluationId;
   }
   /**
-   * @param ExternalDataSources[]
-   */
-  public function setExternalDataSources($externalDataSources)
-  {
-    $this->externalDataSources = $externalDataSources;
-  }
-  /**
-   * @return ExternalDataSources[]
-   */
-  public function getExternalDataSources()
-  {
-    return $this->externalDataSources;
-  }
-  /**
    * @param string
    */
   public function setInventoryTime($inventoryTime)
@@ -144,48 +121,6 @@ class Execution extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Notice[]
-   */
-  public function setNotices($notices)
-  {
-    $this->notices = $notices;
-  }
-  /**
-   * @return Notice[]
-   */
-  public function getNotices()
-  {
-    return $this->notices;
-  }
-  /**
-   * @param Summary
-   */
-  public function setResultSummary(Summary $resultSummary)
-  {
-    $this->resultSummary = $resultSummary;
-  }
-  /**
-   * @return Summary
-   */
-  public function getResultSummary()
-  {
-    return $this->resultSummary;
-  }
-  /**
-   * @param RuleExecutionResult[]
-   */
-  public function setRuleResults($ruleResults)
-  {
-    $this->ruleResults = $ruleResults;
-  }
-  /**
-   * @return RuleExecutionResult[]
-   */
-  public function getRuleResults()
-  {
-    return $this->ruleResults;
   }
   /**
    * @param string

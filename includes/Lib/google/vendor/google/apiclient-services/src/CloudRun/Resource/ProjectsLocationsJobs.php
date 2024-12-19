@@ -128,8 +128,7 @@ class ProjectsLocationsJobs extends \Google\Service\Resource
     return $this->call('getIamPolicy', [$params], GoogleIamV1Policy::class);
   }
   /**
-   * Lists Jobs. Results are sorted by creation time, descending.
-   * (jobs.listProjectsLocationsJobs)
+   * Lists Jobs. (jobs.listProjectsLocationsJobs)
    *
    * @param string $parent Required. The location and project to list resources
    * on. Format: projects/{project}/locations/{location}, where {project} can be

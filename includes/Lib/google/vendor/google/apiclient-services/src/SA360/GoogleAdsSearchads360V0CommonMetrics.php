@@ -38,7 +38,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public $averageCost;
   public $averageCpc;
   public $averageCpm;
-  public $averageQualityScore;
   /**
    * @var string
    */
@@ -95,9 +94,7 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public $costPerConversion;
   public $costPerCurrentModelAttributedConversion;
   public $crossDeviceConversions;
-  public $crossDeviceConversionsByConversionDate;
   public $crossDeviceConversionsValue;
-  public $crossDeviceConversionsValueByConversionDate;
   /**
    * @var string
    */
@@ -112,11 +109,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public $crossSellRevenueMicros;
   public $crossSellUnitsSold;
   public $ctr;
-  public $generalInvalidClickRate;
-  /**
-   * @var string
-   */
-  public $generalInvalidClicks;
   /**
    * @var string
    */
@@ -328,14 +320,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public function getAverageCpm()
   {
     return $this->averageCpm;
-  }
-  public function setAverageQualityScore($averageQualityScore)
-  {
-    $this->averageQualityScore = $averageQualityScore;
-  }
-  public function getAverageQualityScore()
-  {
-    return $this->averageQualityScore;
   }
   /**
    * @param string
@@ -621,14 +605,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   {
     return $this->crossDeviceConversions;
   }
-  public function setCrossDeviceConversionsByConversionDate($crossDeviceConversionsByConversionDate)
-  {
-    $this->crossDeviceConversionsByConversionDate = $crossDeviceConversionsByConversionDate;
-  }
-  public function getCrossDeviceConversionsByConversionDate()
-  {
-    return $this->crossDeviceConversionsByConversionDate;
-  }
   public function setCrossDeviceConversionsValue($crossDeviceConversionsValue)
   {
     $this->crossDeviceConversionsValue = $crossDeviceConversionsValue;
@@ -636,14 +612,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public function getCrossDeviceConversionsValue()
   {
     return $this->crossDeviceConversionsValue;
-  }
-  public function setCrossDeviceConversionsValueByConversionDate($crossDeviceConversionsValueByConversionDate)
-  {
-    $this->crossDeviceConversionsValueByConversionDate = $crossDeviceConversionsValueByConversionDate;
-  }
-  public function getCrossDeviceConversionsValueByConversionDate()
-  {
-    return $this->crossDeviceConversionsValueByConversionDate;
   }
   /**
    * @param string
@@ -702,28 +670,6 @@ class GoogleAdsSearchads360V0CommonMetrics extends \Google\Collection
   public function getCtr()
   {
     return $this->ctr;
-  }
-  public function setGeneralInvalidClickRate($generalInvalidClickRate)
-  {
-    $this->generalInvalidClickRate = $generalInvalidClickRate;
-  }
-  public function getGeneralInvalidClickRate()
-  {
-    return $this->generalInvalidClickRate;
-  }
-  /**
-   * @param string
-   */
-  public function setGeneralInvalidClicks($generalInvalidClicks)
-  {
-    $this->generalInvalidClicks = $generalInvalidClicks;
-  }
-  /**
-   * @return string
-   */
-  public function getGeneralInvalidClicks()
-  {
-    return $this->generalInvalidClicks;
   }
   /**
    * @param string

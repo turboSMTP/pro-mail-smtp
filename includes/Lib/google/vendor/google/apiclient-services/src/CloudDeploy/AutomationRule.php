@@ -25,8 +25,6 @@ class AutomationRule extends \Google\Model
   protected $promoteReleaseRuleDataType = '';
   protected $repairRolloutRuleType = RepairRolloutRule::class;
   protected $repairRolloutRuleDataType = '';
-  protected $timedPromoteReleaseRuleType = TimedPromoteReleaseRule::class;
-  protected $timedPromoteReleaseRuleDataType = '';
 
   /**
    * @param AdvanceRolloutRule
@@ -69,20 +67,6 @@ class AutomationRule extends \Google\Model
   public function getRepairRolloutRule()
   {
     return $this->repairRolloutRule;
-  }
-  /**
-   * @param TimedPromoteReleaseRule
-   */
-  public function setTimedPromoteReleaseRule(TimedPromoteReleaseRule $timedPromoteReleaseRule)
-  {
-    $this->timedPromoteReleaseRule = $timedPromoteReleaseRule;
-  }
-  /**
-   * @return TimedPromoteReleaseRule
-   */
-  public function getTimedPromoteReleaseRule()
-  {
-    return $this->timedPromoteReleaseRule;
   }
 }
 

@@ -17,9 +17,8 @@
 
 namespace Google\Service\Spanner;
 
-class RestoreDatabaseEncryptionConfig extends \Google\Collection
+class RestoreDatabaseEncryptionConfig extends \Google\Model
 {
-  protected $collection_key = 'kmsKeyNames';
   /**
    * @var string
    */
@@ -28,10 +27,6 @@ class RestoreDatabaseEncryptionConfig extends \Google\Collection
    * @var string
    */
   public $kmsKeyName;
-  /**
-   * @var string[]
-   */
-  public $kmsKeyNames;
 
   /**
    * @param string
@@ -60,20 +55,6 @@ class RestoreDatabaseEncryptionConfig extends \Google\Collection
   public function getKmsKeyName()
   {
     return $this->kmsKeyName;
-  }
-  /**
-   * @param string[]
-   */
-  public function setKmsKeyNames($kmsKeyNames)
-  {
-    $this->kmsKeyNames = $kmsKeyNames;
-  }
-  /**
-   * @return string[]
-   */
-  public function getKmsKeyNames()
-  {
-    return $this->kmsKeyNames;
   }
 }
 

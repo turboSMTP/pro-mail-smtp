@@ -87,10 +87,6 @@ class TargetHttpsProxy extends \Google\Collection
   /**
    * @var string
    */
-  public $tlsEarlyData;
-  /**
-   * @var string
-   */
   public $urlMap;
 
   /**
@@ -316,20 +312,6 @@ class TargetHttpsProxy extends \Google\Collection
   public function getSslPolicy()
   {
     return $this->sslPolicy;
-  }
-  /**
-   * @param string
-   */
-  public function setTlsEarlyData($tlsEarlyData)
-  {
-    $this->tlsEarlyData = $tlsEarlyData;
-  }
-  /**
-   * @return string
-   */
-  public function getTlsEarlyData()
-  {
-    return $this->tlsEarlyData;
   }
   /**
    * @param string

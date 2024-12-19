@@ -25,10 +25,6 @@ class InstanceNetworkConfig extends \Google\Collection
   /**
    * @var bool
    */
-  public $enableOutboundPublicIp;
-  /**
-   * @var bool
-   */
   public $enablePublicIp;
 
   /**
@@ -44,20 +40,6 @@ class InstanceNetworkConfig extends \Google\Collection
   public function getAuthorizedExternalNetworks()
   {
     return $this->authorizedExternalNetworks;
-  }
-  /**
-   * @param bool
-   */
-  public function setEnableOutboundPublicIp($enableOutboundPublicIp)
-  {
-    $this->enableOutboundPublicIp = $enableOutboundPublicIp;
-  }
-  /**
-   * @return bool
-   */
-  public function getEnableOutboundPublicIp()
-  {
-    return $this->enableOutboundPublicIp;
   }
   /**
    * @param bool

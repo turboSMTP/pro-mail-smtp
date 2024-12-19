@@ -19,8 +19,6 @@ namespace Google\Service\DiscoveryEngine;
 
 class GoogleCloudDiscoveryengineV1SearchResponseSearchResult extends \Google\Model
 {
-  protected $chunkType = GoogleCloudDiscoveryengineV1Chunk::class;
-  protected $chunkDataType = '';
   protected $documentType = GoogleCloudDiscoveryengineV1Document::class;
   protected $documentDataType = '';
   /**
@@ -28,20 +26,6 @@ class GoogleCloudDiscoveryengineV1SearchResponseSearchResult extends \Google\Mod
    */
   public $id;
 
-  /**
-   * @param GoogleCloudDiscoveryengineV1Chunk
-   */
-  public function setChunk(GoogleCloudDiscoveryengineV1Chunk $chunk)
-  {
-    $this->chunk = $chunk;
-  }
-  /**
-   * @return GoogleCloudDiscoveryengineV1Chunk
-   */
-  public function getChunk()
-  {
-    return $this->chunk;
-  }
   /**
    * @param GoogleCloudDiscoveryengineV1Document
    */

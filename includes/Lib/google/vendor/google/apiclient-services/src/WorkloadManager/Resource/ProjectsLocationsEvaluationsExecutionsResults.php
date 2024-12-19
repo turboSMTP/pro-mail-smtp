@@ -30,7 +30,7 @@ use Google\Service\WorkloadManager\ListExecutionResultsResponse;
 class ProjectsLocationsEvaluationsExecutionsResults extends \Google\Service\Resource
 {
   /**
-   * Lists the result of a single evaluation.
+   * List the running result of a single Execution.
    * (results.listProjectsLocationsEvaluationsExecutionsResults)
    *
    * @param string $parent Required. The execution results. Format:

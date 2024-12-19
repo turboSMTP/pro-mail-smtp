@@ -17,15 +17,12 @@
 
 namespace Google\Service\DiscoveryEngine;
 
-class GoogleCloudDiscoveryengineV1PanelInfo extends \Google\Collection
+class GoogleCloudDiscoveryengineV1PanelInfo extends \Google\Model
 {
-  protected $collection_key = 'documents';
   /**
    * @var string
    */
   public $displayName;
-  protected $documentsType = GoogleCloudDiscoveryengineV1DocumentInfo::class;
-  protected $documentsDataType = 'array';
   /**
    * @var string
    */
@@ -52,20 +49,6 @@ class GoogleCloudDiscoveryengineV1PanelInfo extends \Google\Collection
   public function getDisplayName()
   {
     return $this->displayName;
-  }
-  /**
-   * @param GoogleCloudDiscoveryengineV1DocumentInfo[]
-   */
-  public function setDocuments($documents)
-  {
-    $this->documents = $documents;
-  }
-  /**
-   * @return GoogleCloudDiscoveryengineV1DocumentInfo[]
-   */
-  public function getDocuments()
-  {
-    return $this->documents;
   }
   /**
    * @param string

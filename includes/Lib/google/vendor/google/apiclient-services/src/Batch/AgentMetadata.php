@@ -44,10 +44,6 @@ class AgentMetadata extends \Google\Model
    */
   public $instancePreemptionNoticeReceived;
   /**
-   * @var string
-   */
-  public $machineType;
-  /**
    * @var string[]
    */
   public $osRelease;
@@ -143,20 +139,6 @@ class AgentMetadata extends \Google\Model
   public function getInstancePreemptionNoticeReceived()
   {
     return $this->instancePreemptionNoticeReceived;
-  }
-  /**
-   * @param string
-   */
-  public function setMachineType($machineType)
-  {
-    $this->machineType = $machineType;
-  }
-  /**
-   * @return string
-   */
-  public function getMachineType()
-  {
-    return $this->machineType;
   }
   /**
    * @param string[]

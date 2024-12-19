@@ -44,14 +44,6 @@ class HealthStatus extends \Google\Model
    */
   public $ipAddress;
   /**
-   * @var string
-   */
-  public $ipv6Address;
-  /**
-   * @var string
-   */
-  public $ipv6HealthState;
-  /**
    * @var int
    */
   public $port;
@@ -147,34 +139,6 @@ class HealthStatus extends \Google\Model
   public function getIpAddress()
   {
     return $this->ipAddress;
-  }
-  /**
-   * @param string
-   */
-  public function setIpv6Address($ipv6Address)
-  {
-    $this->ipv6Address = $ipv6Address;
-  }
-  /**
-   * @return string
-   */
-  public function getIpv6Address()
-  {
-    return $this->ipv6Address;
-  }
-  /**
-   * @param string
-   */
-  public function setIpv6HealthState($ipv6HealthState)
-  {
-    $this->ipv6HealthState = $ipv6HealthState;
-  }
-  /**
-   * @return string
-   */
-  public function getIpv6HealthState()
-  {
-    return $this->ipv6HealthState;
   }
   /**
    * @param int

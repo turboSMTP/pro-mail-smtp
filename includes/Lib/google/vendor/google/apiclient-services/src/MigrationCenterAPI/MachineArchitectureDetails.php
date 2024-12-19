@@ -28,10 +28,6 @@ class MachineArchitectureDetails extends \Google\Model
   /**
    * @var string
    */
-  public $cpuManufacturer;
-  /**
-   * @var string
-   */
   public $cpuName;
   /**
    * @var int
@@ -81,20 +77,6 @@ class MachineArchitectureDetails extends \Google\Model
   public function getCpuArchitecture()
   {
     return $this->cpuArchitecture;
-  }
-  /**
-   * @param string
-   */
-  public function setCpuManufacturer($cpuManufacturer)
-  {
-    $this->cpuManufacturer = $cpuManufacturer;
-  }
-  /**
-   * @return string
-   */
-  public function getCpuManufacturer()
-  {
-    return $this->cpuManufacturer;
   }
   /**
    * @param string

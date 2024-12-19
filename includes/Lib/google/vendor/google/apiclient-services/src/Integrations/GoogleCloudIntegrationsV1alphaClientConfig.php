@@ -40,10 +40,6 @@ class GoogleCloudIntegrationsV1alphaClientConfig extends \Google\Model
   /**
    * @var bool
    */
-  public $enableInternalIp;
-  /**
-   * @var bool
-   */
   public $enableVariableMasking;
   /**
    * @var string
@@ -139,20 +135,6 @@ class GoogleCloudIntegrationsV1alphaClientConfig extends \Google\Model
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param bool
-   */
-  public function setEnableInternalIp($enableInternalIp)
-  {
-    $this->enableInternalIp = $enableInternalIp;
-  }
-  /**
-   * @return bool
-   */
-  public function getEnableInternalIp()
-  {
-    return $this->enableInternalIp;
   }
   /**
    * @param bool

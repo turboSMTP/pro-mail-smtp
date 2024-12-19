@@ -20,10 +20,6 @@ namespace Google\Service\Integrations;
 class EnterpriseCrmEventbusProtoExternalTraffic extends \Google\Model
 {
   /**
-   * @var bool
-   */
-  public $enableInternalIp;
-  /**
    * @var string
    */
   public $gcpProjectId;
@@ -36,28 +32,10 @@ class EnterpriseCrmEventbusProtoExternalTraffic extends \Google\Model
    */
   public $location;
   /**
-   * @var bool
-   */
-  public $retryRequestForQuota;
-  /**
    * @var string
    */
   public $source;
 
-  /**
-   * @param bool
-   */
-  public function setEnableInternalIp($enableInternalIp)
-  {
-    $this->enableInternalIp = $enableInternalIp;
-  }
-  /**
-   * @return bool
-   */
-  public function getEnableInternalIp()
-  {
-    return $this->enableInternalIp;
-  }
   /**
    * @param string
    */
@@ -99,20 +77,6 @@ class EnterpriseCrmEventbusProtoExternalTraffic extends \Google\Model
   public function getLocation()
   {
     return $this->location;
-  }
-  /**
-   * @param bool
-   */
-  public function setRetryRequestForQuota($retryRequestForQuota)
-  {
-    $this->retryRequestForQuota = $retryRequestForQuota;
-  }
-  /**
-   * @return bool
-   */
-  public function getRetryRequestForQuota()
-  {
-    return $this->retryRequestForQuota;
   }
   /**
    * @param string

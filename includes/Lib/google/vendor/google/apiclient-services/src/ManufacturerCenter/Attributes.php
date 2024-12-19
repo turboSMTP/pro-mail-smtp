@@ -79,10 +79,6 @@ class Attributes extends \Google\Collection
    */
   public $includedDestination;
   /**
-   * @var string[]
-   */
-  public $intendedCountry;
-  /**
    * @var string
    */
   public $itemGroupId;
@@ -420,20 +416,6 @@ class Attributes extends \Google\Collection
   public function getIncludedDestination()
   {
     return $this->includedDestination;
-  }
-  /**
-   * @param string[]
-   */
-  public function setIntendedCountry($intendedCountry)
-  {
-    $this->intendedCountry = $intendedCountry;
-  }
-  /**
-   * @return string[]
-   */
-  public function getIntendedCountry()
-  {
-    return $this->intendedCountry;
   }
   /**
    * @param string

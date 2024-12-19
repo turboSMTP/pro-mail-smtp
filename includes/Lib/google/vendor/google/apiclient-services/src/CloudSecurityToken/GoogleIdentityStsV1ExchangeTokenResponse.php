@@ -20,16 +20,11 @@ namespace Google\Service\CloudSecurityToken;
 class GoogleIdentityStsV1ExchangeTokenResponse extends \Google\Model
 {
   protected $internal_gapi_mappings = [
-        "accessBoundarySessionKey" => "access_boundary_session_key",
         "accessToken" => "access_token",
         "expiresIn" => "expires_in",
         "issuedTokenType" => "issued_token_type",
         "tokenType" => "token_type",
   ];
-  /**
-   * @var string
-   */
-  public $accessBoundarySessionKey;
   /**
    * @var string
    */
@@ -47,20 +42,6 @@ class GoogleIdentityStsV1ExchangeTokenResponse extends \Google\Model
    */
   public $tokenType;
 
-  /**
-   * @param string
-   */
-  public function setAccessBoundarySessionKey($accessBoundarySessionKey)
-  {
-    $this->accessBoundarySessionKey = $accessBoundarySessionKey;
-  }
-  /**
-   * @return string
-   */
-  public function getAccessBoundarySessionKey()
-  {
-    return $this->accessBoundarySessionKey;
-  }
   /**
    * @param string
    */

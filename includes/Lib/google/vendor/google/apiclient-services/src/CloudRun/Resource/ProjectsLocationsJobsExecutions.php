@@ -108,8 +108,7 @@ class ProjectsLocationsJobsExecutions extends \Google\Service\Resource
     return $this->call('get', [$params], GoogleCloudRunV2Execution::class);
   }
   /**
-   * Lists Executions from a Job. Results are sorted by creation time, descending.
-   * (executions.listProjectsLocationsJobsExecutions)
+   * Lists Executions from a Job. (executions.listProjectsLocationsJobsExecutions)
    *
    * @param string $parent Required. The Execution from which the Executions
    * should be listed. To list all Executions across Jobs, use "-" instead of Job

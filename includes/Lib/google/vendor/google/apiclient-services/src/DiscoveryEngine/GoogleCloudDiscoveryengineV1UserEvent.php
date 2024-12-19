@@ -29,23 +29,11 @@ class GoogleCloudDiscoveryengineV1UserEvent extends \Google\Collection
   protected $completionInfoType = GoogleCloudDiscoveryengineV1CompletionInfo::class;
   protected $completionInfoDataType = '';
   /**
-   * @var string
-   */
-  public $conversionType;
-  /**
-   * @var string
-   */
-  public $dataStore;
-  /**
    * @var bool
    */
   public $directUserRequest;
   protected $documentsType = GoogleCloudDiscoveryengineV1DocumentInfo::class;
   protected $documentsDataType = 'array';
-  /**
-   * @var string
-   */
-  public $engine;
   /**
    * @var string
    */
@@ -64,8 +52,6 @@ class GoogleCloudDiscoveryengineV1UserEvent extends \Google\Collection
   protected $pageInfoDataType = '';
   protected $panelType = GoogleCloudDiscoveryengineV1PanelInfo::class;
   protected $panelDataType = '';
-  protected $panelsType = GoogleCloudDiscoveryengineV1PanelInfo::class;
-  protected $panelsDataType = 'array';
   /**
    * @var string[]
    */
@@ -132,34 +118,6 @@ class GoogleCloudDiscoveryengineV1UserEvent extends \Google\Collection
     return $this->completionInfo;
   }
   /**
-   * @param string
-   */
-  public function setConversionType($conversionType)
-  {
-    $this->conversionType = $conversionType;
-  }
-  /**
-   * @return string
-   */
-  public function getConversionType()
-  {
-    return $this->conversionType;
-  }
-  /**
-   * @param string
-   */
-  public function setDataStore($dataStore)
-  {
-    $this->dataStore = $dataStore;
-  }
-  /**
-   * @return string
-   */
-  public function getDataStore()
-  {
-    return $this->dataStore;
-  }
-  /**
    * @param bool
    */
   public function setDirectUserRequest($directUserRequest)
@@ -186,20 +144,6 @@ class GoogleCloudDiscoveryengineV1UserEvent extends \Google\Collection
   public function getDocuments()
   {
     return $this->documents;
-  }
-  /**
-   * @param string
-   */
-  public function setEngine($engine)
-  {
-    $this->engine = $engine;
-  }
-  /**
-   * @return string
-   */
-  public function getEngine()
-  {
-    return $this->engine;
   }
   /**
    * @param string
@@ -284,20 +228,6 @@ class GoogleCloudDiscoveryengineV1UserEvent extends \Google\Collection
   public function getPanel()
   {
     return $this->panel;
-  }
-  /**
-   * @param GoogleCloudDiscoveryengineV1PanelInfo[]
-   */
-  public function setPanels($panels)
-  {
-    $this->panels = $panels;
-  }
-  /**
-   * @return GoogleCloudDiscoveryengineV1PanelInfo[]
-   */
-  public function getPanels()
-  {
-    return $this->panels;
   }
   /**
    * @param string[]

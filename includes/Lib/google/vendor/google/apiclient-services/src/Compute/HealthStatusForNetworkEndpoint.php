@@ -31,10 +31,6 @@ class HealthStatusForNetworkEndpoint extends \Google\Model
    * @var string
    */
   public $healthState;
-  /**
-   * @var string
-   */
-  public $ipv6HealthState;
 
   /**
    * @param BackendServiceReference
@@ -105,20 +101,6 @@ class HealthStatusForNetworkEndpoint extends \Google\Model
   public function getHealthState()
   {
     return $this->healthState;
-  }
-  /**
-   * @param string
-   */
-  public function setIpv6HealthState($ipv6HealthState)
-  {
-    $this->ipv6HealthState = $ipv6HealthState;
-  }
-  /**
-   * @return string
-   */
-  public function getIpv6HealthState()
-  {
-    return $this->ipv6HealthState;
   }
 }
 

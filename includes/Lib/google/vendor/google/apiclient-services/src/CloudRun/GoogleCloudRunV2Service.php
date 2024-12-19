@@ -19,7 +19,7 @@ namespace Google\Service\CloudRun;
 
 class GoogleCloudRunV2Service extends \Google\Collection
 {
-  protected $collection_key = 'urls';
+  protected $collection_key = 'trafficStatuses';
   /**
    * @var string[]
    */
@@ -76,10 +76,6 @@ class GoogleCloudRunV2Service extends \Google\Collection
    * @var string
    */
   public $ingress;
-  /**
-   * @var bool
-   */
-  public $invokerIamDisabled;
   /**
    * @var string[]
    */
@@ -138,10 +134,6 @@ class GoogleCloudRunV2Service extends \Google\Collection
    * @var string
    */
   public $uri;
-  /**
-   * @var string[]
-   */
-  public $urls;
 
   /**
    * @param string[]
@@ -352,20 +344,6 @@ class GoogleCloudRunV2Service extends \Google\Collection
   public function getIngress()
   {
     return $this->ingress;
-  }
-  /**
-   * @param bool
-   */
-  public function setInvokerIamDisabled($invokerIamDisabled)
-  {
-    $this->invokerIamDisabled = $invokerIamDisabled;
-  }
-  /**
-   * @return bool
-   */
-  public function getInvokerIamDisabled()
-  {
-    return $this->invokerIamDisabled;
   }
   /**
    * @param string[]
@@ -604,20 +582,6 @@ class GoogleCloudRunV2Service extends \Google\Collection
   public function getUri()
   {
     return $this->uri;
-  }
-  /**
-   * @param string[]
-   */
-  public function setUrls($urls)
-  {
-    $this->urls = $urls;
-  }
-  /**
-   * @return string[]
-   */
-  public function getUrls()
-  {
-    return $this->urls;
   }
 }
 

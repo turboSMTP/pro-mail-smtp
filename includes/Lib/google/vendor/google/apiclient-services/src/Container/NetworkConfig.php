@@ -23,10 +23,6 @@ class NetworkConfig extends \Google\Model
    * @var string
    */
   public $datapathProvider;
-  /**
-   * @var bool
-   */
-  public $defaultEnablePrivateNodes;
   protected $defaultSnatStatusType = DefaultSnatStatus::class;
   protected $defaultSnatStatusDataType = '';
   protected $dnsConfigType = DNSConfig::class;
@@ -87,20 +83,6 @@ class NetworkConfig extends \Google\Model
   public function getDatapathProvider()
   {
     return $this->datapathProvider;
-  }
-  /**
-   * @param bool
-   */
-  public function setDefaultEnablePrivateNodes($defaultEnablePrivateNodes)
-  {
-    $this->defaultEnablePrivateNodes = $defaultEnablePrivateNodes;
-  }
-  /**
-   * @return bool
-   */
-  public function getDefaultEnablePrivateNodes()
-  {
-    return $this->defaultEnablePrivateNodes;
   }
   /**
    * @param DefaultSnatStatus

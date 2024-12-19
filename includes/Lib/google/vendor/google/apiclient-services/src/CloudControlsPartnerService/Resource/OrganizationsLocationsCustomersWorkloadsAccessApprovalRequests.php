@@ -30,9 +30,8 @@ use Google\Service\CloudControlsPartnerService\ListAccessApprovalRequestsRespons
 class OrganizationsLocationsCustomersWorkloadsAccessApprovalRequests extends \Google\Service\Resource
 {
   /**
-   * Deprecated: Only returns access approval requests directly associated with an
-   * assured workload folder. (accessApprovalRequests.listOrganizationsLocationsCu
-   * stomersWorkloadsAccessApprovalRequests)
+   * Lists access requests associated with a workload (accessApprovalRequests.list
+   * OrganizationsLocationsCustomersWorkloadsAccessApprovalRequests)
    *
    * @param string $parent Required. Parent resource Format: `organizations/{organ
    * ization}/locations/{location}/customers/{customer}/workloads/{workload}`

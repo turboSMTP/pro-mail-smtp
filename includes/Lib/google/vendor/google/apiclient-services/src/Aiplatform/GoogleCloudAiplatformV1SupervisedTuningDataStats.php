@@ -27,19 +27,7 @@ class GoogleCloudAiplatformV1SupervisedTuningDataStats extends \Google\Collectio
   /**
    * @var string
    */
-  public $totalBillableTokenCount;
-  /**
-   * @var string
-   */
-  public $totalTruncatedExampleCount;
-  /**
-   * @var string
-   */
   public $totalTuningCharacterCount;
-  /**
-   * @var string[]
-   */
-  public $truncatedExampleIndices;
   /**
    * @var string
    */
@@ -74,34 +62,6 @@ class GoogleCloudAiplatformV1SupervisedTuningDataStats extends \Google\Collectio
   /**
    * @param string
    */
-  public function setTotalBillableTokenCount($totalBillableTokenCount)
-  {
-    $this->totalBillableTokenCount = $totalBillableTokenCount;
-  }
-  /**
-   * @return string
-   */
-  public function getTotalBillableTokenCount()
-  {
-    return $this->totalBillableTokenCount;
-  }
-  /**
-   * @param string
-   */
-  public function setTotalTruncatedExampleCount($totalTruncatedExampleCount)
-  {
-    $this->totalTruncatedExampleCount = $totalTruncatedExampleCount;
-  }
-  /**
-   * @return string
-   */
-  public function getTotalTruncatedExampleCount()
-  {
-    return $this->totalTruncatedExampleCount;
-  }
-  /**
-   * @param string
-   */
   public function setTotalTuningCharacterCount($totalTuningCharacterCount)
   {
     $this->totalTuningCharacterCount = $totalTuningCharacterCount;
@@ -112,20 +72,6 @@ class GoogleCloudAiplatformV1SupervisedTuningDataStats extends \Google\Collectio
   public function getTotalTuningCharacterCount()
   {
     return $this->totalTuningCharacterCount;
-  }
-  /**
-   * @param string[]
-   */
-  public function setTruncatedExampleIndices($truncatedExampleIndices)
-  {
-    $this->truncatedExampleIndices = $truncatedExampleIndices;
-  }
-  /**
-   * @return string[]
-   */
-  public function getTruncatedExampleIndices()
-  {
-    return $this->truncatedExampleIndices;
   }
   /**
    * @param string

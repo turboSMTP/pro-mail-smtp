@@ -22,10 +22,6 @@ class VideoStatus extends \Google\Model
   /**
    * @var bool
    */
-  public $containsSyntheticMedia;
-  /**
-   * @var bool
-   */
   public $embeddable;
   /**
    * @var string
@@ -64,20 +60,6 @@ class VideoStatus extends \Google\Model
    */
   public $uploadStatus;
 
-  /**
-   * @param bool
-   */
-  public function setContainsSyntheticMedia($containsSyntheticMedia)
-  {
-    $this->containsSyntheticMedia = $containsSyntheticMedia;
-  }
-  /**
-   * @return bool
-   */
-  public function getContainsSyntheticMedia()
-  {
-    return $this->containsSyntheticMedia;
-  }
   /**
    * @param bool
    */

@@ -27,10 +27,6 @@ class BulkMuteFindingsRequest extends \Google\Model
    * @var string
    */
   public $muteAnnotation;
-  /**
-   * @var string
-   */
-  public $muteState;
 
   /**
    * @param string
@@ -59,20 +55,6 @@ class BulkMuteFindingsRequest extends \Google\Model
   public function getMuteAnnotation()
   {
     return $this->muteAnnotation;
-  }
-  /**
-   * @param string
-   */
-  public function setMuteState($muteState)
-  {
-    $this->muteState = $muteState;
-  }
-  /**
-   * @return string
-   */
-  public function getMuteState()
-  {
-    return $this->muteState;
   }
 }
 

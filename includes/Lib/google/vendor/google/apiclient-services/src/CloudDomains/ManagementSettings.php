@@ -22,10 +22,6 @@ class ManagementSettings extends \Google\Model
   /**
    * @var string
    */
-  public $effectiveTransferLockState;
-  /**
-   * @var string
-   */
   public $preferredRenewalMethod;
   /**
    * @var string
@@ -36,20 +32,6 @@ class ManagementSettings extends \Google\Model
    */
   public $transferLockState;
 
-  /**
-   * @param string
-   */
-  public function setEffectiveTransferLockState($effectiveTransferLockState)
-  {
-    $this->effectiveTransferLockState = $effectiveTransferLockState;
-  }
-  /**
-   * @return string
-   */
-  public function getEffectiveTransferLockState()
-  {
-    return $this->effectiveTransferLockState;
-  }
   /**
    * @param string
    */

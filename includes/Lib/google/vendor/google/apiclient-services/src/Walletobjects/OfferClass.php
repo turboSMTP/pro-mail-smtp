@@ -19,13 +19,11 @@ namespace Google\Service\Walletobjects;
 
 class OfferClass extends \Google\Collection
 {
-  protected $collection_key = 'valueAddedModuleData';
+  protected $collection_key = 'textModulesData';
   /**
    * @var bool
    */
   public $allowMultipleUsersPerObject;
-  protected $appLinkDataType = AppLinkData::class;
-  protected $appLinkDataDataType = '';
   protected $callbackOptionsType = CallbackOptions::class;
   protected $callbackOptionsDataType = '';
   protected $classTemplateInfoType = ClassTemplateInfo::class;
@@ -88,18 +86,12 @@ class OfferClass extends \Google\Collection
   protected $localizedTitleDataType = '';
   protected $locationsType = LatLongPoint::class;
   protected $locationsDataType = 'array';
-  protected $merchantLocationsType = MerchantLocation::class;
-  protected $merchantLocationsDataType = 'array';
   protected $messagesType = Message::class;
   protected $messagesDataType = 'array';
   /**
    * @var string
    */
   public $multipleDevicesAndHoldersAllowedStatus;
-  /**
-   * @var string
-   */
-  public $notifyPreference;
   /**
    * @var string
    */
@@ -132,8 +124,6 @@ class OfferClass extends \Google\Collection
   public $title;
   protected $titleImageType = Image::class;
   protected $titleImageDataType = '';
-  protected $valueAddedModuleDataType = ValueAddedModuleData::class;
-  protected $valueAddedModuleDataDataType = 'array';
   /**
    * @var string
    */
@@ -160,20 +150,6 @@ class OfferClass extends \Google\Collection
   public function getAllowMultipleUsersPerObject()
   {
     return $this->allowMultipleUsersPerObject;
-  }
-  /**
-   * @param AppLinkData
-   */
-  public function setAppLinkData(AppLinkData $appLinkData)
-  {
-    $this->appLinkData = $appLinkData;
-  }
-  /**
-   * @return AppLinkData
-   */
-  public function getAppLinkData()
-  {
-    return $this->appLinkData;
   }
   /**
    * @param CallbackOptions
@@ -498,20 +474,6 @@ class OfferClass extends \Google\Collection
     return $this->locations;
   }
   /**
-   * @param MerchantLocation[]
-   */
-  public function setMerchantLocations($merchantLocations)
-  {
-    $this->merchantLocations = $merchantLocations;
-  }
-  /**
-   * @return MerchantLocation[]
-   */
-  public function getMerchantLocations()
-  {
-    return $this->merchantLocations;
-  }
-  /**
    * @param Message[]
    */
   public function setMessages($messages)
@@ -538,20 +500,6 @@ class OfferClass extends \Google\Collection
   public function getMultipleDevicesAndHoldersAllowedStatus()
   {
     return $this->multipleDevicesAndHoldersAllowedStatus;
-  }
-  /**
-   * @param string
-   */
-  public function setNotifyPreference($notifyPreference)
-  {
-    $this->notifyPreference = $notifyPreference;
-  }
-  /**
-   * @return string
-   */
-  public function getNotifyPreference()
-  {
-    return $this->notifyPreference;
   }
   /**
    * @param string
@@ -692,20 +640,6 @@ class OfferClass extends \Google\Collection
   public function getTitleImage()
   {
     return $this->titleImage;
-  }
-  /**
-   * @param ValueAddedModuleData[]
-   */
-  public function setValueAddedModuleData($valueAddedModuleData)
-  {
-    $this->valueAddedModuleData = $valueAddedModuleData;
-  }
-  /**
-   * @return ValueAddedModuleData[]
-   */
-  public function getValueAddedModuleData()
-  {
-    return $this->valueAddedModuleData;
   }
   /**
    * @param string

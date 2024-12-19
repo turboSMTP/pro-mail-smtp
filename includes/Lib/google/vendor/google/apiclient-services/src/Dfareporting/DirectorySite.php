@@ -42,10 +42,6 @@ class DirectorySite extends \Google\Collection
    * @var string
    */
   public $name;
-  /**
-   * @var string
-   */
-  public $publisherSpecificationId;
   protected $settingsType = DirectorySiteSettings::class;
   protected $settingsDataType = '';
   /**
@@ -136,20 +132,6 @@ class DirectorySite extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string
-   */
-  public function setPublisherSpecificationId($publisherSpecificationId)
-  {
-    $this->publisherSpecificationId = $publisherSpecificationId;
-  }
-  /**
-   * @return string
-   */
-  public function getPublisherSpecificationId()
-  {
-    return $this->publisherSpecificationId;
   }
   /**
    * @param DirectorySiteSettings

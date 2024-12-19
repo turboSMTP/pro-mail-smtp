@@ -17,15 +17,10 @@
 
 namespace Google\Service\Apigee;
 
-class GoogleCloudApigeeV1SecurityAction extends \Google\Collection
+class GoogleCloudApigeeV1SecurityAction extends \Google\Model
 {
-  protected $collection_key = 'apiProxies';
   protected $allowType = GoogleCloudApigeeV1SecurityActionAllow::class;
   protected $allowDataType = '';
-  /**
-   * @var string[]
-   */
-  public $apiProxies;
   protected $conditionConfigType = GoogleCloudApigeeV1SecurityActionConditionConfig::class;
   protected $conditionConfigDataType = '';
   /**
@@ -74,20 +69,6 @@ class GoogleCloudApigeeV1SecurityAction extends \Google\Collection
   public function getAllow()
   {
     return $this->allow;
-  }
-  /**
-   * @param string[]
-   */
-  public function setApiProxies($apiProxies)
-  {
-    $this->apiProxies = $apiProxies;
-  }
-  /**
-   * @return string[]
-   */
-  public function getApiProxies()
-  {
-    return $this->apiProxies;
   }
   /**
    * @param GoogleCloudApigeeV1SecurityActionConditionConfig

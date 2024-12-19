@@ -19,10 +19,6 @@ namespace Google\Service\ShoppingContent;
 
 class PriceInsights extends \Google\Model
 {
-  /**
-   * @var string
-   */
-  public $effectiveness;
   public $predictedClicksChangeFraction;
   public $predictedConversionsChangeFraction;
   public $predictedGrossProfitChangeFraction;
@@ -44,20 +40,6 @@ class PriceInsights extends \Google\Model
    */
   public $suggestedPriceMicros;
 
-  /**
-   * @param string
-   */
-  public function setEffectiveness($effectiveness)
-  {
-    $this->effectiveness = $effectiveness;
-  }
-  /**
-   * @return string
-   */
-  public function getEffectiveness()
-  {
-    return $this->effectiveness;
-  }
   public function setPredictedClicksChangeFraction($predictedClicksChangeFraction)
   {
     $this->predictedClicksChangeFraction = $predictedClicksChangeFraction;

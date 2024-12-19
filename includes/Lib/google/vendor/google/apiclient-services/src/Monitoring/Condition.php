@@ -27,8 +27,6 @@ class Condition extends \Google\Model
   protected $conditionMonitoringQueryLanguageDataType = '';
   protected $conditionPrometheusQueryLanguageType = PrometheusQueryLanguageCondition::class;
   protected $conditionPrometheusQueryLanguageDataType = '';
-  protected $conditionSqlType = SqlCondition::class;
-  protected $conditionSqlDataType = '';
   protected $conditionThresholdType = MetricThreshold::class;
   protected $conditionThresholdDataType = '';
   /**
@@ -95,20 +93,6 @@ class Condition extends \Google\Model
   public function getConditionPrometheusQueryLanguage()
   {
     return $this->conditionPrometheusQueryLanguage;
-  }
-  /**
-   * @param SqlCondition
-   */
-  public function setConditionSql(SqlCondition $conditionSql)
-  {
-    $this->conditionSql = $conditionSql;
-  }
-  /**
-   * @return SqlCondition
-   */
-  public function getConditionSql()
-  {
-    return $this->conditionSql;
   }
   /**
    * @param MetricThreshold

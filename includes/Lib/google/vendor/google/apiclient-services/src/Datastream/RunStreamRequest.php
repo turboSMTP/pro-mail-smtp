@@ -21,10 +21,6 @@ class RunStreamRequest extends \Google\Model
 {
   protected $cdcStrategyType = CdcStrategy::class;
   protected $cdcStrategyDataType = '';
-  /**
-   * @var bool
-   */
-  public $force;
 
   /**
    * @param CdcStrategy
@@ -39,20 +35,6 @@ class RunStreamRequest extends \Google\Model
   public function getCdcStrategy()
   {
     return $this->cdcStrategy;
-  }
-  /**
-   * @param bool
-   */
-  public function setForce($force)
-  {
-    $this->force = $force;
-  }
-  /**
-   * @return bool
-   */
-  public function getForce()
-  {
-    return $this->force;
   }
 }
 

@@ -24,17 +24,11 @@ class CloudAiLargeModelsVisionImage extends \Google\Model
    */
   public $encoding;
   /**
-   * @var int
-   */
-  public $generationSeed;
-  /**
    * @var string
    */
   public $image;
   protected $imageRaiScoresType = CloudAiLargeModelsVisionImageRAIScores::class;
   protected $imageRaiScoresDataType = '';
-  protected $imageSizeType = CloudAiLargeModelsVisionImageImageSize::class;
-  protected $imageSizeDataType = '';
   protected $raiInfoType = CloudAiLargeModelsVisionRaiInfo::class;
   protected $raiInfoDataType = '';
   protected $semanticFilterResponseType = CloudAiLargeModelsVisionSemanticFilterResponse::class;
@@ -63,20 +57,6 @@ class CloudAiLargeModelsVisionImage extends \Google\Model
     return $this->encoding;
   }
   /**
-   * @param int
-   */
-  public function setGenerationSeed($generationSeed)
-  {
-    $this->generationSeed = $generationSeed;
-  }
-  /**
-   * @return int
-   */
-  public function getGenerationSeed()
-  {
-    return $this->generationSeed;
-  }
-  /**
    * @param string
    */
   public function setImage($image)
@@ -103,20 +83,6 @@ class CloudAiLargeModelsVisionImage extends \Google\Model
   public function getImageRaiScores()
   {
     return $this->imageRaiScores;
-  }
-  /**
-   * @param CloudAiLargeModelsVisionImageImageSize
-   */
-  public function setImageSize(CloudAiLargeModelsVisionImageImageSize $imageSize)
-  {
-    $this->imageSize = $imageSize;
-  }
-  /**
-   * @return CloudAiLargeModelsVisionImageImageSize
-   */
-  public function getImageSize()
-  {
-    return $this->imageSize;
   }
   /**
    * @param CloudAiLargeModelsVisionRaiInfo

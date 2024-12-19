@@ -24,10 +24,6 @@ class GoogleCloudIntegrationsV1alphaAssertionResult extends \Google\Model
   /**
    * @var string
    */
-  public $failureMessage;
-  /**
-   * @var string
-   */
   public $status;
   /**
    * @var string
@@ -51,20 +47,6 @@ class GoogleCloudIntegrationsV1alphaAssertionResult extends \Google\Model
   public function getAssertion()
   {
     return $this->assertion;
-  }
-  /**
-   * @param string
-   */
-  public function setFailureMessage($failureMessage)
-  {
-    $this->failureMessage = $failureMessage;
-  }
-  /**
-   * @return string
-   */
-  public function getFailureMessage()
-  {
-    return $this->failureMessage;
   }
   /**
    * @param string

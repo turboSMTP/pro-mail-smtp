@@ -44,8 +44,6 @@ class GoogleCloudIntegrationsV1alphaExecution extends \Google\Collection
    * @var string
    */
   public $name;
-  protected $replayInfoType = GoogleCloudIntegrationsV1alphaExecutionReplayInfo::class;
-  protected $replayInfoDataType = '';
   protected $requestParametersType = GoogleCloudIntegrationsV1alphaValueType::class;
   protected $requestParametersDataType = 'map';
   protected $requestParamsType = EnterpriseCrmFrontendsEventbusProtoParameterEntry::class;
@@ -178,20 +176,6 @@ class GoogleCloudIntegrationsV1alphaExecution extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param GoogleCloudIntegrationsV1alphaExecutionReplayInfo
-   */
-  public function setReplayInfo(GoogleCloudIntegrationsV1alphaExecutionReplayInfo $replayInfo)
-  {
-    $this->replayInfo = $replayInfo;
-  }
-  /**
-   * @return GoogleCloudIntegrationsV1alphaExecutionReplayInfo
-   */
-  public function getReplayInfo()
-  {
-    return $this->replayInfo;
   }
   /**
    * @param GoogleCloudIntegrationsV1alphaValueType[]

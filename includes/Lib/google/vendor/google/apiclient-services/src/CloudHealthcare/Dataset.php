@@ -19,8 +19,6 @@ namespace Google\Service\CloudHealthcare;
 
 class Dataset extends \Google\Model
 {
-  protected $encryptionSpecType = EncryptionSpec::class;
-  protected $encryptionSpecDataType = '';
   /**
    * @var string
    */
@@ -30,20 +28,6 @@ class Dataset extends \Google\Model
    */
   public $timeZone;
 
-  /**
-   * @param EncryptionSpec
-   */
-  public function setEncryptionSpec(EncryptionSpec $encryptionSpec)
-  {
-    $this->encryptionSpec = $encryptionSpec;
-  }
-  /**
-   * @return EncryptionSpec
-   */
-  public function getEncryptionSpec()
-  {
-    return $this->encryptionSpec;
-  }
   /**
    * @param string
    */

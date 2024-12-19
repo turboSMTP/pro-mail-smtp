@@ -23,14 +23,6 @@ class RouteInfo extends \Google\Collection
   /**
    * @var string
    */
-  public $advertisedRouteNextHopUri;
-  /**
-   * @var string
-   */
-  public $advertisedRouteSourceRouterUri;
-  /**
-   * @var string
-   */
   public $destIpRange;
   /**
    * @var string[]
@@ -44,10 +36,6 @@ class RouteInfo extends \Google\Collection
    * @var string[]
    */
   public $instanceTags;
-  /**
-   * @var string
-   */
-  public $nccHubRouteUri;
   /**
    * @var string
    */
@@ -67,23 +55,7 @@ class RouteInfo extends \Google\Collection
   /**
    * @var string
    */
-  public $nextHopNetworkUri;
-  /**
-   * @var string
-   */
   public $nextHopType;
-  /**
-   * @var string
-   */
-  public $nextHopUri;
-  /**
-   * @var string
-   */
-  public $originatingRouteDisplayName;
-  /**
-   * @var string
-   */
-  public $originatingRouteUri;
   /**
    * @var int
    */
@@ -92,10 +64,6 @@ class RouteInfo extends \Google\Collection
    * @var string[]
    */
   public $protocols;
-  /**
-   * @var string
-   */
-  public $region;
   /**
    * @var string
    */
@@ -117,34 +85,6 @@ class RouteInfo extends \Google\Collection
    */
   public $uri;
 
-  /**
-   * @param string
-   */
-  public function setAdvertisedRouteNextHopUri($advertisedRouteNextHopUri)
-  {
-    $this->advertisedRouteNextHopUri = $advertisedRouteNextHopUri;
-  }
-  /**
-   * @return string
-   */
-  public function getAdvertisedRouteNextHopUri()
-  {
-    return $this->advertisedRouteNextHopUri;
-  }
-  /**
-   * @param string
-   */
-  public function setAdvertisedRouteSourceRouterUri($advertisedRouteSourceRouterUri)
-  {
-    $this->advertisedRouteSourceRouterUri = $advertisedRouteSourceRouterUri;
-  }
-  /**
-   * @return string
-   */
-  public function getAdvertisedRouteSourceRouterUri()
-  {
-    return $this->advertisedRouteSourceRouterUri;
-  }
   /**
    * @param string
    */
@@ -200,20 +140,6 @@ class RouteInfo extends \Google\Collection
   public function getInstanceTags()
   {
     return $this->instanceTags;
-  }
-  /**
-   * @param string
-   */
-  public function setNccHubRouteUri($nccHubRouteUri)
-  {
-    $this->nccHubRouteUri = $nccHubRouteUri;
-  }
-  /**
-   * @return string
-   */
-  public function getNccHubRouteUri()
-  {
-    return $this->nccHubRouteUri;
   }
   /**
    * @param string
@@ -274,20 +200,6 @@ class RouteInfo extends \Google\Collection
   /**
    * @param string
    */
-  public function setNextHopNetworkUri($nextHopNetworkUri)
-  {
-    $this->nextHopNetworkUri = $nextHopNetworkUri;
-  }
-  /**
-   * @return string
-   */
-  public function getNextHopNetworkUri()
-  {
-    return $this->nextHopNetworkUri;
-  }
-  /**
-   * @param string
-   */
   public function setNextHopType($nextHopType)
   {
     $this->nextHopType = $nextHopType;
@@ -298,48 +210,6 @@ class RouteInfo extends \Google\Collection
   public function getNextHopType()
   {
     return $this->nextHopType;
-  }
-  /**
-   * @param string
-   */
-  public function setNextHopUri($nextHopUri)
-  {
-    $this->nextHopUri = $nextHopUri;
-  }
-  /**
-   * @return string
-   */
-  public function getNextHopUri()
-  {
-    return $this->nextHopUri;
-  }
-  /**
-   * @param string
-   */
-  public function setOriginatingRouteDisplayName($originatingRouteDisplayName)
-  {
-    $this->originatingRouteDisplayName = $originatingRouteDisplayName;
-  }
-  /**
-   * @return string
-   */
-  public function getOriginatingRouteDisplayName()
-  {
-    return $this->originatingRouteDisplayName;
-  }
-  /**
-   * @param string
-   */
-  public function setOriginatingRouteUri($originatingRouteUri)
-  {
-    $this->originatingRouteUri = $originatingRouteUri;
-  }
-  /**
-   * @return string
-   */
-  public function getOriginatingRouteUri()
-  {
-    return $this->originatingRouteUri;
   }
   /**
    * @param int
@@ -368,20 +238,6 @@ class RouteInfo extends \Google\Collection
   public function getProtocols()
   {
     return $this->protocols;
-  }
-  /**
-   * @param string
-   */
-  public function setRegion($region)
-  {
-    $this->region = $region;
-  }
-  /**
-   * @return string
-   */
-  public function getRegion()
-  {
-    return $this->region;
   }
   /**
    * @param string

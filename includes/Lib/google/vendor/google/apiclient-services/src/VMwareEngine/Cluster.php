@@ -19,8 +19,6 @@ namespace Google\Service\VMwareEngine;
 
 class Cluster extends \Google\Model
 {
-  protected $autoscalingSettingsType = AutoscalingSettings::class;
-  protected $autoscalingSettingsDataType = '';
   /**
    * @var string
    */
@@ -50,20 +48,6 @@ class Cluster extends \Google\Model
    */
   public $updateTime;
 
-  /**
-   * @param AutoscalingSettings
-   */
-  public function setAutoscalingSettings(AutoscalingSettings $autoscalingSettings)
-  {
-    $this->autoscalingSettings = $autoscalingSettings;
-  }
-  /**
-   * @return AutoscalingSettings
-   */
-  public function getAutoscalingSettings()
-  {
-    return $this->autoscalingSettings;
-  }
   /**
    * @param string
    */

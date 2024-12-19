@@ -41,10 +41,6 @@ class AddonsConfig extends \Google\Model
   protected $kubernetesDashboardDataType = '';
   protected $networkPolicyConfigType = NetworkPolicyConfig::class;
   protected $networkPolicyConfigDataType = '';
-  protected $parallelstoreCsiDriverConfigType = ParallelstoreCsiDriverConfig::class;
-  protected $parallelstoreCsiDriverConfigDataType = '';
-  protected $rayOperatorConfigType = RayOperatorConfig::class;
-  protected $rayOperatorConfigDataType = '';
   protected $statefulHaConfigType = StatefulHAConfig::class;
   protected $statefulHaConfigDataType = '';
 
@@ -201,34 +197,6 @@ class AddonsConfig extends \Google\Model
   public function getNetworkPolicyConfig()
   {
     return $this->networkPolicyConfig;
-  }
-  /**
-   * @param ParallelstoreCsiDriverConfig
-   */
-  public function setParallelstoreCsiDriverConfig(ParallelstoreCsiDriverConfig $parallelstoreCsiDriverConfig)
-  {
-    $this->parallelstoreCsiDriverConfig = $parallelstoreCsiDriverConfig;
-  }
-  /**
-   * @return ParallelstoreCsiDriverConfig
-   */
-  public function getParallelstoreCsiDriverConfig()
-  {
-    return $this->parallelstoreCsiDriverConfig;
-  }
-  /**
-   * @param RayOperatorConfig
-   */
-  public function setRayOperatorConfig(RayOperatorConfig $rayOperatorConfig)
-  {
-    $this->rayOperatorConfig = $rayOperatorConfig;
-  }
-  /**
-   * @return RayOperatorConfig
-   */
-  public function getRayOperatorConfig()
-  {
-    return $this->rayOperatorConfig;
   }
   /**
    * @param StatefulHAConfig

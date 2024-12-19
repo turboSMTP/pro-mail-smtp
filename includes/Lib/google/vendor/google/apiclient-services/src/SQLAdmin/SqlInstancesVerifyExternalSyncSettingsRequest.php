@@ -17,17 +17,14 @@
 
 namespace Google\Service\SQLAdmin;
 
-class SqlInstancesVerifyExternalSyncSettingsRequest extends \Google\Collection
+class SqlInstancesVerifyExternalSyncSettingsRequest extends \Google\Model
 {
-  protected $collection_key = 'selectedObjects';
   /**
    * @var string
    */
   public $migrationType;
   protected $mysqlSyncConfigType = MySqlSyncConfig::class;
   protected $mysqlSyncConfigDataType = '';
-  protected $selectedObjectsType = ExternalSyncSelectedObject::class;
-  protected $selectedObjectsDataType = 'array';
   /**
    * @var string
    */
@@ -72,20 +69,6 @@ class SqlInstancesVerifyExternalSyncSettingsRequest extends \Google\Collection
   public function getMysqlSyncConfig()
   {
     return $this->mysqlSyncConfig;
-  }
-  /**
-   * @param ExternalSyncSelectedObject[]
-   */
-  public function setSelectedObjects($selectedObjects)
-  {
-    $this->selectedObjects = $selectedObjects;
-  }
-  /**
-   * @return ExternalSyncSelectedObject[]
-   */
-  public function getSelectedObjects()
-  {
-    return $this->selectedObjects;
   }
   /**
    * @param string

@@ -30,10 +30,6 @@ class GoogleAdsSearchads360V0ResourcesAdGroupCriterionLabel extends \Google\Mode
   /**
    * @var string
    */
-  public $ownerCustomerId;
-  /**
-   * @var string
-   */
   public $resourceName;
 
   /**
@@ -63,20 +59,6 @@ class GoogleAdsSearchads360V0ResourcesAdGroupCriterionLabel extends \Google\Mode
   public function getLabel()
   {
     return $this->label;
-  }
-  /**
-   * @param string
-   */
-  public function setOwnerCustomerId($ownerCustomerId)
-  {
-    $this->ownerCustomerId = $ownerCustomerId;
-  }
-  /**
-   * @return string
-   */
-  public function getOwnerCustomerId()
-  {
-    return $this->ownerCustomerId;
   }
   /**
    * @param string

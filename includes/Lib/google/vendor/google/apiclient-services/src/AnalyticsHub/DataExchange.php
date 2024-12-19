@@ -26,10 +26,6 @@ class DataExchange extends \Google\Model
   /**
    * @var string
    */
-  public $discoveryType;
-  /**
-   * @var string
-   */
   public $displayName;
   /**
    * @var string
@@ -67,20 +63,6 @@ class DataExchange extends \Google\Model
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param string
-   */
-  public function setDiscoveryType($discoveryType)
-  {
-    $this->discoveryType = $discoveryType;
-  }
-  /**
-   * @return string
-   */
-  public function getDiscoveryType()
-  {
-    return $this->discoveryType;
   }
   /**
    * @param string

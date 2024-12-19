@@ -43,10 +43,6 @@ class LbTrafficExtension extends \Google\Collection
    */
   public $loadBalancingScheme;
   /**
-   * @var array[]
-   */
-  public $metadata;
-  /**
    * @var string
    */
   public $name;
@@ -138,20 +134,6 @@ class LbTrafficExtension extends \Google\Collection
   public function getLoadBalancingScheme()
   {
     return $this->loadBalancingScheme;
-  }
-  /**
-   * @param array[]
-   */
-  public function setMetadata($metadata)
-  {
-    $this->metadata = $metadata;
-  }
-  /**
-   * @return array[]
-   */
-  public function getMetadata()
-  {
-    return $this->metadata;
   }
   /**
    * @param string

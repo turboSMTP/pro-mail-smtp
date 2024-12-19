@@ -19,39 +19,21 @@ namespace Google\Service\CloudRedis;
 
 class Cluster extends \Google\Collection
 {
-  protected $collection_key = 'pscServiceAttachments';
+  protected $collection_key = 'pscConnections';
   /**
    * @var string
    */
   public $authorizationMode;
-  protected $automatedBackupConfigType = AutomatedBackupConfig::class;
-  protected $automatedBackupConfigDataType = '';
-  /**
-   * @var string
-   */
-  public $backupCollection;
-  protected $clusterEndpointsType = ClusterEndpoint::class;
-  protected $clusterEndpointsDataType = 'array';
   /**
    * @var string
    */
   public $createTime;
-  protected $crossClusterReplicationConfigType = CrossClusterReplicationConfig::class;
-  protected $crossClusterReplicationConfigDataType = '';
   /**
    * @var bool
    */
   public $deletionProtectionEnabled;
   protected $discoveryEndpointsType = DiscoveryEndpoint::class;
   protected $discoveryEndpointsDataType = 'array';
-  protected $gcsSourceType = GcsBackupSource::class;
-  protected $gcsSourceDataType = '';
-  protected $maintenancePolicyType = ClusterMaintenancePolicy::class;
-  protected $maintenancePolicyDataType = '';
-  protected $maintenanceScheduleType = ClusterMaintenanceSchedule::class;
-  protected $maintenanceScheduleDataType = '';
-  protected $managedBackupSourceType = ManagedBackupSource::class;
-  protected $managedBackupSourceDataType = '';
   /**
    * @var string
    */
@@ -67,8 +49,6 @@ class Cluster extends \Google\Collection
   protected $pscConfigsDataType = 'array';
   protected $pscConnectionsType = PscConnection::class;
   protected $pscConnectionsDataType = 'array';
-  protected $pscServiceAttachmentsType = PscServiceAttachment::class;
-  protected $pscServiceAttachmentsDataType = 'array';
   /**
    * @var string[]
    */
@@ -99,8 +79,6 @@ class Cluster extends \Google\Collection
    * @var string
    */
   public $uid;
-  protected $zoneDistributionConfigType = ZoneDistributionConfig::class;
-  protected $zoneDistributionConfigDataType = '';
 
   /**
    * @param string
@@ -117,48 +95,6 @@ class Cluster extends \Google\Collection
     return $this->authorizationMode;
   }
   /**
-   * @param AutomatedBackupConfig
-   */
-  public function setAutomatedBackupConfig(AutomatedBackupConfig $automatedBackupConfig)
-  {
-    $this->automatedBackupConfig = $automatedBackupConfig;
-  }
-  /**
-   * @return AutomatedBackupConfig
-   */
-  public function getAutomatedBackupConfig()
-  {
-    return $this->automatedBackupConfig;
-  }
-  /**
-   * @param string
-   */
-  public function setBackupCollection($backupCollection)
-  {
-    $this->backupCollection = $backupCollection;
-  }
-  /**
-   * @return string
-   */
-  public function getBackupCollection()
-  {
-    return $this->backupCollection;
-  }
-  /**
-   * @param ClusterEndpoint[]
-   */
-  public function setClusterEndpoints($clusterEndpoints)
-  {
-    $this->clusterEndpoints = $clusterEndpoints;
-  }
-  /**
-   * @return ClusterEndpoint[]
-   */
-  public function getClusterEndpoints()
-  {
-    return $this->clusterEndpoints;
-  }
-  /**
    * @param string
    */
   public function setCreateTime($createTime)
@@ -171,20 +107,6 @@ class Cluster extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  /**
-   * @param CrossClusterReplicationConfig
-   */
-  public function setCrossClusterReplicationConfig(CrossClusterReplicationConfig $crossClusterReplicationConfig)
-  {
-    $this->crossClusterReplicationConfig = $crossClusterReplicationConfig;
-  }
-  /**
-   * @return CrossClusterReplicationConfig
-   */
-  public function getCrossClusterReplicationConfig()
-  {
-    return $this->crossClusterReplicationConfig;
   }
   /**
    * @param bool
@@ -213,62 +135,6 @@ class Cluster extends \Google\Collection
   public function getDiscoveryEndpoints()
   {
     return $this->discoveryEndpoints;
-  }
-  /**
-   * @param GcsBackupSource
-   */
-  public function setGcsSource(GcsBackupSource $gcsSource)
-  {
-    $this->gcsSource = $gcsSource;
-  }
-  /**
-   * @return GcsBackupSource
-   */
-  public function getGcsSource()
-  {
-    return $this->gcsSource;
-  }
-  /**
-   * @param ClusterMaintenancePolicy
-   */
-  public function setMaintenancePolicy(ClusterMaintenancePolicy $maintenancePolicy)
-  {
-    $this->maintenancePolicy = $maintenancePolicy;
-  }
-  /**
-   * @return ClusterMaintenancePolicy
-   */
-  public function getMaintenancePolicy()
-  {
-    return $this->maintenancePolicy;
-  }
-  /**
-   * @param ClusterMaintenanceSchedule
-   */
-  public function setMaintenanceSchedule(ClusterMaintenanceSchedule $maintenanceSchedule)
-  {
-    $this->maintenanceSchedule = $maintenanceSchedule;
-  }
-  /**
-   * @return ClusterMaintenanceSchedule
-   */
-  public function getMaintenanceSchedule()
-  {
-    return $this->maintenanceSchedule;
-  }
-  /**
-   * @param ManagedBackupSource
-   */
-  public function setManagedBackupSource(ManagedBackupSource $managedBackupSource)
-  {
-    $this->managedBackupSource = $managedBackupSource;
-  }
-  /**
-   * @return ManagedBackupSource
-   */
-  public function getManagedBackupSource()
-  {
-    return $this->managedBackupSource;
   }
   /**
    * @param string
@@ -347,20 +213,6 @@ class Cluster extends \Google\Collection
   public function getPscConnections()
   {
     return $this->pscConnections;
-  }
-  /**
-   * @param PscServiceAttachment[]
-   */
-  public function setPscServiceAttachments($pscServiceAttachments)
-  {
-    $this->pscServiceAttachments = $pscServiceAttachments;
-  }
-  /**
-   * @return PscServiceAttachment[]
-   */
-  public function getPscServiceAttachments()
-  {
-    return $this->pscServiceAttachments;
   }
   /**
    * @param string[]
@@ -473,20 +325,6 @@ class Cluster extends \Google\Collection
   public function getUid()
   {
     return $this->uid;
-  }
-  /**
-   * @param ZoneDistributionConfig
-   */
-  public function setZoneDistributionConfig(ZoneDistributionConfig $zoneDistributionConfig)
-  {
-    $this->zoneDistributionConfig = $zoneDistributionConfig;
-  }
-  /**
-   * @return ZoneDistributionConfig
-   */
-  public function getZoneDistributionConfig()
-  {
-    return $this->zoneDistributionConfig;
   }
 }
 

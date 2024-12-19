@@ -19,15 +19,13 @@ namespace Google\Service\DataFusion;
 
 class ListAvailableVersionsResponse extends \Google\Collection
 {
-  protected $collection_key = 'versions';
+  protected $collection_key = 'availableVersions';
   protected $availableVersionsType = Version::class;
   protected $availableVersionsDataType = 'array';
   /**
    * @var string
    */
   public $nextPageToken;
-  protected $versionsType = Version::class;
-  protected $versionsDataType = 'array';
 
   /**
    * @param Version[]
@@ -56,20 +54,6 @@ class ListAvailableVersionsResponse extends \Google\Collection
   public function getNextPageToken()
   {
     return $this->nextPageToken;
-  }
-  /**
-   * @param Version[]
-   */
-  public function setVersions($versions)
-  {
-    $this->versions = $versions;
-  }
-  /**
-   * @return Version[]
-   */
-  public function getVersions()
-  {
-    return $this->versions;
   }
 }
 

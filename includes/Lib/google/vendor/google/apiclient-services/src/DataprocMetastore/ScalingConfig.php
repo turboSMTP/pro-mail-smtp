@@ -19,8 +19,6 @@ namespace Google\Service\DataprocMetastore;
 
 class ScalingConfig extends \Google\Model
 {
-  protected $autoscalingConfigType = AutoscalingConfig::class;
-  protected $autoscalingConfigDataType = '';
   /**
    * @var string
    */
@@ -30,20 +28,6 @@ class ScalingConfig extends \Google\Model
    */
   public $scalingFactor;
 
-  /**
-   * @param AutoscalingConfig
-   */
-  public function setAutoscalingConfig(AutoscalingConfig $autoscalingConfig)
-  {
-    $this->autoscalingConfig = $autoscalingConfig;
-  }
-  /**
-   * @return AutoscalingConfig
-   */
-  public function getAutoscalingConfig()
-  {
-    return $this->autoscalingConfig;
-  }
   /**
    * @param string
    */

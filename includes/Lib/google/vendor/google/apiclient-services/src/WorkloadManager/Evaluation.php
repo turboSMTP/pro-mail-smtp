@@ -35,10 +35,6 @@ class Evaluation extends \Google\Collection
    */
   public $description;
   /**
-   * @var string
-   */
-  public $evaluationType;
-  /**
    * @var string[]
    */
   public $labels;
@@ -122,20 +118,6 @@ class Evaluation extends \Google\Collection
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param string
-   */
-  public function setEvaluationType($evaluationType)
-  {
-    $this->evaluationType = $evaluationType;
-  }
-  /**
-   * @return string
-   */
-  public function getEvaluationType()
-  {
-    return $this->evaluationType;
   }
   /**
    * @param string[]

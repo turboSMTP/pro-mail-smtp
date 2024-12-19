@@ -23,8 +23,6 @@ class GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpec extends \Google\Model
    * @var float
    */
   public $boost;
-  protected $boostControlSpecType = GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpecBoostControlSpec::class;
-  protected $boostControlSpecDataType = '';
   /**
    * @var string
    */
@@ -43,20 +41,6 @@ class GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpec extends \Google\Model
   public function getBoost()
   {
     return $this->boost;
-  }
-  /**
-   * @param GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpecBoostControlSpec
-   */
-  public function setBoostControlSpec(GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpecBoostControlSpec $boostControlSpec)
-  {
-    $this->boostControlSpec = $boostControlSpec;
-  }
-  /**
-   * @return GoogleCloudDialogflowCxV3BoostSpecConditionBoostSpecBoostControlSpec
-   */
-  public function getBoostControlSpec()
-  {
-    return $this->boostControlSpec;
   }
   /**
    * @param string

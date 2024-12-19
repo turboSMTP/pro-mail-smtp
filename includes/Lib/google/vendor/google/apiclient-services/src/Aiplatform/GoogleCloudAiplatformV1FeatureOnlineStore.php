@@ -27,8 +27,6 @@ class GoogleCloudAiplatformV1FeatureOnlineStore extends \Google\Model
   public $createTime;
   protected $dedicatedServingEndpointType = GoogleCloudAiplatformV1FeatureOnlineStoreDedicatedServingEndpoint::class;
   protected $dedicatedServingEndpointDataType = '';
-  protected $encryptionSpecType = GoogleCloudAiplatformV1EncryptionSpec::class;
-  protected $encryptionSpecDataType = '';
   /**
    * @var string
    */
@@ -43,14 +41,6 @@ class GoogleCloudAiplatformV1FeatureOnlineStore extends \Google\Model
   public $name;
   protected $optimizedType = GoogleCloudAiplatformV1FeatureOnlineStoreOptimized::class;
   protected $optimizedDataType = '';
-  /**
-   * @var bool
-   */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
   /**
    * @var string
    */
@@ -101,20 +91,6 @@ class GoogleCloudAiplatformV1FeatureOnlineStore extends \Google\Model
   public function getDedicatedServingEndpoint()
   {
     return $this->dedicatedServingEndpoint;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function setEncryptionSpec(GoogleCloudAiplatformV1EncryptionSpec $encryptionSpec)
-  {
-    $this->encryptionSpec = $encryptionSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function getEncryptionSpec()
-  {
-    return $this->encryptionSpec;
   }
   /**
    * @param string
@@ -171,34 +147,6 @@ class GoogleCloudAiplatformV1FeatureOnlineStore extends \Google\Model
   public function getOptimized()
   {
     return $this->optimized;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
   }
   /**
    * @param string

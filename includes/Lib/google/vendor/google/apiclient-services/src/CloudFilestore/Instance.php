@@ -21,21 +21,9 @@ class Instance extends \Google\Collection
 {
   protected $collection_key = 'suspensionReasons';
   /**
-   * @var bool
-   */
-  public $configurablePerformanceEnabled;
-  /**
    * @var string
    */
   public $createTime;
-  /**
-   * @var bool
-   */
-  public $deletionProtectionEnabled;
-  /**
-   * @var string
-   */
-  public $deletionProtectionReason;
   /**
    * @var string
    */
@@ -60,16 +48,6 @@ class Instance extends \Google\Collection
   public $name;
   protected $networksType = NetworkConfig::class;
   protected $networksDataType = 'array';
-  protected $performanceConfigType = PerformanceConfig::class;
-  protected $performanceConfigDataType = '';
-  protected $performanceLimitsType = PerformanceLimits::class;
-  protected $performanceLimitsDataType = '';
-  /**
-   * @var string
-   */
-  public $protocol;
-  protected $replicationType = Replication::class;
-  protected $replicationDataType = '';
   /**
    * @var bool
    */
@@ -91,28 +69,10 @@ class Instance extends \Google\Collection
    */
   public $suspensionReasons;
   /**
-   * @var string[]
-   */
-  public $tags;
-  /**
    * @var string
    */
   public $tier;
 
-  /**
-   * @param bool
-   */
-  public function setConfigurablePerformanceEnabled($configurablePerformanceEnabled)
-  {
-    $this->configurablePerformanceEnabled = $configurablePerformanceEnabled;
-  }
-  /**
-   * @return bool
-   */
-  public function getConfigurablePerformanceEnabled()
-  {
-    return $this->configurablePerformanceEnabled;
-  }
   /**
    * @param string
    */
@@ -126,34 +86,6 @@ class Instance extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  /**
-   * @param bool
-   */
-  public function setDeletionProtectionEnabled($deletionProtectionEnabled)
-  {
-    $this->deletionProtectionEnabled = $deletionProtectionEnabled;
-  }
-  /**
-   * @return bool
-   */
-  public function getDeletionProtectionEnabled()
-  {
-    return $this->deletionProtectionEnabled;
-  }
-  /**
-   * @param string
-   */
-  public function setDeletionProtectionReason($deletionProtectionReason)
-  {
-    $this->deletionProtectionReason = $deletionProtectionReason;
-  }
-  /**
-   * @return string
-   */
-  public function getDeletionProtectionReason()
-  {
-    return $this->deletionProtectionReason;
   }
   /**
    * @param string
@@ -254,62 +186,6 @@ class Instance extends \Google\Collection
     return $this->networks;
   }
   /**
-   * @param PerformanceConfig
-   */
-  public function setPerformanceConfig(PerformanceConfig $performanceConfig)
-  {
-    $this->performanceConfig = $performanceConfig;
-  }
-  /**
-   * @return PerformanceConfig
-   */
-  public function getPerformanceConfig()
-  {
-    return $this->performanceConfig;
-  }
-  /**
-   * @param PerformanceLimits
-   */
-  public function setPerformanceLimits(PerformanceLimits $performanceLimits)
-  {
-    $this->performanceLimits = $performanceLimits;
-  }
-  /**
-   * @return PerformanceLimits
-   */
-  public function getPerformanceLimits()
-  {
-    return $this->performanceLimits;
-  }
-  /**
-   * @param string
-   */
-  public function setProtocol($protocol)
-  {
-    $this->protocol = $protocol;
-  }
-  /**
-   * @return string
-   */
-  public function getProtocol()
-  {
-    return $this->protocol;
-  }
-  /**
-   * @param Replication
-   */
-  public function setReplication(Replication $replication)
-  {
-    $this->replication = $replication;
-  }
-  /**
-   * @return Replication
-   */
-  public function getReplication()
-  {
-    return $this->replication;
-  }
-  /**
    * @param bool
    */
   public function setSatisfiesPzi($satisfiesPzi)
@@ -378,20 +254,6 @@ class Instance extends \Google\Collection
   public function getSuspensionReasons()
   {
     return $this->suspensionReasons;
-  }
-  /**
-   * @param string[]
-   */
-  public function setTags($tags)
-  {
-    $this->tags = $tags;
-  }
-  /**
-   * @return string[]
-   */
-  public function getTags()
-  {
-    return $this->tags;
   }
   /**
    * @param string

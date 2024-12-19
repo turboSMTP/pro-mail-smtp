@@ -33,6 +33,8 @@ class GoogleCloudOrgpolicyV2Constraint extends \Google\Model
    * @var string
    */
   public $displayName;
+  protected $googleManagedConstraintType = GoogleCloudOrgpolicyV2ConstraintGoogleManagedConstraint::class;
+  protected $googleManagedConstraintDataType = '';
   protected $listConstraintType = GoogleCloudOrgpolicyV2ConstraintListConstraint::class;
   protected $listConstraintDataType = '';
   /**
@@ -43,10 +45,6 @@ class GoogleCloudOrgpolicyV2Constraint extends \Google\Model
    * @var bool
    */
   public $supportsDryRun;
-  /**
-   * @var bool
-   */
-  public $supportsSimulation;
 
   /**
    * @param GoogleCloudOrgpolicyV2ConstraintBooleanConstraint
@@ -105,6 +103,20 @@ class GoogleCloudOrgpolicyV2Constraint extends \Google\Model
     return $this->displayName;
   }
   /**
+   * @param GoogleCloudOrgpolicyV2ConstraintGoogleManagedConstraint
+   */
+  public function setGoogleManagedConstraint(GoogleCloudOrgpolicyV2ConstraintGoogleManagedConstraint $googleManagedConstraint)
+  {
+    $this->googleManagedConstraint = $googleManagedConstraint;
+  }
+  /**
+   * @return GoogleCloudOrgpolicyV2ConstraintGoogleManagedConstraint
+   */
+  public function getGoogleManagedConstraint()
+  {
+    return $this->googleManagedConstraint;
+  }
+  /**
    * @param GoogleCloudOrgpolicyV2ConstraintListConstraint
    */
   public function setListConstraint(GoogleCloudOrgpolicyV2ConstraintListConstraint $listConstraint)
@@ -145,20 +157,6 @@ class GoogleCloudOrgpolicyV2Constraint extends \Google\Model
   public function getSupportsDryRun()
   {
     return $this->supportsDryRun;
-  }
-  /**
-   * @param bool
-   */
-  public function setSupportsSimulation($supportsSimulation)
-  {
-    $this->supportsSimulation = $supportsSimulation;
-  }
-  /**
-   * @return bool
-   */
-  public function getSupportsSimulation()
-  {
-    return $this->supportsSimulation;
   }
 }
 

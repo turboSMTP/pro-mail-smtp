@@ -21,10 +21,6 @@ class PublicDelegatedPrefix extends \Google\Collection
 {
   protected $collection_key = 'publicDelegatedSubPrefixs';
   /**
-   * @var int
-   */
-  public $allocatablePrefixLength;
-  /**
    * @var string
    */
   public $byoipApiVersion;
@@ -59,10 +55,6 @@ class PublicDelegatedPrefix extends \Google\Collection
   /**
    * @var string
    */
-  public $mode;
-  /**
-   * @var string
-   */
   public $name;
   /**
    * @var string
@@ -83,20 +75,6 @@ class PublicDelegatedPrefix extends \Google\Collection
    */
   public $status;
 
-  /**
-   * @param int
-   */
-  public function setAllocatablePrefixLength($allocatablePrefixLength)
-  {
-    $this->allocatablePrefixLength = $allocatablePrefixLength;
-  }
-  /**
-   * @return int
-   */
-  public function getAllocatablePrefixLength()
-  {
-    return $this->allocatablePrefixLength;
-  }
   /**
    * @param string
    */
@@ -208,20 +186,6 @@ class PublicDelegatedPrefix extends \Google\Collection
   public function getKind()
   {
     return $this->kind;
-  }
-  /**
-   * @param string
-   */
-  public function setMode($mode)
-  {
-    $this->mode = $mode;
-  }
-  /**
-   * @return string
-   */
-  public function getMode()
-  {
-    return $this->mode;
   }
   /**
    * @param string

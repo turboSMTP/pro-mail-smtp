@@ -115,8 +115,7 @@ class GlobalOperations extends \Google\Service\Resource
    * Deletes the specified Operations resource. (globalOperations.delete)
    *
    * @param string $project Project ID for this request.
-   * @param string $operation Name of the Operations resource to delete, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to delete.
    * @param array $optParams Optional parameters.
    * @throws \Google\Service\Exception
    */
@@ -130,8 +129,7 @@ class GlobalOperations extends \Google\Service\Resource
    * Retrieves the specified Operations resource. (globalOperations.get)
    *
    * @param string $project Project ID for this request.
-   * @param string $operation Name of the Operations resource to return, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to return.
    * @param array $optParams Optional parameters.
    * @return Operation
    * @throws \Google\Service\Exception
@@ -225,8 +223,7 @@ class GlobalOperations extends \Google\Service\Resource
    * is not `DONE`.  (globalOperations.wait)
    *
    * @param string $project Project ID for this request.
-   * @param string $operation Name of the Operations resource to return, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to return.
    * @param array $optParams Optional parameters.
    * @return Operation
    * @throws \Google\Service\Exception

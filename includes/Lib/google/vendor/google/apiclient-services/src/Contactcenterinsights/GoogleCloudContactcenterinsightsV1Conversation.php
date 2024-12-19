@@ -61,10 +61,6 @@ class GoogleCloudContactcenterinsightsV1Conversation extends \Google\Collection
   /**
    * @var string
    */
-  public $metadataJson;
-  /**
-   * @var string
-   */
   public $name;
   /**
    * @var string
@@ -260,20 +256,6 @@ class GoogleCloudContactcenterinsightsV1Conversation extends \Google\Collection
   public function getMedium()
   {
     return $this->medium;
-  }
-  /**
-   * @param string
-   */
-  public function setMetadataJson($metadataJson)
-  {
-    $this->metadataJson = $metadataJson;
-  }
-  /**
-   * @return string
-   */
-  public function getMetadataJson()
-  {
-    return $this->metadataJson;
   }
   /**
    * @param string

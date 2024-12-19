@@ -88,8 +88,7 @@ class ProjectsLocationsServicesRevisions extends \Google\Service\Resource
     return $this->call('get', [$params], GoogleCloudRunV2Revision::class);
   }
   /**
-   * Lists Revisions from a given Service, or from a given location. Results are
-   * sorted by creation time, descending.
+   * Lists Revisions from a given Service, or from a given location.
    * (revisions.listProjectsLocationsServicesRevisions)
    *
    * @param string $parent Required. The Service from which the Revisions should

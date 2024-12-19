@@ -26,6 +26,10 @@ class SubscriptionSnippet extends \Google\Model
   /**
    * @var string
    */
+  public $channelTitle;
+  /**
+   * @var string
+   */
   public $description;
   /**
    * @var string
@@ -53,6 +57,20 @@ class SubscriptionSnippet extends \Google\Model
   public function getChannelId()
   {
     return $this->channelId;
+  }
+  /**
+   * @param string
+   */
+  public function setChannelTitle($channelTitle)
+  {
+    $this->channelTitle = $channelTitle;
+  }
+  /**
+   * @return string
+   */
+  public function getChannelTitle()
+  {
+    return $this->channelTitle;
   }
   /**
    * @param string

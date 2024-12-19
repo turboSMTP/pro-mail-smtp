@@ -28,10 +28,6 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy extends \Goog
    * @var string
    */
   public $name;
-  /**
-   * @var int
-   */
-  public $priority;
   protected $rulesType = FirewallPolicyRule::class;
   protected $rulesDataType = 'array';
   /**
@@ -70,20 +66,6 @@ class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy extends \Goog
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param int
-   */
-  public function setPriority($priority)
-  {
-    $this->priority = $priority;
-  }
-  /**
-   * @return int
-   */
-  public function getPriority()
-  {
-    return $this->priority;
   }
   /**
    * @param FirewallPolicyRule[]

@@ -39,10 +39,6 @@ class PersonalUsagePolicies extends \Google\Collection
    */
   public $personalPlayStoreMode;
   /**
-   * @var string
-   */
-  public $privateSpacePolicy;
-  /**
    * @var bool
    */
   public $screenCaptureDisabled;
@@ -116,20 +112,6 @@ class PersonalUsagePolicies extends \Google\Collection
   public function getPersonalPlayStoreMode()
   {
     return $this->personalPlayStoreMode;
-  }
-  /**
-   * @param string
-   */
-  public function setPrivateSpacePolicy($privateSpacePolicy)
-  {
-    $this->privateSpacePolicy = $privateSpacePolicy;
-  }
-  /**
-   * @return string
-   */
-  public function getPrivateSpacePolicy()
-  {
-    return $this->privateSpacePolicy;
   }
   /**
    * @param bool

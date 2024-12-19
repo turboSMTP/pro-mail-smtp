@@ -31,6 +31,9 @@ class SasPortalInstallationParams extends \Google\Model
    * @var int
    */
   public $antennaDowntilt;
+  /**
+   * @var int
+   */
   public $antennaGain;
   /**
    * @var string
@@ -100,10 +103,16 @@ class SasPortalInstallationParams extends \Google\Model
   {
     return $this->antennaDowntilt;
   }
+  /**
+   * @param int
+   */
   public function setAntennaGain($antennaGain)
   {
     $this->antennaGain = $antennaGain;
   }
+  /**
+   * @return int
+   */
   public function getAntennaGain()
   {
     return $this->antennaGain;

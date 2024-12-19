@@ -33,10 +33,6 @@ class Customer extends \Google\Model
    * @var string
    */
   public $name;
-  /**
-   * @var string
-   */
-  public $organizationDomain;
 
   /**
    * @param CustomerOnboardingState
@@ -93,20 +89,6 @@ class Customer extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string
-   */
-  public function setOrganizationDomain($organizationDomain)
-  {
-    $this->organizationDomain = $organizationDomain;
-  }
-  /**
-   * @return string
-   */
-  public function getOrganizationDomain()
-  {
-    return $this->organizationDomain;
   }
 }
 

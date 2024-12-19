@@ -21,10 +21,6 @@ class ModerateTextRequest extends \Google\Model
 {
   protected $documentType = Document::class;
   protected $documentDataType = '';
-  /**
-   * @var string
-   */
-  public $modelVersion;
 
   /**
    * @param Document
@@ -39,20 +35,6 @@ class ModerateTextRequest extends \Google\Model
   public function getDocument()
   {
     return $this->document;
-  }
-  /**
-   * @param string
-   */
-  public function setModelVersion($modelVersion)
-  {
-    $this->modelVersion = $modelVersion;
-  }
-  /**
-   * @return string
-   */
-  public function getModelVersion()
-  {
-    return $this->modelVersion;
   }
 }
 

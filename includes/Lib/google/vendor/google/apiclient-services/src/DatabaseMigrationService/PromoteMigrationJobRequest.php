@@ -19,23 +19,6 @@ namespace Google\Service\DatabaseMigrationService;
 
 class PromoteMigrationJobRequest extends \Google\Model
 {
-  protected $objectsFilterType = MigrationJobObjectsConfig::class;
-  protected $objectsFilterDataType = '';
-
-  /**
-   * @param MigrationJobObjectsConfig
-   */
-  public function setObjectsFilter(MigrationJobObjectsConfig $objectsFilter)
-  {
-    $this->objectsFilter = $objectsFilter;
-  }
-  /**
-   * @return MigrationJobObjectsConfig
-   */
-  public function getObjectsFilter()
-  {
-    return $this->objectsFilter;
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

@@ -19,7 +19,7 @@ namespace Google\Service\AccessContextManager;
 
 class GcpUserAccessBinding extends \Google\Collection
 {
-  protected $collection_key = 'scopedAccessSettings';
+  protected $collection_key = 'dryRunAccessLevels';
   /**
    * @var string[]
    */
@@ -36,12 +36,6 @@ class GcpUserAccessBinding extends \Google\Collection
    * @var string
    */
   public $name;
-  protected $restrictedClientApplicationsType = Application::class;
-  protected $restrictedClientApplicationsDataType = 'array';
-  protected $scopedAccessSettingsType = ScopedAccessSettings::class;
-  protected $scopedAccessSettingsDataType = 'array';
-  protected $sessionSettingsType = SessionSettings::class;
-  protected $sessionSettingsDataType = '';
 
   /**
    * @param string[]
@@ -98,48 +92,6 @@ class GcpUserAccessBinding extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param Application[]
-   */
-  public function setRestrictedClientApplications($restrictedClientApplications)
-  {
-    $this->restrictedClientApplications = $restrictedClientApplications;
-  }
-  /**
-   * @return Application[]
-   */
-  public function getRestrictedClientApplications()
-  {
-    return $this->restrictedClientApplications;
-  }
-  /**
-   * @param ScopedAccessSettings[]
-   */
-  public function setScopedAccessSettings($scopedAccessSettings)
-  {
-    $this->scopedAccessSettings = $scopedAccessSettings;
-  }
-  /**
-   * @return ScopedAccessSettings[]
-   */
-  public function getScopedAccessSettings()
-  {
-    return $this->scopedAccessSettings;
-  }
-  /**
-   * @param SessionSettings
-   */
-  public function setSessionSettings(SessionSettings $sessionSettings)
-  {
-    $this->sessionSettings = $sessionSettings;
-  }
-  /**
-   * @return SessionSettings
-   */
-  public function getSessionSettings()
-  {
-    return $this->sessionSettings;
   }
 }
 

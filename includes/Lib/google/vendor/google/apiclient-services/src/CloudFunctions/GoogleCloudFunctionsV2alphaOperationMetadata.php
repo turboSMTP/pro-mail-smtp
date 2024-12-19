@@ -25,10 +25,6 @@ class GoogleCloudFunctionsV2alphaOperationMetadata extends \Google\Collection
    */
   public $apiVersion;
   /**
-   * @var string
-   */
-  public $buildName;
-  /**
    * @var bool
    */
   public $cancelRequested;
@@ -80,20 +76,6 @@ class GoogleCloudFunctionsV2alphaOperationMetadata extends \Google\Collection
   public function getApiVersion()
   {
     return $this->apiVersion;
-  }
-  /**
-   * @param string
-   */
-  public function setBuildName($buildName)
-  {
-    $this->buildName = $buildName;
-  }
-  /**
-   * @return string
-   */
-  public function getBuildName()
-  {
-    return $this->buildName;
   }
   /**
    * @param bool

@@ -17,9 +17,8 @@
 
 namespace Google\Service\Datastore;
 
-class MutationResult extends \Google\Collection
+class MutationResult extends \Google\Model
 {
-  protected $collection_key = 'transformResults';
   /**
    * @var bool
    */
@@ -30,8 +29,6 @@ class MutationResult extends \Google\Collection
   public $createTime;
   protected $keyType = Key::class;
   protected $keyDataType = '';
-  protected $transformResultsType = Value::class;
-  protected $transformResultsDataType = 'array';
   /**
    * @var string
    */
@@ -82,20 +79,6 @@ class MutationResult extends \Google\Collection
   public function getKey()
   {
     return $this->key;
-  }
-  /**
-   * @param Value[]
-   */
-  public function setTransformResults($transformResults)
-  {
-    $this->transformResults = $transformResults;
-  }
-  /**
-   * @return Value[]
-   */
-  public function getTransformResults()
-  {
-    return $this->transformResults;
   }
   /**
    * @param string

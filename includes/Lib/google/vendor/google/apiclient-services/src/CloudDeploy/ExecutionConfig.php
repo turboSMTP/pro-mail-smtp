@@ -41,10 +41,6 @@ class ExecutionConfig extends \Google\Collection
    */
   public $usages;
   /**
-   * @var bool
-   */
-  public $verbose;
-  /**
    * @var string
    */
   public $workerPool;
@@ -132,20 +128,6 @@ class ExecutionConfig extends \Google\Collection
   public function getUsages()
   {
     return $this->usages;
-  }
-  /**
-   * @param bool
-   */
-  public function setVerbose($verbose)
-  {
-    $this->verbose = $verbose;
-  }
-  /**
-   * @return bool
-   */
-  public function getVerbose()
-  {
-    return $this->verbose;
   }
   /**
    * @param string

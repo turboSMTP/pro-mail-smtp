@@ -35,8 +35,6 @@ class CryptoKey extends \Google\Model
    * @var bool
    */
   public $importOnly;
-  protected $keyAccessJustificationsPolicyType = KeyAccessJustificationsPolicy::class;
-  protected $keyAccessJustificationsPolicyDataType = '';
   /**
    * @var string[]
    */
@@ -117,20 +115,6 @@ class CryptoKey extends \Google\Model
   public function getImportOnly()
   {
     return $this->importOnly;
-  }
-  /**
-   * @param KeyAccessJustificationsPolicy
-   */
-  public function setKeyAccessJustificationsPolicy(KeyAccessJustificationsPolicy $keyAccessJustificationsPolicy)
-  {
-    $this->keyAccessJustificationsPolicy = $keyAccessJustificationsPolicy;
-  }
-  /**
-   * @return KeyAccessJustificationsPolicy
-   */
-  public function getKeyAccessJustificationsPolicy()
-  {
-    return $this->keyAccessJustificationsPolicy;
   }
   /**
    * @param string[]

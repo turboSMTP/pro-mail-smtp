@@ -23,10 +23,6 @@ class GoogleCloudSecuritycenterV1SecurityHealthAnalyticsCustomModule extends \Go
    * @var string
    */
   public $ancestorModule;
-  /**
-   * @var string
-   */
-  public $cloudProvider;
   protected $customConfigType = GoogleCloudSecuritycenterV1CustomConfig::class;
   protected $customConfigDataType = '';
   /**
@@ -63,20 +59,6 @@ class GoogleCloudSecuritycenterV1SecurityHealthAnalyticsCustomModule extends \Go
   public function getAncestorModule()
   {
     return $this->ancestorModule;
-  }
-  /**
-   * @param string
-   */
-  public function setCloudProvider($cloudProvider)
-  {
-    $this->cloudProvider = $cloudProvider;
-  }
-  /**
-   * @return string
-   */
-  public function getCloudProvider()
-  {
-    return $this->cloudProvider;
   }
   /**
    * @param GoogleCloudSecuritycenterV1CustomConfig

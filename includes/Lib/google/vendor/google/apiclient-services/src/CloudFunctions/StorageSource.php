@@ -31,10 +31,6 @@ class StorageSource extends \Google\Model
    * @var string
    */
   public $object;
-  /**
-   * @var string
-   */
-  public $sourceUploadUrl;
 
   /**
    * @param string
@@ -77,20 +73,6 @@ class StorageSource extends \Google\Model
   public function getObject()
   {
     return $this->object;
-  }
-  /**
-   * @param string
-   */
-  public function setSourceUploadUrl($sourceUploadUrl)
-  {
-    $this->sourceUploadUrl = $sourceUploadUrl;
-  }
-  /**
-   * @return string
-   */
-  public function getSourceUploadUrl()
-  {
-    return $this->sourceUploadUrl;
   }
 }
 

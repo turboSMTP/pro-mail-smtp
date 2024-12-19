@@ -32,8 +32,6 @@ class ImageImport extends \Google\Collection
   protected $diskImageTargetDefaultsDataType = '';
   protected $encryptionType = Encryption::class;
   protected $encryptionDataType = '';
-  protected $machineImageTargetDefaultsType = MachineImageTargetDetails::class;
-  protected $machineImageTargetDefaultsDataType = '';
   /**
    * @var string
    */
@@ -96,20 +94,6 @@ class ImageImport extends \Google\Collection
   public function getEncryption()
   {
     return $this->encryption;
-  }
-  /**
-   * @param MachineImageTargetDetails
-   */
-  public function setMachineImageTargetDefaults(MachineImageTargetDetails $machineImageTargetDefaults)
-  {
-    $this->machineImageTargetDefaults = $machineImageTargetDefaults;
-  }
-  /**
-   * @return MachineImageTargetDetails
-   */
-  public function getMachineImageTargetDefaults()
-  {
-    return $this->machineImageTargetDefaults;
   }
   /**
    * @param string

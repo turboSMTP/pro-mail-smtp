@@ -226,10 +226,6 @@ class Tasks extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'showAssigned' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
                 'showCompleted' => [
                   'location' => 'query',
                   'type' => 'boolean',
@@ -260,10 +256,6 @@ class Tasks extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-                'destinationTasklist' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
                 'parent' => [
                   'location' => 'query',

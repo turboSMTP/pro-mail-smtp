@@ -26,14 +26,6 @@ class GoogleCloudDiscoveryengineV1betaSearchRequestContentSearchSpecSummarySpec 
   /**
    * @var bool
    */
-  public $ignoreJailBreakingQuery;
-  /**
-   * @var bool
-   */
-  public $ignoreLowRelevantContent;
-  /**
-   * @var bool
-   */
   public $ignoreNonSummarySeekingQuery;
   /**
    * @var bool
@@ -69,34 +61,6 @@ class GoogleCloudDiscoveryengineV1betaSearchRequestContentSearchSpecSummarySpec 
   public function getIgnoreAdversarialQuery()
   {
     return $this->ignoreAdversarialQuery;
-  }
-  /**
-   * @param bool
-   */
-  public function setIgnoreJailBreakingQuery($ignoreJailBreakingQuery)
-  {
-    $this->ignoreJailBreakingQuery = $ignoreJailBreakingQuery;
-  }
-  /**
-   * @return bool
-   */
-  public function getIgnoreJailBreakingQuery()
-  {
-    return $this->ignoreJailBreakingQuery;
-  }
-  /**
-   * @param bool
-   */
-  public function setIgnoreLowRelevantContent($ignoreLowRelevantContent)
-  {
-    $this->ignoreLowRelevantContent = $ignoreLowRelevantContent;
-  }
-  /**
-   * @return bool
-   */
-  public function getIgnoreLowRelevantContent()
-  {
-    return $this->ignoreLowRelevantContent;
   }
   /**
    * @param bool

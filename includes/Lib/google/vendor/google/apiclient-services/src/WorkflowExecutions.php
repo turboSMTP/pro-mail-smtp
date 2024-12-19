@@ -107,16 +107,6 @@ class WorkflowExecutions extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'deleteExecutionHistory' => [
-              'path' => 'v1/{+name}:deleteExecutionHistory',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'exportData' => [
               'path' => 'v1/{+name}:exportData',
               'httpMethod' => 'GET',
@@ -218,10 +208,6 @@ class WorkflowExecutions extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'view' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
               ],
             ],'list' => [
               'path' => 'v1/{+parent}/stepEntries',
@@ -251,10 +237,6 @@ class WorkflowExecutions extends \Google\Service
                 'skip' => [
                   'location' => 'query',
                   'type' => 'integer',
-                ],
-                'view' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
               ],
             ],

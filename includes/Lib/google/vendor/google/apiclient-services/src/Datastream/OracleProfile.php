@@ -31,8 +31,6 @@ class OracleProfile extends \Google\Model
    * @var string
    */
   public $hostname;
-  protected $oracleAsmConfigType = OracleAsmConfig::class;
-  protected $oracleAsmConfigDataType = '';
   protected $oracleSslConfigType = OracleSslConfig::class;
   protected $oracleSslConfigDataType = '';
   /**
@@ -43,10 +41,6 @@ class OracleProfile extends \Google\Model
    * @var int
    */
   public $port;
-  /**
-   * @var string
-   */
-  public $secretManagerStoredPassword;
   /**
    * @var string
    */
@@ -95,20 +89,6 @@ class OracleProfile extends \Google\Model
     return $this->hostname;
   }
   /**
-   * @param OracleAsmConfig
-   */
-  public function setOracleAsmConfig(OracleAsmConfig $oracleAsmConfig)
-  {
-    $this->oracleAsmConfig = $oracleAsmConfig;
-  }
-  /**
-   * @return OracleAsmConfig
-   */
-  public function getOracleAsmConfig()
-  {
-    return $this->oracleAsmConfig;
-  }
-  /**
    * @param OracleSslConfig
    */
   public function setOracleSslConfig(OracleSslConfig $oracleSslConfig)
@@ -149,20 +129,6 @@ class OracleProfile extends \Google\Model
   public function getPort()
   {
     return $this->port;
-  }
-  /**
-   * @param string
-   */
-  public function setSecretManagerStoredPassword($secretManagerStoredPassword)
-  {
-    $this->secretManagerStoredPassword = $secretManagerStoredPassword;
-  }
-  /**
-   * @return string
-   */
-  public function getSecretManagerStoredPassword()
-  {
-    return $this->secretManagerStoredPassword;
   }
   /**
    * @param string

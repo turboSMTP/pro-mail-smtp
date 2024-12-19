@@ -34,8 +34,6 @@ class GoogleCloudAiplatformV1IndexDatapoint extends \Google\Collection
   protected $numericRestrictsDataType = 'array';
   protected $restrictsType = GoogleCloudAiplatformV1IndexDatapointRestriction::class;
   protected $restrictsDataType = 'array';
-  protected $sparseEmbeddingType = GoogleCloudAiplatformV1IndexDatapointSparseEmbedding::class;
-  protected $sparseEmbeddingDataType = '';
 
   /**
    * @param GoogleCloudAiplatformV1IndexDatapointCrowdingTag
@@ -106,20 +104,6 @@ class GoogleCloudAiplatformV1IndexDatapoint extends \Google\Collection
   public function getRestricts()
   {
     return $this->restricts;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1IndexDatapointSparseEmbedding
-   */
-  public function setSparseEmbedding(GoogleCloudAiplatformV1IndexDatapointSparseEmbedding $sparseEmbedding)
-  {
-    $this->sparseEmbedding = $sparseEmbedding;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1IndexDatapointSparseEmbedding
-   */
-  public function getSparseEmbedding()
-  {
-    return $this->sparseEmbedding;
   }
 }
 

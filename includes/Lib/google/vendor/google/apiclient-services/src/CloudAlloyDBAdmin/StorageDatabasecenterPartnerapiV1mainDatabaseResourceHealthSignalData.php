@@ -65,10 +65,6 @@ class StorageDatabasecenterPartnerapiV1mainDatabaseResourceHealthSignalData exte
   /**
    * @var string
    */
-  public $signalSeverity;
-  /**
-   * @var string
-   */
   public $signalType;
   /**
    * @var string
@@ -228,20 +224,6 @@ class StorageDatabasecenterPartnerapiV1mainDatabaseResourceHealthSignalData exte
   public function getSignalId()
   {
     return $this->signalId;
-  }
-  /**
-   * @param string
-   */
-  public function setSignalSeverity($signalSeverity)
-  {
-    $this->signalSeverity = $signalSeverity;
-  }
-  /**
-   * @return string
-   */
-  public function getSignalSeverity()
-  {
-    return $this->signalSeverity;
   }
   /**
    * @param string

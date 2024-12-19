@@ -19,7 +19,7 @@ namespace Google\Service\DiscoveryEngine;
 
 class GoogleCloudDiscoveryengineV1alphaFieldConfig extends \Google\Collection
 {
-  protected $collection_key = 'schemaOrgPaths';
+  protected $collection_key = 'advancedSiteSearchDataSources';
   /**
    * @var string[]
    */
@@ -51,19 +51,11 @@ class GoogleCloudDiscoveryengineV1alphaFieldConfig extends \Google\Collection
   /**
    * @var string
    */
-  public $metatagName;
-  /**
-   * @var string
-   */
   public $recsFilterableOption;
   /**
    * @var string
    */
   public $retrievableOption;
-  /**
-   * @var string[]
-   */
-  public $schemaOrgPaths;
   /**
    * @var string
    */
@@ -170,20 +162,6 @@ class GoogleCloudDiscoveryengineV1alphaFieldConfig extends \Google\Collection
   /**
    * @param string
    */
-  public function setMetatagName($metatagName)
-  {
-    $this->metatagName = $metatagName;
-  }
-  /**
-   * @return string
-   */
-  public function getMetatagName()
-  {
-    return $this->metatagName;
-  }
-  /**
-   * @param string
-   */
   public function setRecsFilterableOption($recsFilterableOption)
   {
     $this->recsFilterableOption = $recsFilterableOption;
@@ -208,20 +186,6 @@ class GoogleCloudDiscoveryengineV1alphaFieldConfig extends \Google\Collection
   public function getRetrievableOption()
   {
     return $this->retrievableOption;
-  }
-  /**
-   * @param string[]
-   */
-  public function setSchemaOrgPaths($schemaOrgPaths)
-  {
-    $this->schemaOrgPaths = $schemaOrgPaths;
-  }
-  /**
-   * @return string[]
-   */
-  public function getSchemaOrgPaths()
-  {
-    return $this->schemaOrgPaths;
   }
   /**
    * @param string

@@ -41,7 +41,6 @@ class PaymentsResellerSubscription extends \Google\Service
   public $partners_products;
   public $partners_promotions;
   public $partners_subscriptions;
-  public $partners_userSessions;
   public $rootUrlTemplate;
 
   /**
@@ -215,26 +214,6 @@ class PaymentsResellerSubscription extends \Google\Service
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->partners_userSessions = new PaymentsResellerSubscription\Resource\PartnersUserSessions(
-        $this,
-        $this->serviceName,
-        'userSessions',
-        [
-          'methods' => [
-            'generate' => [
-              'path' => 'v1/{+parent}/userSessions:generate',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

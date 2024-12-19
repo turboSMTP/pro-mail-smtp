@@ -30,12 +30,10 @@ use Google\Service\Aiplatform\GoogleCloudAiplatformV1DirectRawPredictResponse;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1Endpoint;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1ExplainRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1ExplainResponse;
-use Google\Service\Aiplatform\GoogleCloudAiplatformV1FetchPredictOperationRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1GenerateContentRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1GenerateContentResponse;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1ListEndpointsResponse;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1MutateDeployedModelRequest;
-use Google\Service\Aiplatform\GoogleCloudAiplatformV1PredictLongRunningRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1PredictRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1PredictResponse;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1RawPredictRequest;
@@ -43,7 +41,6 @@ use Google\Service\Aiplatform\GoogleCloudAiplatformV1StreamRawPredictRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1StreamingPredictRequest;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1StreamingPredictResponse;
 use Google\Service\Aiplatform\GoogleCloudAiplatformV1UndeployModelRequest;
-use Google\Service\Aiplatform\GoogleCloudAiplatformV1UpdateEndpointLongRunningRequest;
 use Google\Service\Aiplatform\GoogleLongrunningOperation;
 
 /**
@@ -207,32 +204,11 @@ class ProjectsLocationsEndpoints extends \Google\Service\Resource
     return $this->call('explain', [$params], GoogleCloudAiplatformV1ExplainResponse::class);
   }
   /**
-   * Fetch an asynchronous online prediction operation.
-   * (endpoints.fetchPredictOperation)
-   *
-   * @param string $endpoint Required. The name of the Endpoint requested to serve
-   * the prediction. Format:
-   * `projects/{project}/locations/{location}/endpoints/{endpoint}` or `projects/{
-   * project}/locations/{location}/publishers/{publisher}/models/{model}`
-   * @param GoogleCloudAiplatformV1FetchPredictOperationRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return GoogleLongrunningOperation
-   * @throws \Google\Service\Exception
-   */
-  public function fetchPredictOperation($endpoint, GoogleCloudAiplatformV1FetchPredictOperationRequest $postBody, $optParams = [])
-  {
-    $params = ['endpoint' => $endpoint, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('fetchPredictOperation', [$params], GoogleLongrunningOperation::class);
-  }
-  /**
    * Generate content with multimodal inputs. (endpoints.generateContent)
    *
-   * @param string $model Required. The fully qualified name of the publisher
-   * model or tuned model endpoint to use. Publisher model format:
-   * `projects/{project}/locations/{location}/publishers/models` Tuned model
-   * endpoint format:
-   * `projects/{project}/locations/{location}/endpoints/{endpoint}`
+   * @param string $model Required. The name of the publisher model requested to
+   * serve the prediction. Format:
+   * `projects/{project}/locations/{location}/publishers/models`
    * @param GoogleCloudAiplatformV1GenerateContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudAiplatformV1GenerateContentResponse
@@ -350,24 +326,6 @@ class ProjectsLocationsEndpoints extends \Google\Service\Resource
     return $this->call('predict', [$params], GoogleCloudAiplatformV1PredictResponse::class);
   }
   /**
-   * (endpoints.predictLongRunning)
-   *
-   * @param string $endpoint Required. The name of the Endpoint requested to serve
-   * the prediction. Format:
-   * `projects/{project}/locations/{location}/endpoints/{endpoint}` or `projects/{
-   * project}/locations/{location}/publishers/{publisher}/models/{model}`
-   * @param GoogleCloudAiplatformV1PredictLongRunningRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return GoogleLongrunningOperation
-   * @throws \Google\Service\Exception
-   */
-  public function predictLongRunning($endpoint, GoogleCloudAiplatformV1PredictLongRunningRequest $postBody, $optParams = [])
-  {
-    $params = ['endpoint' => $endpoint, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('predictLongRunning', [$params], GoogleLongrunningOperation::class);
-  }
-  /**
    * Perform an online prediction with an arbitrary HTTP payload. The response
    * includes the following HTTP headers: * `X-Vertex-AI-Endpoint-Id`: ID of the
    * Endpoint that served this prediction. * `X-Vertex-AI-Deployed-Model-Id`: ID
@@ -410,11 +368,9 @@ class ProjectsLocationsEndpoints extends \Google\Service\Resource
    * Generate content with multimodal inputs with streaming support.
    * (endpoints.streamGenerateContent)
    *
-   * @param string $model Required. The fully qualified name of the publisher
-   * model or tuned model endpoint to use. Publisher model format:
-   * `projects/{project}/locations/{location}/publishers/models` Tuned model
-   * endpoint format:
-   * `projects/{project}/locations/{location}/endpoints/{endpoint}`
+   * @param string $model Required. The name of the publisher model requested to
+   * serve the prediction. Format:
+   * `projects/{project}/locations/{location}/publishers/models`
    * @param GoogleCloudAiplatformV1GenerateContentRequest $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudAiplatformV1GenerateContentResponse
@@ -461,21 +417,6 @@ class ProjectsLocationsEndpoints extends \Google\Service\Resource
     $params = ['endpoint' => $endpoint, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('undeployModel', [$params], GoogleLongrunningOperation::class);
-  }
-  /**
-   * Updates an Endpoint with a long running operation. (endpoints.update)
-   *
-   * @param string $name Output only. The resource name of the Endpoint.
-   * @param GoogleCloudAiplatformV1UpdateEndpointLongRunningRequest $postBody
-   * @param array $optParams Optional parameters.
-   * @return GoogleLongrunningOperation
-   * @throws \Google\Service\Exception
-   */
-  public function update($name, GoogleCloudAiplatformV1UpdateEndpointLongRunningRequest $postBody, $optParams = [])
-  {
-    $params = ['name' => $name, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('update', [$params], GoogleLongrunningOperation::class);
   }
 }
 

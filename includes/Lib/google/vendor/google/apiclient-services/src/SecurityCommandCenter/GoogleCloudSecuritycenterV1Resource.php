@@ -22,8 +22,6 @@ class GoogleCloudSecuritycenterV1Resource extends \Google\Collection
   protected $collection_key = 'folders';
   protected $awsMetadataType = AwsMetadata::class;
   protected $awsMetadataDataType = '';
-  protected $azureMetadataType = AzureMetadata::class;
-  protected $azureMetadataDataType = '';
   /**
    * @var string
    */
@@ -90,20 +88,6 @@ class GoogleCloudSecuritycenterV1Resource extends \Google\Collection
   public function getAwsMetadata()
   {
     return $this->awsMetadata;
-  }
-  /**
-   * @param AzureMetadata
-   */
-  public function setAzureMetadata(AzureMetadata $azureMetadata)
-  {
-    $this->azureMetadata = $azureMetadata;
-  }
-  /**
-   * @return AzureMetadata
-   */
-  public function getAzureMetadata()
-  {
-    return $this->azureMetadata;
   }
   /**
    * @param string

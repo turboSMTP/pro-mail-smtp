@@ -17,21 +17,12 @@
 
 namespace Google\Service\DeploymentManager;
 
-class OperationErrorErrors extends \Google\Collection
+class OperationErrorErrors extends \Google\Model
 {
-  protected $collection_key = 'errorDetails';
-  /**
-   * @var string[]
-   */
-  public $arguments;
   /**
    * @var string
    */
   public $code;
-  protected $debugInfoType = DebugInfo::class;
-  protected $debugInfoDataType = '';
-  protected $errorDetailsType = OperationErrorErrorsErrorDetails::class;
-  protected $errorDetailsDataType = 'array';
   /**
    * @var string
    */
@@ -41,20 +32,6 @@ class OperationErrorErrors extends \Google\Collection
    */
   public $message;
 
-  /**
-   * @param string[]
-   */
-  public function setArguments($arguments)
-  {
-    $this->arguments = $arguments;
-  }
-  /**
-   * @return string[]
-   */
-  public function getArguments()
-  {
-    return $this->arguments;
-  }
   /**
    * @param string
    */
@@ -68,34 +45,6 @@ class OperationErrorErrors extends \Google\Collection
   public function getCode()
   {
     return $this->code;
-  }
-  /**
-   * @param DebugInfo
-   */
-  public function setDebugInfo(DebugInfo $debugInfo)
-  {
-    $this->debugInfo = $debugInfo;
-  }
-  /**
-   * @return DebugInfo
-   */
-  public function getDebugInfo()
-  {
-    return $this->debugInfo;
-  }
-  /**
-   * @param OperationErrorErrorsErrorDetails[]
-   */
-  public function setErrorDetails($errorDetails)
-  {
-    $this->errorDetails = $errorDetails;
-  }
-  /**
-   * @return OperationErrorErrorsErrorDetails[]
-   */
-  public function getErrorDetails()
-  {
-    return $this->errorDetails;
   }
   /**
    * @param string

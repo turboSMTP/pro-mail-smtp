@@ -61,19 +61,7 @@ class GoogleCloudAiplatformV1Dataset extends \Google\Collection
   /**
    * @var string
    */
-  public $modelReference;
-  /**
-   * @var string
-   */
   public $name;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
   protected $savedQueriesType = GoogleCloudAiplatformV1SavedQuery::class;
   protected $savedQueriesDataType = 'array';
   /**
@@ -224,20 +212,6 @@ class GoogleCloudAiplatformV1Dataset extends \Google\Collection
   /**
    * @param string
    */
-  public function setModelReference($modelReference)
-  {
-    $this->modelReference = $modelReference;
-  }
-  /**
-   * @return string
-   */
-  public function getModelReference()
-  {
-    return $this->modelReference;
-  }
-  /**
-   * @param string
-   */
   public function setName($name)
   {
     $this->name = $name;
@@ -248,34 +222,6 @@ class GoogleCloudAiplatformV1Dataset extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
   }
   /**
    * @param GoogleCloudAiplatformV1SavedQuery[]

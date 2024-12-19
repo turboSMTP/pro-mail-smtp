@@ -17,8 +17,6 @@
 
 namespace Google\Service\CloudKMS\Resource;
 
-use Google\Service\CloudKMS\ShowEffectiveAutokeyConfigResponse;
-
 /**
  * The "projects" collection of methods.
  * Typical usage is:
@@ -29,24 +27,6 @@ use Google\Service\CloudKMS\ShowEffectiveAutokeyConfigResponse;
  */
 class Projects extends \Google\Service\Resource
 {
-  /**
-   * Returns the effective Cloud KMS Autokey configuration for a given project.
-   * (projects.showEffectiveAutokeyConfig)
-   *
-   * @param string $parent Required. Name of the resource project to the show
-   * effective Cloud KMS Autokey configuration for. This may be helpful for
-   * interrogating the effect of nested folder configurations on a given resource
-   * project.
-   * @param array $optParams Optional parameters.
-   * @return ShowEffectiveAutokeyConfigResponse
-   * @throws \Google\Service\Exception
-   */
-  public function showEffectiveAutokeyConfig($parent, $optParams = [])
-  {
-    $params = ['parent' => $parent];
-    $params = array_merge($params, $optParams);
-    return $this->call('showEffectiveAutokeyConfig', [$params], ShowEffectiveAutokeyConfigResponse::class);
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

@@ -30,10 +30,6 @@ class PostgreSqlConnectionProfile extends \Google\Model
   /**
    * @var string
    */
-  public $database;
-  /**
-   * @var string
-   */
   public $host;
   /**
    * @var string
@@ -89,20 +85,6 @@ class PostgreSqlConnectionProfile extends \Google\Model
   public function getCloudSqlId()
   {
     return $this->cloudSqlId;
-  }
-  /**
-   * @param string
-   */
-  public function setDatabase($database)
-  {
-    $this->database = $database;
-  }
-  /**
-   * @return string
-   */
-  public function getDatabase()
-  {
-    return $this->database;
   }
   /**
    * @param string

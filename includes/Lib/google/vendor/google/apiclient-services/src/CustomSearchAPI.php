@@ -83,10 +83,6 @@ class CustomSearchAPI extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                 ],
-                'enableAlternateSearchHandler' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
                 'exactTerms' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -229,10 +225,6 @@ class CustomSearchAPI extends \Google\Service
                 'dateRestrict' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-                'enableAlternateSearchHandler' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
                 ],
                 'exactTerms' => [
                   'location' => 'query',

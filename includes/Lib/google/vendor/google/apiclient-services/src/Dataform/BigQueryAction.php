@@ -22,26 +22,8 @@ class BigQueryAction extends \Google\Model
   /**
    * @var string
    */
-  public $jobId;
-  /**
-   * @var string
-   */
   public $sqlScript;
 
-  /**
-   * @param string
-   */
-  public function setJobId($jobId)
-  {
-    $this->jobId = $jobId;
-  }
-  /**
-   * @return string
-   */
-  public function getJobId()
-  {
-    return $this->jobId;
-  }
   /**
    * @param string
    */

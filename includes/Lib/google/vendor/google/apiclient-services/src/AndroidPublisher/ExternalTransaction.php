@@ -46,10 +46,6 @@ class ExternalTransaction extends \Google\Model
   protected $testPurchaseType = ExternalTransactionTestPurchase::class;
   protected $testPurchaseDataType = '';
   /**
-   * @var int
-   */
-  public $transactionProgramCode;
-  /**
    * @var string
    */
   public $transactionState;
@@ -199,20 +195,6 @@ class ExternalTransaction extends \Google\Model
   public function getTestPurchase()
   {
     return $this->testPurchase;
-  }
-  /**
-   * @param int
-   */
-  public function setTransactionProgramCode($transactionProgramCode)
-  {
-    $this->transactionProgramCode = $transactionProgramCode;
-  }
-  /**
-   * @return int
-   */
-  public function getTransactionProgramCode()
-  {
-    return $this->transactionProgramCode;
   }
   /**
    * @param string

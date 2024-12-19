@@ -26,10 +26,6 @@ class GoogleCloudAiplatformV1FeatureViewSyncSyncSummary extends \Google\Model
   /**
    * @var string
    */
-  public $systemWatermarkTime;
-  /**
-   * @var string
-   */
   public $totalSlot;
 
   /**
@@ -45,20 +41,6 @@ class GoogleCloudAiplatformV1FeatureViewSyncSyncSummary extends \Google\Model
   public function getRowSynced()
   {
     return $this->rowSynced;
-  }
-  /**
-   * @param string
-   */
-  public function setSystemWatermarkTime($systemWatermarkTime)
-  {
-    $this->systemWatermarkTime = $systemWatermarkTime;
-  }
-  /**
-   * @return string
-   */
-  public function getSystemWatermarkTime()
-  {
-    return $this->systemWatermarkTime;
   }
   /**
    * @param string

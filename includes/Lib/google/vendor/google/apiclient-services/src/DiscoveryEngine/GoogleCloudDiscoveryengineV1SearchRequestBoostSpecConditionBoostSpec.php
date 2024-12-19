@@ -23,8 +23,6 @@ class GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpec exten
    * @var float
    */
   public $boost;
-  protected $boostControlSpecType = GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpecBoostControlSpec::class;
-  protected $boostControlSpecDataType = '';
   /**
    * @var string
    */
@@ -43,20 +41,6 @@ class GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpec exten
   public function getBoost()
   {
     return $this->boost;
-  }
-  /**
-   * @param GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpecBoostControlSpec
-   */
-  public function setBoostControlSpec(GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpecBoostControlSpec $boostControlSpec)
-  {
-    $this->boostControlSpec = $boostControlSpec;
-  }
-  /**
-   * @return GoogleCloudDiscoveryengineV1SearchRequestBoostSpecConditionBoostSpecBoostControlSpec
-   */
-  public function getBoostControlSpec()
-  {
-    return $this->boostControlSpec;
   }
   /**
    * @param string

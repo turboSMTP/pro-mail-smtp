@@ -19,22 +19,24 @@ namespace Google\Service\Aiplatform;
 
 class GoogleCloudAiplatformV1GoogleSearchRetrieval extends \Google\Model
 {
-  protected $dynamicRetrievalConfigType = GoogleCloudAiplatformV1DynamicRetrievalConfig::class;
-  protected $dynamicRetrievalConfigDataType = '';
+  /**
+   * @var bool
+   */
+  public $disableAttribution;
 
   /**
-   * @param GoogleCloudAiplatformV1DynamicRetrievalConfig
+   * @param bool
    */
-  public function setDynamicRetrievalConfig(GoogleCloudAiplatformV1DynamicRetrievalConfig $dynamicRetrievalConfig)
+  public function setDisableAttribution($disableAttribution)
   {
-    $this->dynamicRetrievalConfig = $dynamicRetrievalConfig;
+    $this->disableAttribution = $disableAttribution;
   }
   /**
-   * @return GoogleCloudAiplatformV1DynamicRetrievalConfig
+   * @return bool
    */
-  public function getDynamicRetrievalConfig()
+  public function getDisableAttribution()
   {
-    return $this->dynamicRetrievalConfig;
+    return $this->disableAttribution;
   }
 }
 

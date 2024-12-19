@@ -23,8 +23,6 @@ class CreateEnrollmentTokenResponse extends \Google\Model
    * @var string
    */
   public $enrollmentToken;
-  protected $tokenType = EnrollmentToken::class;
-  protected $tokenDataType = '';
 
   /**
    * @param string
@@ -39,20 +37,6 @@ class CreateEnrollmentTokenResponse extends \Google\Model
   public function getEnrollmentToken()
   {
     return $this->enrollmentToken;
-  }
-  /**
-   * @param EnrollmentToken
-   */
-  public function setToken(EnrollmentToken $token)
-  {
-    $this->token = $token;
-  }
-  /**
-   * @return EnrollmentToken
-   */
-  public function getToken()
-  {
-    return $this->token;
   }
 }
 

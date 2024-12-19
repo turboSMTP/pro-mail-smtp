@@ -19,11 +19,9 @@ namespace Google\Service\MapsPlaces;
 
 class GoogleMapsPlacesV1SearchNearbyResponse extends \Google\Collection
 {
-  protected $collection_key = 'routingSummaries';
+  protected $collection_key = 'places';
   protected $placesType = GoogleMapsPlacesV1Place::class;
   protected $placesDataType = 'array';
-  protected $routingSummariesType = GoogleMapsPlacesV1RoutingSummary::class;
-  protected $routingSummariesDataType = 'array';
 
   /**
    * @param GoogleMapsPlacesV1Place[]
@@ -38,20 +36,6 @@ class GoogleMapsPlacesV1SearchNearbyResponse extends \Google\Collection
   public function getPlaces()
   {
     return $this->places;
-  }
-  /**
-   * @param GoogleMapsPlacesV1RoutingSummary[]
-   */
-  public function setRoutingSummaries($routingSummaries)
-  {
-    $this->routingSummaries = $routingSummaries;
-  }
-  /**
-   * @return GoogleMapsPlacesV1RoutingSummary[]
-   */
-  public function getRoutingSummaries()
-  {
-    return $this->routingSummaries;
   }
 }
 

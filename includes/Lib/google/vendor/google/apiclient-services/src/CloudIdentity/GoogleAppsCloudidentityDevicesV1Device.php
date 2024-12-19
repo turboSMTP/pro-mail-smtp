@@ -137,10 +137,6 @@ class GoogleAppsCloudidentityDevicesV1Device extends \Google\Collection
    */
   public $serialNumber;
   /**
-   * @var string
-   */
-  public $unifiedDeviceId;
-  /**
    * @var string[]
    */
   public $wifiMacAddresses;
@@ -564,20 +560,6 @@ class GoogleAppsCloudidentityDevicesV1Device extends \Google\Collection
   public function getSerialNumber()
   {
     return $this->serialNumber;
-  }
-  /**
-   * @param string
-   */
-  public function setUnifiedDeviceId($unifiedDeviceId)
-  {
-    $this->unifiedDeviceId = $unifiedDeviceId;
-  }
-  /**
-   * @return string
-   */
-  public function getUnifiedDeviceId()
-  {
-    return $this->unifiedDeviceId;
   }
   /**
    * @param string[]

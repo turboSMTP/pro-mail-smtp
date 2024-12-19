@@ -30,10 +30,6 @@ class GoogleCloudSecuritycenterV2MuteConfig extends \Google\Model
   /**
    * @var string
    */
-  public $expiryTime;
-  /**
-   * @var string
-   */
   public $filter;
   /**
    * @var string
@@ -79,20 +75,6 @@ class GoogleCloudSecuritycenterV2MuteConfig extends \Google\Model
   public function getDescription()
   {
     return $this->description;
-  }
-  /**
-   * @param string
-   */
-  public function setExpiryTime($expiryTime)
-  {
-    $this->expiryTime = $expiryTime;
-  }
-  /**
-   * @return string
-   */
-  public function getExpiryTime()
-  {
-    return $this->expiryTime;
   }
   /**
    * @param string

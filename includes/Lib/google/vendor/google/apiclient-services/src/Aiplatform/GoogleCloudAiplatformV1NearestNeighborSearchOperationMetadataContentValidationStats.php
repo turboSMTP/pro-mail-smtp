@@ -24,10 +24,6 @@ class GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataContentValida
    * @var string
    */
   public $invalidRecordCount;
-  /**
-   * @var string
-   */
-  public $invalidSparseRecordCount;
   protected $partialErrorsType = GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataRecordError::class;
   protected $partialErrorsDataType = 'array';
   /**
@@ -38,10 +34,6 @@ class GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataContentValida
    * @var string
    */
   public $validRecordCount;
-  /**
-   * @var string
-   */
-  public $validSparseRecordCount;
 
   /**
    * @param string
@@ -56,20 +48,6 @@ class GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataContentValida
   public function getInvalidRecordCount()
   {
     return $this->invalidRecordCount;
-  }
-  /**
-   * @param string
-   */
-  public function setInvalidSparseRecordCount($invalidSparseRecordCount)
-  {
-    $this->invalidSparseRecordCount = $invalidSparseRecordCount;
-  }
-  /**
-   * @return string
-   */
-  public function getInvalidSparseRecordCount()
-  {
-    return $this->invalidSparseRecordCount;
   }
   /**
    * @param GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataRecordError[]
@@ -112,20 +90,6 @@ class GoogleCloudAiplatformV1NearestNeighborSearchOperationMetadataContentValida
   public function getValidRecordCount()
   {
     return $this->validRecordCount;
-  }
-  /**
-   * @param string
-   */
-  public function setValidSparseRecordCount($validSparseRecordCount)
-  {
-    $this->validSparseRecordCount = $validSparseRecordCount;
-  }
-  /**
-   * @return string
-   */
-  public function getValidSparseRecordCount()
-  {
-    return $this->validSparseRecordCount;
   }
 }
 

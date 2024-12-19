@@ -27,10 +27,6 @@ class GooglePrivacyDlpV2Result extends \Google\Collection
   /**
    * @var string
    */
-  public $numRowsProcessed;
-  /**
-   * @var string
-   */
   public $processedBytes;
   /**
    * @var string
@@ -64,20 +60,6 @@ class GooglePrivacyDlpV2Result extends \Google\Collection
   public function getInfoTypeStats()
   {
     return $this->infoTypeStats;
-  }
-  /**
-   * @param string
-   */
-  public function setNumRowsProcessed($numRowsProcessed)
-  {
-    $this->numRowsProcessed = $numRowsProcessed;
-  }
-  /**
-   * @return string
-   */
-  public function getNumRowsProcessed()
-  {
-    return $this->numRowsProcessed;
   }
   /**
    * @param string

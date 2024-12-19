@@ -46,8 +46,7 @@ class AccountsPolicyIssues extends \Google\Service\Resource
     return $this->call('get', [$params], PolicyIssue::class);
   }
   /**
-   * Lists all the policy issues where the specified account is involved, both
-   * directly and through any AFP child accounts.
+   * Lists all the policy issues for the specified account.
    * (policyIssues.listAccountsPolicyIssues)
    *
    * @param string $parent Required. The account for which policy issues are being

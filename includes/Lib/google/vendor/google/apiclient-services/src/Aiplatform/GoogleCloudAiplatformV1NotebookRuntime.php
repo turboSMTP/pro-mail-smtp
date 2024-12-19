@@ -24,8 +24,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    * @var string
    */
   public $createTime;
-  protected $dataPersistentDiskSpecType = GoogleCloudAiplatformV1PersistentDiskSpec::class;
-  protected $dataPersistentDiskSpecDataType = '';
   /**
    * @var string
    */
@@ -34,10 +32,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    * @var string
    */
   public $displayName;
-  protected $encryptionSpecType = GoogleCloudAiplatformV1EncryptionSpec::class;
-  protected $encryptionSpecDataType = '';
-  protected $eucConfigType = GoogleCloudAiplatformV1NotebookEucConfig::class;
-  protected $eucConfigDataType = '';
   /**
    * @var string
    */
@@ -46,8 +40,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    * @var string
    */
   public $healthState;
-  protected $idleShutdownConfigType = GoogleCloudAiplatformV1NotebookIdleShutdownConfig::class;
-  protected $idleShutdownConfigDataType = '';
   /**
    * @var bool
    */
@@ -56,14 +48,10 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    * @var string[]
    */
   public $labels;
-  protected $machineSpecType = GoogleCloudAiplatformV1MachineSpec::class;
-  protected $machineSpecDataType = '';
   /**
    * @var string
    */
   public $name;
-  protected $networkSpecType = GoogleCloudAiplatformV1NetworkSpec::class;
-  protected $networkSpecDataType = '';
   /**
    * @var string[]
    */
@@ -78,6 +66,8 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    * @var string
    */
   public $proxyUri;
+  protected $reservationAffinityType = GoogleCloudAiplatformV1NotebookReservationAffinity::class;
+  protected $reservationAffinityDataType = '';
   /**
    * @var string
    */
@@ -87,19 +77,9 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
    */
   public $runtimeUser;
   /**
-   * @var bool
-   */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
-  /**
    * @var string
    */
   public $serviceAccount;
-  protected $shieldedVmConfigType = GoogleCloudAiplatformV1ShieldedVmConfig::class;
-  protected $shieldedVmConfigDataType = '';
   /**
    * @var string
    */
@@ -122,20 +102,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1PersistentDiskSpec
-   */
-  public function setDataPersistentDiskSpec(GoogleCloudAiplatformV1PersistentDiskSpec $dataPersistentDiskSpec)
-  {
-    $this->dataPersistentDiskSpec = $dataPersistentDiskSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1PersistentDiskSpec
-   */
-  public function getDataPersistentDiskSpec()
-  {
-    return $this->dataPersistentDiskSpec;
   }
   /**
    * @param string
@@ -166,34 +132,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
     return $this->displayName;
   }
   /**
-   * @param GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function setEncryptionSpec(GoogleCloudAiplatformV1EncryptionSpec $encryptionSpec)
-  {
-    $this->encryptionSpec = $encryptionSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1EncryptionSpec
-   */
-  public function getEncryptionSpec()
-  {
-    return $this->encryptionSpec;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1NotebookEucConfig
-   */
-  public function setEucConfig(GoogleCloudAiplatformV1NotebookEucConfig $eucConfig)
-  {
-    $this->eucConfig = $eucConfig;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1NotebookEucConfig
-   */
-  public function getEucConfig()
-  {
-    return $this->eucConfig;
-  }
-  /**
    * @param string
    */
   public function setExpirationTime($expirationTime)
@@ -220,20 +158,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
   public function getHealthState()
   {
     return $this->healthState;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1NotebookIdleShutdownConfig
-   */
-  public function setIdleShutdownConfig(GoogleCloudAiplatformV1NotebookIdleShutdownConfig $idleShutdownConfig)
-  {
-    $this->idleShutdownConfig = $idleShutdownConfig;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1NotebookIdleShutdownConfig
-   */
-  public function getIdleShutdownConfig()
-  {
-    return $this->idleShutdownConfig;
   }
   /**
    * @param bool
@@ -264,20 +188,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
     return $this->labels;
   }
   /**
-   * @param GoogleCloudAiplatformV1MachineSpec
-   */
-  public function setMachineSpec(GoogleCloudAiplatformV1MachineSpec $machineSpec)
-  {
-    $this->machineSpec = $machineSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1MachineSpec
-   */
-  public function getMachineSpec()
-  {
-    return $this->machineSpec;
-  }
-  /**
    * @param string
    */
   public function setName($name)
@@ -290,20 +200,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1NetworkSpec
-   */
-  public function setNetworkSpec(GoogleCloudAiplatformV1NetworkSpec $networkSpec)
-  {
-    $this->networkSpec = $networkSpec;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1NetworkSpec
-   */
-  public function getNetworkSpec()
-  {
-    return $this->networkSpec;
   }
   /**
    * @param string[]
@@ -362,6 +258,20 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
     return $this->proxyUri;
   }
   /**
+   * @param GoogleCloudAiplatformV1NotebookReservationAffinity
+   */
+  public function setReservationAffinity(GoogleCloudAiplatformV1NotebookReservationAffinity $reservationAffinity)
+  {
+    $this->reservationAffinity = $reservationAffinity;
+  }
+  /**
+   * @return GoogleCloudAiplatformV1NotebookReservationAffinity
+   */
+  public function getReservationAffinity()
+  {
+    return $this->reservationAffinity;
+  }
+  /**
    * @param string
    */
   public function setRuntimeState($runtimeState)
@@ -390,34 +300,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
     return $this->runtimeUser;
   }
   /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
-  }
-  /**
    * @param string
    */
   public function setServiceAccount($serviceAccount)
@@ -430,20 +312,6 @@ class GoogleCloudAiplatformV1NotebookRuntime extends \Google\Collection
   public function getServiceAccount()
   {
     return $this->serviceAccount;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1ShieldedVmConfig
-   */
-  public function setShieldedVmConfig(GoogleCloudAiplatformV1ShieldedVmConfig $shieldedVmConfig)
-  {
-    $this->shieldedVmConfig = $shieldedVmConfig;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1ShieldedVmConfig
-   */
-  public function getShieldedVmConfig()
-  {
-    return $this->shieldedVmConfig;
   }
   /**
    * @param string

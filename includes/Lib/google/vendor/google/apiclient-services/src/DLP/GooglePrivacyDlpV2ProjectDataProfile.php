@@ -24,10 +24,6 @@ class GooglePrivacyDlpV2ProjectDataProfile extends \Google\Model
   /**
    * @var string
    */
-  public $fileStoreDataProfileCount;
-  /**
-   * @var string
-   */
   public $name;
   /**
    * @var string
@@ -41,10 +37,6 @@ class GooglePrivacyDlpV2ProjectDataProfile extends \Google\Model
   public $projectId;
   protected $sensitivityScoreType = GooglePrivacyDlpV2SensitivityScore::class;
   protected $sensitivityScoreDataType = '';
-  /**
-   * @var string
-   */
-  public $tableDataProfileCount;
 
   /**
    * @param GooglePrivacyDlpV2DataRiskLevel
@@ -59,20 +51,6 @@ class GooglePrivacyDlpV2ProjectDataProfile extends \Google\Model
   public function getDataRiskLevel()
   {
     return $this->dataRiskLevel;
-  }
-  /**
-   * @param string
-   */
-  public function setFileStoreDataProfileCount($fileStoreDataProfileCount)
-  {
-    $this->fileStoreDataProfileCount = $fileStoreDataProfileCount;
-  }
-  /**
-   * @return string
-   */
-  public function getFileStoreDataProfileCount()
-  {
-    return $this->fileStoreDataProfileCount;
   }
   /**
    * @param string
@@ -143,20 +121,6 @@ class GooglePrivacyDlpV2ProjectDataProfile extends \Google\Model
   public function getSensitivityScore()
   {
     return $this->sensitivityScore;
-  }
-  /**
-   * @param string
-   */
-  public function setTableDataProfileCount($tableDataProfileCount)
-  {
-    $this->tableDataProfileCount = $tableDataProfileCount;
-  }
-  /**
-   * @return string
-   */
-  public function getTableDataProfileCount()
-  {
-    return $this->tableDataProfileCount;
   }
 }
 

@@ -602,10 +602,6 @@ class AndroidManagement extends \Google\Service
               'path' => 'v1/signupUrls',
               'httpMethod' => 'POST',
               'parameters' => [
-                'adminEmail' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
                 'callbackUrl' => [
                   'location' => 'query',
                   'type' => 'string',

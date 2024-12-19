@@ -35,14 +35,6 @@ class CreativeServingDecision extends \Google\Collection
   /**
    * @var string[]
    */
-  public $detectedCategories;
-  /**
-   * @var string
-   */
-  public $detectedCategoriesTaxonomy;
-  /**
-   * @var string[]
-   */
   public $detectedClickThroughUrls;
   /**
    * @var string[]
@@ -144,34 +136,6 @@ class CreativeServingDecision extends \Google\Collection
   public function getDetectedAttributes()
   {
     return $this->detectedAttributes;
-  }
-  /**
-   * @param string[]
-   */
-  public function setDetectedCategories($detectedCategories)
-  {
-    $this->detectedCategories = $detectedCategories;
-  }
-  /**
-   * @return string[]
-   */
-  public function getDetectedCategories()
-  {
-    return $this->detectedCategories;
-  }
-  /**
-   * @param string
-   */
-  public function setDetectedCategoriesTaxonomy($detectedCategoriesTaxonomy)
-  {
-    $this->detectedCategoriesTaxonomy = $detectedCategoriesTaxonomy;
-  }
-  /**
-   * @return string
-   */
-  public function getDetectedCategoriesTaxonomy()
-  {
-    return $this->detectedCategoriesTaxonomy;
   }
   /**
    * @param string[]

@@ -22,8 +22,6 @@ class GceInstance extends \Google\Collection
   protected $collection_key = 'tags';
   protected $acceleratorsType = Accelerator::class;
   protected $acceleratorsDataType = 'array';
-  protected $boostConfigsType = BoostConfig::class;
-  protected $boostConfigsDataType = 'array';
   /**
    * @var int
    */
@@ -68,10 +66,6 @@ class GceInstance extends \Google\Collection
    * @var string[]
    */
   public $tags;
-  /**
-   * @var string[]
-   */
-  public $vmTags;
 
   /**
    * @param Accelerator[]
@@ -86,20 +80,6 @@ class GceInstance extends \Google\Collection
   public function getAccelerators()
   {
     return $this->accelerators;
-  }
-  /**
-   * @param BoostConfig[]
-   */
-  public function setBoostConfigs($boostConfigs)
-  {
-    $this->boostConfigs = $boostConfigs;
-  }
-  /**
-   * @return BoostConfig[]
-   */
-  public function getBoostConfigs()
-  {
-    return $this->boostConfigs;
   }
   /**
    * @param int
@@ -268,20 +248,6 @@ class GceInstance extends \Google\Collection
   public function getTags()
   {
     return $this->tags;
-  }
-  /**
-   * @param string[]
-   */
-  public function setVmTags($vmTags)
-  {
-    $this->vmTags = $vmTags;
-  }
-  /**
-   * @return string[]
-   */
-  public function getVmTags()
-  {
-    return $this->vmTags;
   }
 }
 

@@ -34,10 +34,6 @@ class GoogleAdsSearchads360V0ResourcesCustomerManagerLink extends \Google\Model
   /**
    * @var string
    */
-  public $startTime;
-  /**
-   * @var string
-   */
   public $status;
 
   /**
@@ -81,20 +77,6 @@ class GoogleAdsSearchads360V0ResourcesCustomerManagerLink extends \Google\Model
   public function getResourceName()
   {
     return $this->resourceName;
-  }
-  /**
-   * @param string
-   */
-  public function setStartTime($startTime)
-  {
-    $this->startTime = $startTime;
-  }
-  /**
-   * @return string
-   */
-  public function getStartTime()
-  {
-    return $this->startTime;
   }
   /**
    * @param string

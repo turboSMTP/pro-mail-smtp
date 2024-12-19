@@ -42,14 +42,8 @@ class Aiplatform extends \Google\Service
   const CLOUD_PLATFORM_READ_ONLY =
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
-  public $datasets;
-  public $datasets_datasetVersions;
-  public $endpoints;
-  public $media;
-  public $projects;
   public $projects_locations;
   public $projects_locations_batchPredictionJobs;
-  public $projects_locations_cachedContents;
   public $projects_locations_customJobs;
   public $projects_locations_customJobs_operations;
   public $projects_locations_dataLabelingJobs;
@@ -68,7 +62,6 @@ class Aiplatform extends \Google\Service
   public $projects_locations_deploymentResourcePools;
   public $projects_locations_deploymentResourcePools_operations;
   public $projects_locations_endpoints;
-  public $projects_locations_endpoints_chat;
   public $projects_locations_endpoints_operations;
   public $projects_locations_featureGroups;
   public $projects_locations_featureGroups_features;
@@ -111,24 +104,14 @@ class Aiplatform extends \Google\Service
   public $projects_locations_models_operations;
   public $projects_locations_nasJobs;
   public $projects_locations_nasJobs_nasTrialDetails;
-  public $projects_locations_notebookExecutionJobs;
-  public $projects_locations_notebookExecutionJobs_operations;
   public $projects_locations_notebookRuntimeTemplates;
-  public $projects_locations_notebookRuntimeTemplates_operations;
   public $projects_locations_notebookRuntimes;
-  public $projects_locations_notebookRuntimes_operations;
   public $projects_locations_operations;
   public $projects_locations_persistentResources;
   public $projects_locations_persistentResources_operations;
   public $projects_locations_pipelineJobs;
   public $projects_locations_pipelineJobs_operations;
   public $projects_locations_publishers_models;
-  public $projects_locations_ragCorpora;
-  public $projects_locations_ragCorpora_operations;
-  public $projects_locations_ragCorpora_ragFiles;
-  public $projects_locations_ragCorpora_ragFiles_operations;
-  public $projects_locations_reasoningEngines;
-  public $projects_locations_reasoningEngines_operations;
   public $projects_locations_schedules;
   public $projects_locations_schedules_operations;
   public $projects_locations_specialistPools;
@@ -169,327 +152,13 @@ class Aiplatform extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'aiplatform';
 
-    $this->datasets = new Aiplatform\Resource\Datasets(
-        $this,
-        $this->serviceName,
-        'datasets',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/datasets',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'readMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/datasets',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'orderBy' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'parent' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'readMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->datasets_datasetVersions = new Aiplatform\Resource\DatasetsDatasetVersions(
-        $this,
-        $this->serviceName,
-        'datasetVersions',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/{+parent}/datasetVersions',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'readMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/datasetVersions',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'orderBy' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'readMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'restore' => [
-              'path' => 'v1/{+name}:restore',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->endpoints = new Aiplatform\Resource\Endpoints(
-        $this,
-        $this->serviceName,
-        'endpoints',
-        [
-          'methods' => [
-            'computeTokens' => [
-              'path' => 'v1/{+endpoint}:computeTokens',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'countTokens' => [
-              'path' => 'v1/{+endpoint}:countTokens',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'generateContent' => [
-              'path' => 'v1/{+model}:generateContent',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'model' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'streamGenerateContent' => [
-              'path' => 'v1/{+model}:streamGenerateContent',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'model' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->media = new Aiplatform\Resource\Media(
-        $this,
-        $this->serviceName,
-        'media',
-        [
-          'methods' => [
-            'upload' => [
-              'path' => 'v1/{+parent}/ragFiles:upload',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects = new Aiplatform\Resource\Projects(
-        $this,
-        $this->serviceName,
-        'projects',
-        [
-          'methods' => [
-            'getCacheConfig' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'updateCacheConfig' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->projects_locations = new Aiplatform\Resource\ProjectsLocations(
         $this,
         $this->serviceName,
         'locations',
         [
           'methods' => [
-            'augmentPrompt' => [
-              'path' => 'v1/{+parent}:augmentPrompt',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'corroborateContent' => [
-              'path' => 'v1/{+parent}:corroborateContent',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'evaluateInstances' => [
-              'path' => 'v1/{+location}:evaluateInstances',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'location' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
+            'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -519,16 +188,6 @@ class Aiplatform extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],'retrieveContexts' => [
-              'path' => 'v1/{+parent}:retrieveContexts',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],
@@ -603,78 +262,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                 ],
                 'readMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_cachedContents = new Aiplatform\Resource\ProjectsLocationsCachedContents(
-        $this,
-        $this->serviceName,
-        'cachedContents',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/{+parent}/cachedContents',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/cachedContents',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
                 ],
@@ -1564,20 +1151,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
             ],'restore' => [
               'path' => 'v1/{+name}:restore',
               'httpMethod' => 'GET',
@@ -1848,20 +1421,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
             ],'queryDeployedModels' => [
               'path' => 'v1/{+deploymentResourcePool}:queryDeployedModels',
               'httpMethod' => 'GET',
@@ -2050,16 +1609,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'fetchPredictOperation' => [
-              'path' => 'v1/{+endpoint}:fetchPredictOperation',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'generateContent' => [
               'path' => 'v1/{+model}:generateContent',
               'httpMethod' => 'POST',
@@ -2144,16 +1693,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'predictLongRunning' => [
-              'path' => 'v1/{+endpoint}:predictLongRunning',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'rawPredict' => [
               'path' => 'v1/{+endpoint}:rawPredict',
               'httpMethod' => 'POST',
@@ -2196,36 +1735,6 @@ class Aiplatform extends \Google\Service
               ],
             ],'undeployModel' => [
               'path' => 'v1/{+endpoint}:undeployModel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'update' => [
-              'path' => 'v1/{+name}:update',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_endpoints_chat = new Aiplatform\Resource\ProjectsLocationsEndpointsChat(
-        $this,
-        $this->serviceName,
-        'chat',
-        [
-          'methods' => [
-            'completions' => [
-              'path' => 'v1/{+endpoint}/chat/completions',
               'httpMethod' => 'POST',
               'parameters' => [
                 'endpoint' => [
@@ -2408,17 +1917,7 @@ class Aiplatform extends \Google\Service
         'features',
         [
           'methods' => [
-            'batchCreate' => [
-              'path' => 'v1/{+parent}/features:batchCreate',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'create' => [
+            'create' => [
               'path' => 'v1/{+parent}/features',
               'httpMethod' => 'POST',
               'parameters' => [
@@ -2680,20 +2179,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'getIamPolicy' => [
-              'path' => 'v1/{+resource}:getIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'options.requestedPolicyVersion' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-              ],
             ],'list' => [
               'path' => 'v1/{+parent}/featureOnlineStores',
               'httpMethod' => 'GET',
@@ -2732,31 +2217,6 @@ class Aiplatform extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],'setIamPolicy' => [
-              'path' => 'v1/{+resource}:setIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'testIamPermissions' => [
-              'path' => 'v1/{+resource}:testIamPermissions',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'permissions' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
                 ],
               ],
             ],
@@ -2817,20 +2277,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'getIamPolicy' => [
-              'path' => 'v1/{+resource}:getIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'options.requestedPolicyVersion' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-              ],
             ],'list' => [
               'path' => 'v1/{+parent}/featureViews',
               'httpMethod' => 'GET',
@@ -2881,16 +2327,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'setIamPolicy' => [
-              'path' => 'v1/{+resource}:setIamPolicy',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'sync' => [
               'path' => 'v1/{+featureView}:sync',
               'httpMethod' => 'POST',
@@ -2899,21 +2335,6 @@ class Aiplatform extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-              ],
-            ],'testIamPermissions' => [
-              'path' => 'v1/{+resource}:testIamPermissions',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'resource' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'permissions' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
                 ],
               ],
             ],
@@ -6003,160 +5424,6 @@ class Aiplatform extends \Google\Service
           ]
         ]
     );
-    $this->projects_locations_notebookExecutionJobs = new Aiplatform\Resource\ProjectsLocationsNotebookExecutionJobs(
-        $this,
-        $this->serviceName,
-        'notebookExecutionJobs',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/{+parent}/notebookExecutionJobs',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'notebookExecutionJobId' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'view' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/notebookExecutionJobs',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'orderBy' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'view' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_notebookExecutionJobs_operations = new Aiplatform\Resource\ProjectsLocationsNotebookExecutionJobsOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->projects_locations_notebookRuntimeTemplates = new Aiplatform\Resource\ProjectsLocationsNotebookRuntimeTemplates(
         $this,
         $this->serviceName,
@@ -6241,20 +5508,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
             ],'setIamPolicy' => [
               'path' => 'v1/{+resource}:setIamPolicy',
               'httpMethod' => 'POST',
@@ -6278,82 +5531,6 @@ class Aiplatform extends \Google\Service
                   'location' => 'query',
                   'type' => 'string',
                   'repeated' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_notebookRuntimeTemplates_operations = new Aiplatform\Resource\ProjectsLocationsNotebookRuntimeTemplatesOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
               ],
             ],
@@ -6436,16 +5613,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'stop' => [
-              'path' => 'v1/{+name}:stop',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'upgrade' => [
               'path' => 'v1/{+name}:upgrade',
               'httpMethod' => 'POST',
@@ -6454,82 +5621,6 @@ class Aiplatform extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_notebookRuntimes_operations = new Aiplatform\Resource\ProjectsLocationsNotebookRuntimesOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
               ],
             ],
@@ -6980,16 +6071,6 @@ class Aiplatform extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'fetchPredictOperation' => [
-              'path' => 'v1/{+endpoint}:fetchPredictOperation',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'generateContent' => [
               'path' => 'v1/{+model}:generateContent',
               'httpMethod' => 'POST',
@@ -7002,16 +6083,6 @@ class Aiplatform extends \Google\Service
               ],
             ],'predict' => [
               'path' => 'v1/{+endpoint}:predict',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'predictLongRunning' => [
-              'path' => 'v1/{+endpoint}:predictLongRunning',
               'httpMethod' => 'POST',
               'parameters' => [
                 'endpoint' => [
@@ -7058,450 +6129,6 @@ class Aiplatform extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_ragCorpora = new Aiplatform\Resource\ProjectsLocationsRagCorpora(
-        $this,
-        $this->serviceName,
-        'ragCorpora',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/{+parent}/ragCorpora',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'force' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/ragCorpora',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_ragCorpora_operations = new Aiplatform\Resource\ProjectsLocationsRagCorporaOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_ragCorpora_ragFiles = new Aiplatform\Resource\ProjectsLocationsRagCorporaRagFiles(
-        $this,
-        $this->serviceName,
-        'ragFiles',
-        [
-          'methods' => [
-            'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'import' => [
-              'path' => 'v1/{+parent}/ragFiles:import',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/ragFiles',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_ragCorpora_ragFiles_operations = new Aiplatform\Resource\ProjectsLocationsRagCorporaRagFilesOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_reasoningEngines = new Aiplatform\Resource\ProjectsLocationsReasoningEngines(
-        $this,
-        $this->serviceName,
-        'reasoningEngines',
-        [
-          'methods' => [
-            'create' => [
-              'path' => 'v1/{+parent}/reasoningEngines',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+parent}/reasoningEngines',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'patch' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'PATCH',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'updateMask' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'query' => [
-              'path' => 'v1/{+name}:query',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
-    $this->projects_locations_reasoningEngines_operations = new Aiplatform\Resource\ProjectsLocationsReasoningEnginesOperations(
-        $this,
-        $this->serviceName,
-        'operations',
-        [
-          'methods' => [
-            'cancel' => [
-              'path' => 'v1/{+name}:cancel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'v1/{+name}/operations',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'filter' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'pageSize' => [
-                  'location' => 'query',
-                  'type' => 'integer',
-                ],
-                'pageToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-              ],
-            ],'wait' => [
-              'path' => 'v1/{+name}:wait',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'timeout' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
               ],
             ],
@@ -9158,16 +7785,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                 ],
               ],
-            ],'rebaseTunedModel' => [
-              'path' => 'v1/{+parent}/tuningJobs:rebaseTunedModel',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'parent' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],
           ]
         ]
@@ -9181,16 +7798,6 @@ class Aiplatform extends \Google\Service
             'cancel' => [
               'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'delete' => [
-              'path' => 'v1/{+name}',
-              'httpMethod' => 'DELETE',
               'parameters' => [
                 'name' => [
                   'location' => 'path',
@@ -9240,37 +7847,7 @@ class Aiplatform extends \Google\Service
         'models',
         [
           'methods' => [
-            'computeTokens' => [
-              'path' => 'v1/{+endpoint}:computeTokens',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'countTokens' => [
-              'path' => 'v1/{+endpoint}:countTokens',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'endpoint' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'generateContent' => [
-              'path' => 'v1/{+model}:generateContent',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'model' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'get' => [
+            'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -9279,14 +7856,6 @@ class Aiplatform extends \Google\Service
                   'type' => 'string',
                   'required' => true,
                 ],
-                'huggingFaceToken' => [
-                  'location' => 'query',
-                  'type' => 'string',
-                ],
-                'isHuggingFaceModel' => [
-                  'location' => 'query',
-                  'type' => 'boolean',
-                ],
                 'languageCode' => [
                   'location' => 'query',
                   'type' => 'string',
@@ -9294,16 +7863,6 @@ class Aiplatform extends \Google\Service
                 'view' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],'streamGenerateContent' => [
-              'path' => 'v1/{+model}:streamGenerateContent',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'model' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],

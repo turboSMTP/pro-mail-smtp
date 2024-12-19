@@ -29,12 +29,6 @@ class GoogleCloudAiplatformV1PublisherModelCallToActionDeploy extends \Google\Mo
   protected $containerSpecDataType = '';
   protected $dedicatedResourcesType = GoogleCloudAiplatformV1DedicatedResources::class;
   protected $dedicatedResourcesDataType = '';
-  protected $deployMetadataType = GoogleCloudAiplatformV1PublisherModelCallToActionDeployDeployMetadata::class;
-  protected $deployMetadataDataType = '';
-  /**
-   * @var string
-   */
-  public $deployTaskName;
   protected $largeModelReferenceType = GoogleCloudAiplatformV1LargeModelReference::class;
   protected $largeModelReferenceDataType = '';
   /**
@@ -109,34 +103,6 @@ class GoogleCloudAiplatformV1PublisherModelCallToActionDeploy extends \Google\Mo
   public function getDedicatedResources()
   {
     return $this->dedicatedResources;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1PublisherModelCallToActionDeployDeployMetadata
-   */
-  public function setDeployMetadata(GoogleCloudAiplatformV1PublisherModelCallToActionDeployDeployMetadata $deployMetadata)
-  {
-    $this->deployMetadata = $deployMetadata;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1PublisherModelCallToActionDeployDeployMetadata
-   */
-  public function getDeployMetadata()
-  {
-    return $this->deployMetadata;
-  }
-  /**
-   * @param string
-   */
-  public function setDeployTaskName($deployTaskName)
-  {
-    $this->deployTaskName = $deployTaskName;
-  }
-  /**
-   * @return string
-   */
-  public function getDeployTaskName()
-  {
-    return $this->deployTaskName;
   }
   /**
    * @param GoogleCloudAiplatformV1LargeModelReference

@@ -36,8 +36,7 @@ class RegionOperations extends \Google\Service\Resource
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
-   * @param string $operation Name of the Operations resource to delete, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to delete.
    * @param array $optParams Optional parameters.
    * @throws \Google\Service\Exception
    */
@@ -53,8 +52,7 @@ class RegionOperations extends \Google\Service\Resource
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
-   * @param string $operation Name of the Operations resource to return, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to return.
    * @param array $optParams Optional parameters.
    * @return Operation
    * @throws \Google\Service\Exception
@@ -150,8 +148,7 @@ class RegionOperations extends \Google\Service\Resource
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
-   * @param string $operation Name of the Operations resource to return, or its
-   * unique numeric identifier.
+   * @param string $operation Name of the Operations resource to return.
    * @param array $optParams Optional parameters.
    * @return Operation
    * @throws \Google\Service\Exception

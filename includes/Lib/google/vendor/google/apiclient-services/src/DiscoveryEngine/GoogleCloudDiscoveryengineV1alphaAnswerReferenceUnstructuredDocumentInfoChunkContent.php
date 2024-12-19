@@ -27,10 +27,6 @@ class GoogleCloudDiscoveryengineV1alphaAnswerReferenceUnstructuredDocumentInfoCh
    * @var string
    */
   public $pageIdentifier;
-  /**
-   * @var float
-   */
-  public $relevanceScore;
 
   /**
    * @param string
@@ -59,20 +55,6 @@ class GoogleCloudDiscoveryengineV1alphaAnswerReferenceUnstructuredDocumentInfoCh
   public function getPageIdentifier()
   {
     return $this->pageIdentifier;
-  }
-  /**
-   * @param float
-   */
-  public function setRelevanceScore($relevanceScore)
-  {
-    $this->relevanceScore = $relevanceScore;
-  }
-  /**
-   * @return float
-   */
-  public function getRelevanceScore()
-  {
-    return $this->relevanceScore;
   }
 }
 

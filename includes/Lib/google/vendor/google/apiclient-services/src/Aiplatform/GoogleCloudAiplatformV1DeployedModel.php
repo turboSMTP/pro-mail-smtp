@@ -45,8 +45,6 @@ class GoogleCloudAiplatformV1DeployedModel extends \Google\Model
   public $enableAccessLogging;
   protected $explanationSpecType = GoogleCloudAiplatformV1ExplanationSpec::class;
   protected $explanationSpecDataType = '';
-  protected $fasterDeploymentConfigType = GoogleCloudAiplatformV1FasterDeploymentConfig::class;
-  protected $fasterDeploymentConfigDataType = '';
   /**
    * @var string
    */
@@ -69,12 +67,6 @@ class GoogleCloudAiplatformV1DeployedModel extends \Google\Model
    * @var string
    */
   public $sharedResources;
-  protected $statusType = GoogleCloudAiplatformV1DeployedModelStatus::class;
-  protected $statusDataType = '';
-  /**
-   * @var string[]
-   */
-  public $systemLabels;
 
   /**
    * @param GoogleCloudAiplatformV1AutomaticResources
@@ -189,20 +181,6 @@ class GoogleCloudAiplatformV1DeployedModel extends \Google\Model
     return $this->explanationSpec;
   }
   /**
-   * @param GoogleCloudAiplatformV1FasterDeploymentConfig
-   */
-  public function setFasterDeploymentConfig(GoogleCloudAiplatformV1FasterDeploymentConfig $fasterDeploymentConfig)
-  {
-    $this->fasterDeploymentConfig = $fasterDeploymentConfig;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1FasterDeploymentConfig
-   */
-  public function getFasterDeploymentConfig()
-  {
-    return $this->fasterDeploymentConfig;
-  }
-  /**
    * @param string
    */
   public function setId($id)
@@ -285,34 +263,6 @@ class GoogleCloudAiplatformV1DeployedModel extends \Google\Model
   public function getSharedResources()
   {
     return $this->sharedResources;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1DeployedModelStatus
-   */
-  public function setStatus(GoogleCloudAiplatformV1DeployedModelStatus $status)
-  {
-    $this->status = $status;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1DeployedModelStatus
-   */
-  public function getStatus()
-  {
-    return $this->status;
-  }
-  /**
-   * @param string[]
-   */
-  public function setSystemLabels($systemLabels)
-  {
-    $this->systemLabels = $systemLabels;
-  }
-  /**
-   * @return string[]
-   */
-  public function getSystemLabels()
-  {
-    return $this->systemLabels;
   }
 }
 

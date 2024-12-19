@@ -20,17 +20,9 @@ namespace Google\Service\CloudRedis;
 class AvailabilityConfiguration extends \Google\Model
 {
   /**
-   * @var bool
-   */
-  public $automaticFailoverRoutingConfigured;
-  /**
    * @var string
    */
   public $availabilityType;
-  /**
-   * @var bool
-   */
-  public $crossRegionReplicaConfigured;
   /**
    * @var bool
    */
@@ -40,20 +32,6 @@ class AvailabilityConfiguration extends \Google\Model
    */
   public $promotableReplicaConfigured;
 
-  /**
-   * @param bool
-   */
-  public function setAutomaticFailoverRoutingConfigured($automaticFailoverRoutingConfigured)
-  {
-    $this->automaticFailoverRoutingConfigured = $automaticFailoverRoutingConfigured;
-  }
-  /**
-   * @return bool
-   */
-  public function getAutomaticFailoverRoutingConfigured()
-  {
-    return $this->automaticFailoverRoutingConfigured;
-  }
   /**
    * @param string
    */
@@ -67,20 +45,6 @@ class AvailabilityConfiguration extends \Google\Model
   public function getAvailabilityType()
   {
     return $this->availabilityType;
-  }
-  /**
-   * @param bool
-   */
-  public function setCrossRegionReplicaConfigured($crossRegionReplicaConfigured)
-  {
-    $this->crossRegionReplicaConfigured = $crossRegionReplicaConfigured;
-  }
-  /**
-   * @return bool
-   */
-  public function getCrossRegionReplicaConfigured()
-  {
-    return $this->crossRegionReplicaConfigured;
   }
   /**
    * @param bool

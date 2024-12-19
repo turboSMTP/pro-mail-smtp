@@ -19,22 +19,22 @@ namespace Google\Service\Games;
 
 class RetrieveDeveloperGamesLastPlayerTokenResponse extends \Google\Model
 {
-  protected $gamePlayerTokenType = GamePlayerToken::class;
-  protected $gamePlayerTokenDataType = '';
+  protected $tokenType = RecallToken::class;
+  protected $tokenDataType = '';
 
   /**
-   * @param GamePlayerToken
+   * @param RecallToken
    */
-  public function setGamePlayerToken(GamePlayerToken $gamePlayerToken)
+  public function setToken(RecallToken $token)
   {
-    $this->gamePlayerToken = $gamePlayerToken;
+    $this->token = $token;
   }
   /**
-   * @return GamePlayerToken
+   * @return RecallToken
    */
-  public function getGamePlayerToken()
+  public function getToken()
   {
-    return $this->gamePlayerToken;
+    return $this->token;
   }
 }
 

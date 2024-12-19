@@ -188,6 +188,20 @@ class AndroidPublisher extends \Google\Service
                   'required' => true,
                 ],
               ],
+            ],'appRecoveries' => [
+              'path' => 'androidpublisher/v3/applications/{packageName}/appRecoveries',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'packageName' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'versionCode' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'cancel' => [
               'path' => 'androidpublisher/v3/applications/{packageName}/appRecoveries/{appRecoveryId}:cancel',
               'httpMethod' => 'POST',
@@ -226,20 +240,6 @@ class AndroidPublisher extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
-                ],
-              ],
-            ],'list' => [
-              'path' => 'androidpublisher/v3/applications/{packageName}/appRecoveries',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'packageName' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-                'versionCode' => [
-                  'location' => 'query',
-                  'type' => 'string',
                 ],
               ],
             ],

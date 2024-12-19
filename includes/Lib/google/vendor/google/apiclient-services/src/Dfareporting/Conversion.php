@@ -24,8 +24,6 @@ class Conversion extends \Google\Collection
    * @var string
    */
   public $adUserDataConsent;
-  protected $cartDataType = CartData::class;
-  protected $cartDataDataType = '';
   /**
    * @var bool
    */
@@ -113,20 +111,6 @@ class Conversion extends \Google\Collection
   public function getAdUserDataConsent()
   {
     return $this->adUserDataConsent;
-  }
-  /**
-   * @param CartData
-   */
-  public function setCartData(CartData $cartData)
-  {
-    $this->cartData = $cartData;
-  }
-  /**
-   * @return CartData
-   */
-  public function getCartData()
-  {
-    return $this->cartData;
   }
   /**
    * @param bool

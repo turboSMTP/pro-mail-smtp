@@ -41,24 +41,12 @@ class GoogleCloudAiplatformV1FeatureView extends \Google\Model
    * @var string
    */
   public $name;
-  protected $optimizedConfigType = GoogleCloudAiplatformV1FeatureViewOptimizedConfig::class;
-  protected $optimizedConfigDataType = '';
-  /**
-   * @var bool
-   */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
   protected $syncConfigType = GoogleCloudAiplatformV1FeatureViewSyncConfig::class;
   protected $syncConfigDataType = '';
   /**
    * @var string
    */
   public $updateTime;
-  protected $vertexRagSourceType = GoogleCloudAiplatformV1FeatureViewVertexRagSource::class;
-  protected $vertexRagSourceDataType = '';
 
   /**
    * @param GoogleCloudAiplatformV1FeatureViewBigQuerySource
@@ -159,48 +147,6 @@ class GoogleCloudAiplatformV1FeatureView extends \Google\Model
     return $this->name;
   }
   /**
-   * @param GoogleCloudAiplatformV1FeatureViewOptimizedConfig
-   */
-  public function setOptimizedConfig(GoogleCloudAiplatformV1FeatureViewOptimizedConfig $optimizedConfig)
-  {
-    $this->optimizedConfig = $optimizedConfig;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1FeatureViewOptimizedConfig
-   */
-  public function getOptimizedConfig()
-  {
-    return $this->optimizedConfig;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
-  }
-  /**
    * @param GoogleCloudAiplatformV1FeatureViewSyncConfig
    */
   public function setSyncConfig(GoogleCloudAiplatformV1FeatureViewSyncConfig $syncConfig)
@@ -227,20 +173,6 @@ class GoogleCloudAiplatformV1FeatureView extends \Google\Model
   public function getUpdateTime()
   {
     return $this->updateTime;
-  }
-  /**
-   * @param GoogleCloudAiplatformV1FeatureViewVertexRagSource
-   */
-  public function setVertexRagSource(GoogleCloudAiplatformV1FeatureViewVertexRagSource $vertexRagSource)
-  {
-    $this->vertexRagSource = $vertexRagSource;
-  }
-  /**
-   * @return GoogleCloudAiplatformV1FeatureViewVertexRagSource
-   */
-  public function getVertexRagSource()
-  {
-    return $this->vertexRagSource;
   }
 }
 

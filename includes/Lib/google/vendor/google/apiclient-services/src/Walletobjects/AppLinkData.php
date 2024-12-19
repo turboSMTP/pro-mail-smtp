@@ -21,8 +21,6 @@ class AppLinkData extends \Google\Model
 {
   protected $androidAppLinkInfoType = AppLinkDataAppLinkInfo::class;
   protected $androidAppLinkInfoDataType = '';
-  protected $displayTextType = LocalizedString::class;
-  protected $displayTextDataType = '';
   protected $iosAppLinkInfoType = AppLinkDataAppLinkInfo::class;
   protected $iosAppLinkInfoDataType = '';
   protected $webAppLinkInfoType = AppLinkDataAppLinkInfo::class;
@@ -41,20 +39,6 @@ class AppLinkData extends \Google\Model
   public function getAndroidAppLinkInfo()
   {
     return $this->androidAppLinkInfo;
-  }
-  /**
-   * @param LocalizedString
-   */
-  public function setDisplayText(LocalizedString $displayText)
-  {
-    $this->displayText = $displayText;
-  }
-  /**
-   * @return LocalizedString
-   */
-  public function getDisplayText()
-  {
-    return $this->displayText;
   }
   /**
    * @param AppLinkDataAppLinkInfo

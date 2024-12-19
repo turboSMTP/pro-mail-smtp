@@ -31,8 +31,6 @@ class IapResource extends \Google\Model
    * @var string
    */
   public $name;
-  protected $nextStateOfTagsType = NextStateOfTags::class;
-  protected $nextStateOfTagsDataType = '';
   /**
    * @var string
    */
@@ -83,20 +81,6 @@ class IapResource extends \Google\Model
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param NextStateOfTags
-   */
-  public function setNextStateOfTags(NextStateOfTags $nextStateOfTags)
-  {
-    $this->nextStateOfTags = $nextStateOfTags;
-  }
-  /**
-   * @return NextStateOfTags
-   */
-  public function getNextStateOfTags()
-  {
-    return $this->nextStateOfTags;
   }
   /**
    * @param string

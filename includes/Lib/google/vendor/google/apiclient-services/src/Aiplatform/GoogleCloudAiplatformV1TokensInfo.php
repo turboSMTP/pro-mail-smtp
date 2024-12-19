@@ -21,10 +21,6 @@ class GoogleCloudAiplatformV1TokensInfo extends \Google\Collection
 {
   protected $collection_key = 'tokens';
   /**
-   * @var string
-   */
-  public $role;
-  /**
    * @var string[]
    */
   public $tokenIds;
@@ -33,20 +29,6 @@ class GoogleCloudAiplatformV1TokensInfo extends \Google\Collection
    */
   public $tokens;
 
-  /**
-   * @param string
-   */
-  public function setRole($role)
-  {
-    $this->role = $role;
-  }
-  /**
-   * @return string
-   */
-  public function getRole()
-  {
-    return $this->role;
-  }
   /**
    * @param string[]
    */

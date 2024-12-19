@@ -17,17 +17,12 @@
 
 namespace Google\Service\Contactcenterinsights;
 
-class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo extends \Google\Collection
+class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo extends \Google\Model
 {
-  protected $collection_key = 'teams';
   /**
    * @var string
    */
   public $agentId;
-  /**
-   * @var string
-   */
-  public $agentType;
   /**
    * @var string
    */
@@ -39,15 +34,7 @@ class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo ext
   /**
    * @var string
    */
-  public $location;
-  /**
-   * @var string
-   */
   public $team;
-  /**
-   * @var string[]
-   */
-  public $teams;
 
   /**
    * @param string
@@ -62,20 +49,6 @@ class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo ext
   public function getAgentId()
   {
     return $this->agentId;
-  }
-  /**
-   * @param string
-   */
-  public function setAgentType($agentType)
-  {
-    $this->agentType = $agentType;
-  }
-  /**
-   * @return string
-   */
-  public function getAgentType()
-  {
-    return $this->agentType;
   }
   /**
    * @param string
@@ -108,20 +81,6 @@ class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo ext
   /**
    * @param string
    */
-  public function setLocation($location)
-  {
-    $this->location = $location;
-  }
-  /**
-   * @return string
-   */
-  public function getLocation()
-  {
-    return $this->location;
-  }
-  /**
-   * @param string
-   */
   public function setTeam($team)
   {
     $this->team = $team;
@@ -132,20 +91,6 @@ class GoogleCloudContactcenterinsightsV1ConversationQualityMetadataAgentInfo ext
   public function getTeam()
   {
     return $this->team;
-  }
-  /**
-   * @param string[]
-   */
-  public function setTeams($teams)
-  {
-    $this->teams = $teams;
-  }
-  /**
-   * @return string[]
-   */
-  public function getTeams()
-  {
-    return $this->teams;
   }
 }
 

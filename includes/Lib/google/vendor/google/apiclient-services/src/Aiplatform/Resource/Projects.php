@@ -17,9 +17,6 @@
 
 namespace Google\Service\Aiplatform\Resource;
 
-use Google\Service\Aiplatform\GoogleCloudAiplatformV1CacheConfig;
-use Google\Service\Aiplatform\GoogleLongrunningOperation;
-
 /**
  * The "projects" collection of methods.
  * Typical usage is:
@@ -30,37 +27,6 @@ use Google\Service\Aiplatform\GoogleLongrunningOperation;
  */
 class Projects extends \Google\Service\Resource
 {
-  /**
-   * Gets a GenAI cache config. (projects.getCacheConfig)
-   *
-   * @param string $name Required. Name of the cache config. Format: -
-   * `projects/{project}/cacheConfig`.
-   * @param array $optParams Optional parameters.
-   * @return GoogleCloudAiplatformV1CacheConfig
-   * @throws \Google\Service\Exception
-   */
-  public function getCacheConfig($name, $optParams = [])
-  {
-    $params = ['name' => $name];
-    $params = array_merge($params, $optParams);
-    return $this->call('getCacheConfig', [$params], GoogleCloudAiplatformV1CacheConfig::class);
-  }
-  /**
-   * Updates a cache config. (projects.updateCacheConfig)
-   *
-   * @param string $name Identifier. Name of the cache config. Format: -
-   * `projects/{project}/cacheConfig`.
-   * @param GoogleCloudAiplatformV1CacheConfig $postBody
-   * @param array $optParams Optional parameters.
-   * @return GoogleLongrunningOperation
-   * @throws \Google\Service\Exception
-   */
-  public function updateCacheConfig($name, GoogleCloudAiplatformV1CacheConfig $postBody, $optParams = [])
-  {
-    $params = ['name' => $name, 'postBody' => $postBody];
-    $params = array_merge($params, $optParams);
-    return $this->call('updateCacheConfig', [$params], GoogleLongrunningOperation::class);
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

@@ -43,10 +43,6 @@ class GoogleCloudChannelV1ImportCustomerRequest extends \Google\Model
    * @var bool
    */
   public $overwriteIfExists;
-  /**
-   * @var string
-   */
-  public $primaryAdminEmail;
 
   /**
    * @param string
@@ -131,20 +127,6 @@ class GoogleCloudChannelV1ImportCustomerRequest extends \Google\Model
   public function getOverwriteIfExists()
   {
     return $this->overwriteIfExists;
-  }
-  /**
-   * @param string
-   */
-  public function setPrimaryAdminEmail($primaryAdminEmail)
-  {
-    $this->primaryAdminEmail = $primaryAdminEmail;
-  }
-  /**
-   * @return string
-   */
-  public function getPrimaryAdminEmail()
-  {
-    return $this->primaryAdminEmail;
   }
 }
 

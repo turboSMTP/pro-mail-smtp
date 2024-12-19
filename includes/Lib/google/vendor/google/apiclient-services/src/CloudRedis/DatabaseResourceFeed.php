@@ -27,8 +27,6 @@ class DatabaseResourceFeed extends \Google\Model
    * @var string
    */
   public $feedType;
-  protected $observabilityMetricDataType = ObservabilityMetricData::class;
-  protected $observabilityMetricDataDataType = '';
   protected $recommendationSignalDataType = DatabaseResourceRecommendationSignalData::class;
   protected $recommendationSignalDataDataType = '';
   protected $resourceHealthSignalDataType = DatabaseResourceHealthSignalData::class;
@@ -65,20 +63,6 @@ class DatabaseResourceFeed extends \Google\Model
   public function getFeedType()
   {
     return $this->feedType;
-  }
-  /**
-   * @param ObservabilityMetricData
-   */
-  public function setObservabilityMetricData(ObservabilityMetricData $observabilityMetricData)
-  {
-    $this->observabilityMetricData = $observabilityMetricData;
-  }
-  /**
-   * @return ObservabilityMetricData
-   */
-  public function getObservabilityMetricData()
-  {
-    return $this->observabilityMetricData;
   }
   /**
    * @param DatabaseResourceRecommendationSignalData

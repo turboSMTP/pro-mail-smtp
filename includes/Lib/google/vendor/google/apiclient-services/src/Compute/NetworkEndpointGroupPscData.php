@@ -24,10 +24,6 @@ class NetworkEndpointGroupPscData extends \Google\Model
    */
   public $consumerPscAddress;
   /**
-   * @var int
-   */
-  public $producerPort;
-  /**
    * @var string
    */
   public $pscConnectionId;
@@ -49,20 +45,6 @@ class NetworkEndpointGroupPscData extends \Google\Model
   public function getConsumerPscAddress()
   {
     return $this->consumerPscAddress;
-  }
-  /**
-   * @param int
-   */
-  public function setProducerPort($producerPort)
-  {
-    $this->producerPort = $producerPort;
-  }
-  /**
-   * @return int
-   */
-  public function getProducerPort()
-  {
-    return $this->producerPort;
   }
   /**
    * @param string

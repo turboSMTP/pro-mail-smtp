@@ -34,10 +34,6 @@ class AwsS3Data extends \Google\Model
    */
   public $credentialsSecret;
   /**
-   * @var bool
-   */
-  public $managedPrivateNetwork;
-  /**
    * @var string
    */
   public $path;
@@ -101,20 +97,6 @@ class AwsS3Data extends \Google\Model
   public function getCredentialsSecret()
   {
     return $this->credentialsSecret;
-  }
-  /**
-   * @param bool
-   */
-  public function setManagedPrivateNetwork($managedPrivateNetwork)
-  {
-    $this->managedPrivateNetwork = $managedPrivateNetwork;
-  }
-  /**
-   * @return bool
-   */
-  public function getManagedPrivateNetwork()
-  {
-    return $this->managedPrivateNetwork;
   }
   /**
    * @param string

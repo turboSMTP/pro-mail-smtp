@@ -27,10 +27,6 @@ class ParquetOptions extends \Google\Model
    * @var bool
    */
   public $enumAsString;
-  /**
-   * @var string
-   */
-  public $mapTargetType;
 
   /**
    * @param bool
@@ -59,20 +55,6 @@ class ParquetOptions extends \Google\Model
   public function getEnumAsString()
   {
     return $this->enumAsString;
-  }
-  /**
-   * @param string
-   */
-  public function setMapTargetType($mapTargetType)
-  {
-    $this->mapTargetType = $mapTargetType;
-  }
-  /**
-   * @return string
-   */
-  public function getMapTargetType()
-  {
-    return $this->mapTargetType;
   }
 }
 

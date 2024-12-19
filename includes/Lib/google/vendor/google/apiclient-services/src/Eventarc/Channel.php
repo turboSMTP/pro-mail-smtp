@@ -32,10 +32,6 @@ class Channel extends \Google\Model
    */
   public $cryptoKeyName;
   /**
-   * @var string[]
-   */
-  public $labels;
-  /**
    * @var string
    */
   public $name;
@@ -47,10 +43,6 @@ class Channel extends \Google\Model
    * @var string
    */
   public $pubsubTopic;
-  /**
-   * @var bool
-   */
-  public $satisfiesPzs;
   /**
    * @var string
    */
@@ -107,20 +99,6 @@ class Channel extends \Google\Model
     return $this->cryptoKeyName;
   }
   /**
-   * @param string[]
-   */
-  public function setLabels($labels)
-  {
-    $this->labels = $labels;
-  }
-  /**
-   * @return string[]
-   */
-  public function getLabels()
-  {
-    return $this->labels;
-  }
-  /**
    * @param string
    */
   public function setName($name)
@@ -161,20 +139,6 @@ class Channel extends \Google\Model
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
   }
   /**
    * @param string

@@ -27,8 +27,8 @@ class GoogleFirestoreAdminV1RestoreDatabaseRequest extends \Google\Model
    * @var string
    */
   public $databaseId;
-  protected $encryptionConfigType = GoogleFirestoreAdminV1EncryptionConfig::class;
-  protected $encryptionConfigDataType = '';
+  protected $databaseSnapshotType = GoogleFirestoreAdminV1DatabaseSnapshot::class;
+  protected $databaseSnapshotDataType = '';
 
   /**
    * @param string
@@ -59,18 +59,18 @@ class GoogleFirestoreAdminV1RestoreDatabaseRequest extends \Google\Model
     return $this->databaseId;
   }
   /**
-   * @param GoogleFirestoreAdminV1EncryptionConfig
+   * @param GoogleFirestoreAdminV1DatabaseSnapshot
    */
-  public function setEncryptionConfig(GoogleFirestoreAdminV1EncryptionConfig $encryptionConfig)
+  public function setDatabaseSnapshot(GoogleFirestoreAdminV1DatabaseSnapshot $databaseSnapshot)
   {
-    $this->encryptionConfig = $encryptionConfig;
+    $this->databaseSnapshot = $databaseSnapshot;
   }
   /**
-   * @return GoogleFirestoreAdminV1EncryptionConfig
+   * @return GoogleFirestoreAdminV1DatabaseSnapshot
    */
-  public function getEncryptionConfig()
+  public function getDatabaseSnapshot()
   {
-    return $this->encryptionConfig;
+    return $this->databaseSnapshot;
   }
 }
 

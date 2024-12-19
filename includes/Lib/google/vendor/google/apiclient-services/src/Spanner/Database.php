@@ -48,8 +48,6 @@ class Database extends \Google\Collection
    * @var string
    */
   public $name;
-  protected $quorumInfoType = QuorumInfo::class;
-  protected $quorumInfoDataType = '';
   /**
    * @var bool
    */
@@ -176,20 +174,6 @@ class Database extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param QuorumInfo
-   */
-  public function setQuorumInfo(QuorumInfo $quorumInfo)
-  {
-    $this->quorumInfo = $quorumInfo;
-  }
-  /**
-   * @return QuorumInfo
-   */
-  public function getQuorumInfo()
-  {
-    return $this->quorumInfo;
   }
   /**
    * @param bool

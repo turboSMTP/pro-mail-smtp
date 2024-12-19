@@ -52,10 +52,6 @@ class V2Key extends \Google\Model
   /**
    * @var string
    */
-  public $serviceAccountEmail;
-  /**
-   * @var string
-   */
   public $uid;
   /**
    * @var string
@@ -173,20 +169,6 @@ class V2Key extends \Google\Model
   public function getRestrictions()
   {
     return $this->restrictions;
-  }
-  /**
-   * @param string
-   */
-  public function setServiceAccountEmail($serviceAccountEmail)
-  {
-    $this->serviceAccountEmail = $serviceAccountEmail;
-  }
-  /**
-   * @return string
-   */
-  public function getServiceAccountEmail()
-  {
-    return $this->serviceAccountEmail;
   }
   /**
    * @param string

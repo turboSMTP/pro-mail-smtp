@@ -19,7 +19,7 @@ namespace Google\Service\SQLAdmin;
 
 class DatabaseInstance extends \Google\Collection
 {
-  protected $collection_key = 'upgradableDatabaseVersions';
+  protected $collection_key = 'suspensionReason';
   /**
    * @var string[]
    */
@@ -133,10 +133,6 @@ class DatabaseInstance extends \Google\Collection
   /**
    * @var bool
    */
-  public $satisfiesPzi;
-  /**
-   * @var bool
-   */
   public $satisfiesPzs;
   protected $scheduledMaintenanceType = SqlScheduledMaintenance::class;
   protected $scheduledMaintenanceDataType = '';
@@ -168,16 +164,6 @@ class DatabaseInstance extends \Google\Collection
    * @var string[]
    */
   public $suspensionReason;
-  /**
-   * @var bool
-   */
-  public $switchTransactionLogsToCloudStorageEnabled;
-  /**
-   * @var string[]
-   */
-  public $tags;
-  protected $upgradableDatabaseVersionsType = AvailableDatabaseVersion::class;
-  protected $upgradableDatabaseVersionsDataType = 'array';
   /**
    * @var string
    */
@@ -634,20 +620,6 @@ class DatabaseInstance extends \Google\Collection
   /**
    * @param bool
    */
-  public function setSatisfiesPzi($satisfiesPzi)
-  {
-    $this->satisfiesPzi = $satisfiesPzi;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzi()
-  {
-    return $this->satisfiesPzi;
-  }
-  /**
-   * @param bool
-   */
   public function setSatisfiesPzs($satisfiesPzs)
   {
     $this->satisfiesPzs = $satisfiesPzs;
@@ -784,48 +756,6 @@ class DatabaseInstance extends \Google\Collection
   public function getSuspensionReason()
   {
     return $this->suspensionReason;
-  }
-  /**
-   * @param bool
-   */
-  public function setSwitchTransactionLogsToCloudStorageEnabled($switchTransactionLogsToCloudStorageEnabled)
-  {
-    $this->switchTransactionLogsToCloudStorageEnabled = $switchTransactionLogsToCloudStorageEnabled;
-  }
-  /**
-   * @return bool
-   */
-  public function getSwitchTransactionLogsToCloudStorageEnabled()
-  {
-    return $this->switchTransactionLogsToCloudStorageEnabled;
-  }
-  /**
-   * @param string[]
-   */
-  public function setTags($tags)
-  {
-    $this->tags = $tags;
-  }
-  /**
-   * @return string[]
-   */
-  public function getTags()
-  {
-    return $this->tags;
-  }
-  /**
-   * @param AvailableDatabaseVersion[]
-   */
-  public function setUpgradableDatabaseVersions($upgradableDatabaseVersions)
-  {
-    $this->upgradableDatabaseVersions = $upgradableDatabaseVersions;
-  }
-  /**
-   * @return AvailableDatabaseVersion[]
-   */
-  public function getUpgradableDatabaseVersions()
-  {
-    return $this->upgradableDatabaseVersions;
   }
   /**
    * @param string

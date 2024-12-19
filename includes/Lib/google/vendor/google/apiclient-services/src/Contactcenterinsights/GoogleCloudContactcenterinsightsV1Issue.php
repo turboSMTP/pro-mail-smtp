@@ -27,10 +27,6 @@ class GoogleCloudContactcenterinsightsV1Issue extends \Google\Collection
   /**
    * @var string
    */
-  public $displayDescription;
-  /**
-   * @var string
-   */
   public $displayName;
   /**
    * @var string
@@ -58,20 +54,6 @@ class GoogleCloudContactcenterinsightsV1Issue extends \Google\Collection
   public function getCreateTime()
   {
     return $this->createTime;
-  }
-  /**
-   * @param string
-   */
-  public function setDisplayDescription($displayDescription)
-  {
-    $this->displayDescription = $displayDescription;
-  }
-  /**
-   * @return string
-   */
-  public function getDisplayDescription()
-  {
-    return $this->displayDescription;
   }
   /**
    * @param string

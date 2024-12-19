@@ -17,8 +17,8 @@
 
 namespace Google\Service\DiscoveryEngine\Resource;
 
-use Google\Service\DiscoveryEngine\GoogleCloudDiscoveryengineV1CheckGroundingRequest;
-use Google\Service\DiscoveryEngine\GoogleCloudDiscoveryengineV1CheckGroundingResponse;
+use Google\Service\DiscoveryEngine\GoogleCloudDiscoveryengineV1betaCheckGroundingRequest;
+use Google\Service\DiscoveryEngine\GoogleCloudDiscoveryengineV1betaCheckGroundingResponse;
 
 /**
  * The "groundingConfigs" collection of methods.
@@ -36,16 +36,16 @@ class ProjectsLocationsGroundingConfigs extends \Google\Service\Resource
    * @param string $groundingConfig Required. The resource name of the grounding
    * config, such as
    * `projects/locations/global/groundingConfigs/default_grounding_config`.
-   * @param GoogleCloudDiscoveryengineV1CheckGroundingRequest $postBody
+   * @param GoogleCloudDiscoveryengineV1betaCheckGroundingRequest $postBody
    * @param array $optParams Optional parameters.
-   * @return GoogleCloudDiscoveryengineV1CheckGroundingResponse
+   * @return GoogleCloudDiscoveryengineV1betaCheckGroundingResponse
    * @throws \Google\Service\Exception
    */
-  public function check($groundingConfig, GoogleCloudDiscoveryengineV1CheckGroundingRequest $postBody, $optParams = [])
+  public function check($groundingConfig, GoogleCloudDiscoveryengineV1betaCheckGroundingRequest $postBody, $optParams = [])
   {
     $params = ['groundingConfig' => $groundingConfig, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
-    return $this->call('check', [$params], GoogleCloudDiscoveryengineV1CheckGroundingResponse::class);
+    return $this->call('check', [$params], GoogleCloudDiscoveryengineV1betaCheckGroundingResponse::class);
   }
 }
 

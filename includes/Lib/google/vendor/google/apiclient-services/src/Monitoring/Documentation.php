@@ -17,15 +17,12 @@
 
 namespace Google\Service\Monitoring;
 
-class Documentation extends \Google\Collection
+class Documentation extends \Google\Model
 {
-  protected $collection_key = 'links';
   /**
    * @var string
    */
   public $content;
-  protected $linksType = Link::class;
-  protected $linksDataType = 'array';
   /**
    * @var string
    */
@@ -48,20 +45,6 @@ class Documentation extends \Google\Collection
   public function getContent()
   {
     return $this->content;
-  }
-  /**
-   * @param Link[]
-   */
-  public function setLinks($links)
-  {
-    $this->links = $links;
-  }
-  /**
-   * @return Link[]
-   */
-  public function getLinks()
-  {
-    return $this->links;
   }
   /**
    * @param string

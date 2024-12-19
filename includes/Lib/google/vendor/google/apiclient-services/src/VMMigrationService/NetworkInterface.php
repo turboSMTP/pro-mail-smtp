@@ -34,10 +34,6 @@ class NetworkInterface extends \Google\Model
   /**
    * @var string
    */
-  public $networkTier;
-  /**
-   * @var string
-   */
   public $subnetwork;
 
   /**
@@ -81,20 +77,6 @@ class NetworkInterface extends \Google\Model
   public function getNetwork()
   {
     return $this->network;
-  }
-  /**
-   * @param string
-   */
-  public function setNetworkTier($networkTier)
-  {
-    $this->networkTier = $networkTier;
-  }
-  /**
-   * @return string
-   */
-  public function getNetworkTier()
-  {
-    return $this->networkTier;
   }
   /**
    * @param string

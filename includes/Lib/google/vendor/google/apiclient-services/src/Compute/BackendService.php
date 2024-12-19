@@ -83,10 +83,6 @@ class BackendService extends \Google\Collection
   /**
    * @var string
    */
-  public $ipAddressSelectionPolicy;
-  /**
-   * @var string
-   */
   public $kind;
   /**
    * @var string
@@ -154,8 +150,6 @@ class BackendService extends \Google\Collection
    * @var string
    */
   public $sessionAffinity;
-  protected $strongSessionAffinityCookieType = BackendServiceHttpCookie::class;
-  protected $strongSessionAffinityCookieDataType = '';
   protected $subsettingType = Subsetting::class;
   protected $subsettingDataType = '';
   /**
@@ -430,20 +424,6 @@ class BackendService extends \Google\Collection
   public function getId()
   {
     return $this->id;
-  }
-  /**
-   * @param string
-   */
-  public function setIpAddressSelectionPolicy($ipAddressSelectionPolicy)
-  {
-    $this->ipAddressSelectionPolicy = $ipAddressSelectionPolicy;
-  }
-  /**
-   * @return string
-   */
-  public function getIpAddressSelectionPolicy()
-  {
-    return $this->ipAddressSelectionPolicy;
   }
   /**
    * @param string
@@ -724,20 +704,6 @@ class BackendService extends \Google\Collection
   public function getSessionAffinity()
   {
     return $this->sessionAffinity;
-  }
-  /**
-   * @param BackendServiceHttpCookie
-   */
-  public function setStrongSessionAffinityCookie(BackendServiceHttpCookie $strongSessionAffinityCookie)
-  {
-    $this->strongSessionAffinityCookie = $strongSessionAffinityCookie;
-  }
-  /**
-   * @return BackendServiceHttpCookie
-   */
-  public function getStrongSessionAffinityCookie()
-  {
-    return $this->strongSessionAffinityCookie;
   }
   /**
    * @param Subsetting

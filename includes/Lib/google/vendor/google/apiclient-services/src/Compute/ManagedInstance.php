@@ -48,8 +48,6 @@ class ManagedInstance extends \Google\Collection
   protected $preservedStateFromConfigDataType = '';
   protected $preservedStateFromPolicyType = PreservedState::class;
   protected $preservedStateFromPolicyDataType = '';
-  protected $propertiesFromFlexibilityPolicyType = ManagedInstancePropertiesFromFlexibilityPolicy::class;
-  protected $propertiesFromFlexibilityPolicyDataType = '';
   protected $versionType = ManagedInstanceVersion::class;
   protected $versionDataType = '';
 
@@ -178,20 +176,6 @@ class ManagedInstance extends \Google\Collection
   public function getPreservedStateFromPolicy()
   {
     return $this->preservedStateFromPolicy;
-  }
-  /**
-   * @param ManagedInstancePropertiesFromFlexibilityPolicy
-   */
-  public function setPropertiesFromFlexibilityPolicy(ManagedInstancePropertiesFromFlexibilityPolicy $propertiesFromFlexibilityPolicy)
-  {
-    $this->propertiesFromFlexibilityPolicy = $propertiesFromFlexibilityPolicy;
-  }
-  /**
-   * @return ManagedInstancePropertiesFromFlexibilityPolicy
-   */
-  public function getPropertiesFromFlexibilityPolicy()
-  {
-    return $this->propertiesFromFlexibilityPolicy;
   }
   /**
    * @param ManagedInstanceVersion

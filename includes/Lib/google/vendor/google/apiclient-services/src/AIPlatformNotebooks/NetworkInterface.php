@@ -17,11 +17,8 @@
 
 namespace Google\Service\AIPlatformNotebooks;
 
-class NetworkInterface extends \Google\Collection
+class NetworkInterface extends \Google\Model
 {
-  protected $collection_key = 'accessConfigs';
-  protected $accessConfigsType = AccessConfig::class;
-  protected $accessConfigsDataType = 'array';
   /**
    * @var string
    */
@@ -35,20 +32,6 @@ class NetworkInterface extends \Google\Collection
    */
   public $subnet;
 
-  /**
-   * @param AccessConfig[]
-   */
-  public function setAccessConfigs($accessConfigs)
-  {
-    $this->accessConfigs = $accessConfigs;
-  }
-  /**
-   * @return AccessConfig[]
-   */
-  public function getAccessConfigs()
-  {
-    return $this->accessConfigs;
-  }
   /**
    * @param string
    */

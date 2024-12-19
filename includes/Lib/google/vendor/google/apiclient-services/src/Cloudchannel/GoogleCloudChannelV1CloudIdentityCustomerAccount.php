@@ -22,19 +22,11 @@ class GoogleCloudChannelV1CloudIdentityCustomerAccount extends \Google\Model
   /**
    * @var string
    */
-  public $channelPartnerCloudIdentityId;
-  /**
-   * @var string
-   */
   public $customerCloudIdentityId;
   /**
    * @var string
    */
   public $customerName;
-  /**
-   * @var string
-   */
-  public $customerType;
   /**
    * @var bool
    */
@@ -44,20 +36,6 @@ class GoogleCloudChannelV1CloudIdentityCustomerAccount extends \Google\Model
    */
   public $owned;
 
-  /**
-   * @param string
-   */
-  public function setChannelPartnerCloudIdentityId($channelPartnerCloudIdentityId)
-  {
-    $this->channelPartnerCloudIdentityId = $channelPartnerCloudIdentityId;
-  }
-  /**
-   * @return string
-   */
-  public function getChannelPartnerCloudIdentityId()
-  {
-    return $this->channelPartnerCloudIdentityId;
-  }
   /**
    * @param string
    */
@@ -85,20 +63,6 @@ class GoogleCloudChannelV1CloudIdentityCustomerAccount extends \Google\Model
   public function getCustomerName()
   {
     return $this->customerName;
-  }
-  /**
-   * @param string
-   */
-  public function setCustomerType($customerType)
-  {
-    $this->customerType = $customerType;
-  }
-  /**
-   * @return string
-   */
-  public function getCustomerType()
-  {
-    return $this->customerType;
   }
   /**
    * @param bool

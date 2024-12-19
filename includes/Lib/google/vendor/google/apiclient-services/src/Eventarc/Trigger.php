@@ -51,10 +51,6 @@ class Trigger extends \Google\Collection
    */
   public $name;
   /**
-   * @var bool
-   */
-  public $satisfiesPzs;
-  /**
    * @var string
    */
   public $serviceAccount;
@@ -194,20 +190,6 @@ class Trigger extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param bool
-   */
-  public function setSatisfiesPzs($satisfiesPzs)
-  {
-    $this->satisfiesPzs = $satisfiesPzs;
-  }
-  /**
-   * @return bool
-   */
-  public function getSatisfiesPzs()
-  {
-    return $this->satisfiesPzs;
   }
   /**
    * @param string

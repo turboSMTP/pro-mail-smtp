@@ -22,30 +22,12 @@ class GoogleCloudDialogflowCxV3DataStoreConnectionSignalsAnswerGenerationModelCa
   /**
    * @var string
    */
-  public $model;
-  /**
-   * @var string
-   */
   public $modelOutput;
   /**
    * @var string
    */
   public $renderedPrompt;
 
-  /**
-   * @param string
-   */
-  public function setModel($model)
-  {
-    $this->model = $model;
-  }
-  /**
-   * @return string
-   */
-  public function getModel()
-  {
-    return $this->model;
-  }
   /**
    * @param string
    */

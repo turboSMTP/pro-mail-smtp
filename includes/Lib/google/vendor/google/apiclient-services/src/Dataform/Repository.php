@@ -23,18 +23,12 @@ class Repository extends \Google\Model
    * @var string
    */
   public $createTime;
-  protected $dataEncryptionStateType = DataEncryptionState::class;
-  protected $dataEncryptionStateDataType = '';
   /**
    * @var string
    */
   public $displayName;
   protected $gitRemoteSettingsType = GitRemoteSettings::class;
   protected $gitRemoteSettingsDataType = '';
-  /**
-   * @var string
-   */
-  public $kmsKeyName;
   /**
    * @var string[]
    */
@@ -73,20 +67,6 @@ class Repository extends \Google\Model
     return $this->createTime;
   }
   /**
-   * @param DataEncryptionState
-   */
-  public function setDataEncryptionState(DataEncryptionState $dataEncryptionState)
-  {
-    $this->dataEncryptionState = $dataEncryptionState;
-  }
-  /**
-   * @return DataEncryptionState
-   */
-  public function getDataEncryptionState()
-  {
-    return $this->dataEncryptionState;
-  }
-  /**
    * @param string
    */
   public function setDisplayName($displayName)
@@ -113,20 +93,6 @@ class Repository extends \Google\Model
   public function getGitRemoteSettings()
   {
     return $this->gitRemoteSettings;
-  }
-  /**
-   * @param string
-   */
-  public function setKmsKeyName($kmsKeyName)
-  {
-    $this->kmsKeyName = $kmsKeyName;
-  }
-  /**
-   * @return string
-   */
-  public function getKmsKeyName()
-  {
-    return $this->kmsKeyName;
   }
   /**
    * @param string[]

@@ -30,10 +30,6 @@ class GKEMasterInfo extends \Google\Model
   /**
    * @var string
    */
-  public $dnsEndpoint;
-  /**
-   * @var string
-   */
   public $externalIp;
   /**
    * @var string
@@ -67,20 +63,6 @@ class GKEMasterInfo extends \Google\Model
   public function getClusterUri()
   {
     return $this->clusterUri;
-  }
-  /**
-   * @param string
-   */
-  public function setDnsEndpoint($dnsEndpoint)
-  {
-    $this->dnsEndpoint = $dnsEndpoint;
-  }
-  /**
-   * @return string
-   */
-  public function getDnsEndpoint()
-  {
-    return $this->dnsEndpoint;
   }
   /**
    * @param string

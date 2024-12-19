@@ -31,10 +31,6 @@ class IdFilter extends \Google\Collection
   /**
    * @var string[]
    */
-  public $adGroupQaIds;
-  /**
-   * @var string[]
-   */
   public $campaignIds;
   /**
    * @var string[]
@@ -44,10 +40,6 @@ class IdFilter extends \Google\Collection
    * @var string[]
    */
   public $lineItemIds;
-  /**
-   * @var string[]
-   */
-  public $lineItemQaIds;
   /**
    * @var string[]
    */
@@ -80,20 +72,6 @@ class IdFilter extends \Google\Collection
   public function getAdGroupIds()
   {
     return $this->adGroupIds;
-  }
-  /**
-   * @param string[]
-   */
-  public function setAdGroupQaIds($adGroupQaIds)
-  {
-    $this->adGroupQaIds = $adGroupQaIds;
-  }
-  /**
-   * @return string[]
-   */
-  public function getAdGroupQaIds()
-  {
-    return $this->adGroupQaIds;
   }
   /**
    * @param string[]
@@ -136,20 +114,6 @@ class IdFilter extends \Google\Collection
   public function getLineItemIds()
   {
     return $this->lineItemIds;
-  }
-  /**
-   * @param string[]
-   */
-  public function setLineItemQaIds($lineItemQaIds)
-  {
-    $this->lineItemQaIds = $lineItemQaIds;
-  }
-  /**
-   * @return string[]
-   */
-  public function getLineItemQaIds()
-  {
-    return $this->lineItemQaIds;
   }
   /**
    * @param string[]

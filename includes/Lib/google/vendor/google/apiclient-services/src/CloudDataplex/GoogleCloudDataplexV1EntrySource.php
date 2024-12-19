@@ -41,10 +41,6 @@ class GoogleCloudDataplexV1EntrySource extends \Google\Collection
   /**
    * @var string
    */
-  public $location;
-  /**
-   * @var string
-   */
   public $platform;
   /**
    * @var string
@@ -128,20 +124,6 @@ class GoogleCloudDataplexV1EntrySource extends \Google\Collection
   public function getLabels()
   {
     return $this->labels;
-  }
-  /**
-   * @param string
-   */
-  public function setLocation($location)
-  {
-    $this->location = $location;
-  }
-  /**
-   * @return string
-   */
-  public function getLocation()
-  {
-    return $this->location;
   }
   /**
    * @param string

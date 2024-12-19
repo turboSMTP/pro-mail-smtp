@@ -63,8 +63,6 @@ class Operation extends \Google\Model
    * @var string
    */
   public $status;
-  protected $subOperationTypeType = SqlSubOperationType::class;
-  protected $subOperationTypeDataType = '';
   /**
    * @var string
    */
@@ -277,20 +275,6 @@ class Operation extends \Google\Model
   public function getStatus()
   {
     return $this->status;
-  }
-  /**
-   * @param SqlSubOperationType
-   */
-  public function setSubOperationType(SqlSubOperationType $subOperationType)
-  {
-    $this->subOperationType = $subOperationType;
-  }
-  /**
-   * @return SqlSubOperationType
-   */
-  public function getSubOperationType()
-  {
-    return $this->subOperationType;
   }
   /**
    * @param string

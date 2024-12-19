@@ -30,14 +30,6 @@ class NetworkInfo extends \Google\Model
   /**
    * @var string
    */
-  public $matchedSubnetUri;
-  /**
-   * @var string
-   */
-  public $region;
-  /**
-   * @var string
-   */
   public $uri;
 
   /**
@@ -67,34 +59,6 @@ class NetworkInfo extends \Google\Model
   public function getMatchedIpRange()
   {
     return $this->matchedIpRange;
-  }
-  /**
-   * @param string
-   */
-  public function setMatchedSubnetUri($matchedSubnetUri)
-  {
-    $this->matchedSubnetUri = $matchedSubnetUri;
-  }
-  /**
-   * @return string
-   */
-  public function getMatchedSubnetUri()
-  {
-    return $this->matchedSubnetUri;
-  }
-  /**
-   * @param string
-   */
-  public function setRegion($region)
-  {
-    $this->region = $region;
-  }
-  /**
-   * @return string
-   */
-  public function getRegion()
-  {
-    return $this->region;
   }
   /**
    * @param string

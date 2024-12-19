@@ -128,28 +128,8 @@ class Baremetalsolution extends \Google\Service
                   'required' => true,
                 ],
               ],
-            ],'disableHyperthreading' => [
-              'path' => 'v2/{+name}:disableHyperthreading',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
             ],'disableInteractiveSerialConsole' => [
               'path' => 'v2/{+name}:disableInteractiveSerialConsole',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],'enableHyperthreading' => [
-              'path' => 'v2/{+name}:enableHyperthreading',
               'httpMethod' => 'POST',
               'parameters' => [
                 'name' => [
@@ -222,16 +202,6 @@ class Baremetalsolution extends \Google\Service
                 'updateMask' => [
                   'location' => 'query',
                   'type' => 'string',
-                ],
-              ],
-            ],'reimage' => [
-              'path' => 'v2/{+name}:reimage',
-              'httpMethod' => 'POST',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
                 ],
               ],
             ],'rename' => [

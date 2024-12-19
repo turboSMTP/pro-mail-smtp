@@ -38,10 +38,6 @@ class CertificateDescription extends \Google\Collection
   protected $subjectDescriptionDataType = '';
   protected $subjectKeyIdType = KeyId::class;
   protected $subjectKeyIdDataType = '';
-  /**
-   * @var string
-   */
-  public $tbsCertificateDigest;
   protected $x509DescriptionType = X509Parameters::class;
   protected $x509DescriptionDataType = '';
 
@@ -142,20 +138,6 @@ class CertificateDescription extends \Google\Collection
   public function getSubjectKeyId()
   {
     return $this->subjectKeyId;
-  }
-  /**
-   * @param string
-   */
-  public function setTbsCertificateDigest($tbsCertificateDigest)
-  {
-    $this->tbsCertificateDigest = $tbsCertificateDigest;
-  }
-  /**
-   * @return string
-   */
-  public function getTbsCertificateDigest()
-  {
-    return $this->tbsCertificateDigest;
   }
   /**
    * @param X509Parameters

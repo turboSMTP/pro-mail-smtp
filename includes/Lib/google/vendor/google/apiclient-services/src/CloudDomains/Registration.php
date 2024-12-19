@@ -33,10 +33,6 @@ class Registration extends \Google\Collection
    */
   public $domainName;
   /**
-   * @var string[]
-   */
-  public $domainProperties;
-  /**
    * @var string
    */
   public $expireTime;
@@ -128,20 +124,6 @@ class Registration extends \Google\Collection
   public function getDomainName()
   {
     return $this->domainName;
-  }
-  /**
-   * @param string[]
-   */
-  public function setDomainProperties($domainProperties)
-  {
-    $this->domainProperties = $domainProperties;
-  }
-  /**
-   * @return string[]
-   */
-  public function getDomainProperties()
-  {
-    return $this->domainProperties;
   }
   /**
    * @param string

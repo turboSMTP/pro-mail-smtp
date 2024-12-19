@@ -19,8 +19,6 @@ namespace Google\Service\Datastream;
 
 class SqlServerSourceConfig extends \Google\Model
 {
-  protected $changeTablesType = SqlServerChangeTables::class;
-  protected $changeTablesDataType = '';
   protected $excludeObjectsType = SqlServerRdbms::class;
   protected $excludeObjectsDataType = '';
   protected $includeObjectsType = SqlServerRdbms::class;
@@ -33,23 +31,7 @@ class SqlServerSourceConfig extends \Google\Model
    * @var int
    */
   public $maxConcurrentCdcTasks;
-  protected $transactionLogsType = SqlServerTransactionLogs::class;
-  protected $transactionLogsDataType = '';
 
-  /**
-   * @param SqlServerChangeTables
-   */
-  public function setChangeTables(SqlServerChangeTables $changeTables)
-  {
-    $this->changeTables = $changeTables;
-  }
-  /**
-   * @return SqlServerChangeTables
-   */
-  public function getChangeTables()
-  {
-    return $this->changeTables;
-  }
   /**
    * @param SqlServerRdbms
    */
@@ -105,20 +87,6 @@ class SqlServerSourceConfig extends \Google\Model
   public function getMaxConcurrentCdcTasks()
   {
     return $this->maxConcurrentCdcTasks;
-  }
-  /**
-   * @param SqlServerTransactionLogs
-   */
-  public function setTransactionLogs(SqlServerTransactionLogs $transactionLogs)
-  {
-    $this->transactionLogs = $transactionLogs;
-  }
-  /**
-   * @return SqlServerTransactionLogs
-   */
-  public function getTransactionLogs()
-  {
-    return $this->transactionLogs;
   }
 }
 

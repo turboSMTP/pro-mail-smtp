@@ -24,8 +24,6 @@ class InstanceFlexibilityPolicy extends \Google\Collection
   protected $instanceSelectionListDataType = 'array';
   protected $instanceSelectionResultsType = InstanceSelectionResult::class;
   protected $instanceSelectionResultsDataType = 'array';
-  protected $provisioningModelMixType = ProvisioningModelMix::class;
-  protected $provisioningModelMixDataType = '';
 
   /**
    * @param InstanceSelection[]
@@ -54,20 +52,6 @@ class InstanceFlexibilityPolicy extends \Google\Collection
   public function getInstanceSelectionResults()
   {
     return $this->instanceSelectionResults;
-  }
-  /**
-   * @param ProvisioningModelMix
-   */
-  public function setProvisioningModelMix(ProvisioningModelMix $provisioningModelMix)
-  {
-    $this->provisioningModelMix = $provisioningModelMix;
-  }
-  /**
-   * @return ProvisioningModelMix
-   */
-  public function getProvisioningModelMix()
-  {
-    return $this->provisioningModelMix;
   }
 }
 

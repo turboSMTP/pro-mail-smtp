@@ -19,23 +19,23 @@ namespace Google\Service\CloudAlloyDBAdmin;
 
 class StorageDatabasecenterPartnerapiV1mainCustomMetadataData extends \Google\Collection
 {
-  protected $collection_key = 'internalResourceMetadata';
-  protected $internalResourceMetadataType = StorageDatabasecenterPartnerapiV1mainInternalResourceMetadata::class;
-  protected $internalResourceMetadataDataType = 'array';
+  protected $collection_key = 'databaseMetadata';
+  protected $databaseMetadataType = StorageDatabasecenterPartnerapiV1mainDatabaseMetadata::class;
+  protected $databaseMetadataDataType = 'array';
 
   /**
-   * @param StorageDatabasecenterPartnerapiV1mainInternalResourceMetadata[]
+   * @param StorageDatabasecenterPartnerapiV1mainDatabaseMetadata[]
    */
-  public function setInternalResourceMetadata($internalResourceMetadata)
+  public function setDatabaseMetadata($databaseMetadata)
   {
-    $this->internalResourceMetadata = $internalResourceMetadata;
+    $this->databaseMetadata = $databaseMetadata;
   }
   /**
-   * @return StorageDatabasecenterPartnerapiV1mainInternalResourceMetadata[]
+   * @return StorageDatabasecenterPartnerapiV1mainDatabaseMetadata[]
    */
-  public function getInternalResourceMetadata()
+  public function getDatabaseMetadata()
   {
-    return $this->internalResourceMetadata;
+    return $this->databaseMetadata;
   }
 }
 

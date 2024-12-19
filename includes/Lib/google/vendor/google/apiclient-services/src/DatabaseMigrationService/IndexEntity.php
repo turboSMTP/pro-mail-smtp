@@ -19,7 +19,7 @@ namespace Google\Service\DatabaseMigrationService;
 
 class IndexEntity extends \Google\Collection
 {
-  protected $collection_key = 'tableColumnsDescending';
+  protected $collection_key = 'tableColumns';
   /**
    * @var array[]
    */
@@ -32,10 +32,6 @@ class IndexEntity extends \Google\Collection
    * @var string[]
    */
   public $tableColumns;
-  /**
-   * @var bool[]
-   */
-  public $tableColumnsDescending;
   /**
    * @var string
    */
@@ -86,20 +82,6 @@ class IndexEntity extends \Google\Collection
   public function getTableColumns()
   {
     return $this->tableColumns;
-  }
-  /**
-   * @param bool[]
-   */
-  public function setTableColumnsDescending($tableColumnsDescending)
-  {
-    $this->tableColumnsDescending = $tableColumnsDescending;
-  }
-  /**
-   * @return bool[]
-   */
-  public function getTableColumnsDescending()
-  {
-    return $this->tableColumnsDescending;
   }
   /**
    * @param string

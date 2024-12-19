@@ -19,8 +19,6 @@ namespace Google\Service\Texttospeech;
 
 class SynthesizeSpeechRequest extends \Google\Model
 {
-  protected $advancedVoiceOptionsType = AdvancedVoiceOptions::class;
-  protected $advancedVoiceOptionsDataType = '';
   protected $audioConfigType = AudioConfig::class;
   protected $audioConfigDataType = '';
   protected $inputType = SynthesisInput::class;
@@ -28,20 +26,6 @@ class SynthesizeSpeechRequest extends \Google\Model
   protected $voiceType = VoiceSelectionParams::class;
   protected $voiceDataType = '';
 
-  /**
-   * @param AdvancedVoiceOptions
-   */
-  public function setAdvancedVoiceOptions(AdvancedVoiceOptions $advancedVoiceOptions)
-  {
-    $this->advancedVoiceOptions = $advancedVoiceOptions;
-  }
-  /**
-   * @return AdvancedVoiceOptions
-   */
-  public function getAdvancedVoiceOptions()
-  {
-    return $this->advancedVoiceOptions;
-  }
   /**
    * @param AudioConfig
    */

@@ -58,10 +58,6 @@ class InsertionOrder extends \Google\Collection
    * @var string
    */
   public $name;
-  /**
-   * @var string
-   */
-  public $optimizationObjective;
   protected $pacingType = Pacing::class;
   protected $pacingDataType = '';
   protected $partnerCostsType = PartnerCost::class;
@@ -242,20 +238,6 @@ class InsertionOrder extends \Google\Collection
   public function getName()
   {
     return $this->name;
-  }
-  /**
-   * @param string
-   */
-  public function setOptimizationObjective($optimizationObjective)
-  {
-    $this->optimizationObjective = $optimizationObjective;
-  }
-  /**
-   * @return string
-   */
-  public function getOptimizationObjective()
-  {
-    return $this->optimizationObjective;
   }
   /**
    * @param Pacing

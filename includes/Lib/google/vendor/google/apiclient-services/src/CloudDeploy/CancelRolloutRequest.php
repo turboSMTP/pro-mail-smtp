@@ -17,28 +17,8 @@
 
 namespace Google\Service\CloudDeploy;
 
-class CancelRolloutRequest extends \Google\Collection
+class CancelRolloutRequest extends \Google\Model
 {
-  protected $collection_key = 'overrideDeployPolicy';
-  /**
-   * @var string[]
-   */
-  public $overrideDeployPolicy;
-
-  /**
-   * @param string[]
-   */
-  public function setOverrideDeployPolicy($overrideDeployPolicy)
-  {
-    $this->overrideDeployPolicy = $overrideDeployPolicy;
-  }
-  /**
-   * @return string[]
-   */
-  public function getOverrideDeployPolicy()
-  {
-    return $this->overrideDeployPolicy;
-  }
 }
 
 // Adding a class alias for backwards compatibility with the previous class name.

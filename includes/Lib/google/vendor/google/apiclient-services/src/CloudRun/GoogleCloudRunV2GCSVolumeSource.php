@@ -17,17 +17,12 @@
 
 namespace Google\Service\CloudRun;
 
-class GoogleCloudRunV2GCSVolumeSource extends \Google\Collection
+class GoogleCloudRunV2GCSVolumeSource extends \Google\Model
 {
-  protected $collection_key = 'mountOptions';
   /**
    * @var string
    */
   public $bucket;
-  /**
-   * @var string[]
-   */
-  public $mountOptions;
   /**
    * @var bool
    */
@@ -46,20 +41,6 @@ class GoogleCloudRunV2GCSVolumeSource extends \Google\Collection
   public function getBucket()
   {
     return $this->bucket;
-  }
-  /**
-   * @param string[]
-   */
-  public function setMountOptions($mountOptions)
-  {
-    $this->mountOptions = $mountOptions;
-  }
-  /**
-   * @return string[]
-   */
-  public function getMountOptions()
-  {
-    return $this->mountOptions;
   }
   /**
    * @param bool

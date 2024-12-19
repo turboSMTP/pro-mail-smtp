@@ -27,10 +27,6 @@ class Webfont extends \Google\Collection
    */
   public $category;
   /**
-   * @var string[]
-   */
-  public $colorCapabilities;
-  /**
    * @var string
    */
   public $family;
@@ -90,20 +86,6 @@ class Webfont extends \Google\Collection
   public function getCategory()
   {
     return $this->category;
-  }
-  /**
-   * @param string[]
-   */
-  public function setColorCapabilities($colorCapabilities)
-  {
-    $this->colorCapabilities = $colorCapabilities;
-  }
-  /**
-   * @return string[]
-   */
-  public function getColorCapabilities()
-  {
-    return $this->colorCapabilities;
   }
   /**
    * @param string
