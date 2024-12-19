@@ -1,0 +1,265 @@
+<?php
+
+namespace FreeMailSMTP\Providers;
+
+use Google_Client;
+use Google_Service_Gmail;
+use Google_Service_Gmail_Message;
+
+class Gmail extends BaseProvider
+{
+    public function get_api_url()
+    {
+        return;
+    }
+
+    public function get_headers()
+    {
+        return [];
+    }
+
+    private $client;
+    private $service;
+
+    public function __construct($config_keys)
+    {
+        parent::__construct($config_keys);
+        try {
+            $this->client = new Google_Client();
+            $this->client->setClientId($this->config_keys['client_id']);
+            $this->client->setClientSecret($this->config_keys['client_secret']);
+            $this->client->setRedirectUri(admin_url('admin.php?page=free_mail_smtp-settings'));
+            $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
+
+            // Check for access token
+            // if (!empty($this->config_keys['access_token'])) {
+            //     $this->client->setAccessToken($this->config_keys['access_token']);
+
+            //     // Check if token is expired and refresh if possible
+            //     if ($this->client->isAccessTokenExpired()) {
+            //         if ($this->client->getRefreshToken()) {
+            //             try {
+            //                 $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+            //                 // Update the access token in your storage
+            //                 $this->update_access_token($this->client->getAccessToken());
+            //             } catch (\Exception $e) {
+            //                 error_log('Token refresh failed: ' . $e->getMessage());
+            //             }
+            //         }
+            //     }
+            // }
+
+            $this->service = new Google_Service_Gmail($this->client);
+        } catch (\Exception $e) {
+            error_log('Gmail provider initialization error: ' . $e->getMessage());
+            throw new \Exception('Failed to initialize Gmail provider: ' . $e->getMessage());
+        }
+    }
+
+    public function handle_oauth_callback($code)
+    {
+        try {
+            $token = $this->client->fetchAccessTokenWithAuthCode($code);
+            if (!empty($token['access_token'])) {
+                $this->update_access_token($token);
+                return $token;
+            }
+            throw new \Exception('Failed to get access token');
+        } catch (\Exception $e) {
+            error_log('OAuth callback error: ' . $e->getMessage());
+            throw new \Exception('Authentication failed: ' . $e->getMessage());
+        }
+    }
+
+    private function update_access_token($token)
+    {
+        // Store the token in your preferred way (e.g., database, option)
+        update_option('free_mail_smtp_gmail_token', $token);
+    }
+
+    public function send($data)
+    {
+        if (!$this->client->getAccessToken()) {
+            throw new \Exception('Gmail authentication required. Please authorize the application first.');
+        }
+
+        try {
+            // Create the email message
+            $boundary = uniqid(rand(), true);
+            $email_parts = [];
+
+            // Add headers
+            $email_parts[] = "To: {$data['to'][0]}";
+            $email_parts[] = "From: {$data['from_name']} <{$data['from_email']}>";
+            $email_parts[] = "Subject: {$data['subject']}";
+            $email_parts[] = "MIME-Version: 1.0";
+            $email_parts[] = "Content-Type: multipart/mixed; boundary=\"{$boundary}\"";
+            $email_parts[] = "";
+
+            // Add HTML content
+            $email_parts[] = "--{$boundary}";
+            $email_parts[] = "Content-Type: text/html; charset=UTF-8";
+            $email_parts[] = "Content-Transfer-Encoding: base64";
+            $email_parts[] = "";
+            $email_parts[] = base64_encode($data['message']);
+
+            // Add attachments if any
+            if (!empty($data['attachments'])) {
+                foreach ($data['attachments'] as $attachment) {
+                    $email_parts[] = "--{$boundary}";
+                    $email_parts[] = "Content-Type: {$attachment['type']}; name=\"{$attachment['filename']}\"";
+                    $email_parts[] = "Content-Disposition: attachment; filename=\"{$attachment['filename']}\"";
+                    $email_parts[] = "Content-Transfer-Encoding: base64";
+                    $email_parts[] = "";
+                    $email_parts[] = $attachment['content'];
+                }
+            }
+
+            $email_parts[] = "--{$boundary}--";
+
+            // Create the message
+            $email_content = implode("\n", $email_parts);
+            $message = new Google_Service_Gmail_Message();
+            $message->setRaw(base64_encode($email_content));
+
+            // Send the message
+            $result = $this->service->users_messages->send('me', $message);
+
+            error_log('Gmail send response: ' . print_r($result, true));
+
+            return [
+                'message_id' => $result->getId(),
+                'provider_response' => $result
+            ];
+        } catch (\Exception $e) {
+            error_log('Gmail send error: ' . $e->getMessage());
+            throw new \Exception('Failed to send email via Gmail: ' . $e->getMessage());
+        }
+    }
+
+    public function test_connection()
+    {
+        try {
+            // if (!$this->client->getAccessToken()) {
+            //     $auth_url = $this->client->createAuthUrl();
+            //     error_log('Gmail auth URL: ' . $auth_url);
+            //     return [
+            //         'success' => false,
+            //         'auth_url' => $auth_url,
+            //         'message' => 'Gmail authorization required. Please authenticate.'
+            //     ];
+            // }
+
+            // Try to get user profile to verify connection
+            $this->service->users->getProfile('me');
+            error_log('Gmail connection verified successfully.'. print_r($this->service->users->getProfile('me'), true));
+            return [
+                'success' => true,
+                'message' => 'Gmail connection verified successfully.'
+            ];
+        } catch (\Exception $e) {
+            throw new \Exception('Gmail connection test failed: ' . $e->getMessage());
+        }
+    }
+
+    public function get_auth_url()
+    {
+        return $this->client->createAuthUrl();
+    }
+
+    protected function get_error_message($body, $code)
+    {
+        $data = json_decode($body, true);
+
+        if (isset($data['error']['message'])) {
+            return "Gmail API error: {$data['error']['message']}. (HTTP $code)";
+        }
+
+        if (isset($data['message'])) {
+            return "Gmail API error: {$data['message']}. (HTTP $code)";
+        }
+
+        return "Gmail API error (HTTP $code)";
+    }
+
+    public function get_analytics($filters = [])
+    {
+        try {
+            if (!$this->client->getAccessToken()) {
+                throw new \Exception('Gmail authentication required.');
+            }
+
+            $messages = $this->service->users_messages->listUsersMessages('me', [
+                'maxResults' => 100,
+                'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
+            ]);
+
+            $analytics = [];
+            foreach ($messages->getMessages() as $message) {
+                $msg = $this->service->users_messages->get('me', $message->getId());
+                $headers = $this->get_message_headers($msg);
+
+                $analytics[] = [
+                    'id' => $message->getId(),
+                    'subject' => $headers['subject'] ?? '',
+                    'to' => $headers['to'] ?? '',
+                    'date' => $headers['date'] ?? '',
+                    'status' => 'sent'
+                ];
+            }
+
+            return [
+                'data' => $analytics,
+                'columns' => ['id', 'subject', 'to', 'date', 'status']
+            ];
+        } catch (\Exception $e) {
+            error_log('Gmail analytics error: ' . $e->getMessage());
+            throw new \Exception('Failed to get Gmail analytics: ' . $e->getMessage());
+        }
+    }
+
+    private function get_message_headers($message)
+    {
+        $headers = [];
+        foreach ($message->getPayload()->getHeaders() as $header) {
+            $headers[strtolower($header->getName())] = $header->getValue();
+        }
+        return $headers;
+    }
+
+
+    public function set_token($credential) {
+        try {
+            error_log('Received credential: ' . print_r($credential, true));
+            
+            // Verify the ID token first
+            $payload = $this->client->verifyIdToken($credential);
+            
+            if ($payload) {
+                error_log('Token verified, payload: ' . print_r($payload, true));
+                
+                // Get access token using OAuth
+                $token = $this->client->fetchAccessTokenWithAuthCode($credential);
+                
+                error_log('Access token received: ' . print_r($token, true));
+                
+                // Set the access token
+                $this->client->setAccessToken($token);
+                
+                // Save the token
+                update_option('free_mail_smtp_gmail_token2', $token);
+                
+                // Initialize service with new token
+                $this->service = new Google_Service_Gmail($this->client);
+                
+                return true;
+            }
+            
+            throw new \Exception('Invalid ID token');
+            
+        } catch (\Exception $e) {
+            error_log('Error setting Gmail token: ' . $e->getMessage());
+            throw new \Exception('Failed to set Gmail token: ' . $e->getMessage());
+        }
+    }
+}

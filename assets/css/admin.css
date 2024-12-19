@@ -1,0 +1,229 @@
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.modal-content {
+  position: relative;
+  background: #fff;
+  margin: 20px auto;
+  padding: 25px;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.modal-header .modal-close {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Provider Grid */
+.provider-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.provider-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.provider-card:hover {
+  border-color: #2271b1;
+  background-color: #f0f7ff;
+}
+
+.provider-card img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  margin-right: 15px;
+}
+
+.provider-card h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #1d2327;
+}
+
+/* Custom Scrollbar */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Description Text */
+.modal-body .description {
+  color: #646970;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/* Active Provider State */
+.provider-card.active {
+  border-color: #2271b1;
+  background-color: #f0f7ff;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 782px) {
+  .modal-content {
+    margin: 10px auto;
+    padding: 15px;
+  }
+
+  .modal-body {
+    max-height: 80vh;
+  }
+
+  .provider-card {
+    padding: 12px;
+  }
+
+  .provider-card img {
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 30px;
+  }
+
+  .loading:after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 2px solid #2271b1;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+
+/* Analytics Filters */
+.analytics-filters {
+  margin: 20px 0;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.analytics-filters .filter-group {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.status-failed {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+/* Table Styles */
+.wp-list-table th {
+  font-weight: 600;
+}
+
+.wp-list-table td {
+  vertical-align: middle;
+}
+
+/* Date Inputs */
+input[type="date"] {
+  padding: 4px 8px;
+  line-height: 28px;
+}
+
+/* Export Button */
+.export-csv {
+  margin-left: 10px !important;
+}
