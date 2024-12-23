@@ -300,11 +300,12 @@ class Settings
 
         $index = intval($_POST['index']);
         $providers = get_option('free_mail_smtp_providers', []);
-
+            $this->clear_provider_tokens($providers[$index]);
         if (isset($providers[$index])) {
             unset($providers[$index]);
             $providers = array_values($providers); // Reindex array
             update_option('free_mail_smtp_providers', $providers);
+            $this->clear_provider_tokens($providers[$index]);
             wp_send_json_success();
         } else {
             wp_send_json_error('Provider not found');
@@ -364,5 +365,13 @@ class Settings
         } else {
             wp_send_json_error('Provider form not found');
         }
+    }
+
+    private function clear_provider_tokens($provider)
+    {
+            if($provider['provider'] === 'gmail'){
+                delete_option('free_mail_smtp_gmail_access_token');
+                delete_option('free_mail_smtp_gmail_refresh_token');
+            }
     }
 }
