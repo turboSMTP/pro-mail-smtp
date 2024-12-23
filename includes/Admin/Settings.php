@@ -118,6 +118,7 @@ class Settings
                 'client_secret' => $config_keys['client_secret']
             ]);
             $config_keys['auth_url'] = $gmail->get_auth_url();
+            $config_keys['authenticated'] = false;
         }
 
         $provider_data = [
@@ -142,7 +143,7 @@ class Settings
             error_log('Adding new provider');
             error_log('Providers data: ' . print_r($providers, true));
         }
-
+        
         // Sort providers by priority
         usort($providers, function ($a, $b) {
             return $a['priority'] - $b['priority'];
@@ -191,7 +192,7 @@ class Settings
         $providers = get_option('free_mail_smtp_providers', []);
         $index = null;
 
-        
+
         if (!isset($_POST['index'])) {
             foreach ($providers as $provider_index => $config) {
                 if ($config['provider'] === 'gmail') {
@@ -221,11 +222,22 @@ class Settings
             }
 
             $provider_instance = new $provider_class($provider['config_keys']);
-            if (!method_exists($provider_instance, 'set_token')) {
+            if (!method_exists($provider_instance, 'handle_oauth_callback')) {
                 throw new \Exception('Invalid provider');
             }
 
-            $provider_instance->set_token($credential);
+           $save = $provider_instance->handle_oauth_callback($credential);
+              if(!$save){
+                throw new \Exception('Failed to save token');
+              }
+
+            $provider['authenticated'] = true;
+            $providers[$index] = $provider;
+            usort($providers, function ($a, $b) {
+               return $a['priority'] - $b['priority'];
+           });
+   
+            update_option('free_mail_smtp_providers', $providers);
 
             wp_send_json_success('Gmail connected successfully');
         } catch (\Exception $e) {
