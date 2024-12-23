@@ -185,7 +185,7 @@ class Gmail extends BaseProvider
                 'maxResults' => 100,
                 'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
             ]);
-
+                error_log('messages____: ' . print_r($messages, true));
             $analytics = [];
             foreach ($messages->getMessages() as $message) {
                 $msg = $this->service->users_messages->get('me', $message->getId());

@@ -269,7 +269,6 @@ class Settings
 
         try {
             // Initialize provider class
-            error_log('Provider TEST: ' . print_r($provider, true));
             $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider['provider']];
 
             if (!class_exists($provider_class)) {
@@ -336,6 +335,7 @@ class Settings
 
         wp_localize_script('free_mail_smtp-settings', 'FreeMailSMTPGoogleAuth', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
+            'redirectUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
             'nonce' => wp_create_nonce('free_mail_smtp_set_gmail_token'),
             'debug' => true
         ]);

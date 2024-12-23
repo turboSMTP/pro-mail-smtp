@@ -2,6 +2,7 @@
     
     <h3><?php echo isset($_POST['is_edit']) ? 'Edit Gmail Configuration' : 'Add Gmail Provider'; ?></h3>
     <p class="description">Enter your Gmail API credentials below.</p>
+    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo site_url('wp-admin/admin.php?page=free_mail_smtp-settings'); ?></code></p>
 
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>

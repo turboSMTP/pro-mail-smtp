@@ -229,6 +229,7 @@ function handleGoogleAuth() {
             success: function(response) {
                 if (response.success) {
                     console.log('Gmail connected successfully');
+                    window.location.href = FreeMailSMTPGoogleAuth.redirectUrl;
                 } else {
                     console.error('Failed to connect Gmail:', response.data);
                 }
