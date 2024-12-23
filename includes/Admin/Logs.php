@@ -52,7 +52,6 @@ class Logs {
     public function render() {
         $filters = $this->get_filters();
         $logs = $this->get_logs($filters);
-        error_log('logs____: ' . print_r(json_encode($logs), true));
         $total_items = $this->get_total_logs($filters);
         $total_pages = ceil($total_items / $this->per_page);
 

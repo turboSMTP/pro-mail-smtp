@@ -90,7 +90,6 @@ class Manager {
             // Convert headers string into an array
             $headers = explode("\n", str_replace("\r\n", "\n", $headers));
         }
-
         foreach ($headers as $header) {
             if (strpos($header, ':') === false) {
                 continue;
@@ -168,5 +167,24 @@ class Manager {
         foreach ($errors as $error) {
             error_log("Provider {$error['provider']}: {$error['error']}");
         }
+    }
+
+    private function extract_email($string) {
+        if (preg_match('/<(.+)>/', $string, $matches)) {
+            return $matches[1];
+        }
+        return $string;
+    }
+
+    private function extract_name($string) {
+        if (preg_match('/(.+)<.+>/', $string, $matches)) {
+            return trim($matches[1]);
+        }
+        return '';
+    }
+
+    private function extract_addresses($string) {
+        $addresses = explode(',', $string);
+        return array_map('trim', $addresses);
     }
 }
