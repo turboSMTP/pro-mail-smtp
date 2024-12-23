@@ -3,12 +3,15 @@ namespace FreeMailSMTP\Admin;
 
 class Analytics {
     private $providers = [];
+    private $providersList = [];
+
     private $plugin_path;
 
     public function __construct() {
         $this->plugin_path = dirname(dirname(dirname(__FILE__)));
         $this->providers = get_option('free_mail_smtp_providers', []);
-        
+        $this->providersList = include __DIR__ . '/../../config/providers-list.php';
+
         add_action('wp_ajax_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
 
@@ -117,7 +120,7 @@ class Analytics {
         }
 
         // Initialize provider class
-        $provider_class = '\\FreeMailSMTP\\Providers\\' . ucfirst($provider_config['provider']);
+        $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider_config['provider']];
         if (!class_exists($provider_class)) {
             throw new \Exception('Invalid provider');
         }

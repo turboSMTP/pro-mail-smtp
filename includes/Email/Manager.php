@@ -3,9 +3,12 @@ namespace FreeMailSMTP\Email;
 
 class Manager {
     private $providers = [];
+    private $providersList = [];
+
     
     public function __construct() {
         add_action('init', [$this, 'init_providers']);
+        $this->providersList = include __DIR__ . '/../../config/providers-list.php';
     }
     
     public function init_providers() {
@@ -13,7 +16,8 @@ class Manager {
         
         foreach ($provider_configs as $config) {
             if (!empty($config['provider']) && !empty($config['config_keys']) && !empty($config['priority'])) {
-                $provider_class = '\\FreeMailSMTP\\Providers\\' . ucfirst($config['provider']);
+                $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$config['provider']];
+
                 if (class_exists($provider_class)) {
                     $this->providers[] = [
                         'instance' => new $provider_class($config['config_keys']),

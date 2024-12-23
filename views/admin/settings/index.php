@@ -38,7 +38,7 @@
                             <td>
                             <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_token2')): ?>
                                 
-                            <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary">Connect Gmail Account</a>
+                            <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary" target="_blank">Connect Gmail Account</a>
                             <?php endif; ?>
                             </td>
                             <td class="column-actions">
