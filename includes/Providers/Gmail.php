@@ -35,21 +35,7 @@ class Gmail extends BaseProvider
             $this->client->addScope(Google_Service_Gmail::GMAIL_READONLY);
             $this->client->addScope(Google_Service_Gmail::GMAIL_LABELS);
 
-
-            $accessToken = $this->get_access_token();
-            if (!empty($accessToken)) {
-                $this->client->setAccessToken($accessToken);
-                if ($this->client->isAccessTokenExpired()) {
-                    $this->client->refreshToken($this->get_refresh_token());
-                    try {
-                        $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-                        $this->save_access_token($this->client->getAccessToken());
-                        $this->save_refresh_token($this->client->getRefreshToken());
-                    } catch (\Exception $e) {
-                        error_log('Token refresh failed: ' . $e->getMessage());
-                    }
-                }
-            }
+            $this->validateAccessToken();
             $this->service = new Google_Service_Gmail($this->client);
         } catch (\Exception $e) {
             error_log('Gmail provider initialization error: ' . $e->getMessage());
@@ -59,31 +45,29 @@ class Gmail extends BaseProvider
 
     private function save_access_token($token)
     {
-            update_option('free_mail_smtp_gmail_access_token', $token);
-            error_log('Access token saved.');
+        update_option('free_mail_smtp_gmail_access_token', $token);
+        error_log('Access token saved.');
     }
 
     private function save_refresh_token($token)
     {
-            update_option('free_mail_smtp_gmail_refresh_token', $token);
-            error_log('Refresh token saved.');
+        update_option('free_mail_smtp_gmail_refresh_token', $token);
+        error_log('Refresh token saved.');
     }
 
     private function get_access_token()
     {
-            return get_option('free_mail_smtp_gmail_access_token');
+        return get_option('free_mail_smtp_gmail_access_token');
     }
 
     private function get_refresh_token()
     {
-            return get_option('free_mail_smtp_gmail_refresh_token');
+        return get_option('free_mail_smtp_gmail_refresh_token');
     }
 
     public function send($data)
     {
-        if (!$this->client->getAccessToken()) {
-            throw new \Exception('Gmail authentication required. Please authorize the application first.');
-        }
+        $this->validateAccessToken();
 
         try {
             // Create the email message
@@ -143,6 +127,7 @@ class Gmail extends BaseProvider
     {
         try {
             // Try to list labels to verify connection
+            $this->validateAccessToken();
             $this->service->users_labels->listUsersLabels('me');
             error_log('Gmail connection verified successfully.');
             return [
@@ -177,16 +162,15 @@ class Gmail extends BaseProvider
     public function get_analytics($filters = [])
     {
         try {
-            if (!$this->client->getAccessToken()) {
-                throw new \Exception('Gmail authentication required.');
-            }
+
+            $this->validateAccessToken();
 
             $messages = $this->service->users_messages->listUsersMessages('me', [
                 'maxResults' => 100,
                 'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
             ]);
-                error_log('messages____: ' . print_r($messages, true));
             $analytics = [];
+            error_log('Gmail analytics response: ' . print_r($messages->getMessages(), true));
             foreach ($messages->getMessages() as $message) {
                 $msg = $this->service->users_messages->get('me', $message->getId());
                 $headers = $this->get_message_headers($msg);
@@ -241,6 +225,23 @@ class Gmail extends BaseProvider
         } catch (\Exception $e) {
             error_log('Error setting Gmail token: ' . $e->getMessage());
             throw new \Exception('Failed to set Gmail token: ' . $e->getMessage());
+        }
+    }
+    private function validateAccessToken()
+    {
+        $accessToken = $this->get_access_token();
+        if (!empty($accessToken)) {
+            $this->client->setAccessToken($accessToken);
+            if ($this->client->isAccessTokenExpired()) {
+                $this->client->refreshToken($this->get_refresh_token());
+                try {
+                    $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                    $this->save_access_token($this->client->getAccessToken());
+                    $this->save_refresh_token($this->client->getRefreshToken());
+                } catch (\Exception $e) {
+                    error_log('Token refresh failed: ' . $e->getMessage());
+                }
+            }
         }
     }
 }
