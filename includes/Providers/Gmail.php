@@ -32,6 +32,10 @@ class Gmail extends BaseProvider
             $this->client->setAccessType('offline');
             $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
+            $this->client->addScope(Google_Service_Gmail::GMAIL_READONLY);
+            $this->client->addScope(Google_Service_Gmail::GMAIL_LABELS);
+
+
             $accessToken = $this->get_access_token();
             if (!empty($accessToken)) {
                 $this->client->setAccessToken($accessToken);
@@ -138,9 +142,9 @@ class Gmail extends BaseProvider
     public function test_connection()
     {
         try {
-            // Try to get user profile to verify connection
-            $this->service->users->getProfile('me');
-            error_log('Gmail connection verified successfully.' . print_r($this->service->users->getProfile('me'), true));
+            // Try to list labels to verify connection
+            $this->service->users_labels->listUsersLabels('me');
+            error_log('Gmail connection verified successfully.');
             return [
                 'success' => true,
                 'message' => 'Gmail connection verified successfully.'
