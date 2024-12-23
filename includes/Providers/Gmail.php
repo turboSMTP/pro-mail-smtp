@@ -55,32 +55,24 @@ class Gmail extends BaseProvider
 
     private function save_access_token($token)
     {
-        if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             update_option('free_mail_smtp_gmail_access_token', $token);
-        }
+            error_log('Access token saved.');
     }
 
     private function save_refresh_token($token)
     {
-        if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             update_option('free_mail_smtp_gmail_refresh_token', $token);
-        }
+            error_log('Refresh token saved.');
     }
 
     private function get_access_token()
     {
-        if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             return get_option('free_mail_smtp_gmail_access_token');
-        }
-        return null;
     }
 
     private function get_refresh_token()
     {
-        if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             return get_option('free_mail_smtp_gmail_refresh_token');
-        }
-        return null;
     }
 
     public function send($data)
