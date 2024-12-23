@@ -36,7 +36,7 @@
                                 <strong><?php echo esc_html($providers_list[$config['provider']]); ?></strong>
                             </td>
                             <td>
-                            <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_token2')): ?>
+                            <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_access_token')): ?>
                                 
                             <a href="<?php echo esc_url($config['config_keys']['auth_url'].'&state='.$index); ?>" class="button button-primary" target="_blank">Connect Gmail Account</a>
                             <?php endif; ?>

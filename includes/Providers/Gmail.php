@@ -33,16 +33,13 @@ class Gmail extends BaseProvider
             $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
             $accessToken = $this->get_access_token();
-            // Check for access token
             if (!empty($accessToken)) {
                 $this->client->setAccessToken($accessToken);
-                // Check if token is expired and refresh if possible
                 if ($this->client->isAccessTokenExpired()) {
                     $this->client->refreshToken($this->get_refresh_token());
                     try {
                         $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-                        // Update the access token in your storage
-                        $this->update_access_token($this->client->getAccessToken());
+                        $this->save_access_token($this->client->getAccessToken());
                         $this->save_refresh_token($this->client->getRefreshToken());
                     } catch (\Exception $e) {
                         error_log('Token refresh failed: ' . $e->getMessage());
@@ -56,15 +53,8 @@ class Gmail extends BaseProvider
         }
     }
 
-    private function update_access_token($token)
-    {
-        // Store the token in your preferred way (e.g., database, option)
-        update_option('free_mail_smtp_gmail_token', $token);
-    }
-
     private function save_access_token($token)
     {
-        // Store the access token securely
         if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             update_option('free_mail_smtp_gmail_access_token', $token);
         }
@@ -72,7 +62,6 @@ class Gmail extends BaseProvider
 
     private function save_refresh_token($token)
     {
-        // Store the refresh token securely
         if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             update_option('free_mail_smtp_gmail_refresh_token', $token);
         }
@@ -80,7 +69,6 @@ class Gmail extends BaseProvider
 
     private function get_access_token()
     {
-        // Retrieve the access token
         if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             return get_option('free_mail_smtp_gmail_access_token');
         }
@@ -89,7 +77,6 @@ class Gmail extends BaseProvider
 
     private function get_refresh_token()
     {
-        // Retrieve the refresh token
         if (defined('ABSPATH') && defined('FREE_MAIL_SMTP_PLUGIN')) {
             return get_option('free_mail_smtp_gmail_refresh_token');
         }
@@ -243,7 +230,6 @@ class Gmail extends BaseProvider
             // Get access token using OAuth
             $token = $this->client->fetchAccessTokenWithAuthCode($code);
             if (!empty($token['refresh_token'])) {
-                // Save the refresh token for later use
                 $this->save_refresh_token($token['refresh_token']);
                 error_log('Refresh token saved.');
             } else {
