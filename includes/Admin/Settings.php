@@ -71,6 +71,16 @@ class Settings
             return;
         }
 
+        // only one Gmail provider can be added
+        if ($form_data['provider'] === 'gmail') {
+            foreach ($providers as $existing_provider) {
+                if ($existing_provider['provider'] === 'gmail') {
+                    wp_send_json_error('Only one Gmail provider can be added.');
+                    return;
+                }
+            }
+        }
+
         $config_keys = [];
         if (isset($form_data['config_keys']) && is_array($form_data['config_keys'])) {
             foreach ($form_data['config_keys'] as $key => $value) {
@@ -143,7 +153,7 @@ class Settings
             error_log('Adding new provider');
             error_log('Providers data: ' . print_r($providers, true));
         }
-        
+
         // Sort providers by priority
         usort($providers, function ($a, $b) {
             return $a['priority'] - $b['priority'];
@@ -191,30 +201,24 @@ class Settings
         }
         $providers = get_option('free_mail_smtp_providers', []);
         $index = null;
-
-
-        if (!isset($_POST['index'])) {
             foreach ($providers as $provider_index => $config) {
                 if ($config['provider'] === 'gmail') {
                     $index = $provider_index;
                     break;
                 }
             }
-        }else{
-            $index = intval($_POST['index']);
-        }
-
+      
         if (!isset($providers[$index])) {
             wp_send_json_error('Provider not found');
             return;
         }
+        error_log('Provider Index: ' . print_r($index, true));
 
         $provider = $providers[$index];
 
         $credential = $_POST['code'];
         try {
             // Initialize provider class
-            error_log('Provider TEST: ' . print_r($provider, true));
             $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider['provider']];
 
             if (!class_exists($provider_class)) {

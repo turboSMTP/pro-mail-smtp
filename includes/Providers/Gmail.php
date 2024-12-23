@@ -235,9 +235,7 @@ class Gmail extends BaseProvider
             } else {
                 error_log('No refresh token received.');
             }
-
             $this->save_access_token($token['access_token']);
-            error_log('Access token saved.');
 
             $this->client->setAccessToken($token);
 

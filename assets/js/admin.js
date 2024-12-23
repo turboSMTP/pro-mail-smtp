@@ -216,7 +216,6 @@ $('.test-provider').on('click', function(e) {
 function handleGoogleAuth() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-    const index = urlParams.get('state');
     console.log('Google Auth code:', code);
     if (code) {
         jQuery.ajax({
@@ -226,7 +225,6 @@ function handleGoogleAuth() {
                 action: 'free_mail_smtp_set_gmail_token',
                 code: code,
                 nonce: FreeMailSMTPGoogleAuth.nonce,
-                index: index
             },
             success: function(response) {
                 if (response.success) {
