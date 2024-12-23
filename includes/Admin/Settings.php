@@ -16,6 +16,7 @@ class Settings
         add_action('wp_ajax_save_provider', [$this, 'save_provider']);
         add_action('wp_ajax_delete_provider', [$this, 'delete_provider']);
         add_action('wp_ajax_load_provider_form', [$this, 'load_provider_form']);
+        add_action('wp_ajax_free_mail_smtp_set_gmail_token', [$this, 'free_mail_smtp_set_gmail_token']);
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
 
@@ -178,47 +179,59 @@ class Settings
         }
     }
 
-    // function free_mail_smtp_set_gmail_token()
-    // {
-    //     check_ajax_referer('free_mail_smtp_set_gmail_token', 'nonce');
+    function free_mail_smtp_set_gmail_token()
+    {
+        error_log('free_mail_smtp_set_gmail_token');
+        check_ajax_referer('free_mail_smtp_set_gmail_token', 'nonce');
 
-    //     if (!current_user_can('manage_options')) {
-    //         wp_send_json_error('Unauthorized');
-    //         return;
-    //     }
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Unauthorized');
+            return;
+        }
+        $providers = get_option('free_mail_smtp_providers', []);
+        $index = null;
 
-    //     $index = intval($_POST['index']);
-    //     $providers = get_option('free_mail_smtp_providers', []);
+        
+        if (!isset($_POST['index'])) {
+            foreach ($providers as $provider_index => $config) {
+                if ($config['provider'] === 'gmail') {
+                    $index = $provider_index;
+                    break;
+                }
+            }
+        }else{
+            $index = intval($_POST['index']);
+        }
 
-    //     if (!isset($providers[$index])) {
-    //         wp_send_json_error('Provider not found');
-    //         return;
-    //     }
+        if (!isset($providers[$index])) {
+            wp_send_json_error('Provider not found');
+            return;
+        }
 
-    //     $provider = $providers[$index];
-    //     $credential = $_POST['credential'];
-    //     error_log('Token Google: ' . print_r($credential, true));
-    //     try {
-    //         // Initialize provider class
-    //         error_log('Provider TEST: ' . print_r($provider, true));
-    //         $provider_class = '\\FreeMailSMTP\\Providers\\' . ucfirst($provider['provider']);
+        $provider = $providers[$index];
 
-    //         if (!class_exists($provider_class)) {
-    //             throw new \Exception('Invalid provider');
-    //         }
+        $credential = $_POST['code'];
+        try {
+            // Initialize provider class
+            error_log('Provider TEST: ' . print_r($provider, true));
+            $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider['provider']];
 
-    //         $provider_instance = new $provider_class($provider['config_keys']);
-    //         if (!method_exists($provider_instance, 'set_token')) {
-    //             throw new \Exception('Invalid provider');
-    //         }
+            if (!class_exists($provider_class)) {
+                throw new \Exception('Invalid provider');
+            }
 
-    //         $provider_instance->set_token($credential);
+            $provider_instance = new $provider_class($provider['config_keys']);
+            if (!method_exists($provider_instance, 'set_token')) {
+                throw new \Exception('Invalid provider');
+            }
 
-    //         wp_send_json_success('Gmail connected successfully');
-    //     } catch (\Exception $e) {
-    //         wp_send_json_error($e->getMessage());
-    //     }
-    // }
+            $provider_instance->set_token($credential);
+
+            wp_send_json_success('Gmail connected successfully');
+        } catch (\Exception $e) {
+            wp_send_json_error($e->getMessage());
+        }
+    }
 
     public function test_provider_connection()
     {

@@ -213,21 +213,36 @@ $('.test-provider').on('click', function(e) {
 });
 
 
-function handleGoogleAuth(response){
-    jQuery.ajax({
-        url: FreeMailSMTPGoogleAuth.ajaxUrl, 
-        type: 'POST',
-        data: {
-            action: 'free_mail_smtp_set_gmail_token',
-            credential: response.credential, 
-            nonce: FreeMailSMTPGoogleAuth.nonce
-        },
-        success: function(response) {
-            if (response.success) {
-                console.log('Gmail connected successfully');
-            } else {
-                console.error('Failed to connect Gmail:', response.data);
+function handleGoogleAuth() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const index = urlParams.get('state');
+    console.log('Google Auth code:', code);
+    if (code) {
+        jQuery.ajax({
+            url: FreeMailSMTPGoogleAuth.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'free_mail_smtp_set_gmail_token',
+                code: code,
+                nonce: FreeMailSMTPGoogleAuth.nonce,
+                index: index
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('Gmail connected successfully');
+                } else {
+                    console.error('Failed to connect Gmail:', response.data);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('AJAX request failed:', textStatus, errorThrown);
             }
-        }
-    });
+        });
+    } else {
+        console.error('No code parameter found in the URL');
+    }
 }
+
+// Listen for the Google Auth callback
+window.addEventListener('load', handleGoogleAuth);

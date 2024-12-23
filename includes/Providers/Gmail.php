@@ -29,6 +29,8 @@ class Gmail extends BaseProvider
             $this->client->setClientId($this->config_keys['client_id']);
             $this->client->setClientSecret($this->config_keys['client_secret']);
             $this->client->setRedirectUri(admin_url('admin.php?page=free_mail_smtp-settings'));
+            $this->client->setAccessType('offline');
+            $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
 
             // Check for access token
@@ -228,35 +230,30 @@ class Gmail extends BaseProvider
     }
 
 
-    public function set_token($credential) {
+    public function set_token($code) {
         try {
-            error_log('Received credential: ' . print_r($credential, true));
+            error_log('Received credential: ' . print_r($code, true));
             
-            // Verify the ID token first
-            $payload = $this->client->verifyIdToken($credential);
+            // Get access token using OAuth
+            $token = $this->client->fetchAccessTokenWithAuthCode($code);
             
-            if ($payload) {
-                error_log('Token verified, payload: ' . print_r($payload, true));
-                
-                // Get access token using OAuth
-                $token = $this->client->fetchAccessTokenWithAuthCode($credential);
-                
-                error_log('Access token received: ' . print_r($token, true));
-                
-                // Set the access token
-                $this->client->setAccessToken($token);
-                
-                // Save the token
-                update_option('free_mail_smtp_gmail_token2', $token);
-                
-                // Initialize service with new token
-                $this->service = new Google_Service_Gmail($this->client);
-                
-                return true;
+            error_log('Access token received: ' . print_r($token, true));
+            
+            if (!empty($token['refresh_token'])) {
+                // Save the refresh token for later use
+                $this->update_access_token($token);
+                error_log('Refresh token saved.');
+            } else {
+                error_log('No refresh token received.');
             }
             
-            throw new \Exception('Invalid ID token');
+            // Set the access token
+            $this->client->setAccessToken($token);
             
+            // Initialize service with new token
+            // $this->service = new Google_Service_Gmail($this->client);
+            
+            return true;
         } catch (\Exception $e) {
             error_log('Error setting Gmail token: ' . $e->getMessage());
             throw new \Exception('Failed to set Gmail token: ' . $e->getMessage());
