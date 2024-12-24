@@ -3,7 +3,7 @@
 return [
     'turbosmtp' => 'TurboSMTP',
     // 'sendgrid' => 'SendGrid', // not available yet
-    // 'mailgun' => 'Mailgun', // not available yet
+    'mailgun' => 'Mailgun', // under development
     // 'postmark' => 'Postmark',// not available yet
     'gmail' => 'Gmail', // under development
     // 'outlook' => '365/Outlook',// not available yet

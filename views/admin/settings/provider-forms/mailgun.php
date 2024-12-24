@@ -48,6 +48,17 @@
             </tr>
             <tr>
                 <th scope="row">
+                    <label for="region">Region</label>
+                </th>
+                <td>
+                    <select name="config_keys[region]" id="region" required>
+                        <option value="us">US</option>
+                        <option value="eu">EU</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                     <label for="priority">Priority</label>
                 </th>
                 <td>
@@ -81,6 +92,7 @@
         jQuery('#domain').val(data.config_keys.domain);
         jQuery('#provider_index').val(data.index);
         jQuery('#priority').val(data.priority);
+        jQuery('#region').val(data.config_keys.region);
         jQuery('.back-step').hide();
     }
 </script>
