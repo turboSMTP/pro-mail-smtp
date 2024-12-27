@@ -37,9 +37,9 @@ class Manager {
     public function send_mail($null, $args) {
         $error_messages = [];
             error_log('args of email to send____: ' . print_r(json_encode($args), true));
+            $email_data = $this->prepare_email_data($args);
         foreach ($this->providers as $provider) {
             try {
-                $email_data = $this->prepare_email_data($args);
                 $result = $provider['instance']->send($email_data);
                 
                 $this->log_email($email_data, $result, $provider['name'], 'sent');
@@ -66,13 +66,13 @@ class Manager {
     private function prepare_email_data($args) {
         $to = is_array($args['to']) ? $args['to'] : [$args['to']];
         $headers = $this->parse_headers($args['headers']);
-        
+        error_log('headers of email to send____: ' . print_r(json_encode($headers), true));
         return [
             'to' => $to,
             'subject' => $args['subject'],
             'message' => $args['message'],
-            'from_email' => $headers['from_email'] ?? get_option('free_mail_smtp_from_email'),
-            'from_name' => $headers['from_name'] ?? get_option('free_mail_smtp_from_name'),
+            'from_email' => get_option('free_mail_smtp_from_email') ?? $headers['from_email'],
+            'from_name' => get_option('free_mail_smtp_from_name') ?? $headers['from_name'],
             'reply_to' => $headers['reply_to'] ?? '',
             'cc' => $headers['cc'] ?? [],
             'bcc' => $headers['bcc'] ?? [],
@@ -97,7 +97,7 @@ class Manager {
             list($name, $value) = explode(':', trim($header), 2);
             $name = strtolower(trim($name));
             $value = trim($value);
-
+            
             switch ($name) {
                 case 'from':
                     $parsed_headers['from_email'] = $this->extract_email($value);
@@ -131,10 +131,16 @@ class Manager {
         }
     
         $prepared_attachments = [];
-    
+
         foreach ($attachments as $attachment) {
             if (file_exists($attachment)) {
-                $prepared_attachments[] = $attachment;
+                $prepared_attachments[] = [
+                    'path' => $attachment,
+                    'name' => basename($attachment),
+                    'size' => filesize($attachment),
+                    'type' => mime_content_type($attachment),
+                    'content' => base64_encode(file_get_contents($attachment)) // Encode content to base64
+                ];
             }
         }
     

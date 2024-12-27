@@ -21,22 +21,26 @@ class Postmark extends BaseProvider {
             'Subject' => $data['subject'],
             'HtmlBody' => $data['message'],
         ];
-        
-        // Add attachments if any
-        // if (!empty($data['attachments'])) {
-        //     $payload['attachments'] = array_map(function($attachment) {
-        //         return [
-        //             'content' => $attachment['content'],
-        //             'filename' => $attachment['filename'],
-        //             'type' => $attachment['type'],
-        //             'disposition' => 'attachment'
-        //         ];
-        //     }, $data['attachments']);
-        // }
-        error_log('Data to send: ' . print_r(json_encode($payload), true));
+
+        if (!empty($data['cc'])) {
+            $payload['Cc'] = $data['cc'];
+        }
+
+        if (!empty($data['bcc'])) {
+            $payload['Bcc'] = $data['bcc'];
+        }
+
+        if (!empty($data['attachments'])) {
+            $payload['attachments'] = array_map(function($attachment) {
+                return [
+                    'Name' => $attachment['name'],
+                    'ContentType' => $attachment['type'],
+                    'Content' => $attachment['content'],
+                ];
+            }, $data['attachments']);
+        }
 
         $response = $this->request($endpoint, $payload, false, 'POST');
-        error_log('Response of email send: ' . print_r($response, true));
         return [
             'message_id' => 'Postmark' . uniqid(),
             'provider_response' => $response
@@ -58,42 +62,23 @@ class Postmark extends BaseProvider {
     }
 
     public function test_connection() {
-        $endpoint = '/email';
+        $endpoint = 'stats/outbound';
 
-        $payload = [
-            'From' => 'osama@travelishtours.com',
-            'To' => 'osamadabous@gmail.com',
-            'Subject' => 'Test Email',
-            'HtmlBody' =>   'This is a test email from Postmark SMTP',
-        ];
-        
-        // Add attachments if any
-        // if (!empty($data['attachments'])) {
-        //     $payload['attachments'] = array_map(function($attachment) {
-        //         return [
-        //             'content' => $attachment['content'],
-        //             'filename' => $attachment['filename'],
-        //             'type' => $attachment['type'],
-        //             'disposition' => 'attachment'
-        //         ];
-        //     }, $data['attachments']);
-        // }
-        error_log('Data to send: ' . print_r(json_encode($payload), true));
 
-        $response = $this->request($endpoint, $payload, false, 'POST');
-        error_log('Response of email send: ' . print_r($response, true));
+        $response = $this->request($endpoint, [], false, 'GET');
         return [
             'message_id' => 'Postmark__' . uniqid(),
             'provider_response' => $response
         ];
     }
     public function get_analytics($filters = []) {
-        $endpoint = '/essages/outbound';
+        $endpoint = '/messages/outbound';
 
         $response = $this->request($endpoint, [
             'fromdate' => $filters['date_from'],
             'todate' => $filters['date_to'],
-            'count' => 100
+            'count' => 100,
+            'offset' => 0
         ], false ,'GET');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);

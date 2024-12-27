@@ -26,13 +26,11 @@ abstract class BaseProvider {
                 $args['body'] = json_encode($data);
             }
         }
-        error_log('endpoint: ' . print_r(json_encode($endpoint), true));
         if($override_base_api_url){
             $response = wp_remote_request($endpoint, $args);
         }else{
             $response = wp_remote_request($this->get_api_url() . $endpoint, $args);
         }
-        error_log('response: ' . print_r(json_encode($response), true));
 
         if (is_wp_error($response)) {
 

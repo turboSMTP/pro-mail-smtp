@@ -21,6 +21,25 @@ class SMTP2GO extends BaseProvider {
             'subject' => $data['subject'],
             'text_body' => $data['message'],
         ];
+
+        if (!empty($data['cc'])) {
+            $payload['cc'] = $data['cc'];
+        }
+
+        if (!empty($data['bcc'])) {
+            $payload['bcc'] = $data['bcc'];
+        }
+
+        if (!empty($data['attachments'])) {
+            $payload['attachments'] = array_map(function($attachment) {
+                return [
+                    'filename' => $attachment['name'],
+                    'mimetype' => $attachment['type'],
+                    'fileblob' => $attachment['content'],
+                ];
+            }, $data['attachments']);
+        }
+
         $response = $this->request($endpoint, $payload, false, 'POST');
         
         return [

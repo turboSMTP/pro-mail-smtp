@@ -20,24 +20,43 @@ class Brevo extends BaseProvider {
                 'email' => $data['from_email'],
                 'name' => $data['from_name']
             ],
-            'to' => [
-                [
-                'email' => $data['to'][0],
-                'name' => $data['to'][0]
-                ]
-            ],
+            'to' => array_map(function($recipient) {
+                return [
+                    'email' => $recipient
+                ];
+            }, $data['to']),
             'subject' => $data['subject'],
-                'htmlContent' => $data['message'],
+            'htmlContent' => $data['message'],
+            'replyTo' => [
+                'email' => $data['from_email'],
+                'name' => $data['from_name']
+            ],
         ];
-        
+
+        // Add cc if any
+        if (!empty($data['cc'])) {
+            $payload['cc'] = array_map(function($recipient) {
+                return [
+                    'email' => $recipient
+                ];
+            }, $data['cc']);
+        }
+
+        // Add bcc if any
+        if (!empty($data['bcc'])) {
+            $payload['bcc'] = array_map(function($recipient) {
+                return [
+                    'email' => $recipient
+                ];
+            }, $data['bcc']);
+        }
+
         // Add attachments if any
         if (!empty($data['attachments'])) {
-            $payload['attachments'] = array_map(function($attachment) {
+            $payload['attachment'] = array_map(function($attachment) {
                 return [
+                    'name' => $attachment['name'],
                     'content' => $attachment['content'],
-                    'filename' => $attachment['filename'],
-                    'type' => $attachment['type'],
-                    'disposition' => 'attachment'
                 ];
             }, $data['attachments']);
         }

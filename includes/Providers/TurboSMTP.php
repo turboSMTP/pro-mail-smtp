@@ -1,12 +1,16 @@
 <?php
+
 namespace FreeMailSMTP\Providers;
 
-class TurboSMTP extends BaseProvider {
-    protected function get_api_url() {
+class TurboSMTP extends BaseProvider
+{
+    protected function get_api_url()
+    {
         return 'https://pro.api.serversmtp.com/api/v2/';
     }
-    
-    protected function get_headers() {
+
+    protected function get_headers()
+    {
         return [
             'consumerKey' => $this->config_keys['consumer_key'],
             'consumerSecret' => $this->config_keys['consumer_secret'],
@@ -14,88 +18,90 @@ class TurboSMTP extends BaseProvider {
         ];
     }
 
-    public function send($data) {
+    public function send($data)
+    {
         $endpoint = 'https://api.turbo-smtp.com/api/v2/mail/send';
         $payload = [
             'from' => $data['from_email'],
             'subject' => $data['subject'],
             'content' => $data['message'],
-            'to' => implode(",", $data['to'])
+            'to' => implode(",", $data['to']),
+            'reply_to' => $data['reply_to'] ?? $data['from_email'],
         ];
-        
+
         // Add CC recipients if any
         if (!empty($data['cc'])) {
-            $payload['personalizations'][0]['cc'] = array_map(function($email) {
-                return ['email' => $email];
-            }, $data['cc']);
+            $payload['cc'] = implode(",", $data['cc']);
         }
-        
+
         // Add BCC recipients if any
         if (!empty($data['bcc'])) {
-            $payload['personalizations'][0]['bcc'] = array_map(function($email) {
-                return ['email' => $email];
-            }, $data['bcc']);
+            $payload['bcc'] = implode(",", $data['bcc']);
         }
-        
+
         // Add attachments if any
-        // if (!empty($data['attachments'])) {
-        //     $payload['attachments'] = array_map(function($attachment) {
-        //         return [
-        //             'content' => $attachment['content'],
-        //             'filename' => $attachment['filename'],
-        //             'type' => $attachment['type'],
-        //             'disposition' => 'attachment'
-        //         ];
-        //     }, $data['attachments']);
-        // }
+        if (!empty($data['attachments'])) {
+            $payload['attachments'] = array_map(function ($attachment) {
+                return [
+                    'content' => $attachment['content'],
+                    'name' => $attachment['name'],
+                    'type' => $attachment['type']
+                ];
+            }, $data['attachments']);
+        }
         $response = $this->request($endpoint, $payload, true, 'POST');
-        
+
         return [
             'message_id' => 'turboSMTP_' . uniqid(),
             'provider_response' => $response
         ];
     }
-    
-    protected function prepare_request_body($data) {
+
+    protected function prepare_request_body($data)
+    {
         return json_encode($data);
     }
-    
-    protected function get_error_message($body, $code) {
+
+    protected function get_error_message($body, $code)
+    {
         $data = json_decode($body, true);
-        
+
         if (isset($data['message'])) {
-                return "Turbo SMTP API error: {$data['message']}. (HTTP $code)";
-            }
-        
+            return "Turbo SMTP API error: {$data['message']}. (HTTP $code)";
+        }
+
         return "Turbo SMTP API error (HTTP $code)";
     }
 
-    public function test_connection() {
+    public function test_connection()
+    {
         $endpoint = 'meta/countries';
-        $response = $this->request($endpoint, [], false,'GET');
+        $response = $this->request($endpoint, [], false, 'GET');
 
         if (isset($response['error'])) {
             throw new \Exception($response['error']['message']);
         }
-        
+
         return $response;
     }
-    public function get_analytics($filters = []) {
+    public function get_analytics($filters = [])
+    {
         $endpoint = 'analytics';
 
         $response = $this->request($endpoint, [
             'from' => $filters['date_from'],
             'to' => $filters['date_to'],
             'status' => ['SUCCESS', 'FAIL']
-        ], false ,'GET');
-        
+        ], false, 'GET');
+
         $data = [];
         $data['data'] = $this->format_analytics_response($response);
         $data['columns'] = $this->analytics_table_columns();
         return $data;
     }
 
-    private function format_analytics_response($response) {
+    private function format_analytics_response($response)
+    {
         $formatted_data = [];
         foreach ($response['results'] as $data) {
             $formatted_data[] = [
@@ -109,12 +115,20 @@ class TurboSMTP extends BaseProvider {
                 'provider_message' => $data['error']
             ];
         }
-        
+
         return $formatted_data;
     }
-    private function analytics_table_columns(){
+    private function analytics_table_columns()
+    {
         return [
-            'id', 'subject', 'sender', 'recipient', 'send_time', 'status', 'domain', 'provider_message'
+            'id',
+            'subject',
+            'sender',
+            'recipient',
+            'send_time',
+            'status',
+            'domain',
+            'provider_message'
         ];
     }
 }
