@@ -1,5 +1,5 @@
 <div class="wizard-step">
-    <h3><?php echo isset($_POST['is_edit']) ? 'Edit SMTP2GO Configuration' : 'Add SMTP2GO Provider'; ?></h3>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit SMTP2GO Configuration' : 'Add SMTP2GO Provider'; ?></h3>
     <p class="description">Enter your SMTP2GO API credentials below.</p>
 
     <form id="provider-form" method="post">
@@ -52,7 +52,7 @@
         </table>
 
         <div class="submit-wrapper">
-            <?php if (!isset($_POST['is_edit'])): ?>
+            <?php if (!(isset($is_edit) && $is_edit)): ?>
                 <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
             <button type="submit" class="button button-primary">

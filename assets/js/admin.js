@@ -199,7 +199,7 @@ $('.test-provider').on('click', function(e) {
         success: function(response) {
             if (response.success) {
                 $('#step-config').html(response.data.html);
-                $('#provider-form .button-primary').text('Update Provider');
+                $('#provider-form .button-primary .save-provider').text('Update Provider');
                 var data = config;
                 data.index = index;
 

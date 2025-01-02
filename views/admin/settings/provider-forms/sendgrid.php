@@ -1,5 +1,5 @@
 <div class="wizard-step">
-    <h3><?php echo isset($_POST['is_edit']) ? 'Edit SendGrid Configuration' : 'Add SendGrid Provider'; ?></h3>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit SendGrid Configuration' : 'Add SendGrid Provider'; ?></h3>
     <p class="description">Enter your SendGrid API credentials below.</p>
 
     <form id="provider-form" method="post">
@@ -54,7 +54,7 @@
         </table>
 
         <div class="submit-wrapper">
-            <?php if (!isset($_POST['is_edit'])): ?>
+            <?php if (!(isset($is_edit) && $is_edit)): ?>
                 <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
             <button type="submit" class="button button-primary">
@@ -72,4 +72,10 @@
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }
+    jQuery('#toggle_api_key').on('click', function() {
+        var input = jQuery('#api_key');
+        var type = input.attr('type') === 'password' ? 'text' : 'password';
+        input.attr('type', type);
+        jQuery(this).text(type === 'password' ? 'Show' : 'Hide');
+    });
 </script>

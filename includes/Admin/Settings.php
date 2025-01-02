@@ -351,7 +351,7 @@ class Settings
             return;
         }
         $provider = sanitize_text_field($_POST['provider']);
-        $is_edit = isset($_POST['index']);
+        $is_edit = isset($_POST['index']) ? true : false;
         $form_file = $this->plugin_path . "/views/admin/settings/provider-forms/{$provider}.php";
 
         if (file_exists($form_file)) {

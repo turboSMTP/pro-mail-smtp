@@ -1,6 +1,6 @@
 <div class="wizard-step">
     
-    <h3><?php echo isset($_POST['is_edit']) ? 'Edit Gmail Configuration' : 'Add Gmail Provider'; ?></h3>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Gmail Configuration' : 'Add Gmail Provider'; ?></h3>
     <p class="description">Enter your Gmail API credentials below.</p>
     <p class="description">Note: Ensure your redirect URL is set to <code><?php echo site_url('wp-admin/admin.php?page=free_mail_smtp-settings'); ?></code></p>
 
@@ -66,10 +66,10 @@
         </table>
 
         <div class="submit-wrapper">
-            <?php if (!isset($_POST['is_edit'])): ?>
+            <?php if (!(isset($is_edit) && $is_edit)): ?>
                 <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
-            <button type="submit" class="button button-primary">
+            <button type="submit" class="button add-provider">
                 <?php echo isset($_POST['is_edit']) ? 'Update Provider' : 'Add Provider'; ?>
             </button>
         </div>

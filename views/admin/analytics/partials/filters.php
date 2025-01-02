@@ -3,7 +3,7 @@ $current_month_start = date('Y-m-01');
 $current_month_end = date('Y-m-d');
 ?>
 <div class="tablenav top">
-    <div class="alignleft actions">
+    <div class="alignleft actions filters-group">
     <?php wp_nonce_field('free_mail_smtp_analytics', 'free_mail_smtp_analytics_nonce'); ?>
         <select id="provider-filter">
             <?php foreach ($data['providers'] as $provider): ?>
@@ -24,7 +24,7 @@ $current_month_end = date('Y-m-d');
                value="<?php echo esc_attr($data['filters']['date_to'] ?: $current_month_end); ?>" 
                placeholder="To Date">
 
-        <button type="button" class="button action" id="apply-filters">
+        <button type="button" class="button action apply-filter" id="apply-filters">
             <?php _e('Apply Filters', 'free_mail_smtp'); ?>
         </button>
     </div>

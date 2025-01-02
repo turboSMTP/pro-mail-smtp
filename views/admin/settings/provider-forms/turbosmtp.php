@@ -16,7 +16,8 @@
     });
 </script>
 <div class="wizard-step">
-    <h3><?php echo isset($is_edit) ? 'Edit Turbo SMTP Configuration' : 'Add Turbo SMTP Provider'; ?></h3>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Turbo SMTP Configuration' : 'Add Turbo SMTP Provider'; ?></h3>
+
     <p class="description">Enter your Turbo SMTP API credentials below.</p>
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
@@ -80,10 +81,10 @@
         </table>
 
         <div class="submit-wrapper">
-            <?php if (!isset($is_edit)): ?>
+            <?php if (!(isset($is_edit) && $is_edit)): ?>
                 <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
-            <button type="submit" class="button button-primary">
+            <button type="submit" class="button button-primary save-provider">
                 <?php echo isset($is_edit) ? 'Update Provider' : 'Add Provider'; ?>
             </button>
         </div>
