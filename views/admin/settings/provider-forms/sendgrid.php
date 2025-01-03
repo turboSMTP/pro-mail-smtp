@@ -58,7 +58,7 @@
                 <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
             <button type="submit" class="button button-primary">
-                <?php echo isset($_POST['is_edit']) ? 'Update Provider' : 'Add Provider'; ?>
+                <?php echo isset($is_edit)  ? 'Update Provider' : 'Add Provider'; ?>
             </button>
         </div>
     </form>

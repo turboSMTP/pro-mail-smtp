@@ -4,7 +4,7 @@ jQuery(document).ready(function ($) {
   var modal = $("#provider-modal");
   console.log("Modal element:", modal.length ? "found" : "not found");
 
-  $('.add-provider').on('click', function() {
+  $('.add-provider, #add-provider-button').on('click', function() {
     $('#step-provider').show();
     $('#step-config').hide();
     modal.show();

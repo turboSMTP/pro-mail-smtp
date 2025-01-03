@@ -41,8 +41,7 @@
                         <td colspan="5" class="empty-state">
                                 <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="No providers" class="empty-state-icon">
                                 <p>It seems you haven't added any providers yet. Get started now.</p>
-                                <!-- <p>If you need support, check out our <a href="#">documentation</a>.</p> -->
-                                <button type="button" class="button button-primary save-provider">
+                                <button type="button" class="button button-primary save-provider" id="add-provider-button">
                                     <span class="dashicons dashicons-plus-alt2"></span> Add Provider
                                 </button>
                             </td>                        </tr>

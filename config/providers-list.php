@@ -10,5 +10,5 @@ return [
     'smtp2go' => 'SMTP2GO',
     'sparkpost' => 'Sparkpost',// under development
     'brevo' => 'Brevo',
-    // 'other' => 'Other SMTP',// not available yet
+    'other' => 'OtherSMTP',// under development
 ];

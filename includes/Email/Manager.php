@@ -13,11 +13,10 @@ class Manager {
     
     public function init_providers() {
         $provider_configs = get_option('free_mail_smtp_providers', []);
-        
+         
         foreach ($provider_configs as $config) {
             if (!empty($config['provider']) && !empty($config['config_keys']) && !empty($config['priority'])) {
                 $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$config['provider']];
-
                 if (class_exists($provider_class)) {
                     $this->providers[] = [
                         'instance' => new $provider_class($config['config_keys']),
@@ -36,7 +35,6 @@ class Manager {
     
     public function send_mail($null, $args) {
         $error_messages = [];
-            error_log('args of email to send____: ' . print_r(json_encode($args), true));
             $email_data = $this->prepare_email_data($args);
         foreach ($this->providers as $provider) {
             try {
@@ -66,7 +64,6 @@ class Manager {
     private function prepare_email_data($args) {
         $to = is_array($args['to']) ? $args['to'] : [$args['to']];
         $headers = $this->parse_headers($args['headers']);
-        error_log('headers of email to send____: ' . print_r(json_encode($headers), true));
         return [
             'to' => $to,
             'subject' => $args['subject'],
@@ -87,7 +84,6 @@ class Manager {
         }
 
         if (!is_array($headers)) {
-            // Convert headers string into an array
             $headers = explode("\n", str_replace("\r\n", "\n", $headers));
         }
         foreach ($headers as $header) {

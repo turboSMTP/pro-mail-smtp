@@ -1,7 +1,7 @@
 <!-- Modal content -->
 <div class="wizard-step">
-    <h3>Edit TurboSMTP Provider</h3>
-    <p class="description">Enter your Turbo SMTP API credentials below.</p>
+<h3><?php echo isset($is_edit) && $is_edit ? 'Edit Brevo Configuration' : 'Add Brevo Provider'; ?></h3>
+<p class="description">Enter your Brevo SMTP API credentials below.</p>
 
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
@@ -55,11 +55,11 @@
         </table>
 
         <div class="submit-wrapper">
-            <?php if (!isset($_POST['is_edit'])): ?>
-                <button type="button" class="button back-step">Back</button>
+        <?php if (!(isset($is_edit) && $is_edit)): ?>
+            <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
             <button type="submit" class="button button-primary save-provider">
-                <?php echo isset($_POST['is_edit']) ? 'Update Provider' : 'Add Provider'; ?>
+                <?php echo isset($is_edit)  ? 'Update Provider' : 'Add Provider'; ?>
             </button>
         </div>
     </form>
