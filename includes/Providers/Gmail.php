@@ -28,7 +28,7 @@ class Gmail extends BaseProvider
             $this->client = new Google_Client();
             $this->client->setClientId($this->config_keys['client_id']);
             $this->client->setClientSecret($this->config_keys['client_secret']);
-            $this->client->setRedirectUri(admin_url('admin.php?page=free_mail_smtp-settings'));
+            $this->client->setRedirectUri(admin_url('free-mail-smtp-oauth.php')); // Create this new file
             $this->client->setAccessType('offline');
             $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
@@ -141,6 +141,7 @@ class Gmail extends BaseProvider
 
     public function get_auth_url()
     {
+        $this->client->setState('gmail');
         return $this->client->createAuthUrl();
     }
 

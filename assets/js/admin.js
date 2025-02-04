@@ -213,25 +213,27 @@ $('.test-provider').on('click', function(e) {
 });
 
 
-function handleGoogleAuth() {
+function handleOAuth() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-    console.log('Google Auth code:', code);
+    const provider = urlParams.get('provider');
+
     if (code) {
         jQuery.ajax({
-            url: FreeMailSMTPGoogleAuth.ajaxUrl,
+            url: FreeMailSMTPOAuth.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'free_mail_smtp_set_gmail_token',
+                action: 'free_mail_smtp_set_oauth_token',
                 code: code,
-                nonce: FreeMailSMTPGoogleAuth.nonce,
+                nonce: FreeMailSMTPOAuth.nonce,
+                provider_type: provider
             },
             success: function(response) {
                 if (response.success) {
-                    console.log('Gmail connected successfully');
-                    window.location.href = FreeMailSMTPGoogleAuth.redirectUrl;
+                    console.log(provider+' connected successfully');
+                    window.location.href = FreeMailSMTPOAuth.redirectUrl;
                 } else {
-                    console.error('Failed to connect Gmail:', response.data);
+                    console.error(`Failed to connect ${provider}:`, response.data);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {

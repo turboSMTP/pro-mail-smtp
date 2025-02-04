@@ -16,7 +16,7 @@ class Settings
         add_action('wp_ajax_save_provider', [$this, 'save_provider']);
         add_action('wp_ajax_delete_provider', [$this, 'delete_provider']);
         add_action('wp_ajax_load_provider_form', [$this, 'load_provider_form']);
-        add_action('wp_ajax_free_mail_smtp_set_gmail_token', [$this, 'free_mail_smtp_set_gmail_token']);
+        add_action('wp_ajax_free_mail_smtp_set_oauth_token', [$this, 'free_mail_smtp_set_oauth_token']);
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
 
@@ -78,6 +78,10 @@ class Settings
                     wp_send_json_error('Only one Gmail provider can be added.');
                     return;
                 }
+                if ($existing_provider['provider'] === 'outlook') {
+                    wp_send_json_error('Only one Outlook provider can be added.');
+                    return;
+                }
             }
         }
 
@@ -122,12 +126,21 @@ class Settings
         $provider_id = uniqid();
         $connection_label = isset($form_data['connection_label']) ? sanitize_text_field($form_data['connection_label']) : $provider . '-' . $provider_id;
 
-        if ($provider === 'gmail') {
+        if ($provider === 'gmail' ) {
             $gmail = new \FreeMailSMTP\Providers\Gmail([
                 'client_id' => $config_keys['client_id'],
                 'client_secret' => $config_keys['client_secret']
             ]);
             $config_keys['auth_url'] = $gmail->get_auth_url();
+            $config_keys['authenticated'] = false;
+        }
+
+        if($provider === 'outlook'){
+            $outlook = new \FreeMailSMTP\Providers\Outlook([
+                'client_id' => $config_keys['client_id'],
+                'client_secret' => $config_keys['client_secret']
+            ]);
+            $config_keys['auth_url'] = $outlook->get_auth_url();
             $config_keys['authenticated'] = false;
         }
 
@@ -190,35 +203,39 @@ class Settings
         }
     }
 
-    function free_mail_smtp_set_gmail_token()
+    function free_mail_smtp_set_oauth_token()
     {
-        error_log('free_mail_smtp_set_gmail_token');
-        check_ajax_referer('free_mail_smtp_set_gmail_token', 'nonce');
+        // Rename this function to handle_oauth_callback in your JavaScript as well
+        check_ajax_referer('free_mail_smtp_set_oauth_token', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
         }
+
         $providers = get_option('free_mail_smtp_providers', []);
         $index = null;
-            foreach ($providers as $provider_index => $config) {
-                if ($config['provider'] === 'gmail') {
-                    $index = $provider_index;
-                    break;
-                }
+        $provider_type = $_POST['provider_type'];
+        if (!isset($provider_type)) {
+            wp_send_json_error('Provider type not found');
+            return;
+        }
+        foreach ($providers as $provider_index => $config) {
+            if ($config['provider'] === $provider_type) {
+                $index = $provider_index;
+                break;
             }
+        }
       
         if (!isset($providers[$index])) {
             wp_send_json_error('Provider not found');
             return;
         }
-        error_log('Provider Index: ' . print_r($index, true));
 
         $provider = $providers[$index];
-
         $credential = $_POST['code'];
+
         try {
-            // Initialize provider class
             $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider['provider']];
 
             if (!class_exists($provider_class)) {
@@ -230,20 +247,20 @@ class Settings
                 throw new \Exception('Invalid provider');
             }
 
-           $save = $provider_instance->handle_oauth_callback($credential);
-              if(!$save){
+            $save = $provider_instance->handle_oauth_callback($credential);
+            if (!$save) {
                 throw new \Exception('Failed to save token');
-              }
+            }
 
             $provider['authenticated'] = true;
             $providers[$index] = $provider;
             usort($providers, function ($a, $b) {
-               return $a['priority'] - $b['priority'];
-           });
+                return $a['priority'] - $b['priority'];
+            });
    
             update_option('free_mail_smtp_providers', $providers);
 
-            wp_send_json_success('Gmail connected successfully');
+            wp_send_json_success($provider['provider'] . ' connected successfully');
         } catch (\Exception $e) {
             wp_send_json_error($e->getMessage());
         }
@@ -333,10 +350,10 @@ class Settings
             'debug' => true
         ]);
 
-        wp_localize_script('free_mail_smtp-settings', 'FreeMailSMTPGoogleAuth', [
+        wp_localize_script('free_mail_smtp-settings', 'FreeMailSMTPOAuth', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'redirectUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
-            'nonce' => wp_create_nonce('free_mail_smtp_set_gmail_token'),
+            'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
             'debug' => true
         ]);
     }

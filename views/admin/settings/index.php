@@ -64,6 +64,9 @@
                                     <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_access_token')): ?>
                                         <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary google-sign">Connect Gmail Account</a>
                                     <?php endif; ?>
+                                    <?php if ($config['provider'] === 'outlook' && !get_option('free_mail_smtp_outlook_access_token')): ?>
+                                        <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary outlook-sign">Connect Outlook Account</a>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="column-actions">
                                     <button type="button"
