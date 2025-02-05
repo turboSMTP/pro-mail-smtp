@@ -6,9 +6,8 @@
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
         
-        <!-- Important hidden fields -->
         <input type="hidden" name="provider" id="provider" value="other">
-        <input type="hidden" name="provider_index" id="provider_index" value="">
+        <input type="hidden" name="connection_id" id="connection_id" value="">
         
         <table class="form-table">
         <tr>
@@ -146,7 +145,7 @@
         jQuery('#connection_label').val(data.connection_label);
         jQuery('#smtp_user').val(data.config_keys.smtp_user);
         jQuery('#smtp_pw').val(data.config_keys.smtp_pw);
-        jQuery('#provider_index').val(data.index);
+        jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
         jQuery('#smtp_port').val(data.config_keys.smtp_port);
         jQuery('#smtp_encryption').val(data.config_keys.smtp_encryption);

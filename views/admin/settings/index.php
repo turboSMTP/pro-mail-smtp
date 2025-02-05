@@ -46,50 +46,55 @@
                                 </button>
                             </td>                        </tr>
                     <?php else: ?>
-                        <?php foreach ($providers_config as $index => $config): ?>
+                        <?php foreach ($providers_config as $index => $provider): ?>
                             <tr>
                                 <td class="column-label">
-                                    <?php echo esc_html($config['connection_label']); ?>
+                                    <?php 
+                                        $label = isset($provider->connection_data['connection_label']) 
+                                            ? $provider->connection_data['connection_label'] 
+                                            : $provider->provider . '-' . $provider->connection_id;
+                                        echo esc_html($label); 
+                                    ?>
                                 </td>
                                 <td class="column-priority">
-                                    <?php echo esc_html($config['priority']); ?>
+                                    <?php echo esc_html($provider->priority); ?>
                                 </td>
                                 <td class="column-provider">
-                                    <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$config['provider']}.svg", dirname(dirname(dirname(__FILE__))))); ?>" 
+                                    <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$provider->provider}.svg", dirname(dirname(dirname(__FILE__))))); ?>" 
                                          alt="" 
                                          class="provider-icon">
-                                    <strong><?php echo esc_html($providers_list[$config['provider']]); ?></strong>
+                                    <strong><?php echo esc_html($providers_list[$provider->provider]); ?></strong>
                                 </td>
                                 <td>
-                                    <?php if ($config['provider'] === 'gmail' && !get_option('free_mail_smtp_gmail_access_token')): ?>
-                                        <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary google-sign">Connect Gmail Account</a>
+                                    <?php if ($provider->provider === 'gmail' && empty(get_option('free_mail_smtp_gmail_access_token'))): ?>
+                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary google-sign">Connect Gmail Account</a>
                                     <?php endif; ?>
-                                    <?php if ($config['provider'] === 'outlook' && !get_option('free_mail_smtp_outlook_access_token')): ?>
-                                        <a href="<?php echo esc_url($config['config_keys']['auth_url']); ?>" class="button button-primary outlook-sign">Connect Outlook Account</a>
+                                    <?php if ($provider->provider === 'outlook' && empty(get_option('free_mail_smtp_outlook_access_token'))): ?>
+                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary outlook-sign">Connect Outlook Account</a>
                                     <?php endif; ?>
                                 </td>
                                 <td class="column-actions">
                                     <button type="button"
                                         class="button edit-provider"
-                                        data-index="<?php echo esc_attr($index); ?>"
+                                        data-connection_id="<?php echo esc_attr($provider->connection_id); ?>"
                                         data-config='<?php echo esc_attr(json_encode([
-                                            'provider' => $config['provider'],
-                                            'config_keys' => $config['config_keys'],
-                                            'priority' => $config['priority'],
-                                            'connection_label' => $config['connection_label']
+                                            'provider' => $provider->provider,
+                                            'config_keys' => $provider->connection_data,
+                                            'priority' => $provider->priority,
+                                            'connection_label' => $provider->connection_label
                                         ])); ?>'>
                                         Edit
                                     </button>
                                     <button type="button"
                                         class="button test-provider"
-                                        data-index="<?php echo esc_attr($index); ?>"
-                                        data-provider="<?php echo esc_attr($config['provider']); ?>"
-                                        data-api-key="<?php echo esc_attr($config['config_keys']); ?>">
-                                        <?php _e('Test', 'free-mail-smtp'); ?>
+                                        data-connection_id="<?php echo esc_attr($provider->connection_id); ?>"
+                                        data-provider="<?php echo esc_attr($provider->provider); ?>"
+                                        data-api-key='<?php echo esc_attr(json_encode($provider->connection_data)); ?>'>
+                                        <?php _e('Test', 'free_mail_smtp'); ?>
                                     </button>
                                     <button type="button"
                                         class="button delete-provider"
-                                        data-index="<?php echo esc_attr($index); ?>">
+                                        data-connection_id="<?php echo esc_attr($provider->connection_id); ?>">
                                         Delete
                                     </button>
                                 </td>

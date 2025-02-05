@@ -2,6 +2,13 @@
 namespace FreeMailSMTP\Providers;
 
 class Sparkpost extends BaseProvider {
+    public function __construct($config_keys) {
+        if (!isset($config_keys['region']) || empty($config_keys['region'])) {
+            $config_keys['region'] = 'eu';
+        }
+        parent::__construct($config_keys);
+    }
+    
     protected function get_api_url()
     {
         $region = isset($this->config_keys['region']) ? $this->config_keys['region'] : 'us';
@@ -74,21 +81,34 @@ class Sparkpost extends BaseProvider {
 
     public function test_connection() {
         $endpoint = 'account';
-
-        $response = $this->request($endpoint, [], false, 'GET');
-        return [
-            'message_id' => 'Sparkpost__' . uniqid(),
-            'provider_response' => $response
-        ];
+        try {
+            $response = $this->request($endpoint, [], false, 'GET');
+            return [
+                'message_id' => 'Sparkpost__' . uniqid(),
+                'provider_response' => $response
+            ];
+        } catch (\Exception $e) {
+            if (isset($this->config_keys['region']) && $this->config_keys['region'] === 'eu') {
+                $this->config_keys['region'] = 'us';
+                $response = $this->request($endpoint, [], false, 'GET');
+                return [
+                    'message_id' => 'Sparkpost__' . uniqid(),
+                    'provider_response' => $response
+                ];
+            }
+            throw $e;
+        }
     }
 
     public function get_analytics($filters = []) {
         $endpoint = 'events/message';
-
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
         $response = $this->request($endpoint, [
-            'from' => $filters['date_from'],
+            'from'     => $filters['date_from'],
             'end_date' => date('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
-            'page' => 100
+            'page'     => $page,
+            'per_page' => $per_page
         ], false ,'GET');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);

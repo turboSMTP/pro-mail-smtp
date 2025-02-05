@@ -1,4 +1,4 @@
-<table class="wp-list-table widefat fixed striped analytics-table">
+<table class="wp-list-table widefat fixed striped analytics-table" id="analytics-table">
     <thead>
         <tr>
             <th scope="col"><?php _e('ID', 'free-mail-smtp'); ?></th>
@@ -17,6 +17,11 @@
             </tr>
     </tbody>
 </table>
+<div id="pagination">
+    <button id="prev-page">Prev</button>
+    <span id="current-page">1</span>
+    <button id="next-page">Next</button>
+</div>
 
 <style>
 .status-badge {

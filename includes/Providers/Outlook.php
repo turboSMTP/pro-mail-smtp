@@ -149,12 +149,12 @@ class Outlook extends BaseProvider
     public function get_auth_url()
     {
         $params = [
-            'client_id' => $this->config_keys['client_id'],
+            'client_id'     => $this->config_keys['client_id'],
             'response_type' => 'code',
-            'redirect_uri' => admin_url('free-mail-smtp-oauth.php'),
+            'redirect_uri'  => admin_url('wp-admin/'),
             'response_mode' => 'query',
-            'scope' => 'offline_access Mail.Send',
-            'state' => 'outlook'
+            'scope'         => 'offline_access Mail.Send',
+            'state'         => 'outlook'
         ];
         return $this->auth_url . '?' . http_build_query($params);
     }

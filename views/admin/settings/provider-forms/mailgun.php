@@ -5,9 +5,9 @@
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
 
-        <!-- Important hidden fields -->
         <input type="hidden" name="provider" id="provider" value="mailgun">
-        <input type="hidden" name="provider_index" id="provider_index" value="">
+        <input type="hidden" name="connection_id" id="connection_id" value="">
+        <input type="hidden" name="config_keys[region]" value="eu">
 
         <table class="form-table">
             <tr>
@@ -26,10 +26,8 @@
                 <th scope="row">
                     <label for="api_key">API Key</label>
                 </th>
-
                 <td>
                     <div class="api-key-wrapper">
-
                         <input type="password"
                             name="config_keys[api_key]"
                             id="api_key"
@@ -38,7 +36,6 @@
                         <span id="toggle_api_key" class="dashicons dashicons-visibility"></span>
                     </div>
                 </td>
-
             </tr>
             <tr>
                 <th scope="row">
@@ -50,17 +47,6 @@
                         id="domain"
                         class="regular-text"
                         required>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">
-                    <label for="region">Region</label>
-                </th>
-                <td>
-                    <select name="config_keys[region]" id="region" required>
-                        <option value="us">US</option>
-                        <option value="eu">EU</option>
-                    </select>
                 </td>
             </tr>
             <tr>
@@ -124,7 +110,7 @@
         jQuery('#connection_label').val(data.connection_label);
         jQuery('#api_key').val(data.config_keys.api_key);
         jQuery('#domain').val(data.config_keys.domain);
-        jQuery('#provider_index').val(data.index);
+        jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
         jQuery('#region').val(data.config_keys.region);
         jQuery('.back-step').hide();

@@ -15,7 +15,6 @@
     </nav>
 
     <?php settings_errors('free_mail_smtp_messages'); ?>
-
     <!-- Filters Section -->
     <?php 
     $filters_file = dirname(__FILE__) . '/partials/filters.php';
@@ -23,7 +22,6 @@
         include $filters_file;
     }
     ?>
-
     <!-- Analytics Table -->
     <?php 
     $table_file = dirname(__FILE__) . '/partials/table.php';
@@ -32,16 +30,8 @@
     }
     ?>
 
-    <!-- Pagination -->
-    <?php 
-    // $pagination_file = dirname(__FILE__) . '/partials/pagination.php';
-    // if (file_exists($pagination_file)) {
-    //     include $pagination_file;
-    // }
-    ?>
 </div>
 
-<!-- Loading Overlay -->
 <div id="loading-overlay" style="display: none;">
     <div class="loading-spinner"></div>
 </div>

@@ -28,7 +28,7 @@ class Gmail extends BaseProvider
             $this->client = new Google_Client();
             $this->client->setClientId($this->config_keys['client_id']);
             $this->client->setClientSecret($this->config_keys['client_secret']);
-            $this->client->setRedirectUri(admin_url('free-mail-smtp-oauth.php')); // Create this new file
+            $this->client->setRedirectUri(admin_url('wp-admin/'));
             $this->client->setAccessType('offline');
             $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
@@ -126,7 +126,6 @@ class Gmail extends BaseProvider
     public function test_connection()
     {
         try {
-            // Try to list labels to verify connection
             $this->validateAccessToken();
             $this->service->users_labels->listUsersLabels('me');
             error_log('Gmail connection verified successfully.');
@@ -163,11 +162,10 @@ class Gmail extends BaseProvider
     public function get_analytics($filters = [])
     {
         try {
-
             $this->validateAccessToken();
-
+            $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
             $messages = $this->service->users_messages->listUsersMessages('me', [
-                'maxResults' => 100,
+                'maxResults' => $per_page,
                 'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
             ]);
             $analytics = [];
@@ -208,7 +206,6 @@ class Gmail extends BaseProvider
     public function handle_oauth_callback($code)
     {
         try {
-            // Get access token using OAuth
             $token = $this->client->fetchAccessTokenWithAuthCode($code);
             if (!empty($token['refresh_token'])) {
                 $this->save_refresh_token($token['refresh_token']);

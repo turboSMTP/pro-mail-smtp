@@ -73,11 +73,14 @@ class SMTP2GO extends BaseProvider {
     }
     public function get_analytics($filters = []) {
         $endpoint = 'activity/search';
-
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
+        $offset = ($page - 1) * $per_page;
         $response = $this->request($endpoint, [
             'start_date' => $filters['date_from'],
-            'end_date' => date('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
-            'limit' => 100
+            'end_date'   => date('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
+            'limit'      => $per_page,
+            'offset'     => $offset
         ], false ,'POST');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);

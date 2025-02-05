@@ -1,30 +1,30 @@
 <?php
 namespace FreeMailSMTP\Admin;
 
+use FreeMailSMTP\Connections\ConnectionRepository;
+
 class Analytics {
     private $providers = [];
     private $providersList = [];
-
     private $plugin_path;
+    private $connection_repository;
 
     public function __construct() {
         $this->plugin_path = dirname(dirname(dirname(__FILE__)));
-        $this->providers = get_option('free_mail_smtp_providers', []);
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
+        $this->connection_repository = new ConnectionRepository();
+        $this->providers = $this->connection_repository->get_all_connections();
 
         add_action('wp_ajax_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-
     }
 
     public function enqueue_scripts($hook) {
 
-        // Only load on analytics page
         if ($hook !== 'free-mail-smtp_page_free_mail_smtp-analytics') {
             return;
         }
     
-        // Enqueue analytics specific CSS and JS
         wp_enqueue_style(
             'free_mail_smtp_analytics',
             plugins_url('/assets/css/analytics.css', dirname(dirname(__FILE__))),
@@ -57,8 +57,7 @@ class Analytics {
             'analytics_data' => $this->get_analytics_data()
         ];
 
-
-        // Include the main view file
+        error_log('Analytics data: ' . json_encode($data));
         $view_file = $this->plugin_path . '/views/admin/analytics/index.php';
         if (file_exists($view_file)) {
             include $view_file;
@@ -71,12 +70,11 @@ class Analytics {
 
         try {
             if (!empty($filters['selected_provider'])) {
-
                 return $this->get_provider_analytics($filters['selected_provider'], $filters);
             } else {
                 $all_data = [];
                 foreach ($this->providers as $provider) {
-                    $provider_data = $this->get_provider_analytics($provider['provider'], $filters);
+                    $provider_data = $this->get_provider_analytics($provider->connection_id, $filters);
                     $all_data = array_merge($all_data, $provider_data);
                 }
                 return $all_data;
@@ -90,9 +88,11 @@ class Analytics {
     private function get_filter_values() {
         return [
             'selected_provider' => isset($_GET['provider']) ? sanitize_text_field($_GET['provider']) : '',
-            'selected_status' => isset($_GET['status']) ? sanitize_text_field($_GET['status']) : '',
-            'date_from' => isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : '',
-            'date_to' => isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : ''
+            'selected_status'   => isset($_GET['status']) ? sanitize_text_field($_GET['status']) : '',
+            'date_from'         => isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : '',
+            'date_to'           => isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : '',
+            'page'              => isset($_GET['page']) ? (int) $_GET['page'] : 1,
+            'per_page'          => isset($_GET['per_page']) ? (int) $_GET['per_page'] : 10
         ];
     }
 
@@ -100,12 +100,23 @@ class Analytics {
         check_ajax_referer('free_mail_smtp_analytics', 'nonce');
 
         $provider_id = sanitize_text_field($_POST['filters']['provider']);
-        $status = isset($_POST['filters']['status']) ? sanitize_text_field($_POST['filters']['status']): '';
+        $status = isset($_POST['filters']['status']) ? sanitize_text_field($_POST['filters']['status']) : '';
         $date_from = sanitize_text_field($_POST['filters']['date_from']);
         $date_to = sanitize_text_field($_POST['filters']['date_to']);
+        $page = isset($_POST['filters']['page']) ? (int) $_POST['filters']['page'] : 1;
+        $per_page = isset($_POST['filters']['per_page']) ? (int) $_POST['filters']['per_page'] : 10;
 
         try {
-            $provider_data = $this->get_provider_analytics($provider_id,['status' => $status, 'date_from' => $date_from, 'date_to' => $date_to]);
+            $provider_data = $this->get_provider_analytics(
+                $provider_id,
+                [
+                    'status'    => $status,
+                    'date_from' => $date_from,
+                    'date_to'   => $date_to,
+                    'page'      => $page,
+                    'per_page'  => $per_page
+                ]
+            );
             wp_send_json_success($provider_data);
         } catch (\Exception $e) {
             wp_send_json_error($e->getMessage());
@@ -130,13 +141,17 @@ class Analytics {
         return $provider->get_analytics($filters);
     }
 
-private function get_provider_config($provider_id) {
-
-    foreach ($this->providers as $provider) {
-        if ($provider['id'] === $provider_id) {
-            return $provider;
+    private function get_provider_config($connection_id) {
+        $connection = $this->connection_repository->get_connection($connection_id);
+        if (!$connection) {
+            return null;
         }
+
+        return [
+            'id'               => $connection->connection_id,
+            'provider'         => $connection->provider,
+            'connection_label' => $connection->connection_label,
+            'config_keys'      => $connection->connection_data
+        ];
     }
-    return null;
-}
 }

@@ -5,9 +5,8 @@
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
         
-        <!-- Important hidden fields -->
         <input type="hidden" name="provider" id="provider" value="sendgrid">
-        <input type="hidden" name="provider_index" id="provider_index" value="">
+        <input type="hidden" name="connection_id" id="connection_id" value="">
         
         <table class="form-table">
             <tr>
@@ -68,7 +67,7 @@
         console.log('filled',data);
         jQuery('#connection_label').val(data.connection_label);
         jQuery('#api_key').val(data.config_keys.api_key);
-        jQuery('#provider_index').val(data.index);
+        jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }

@@ -18,6 +18,25 @@ class Logs
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('init', [$this, 'schedule_cleanup_event']);
+        add_action('free_mail_smtp_cleanup_logs', [__CLASS__, 'cleanup_logs_cron']);
+    }
+
+    public function schedule_cleanup_event()
+    {
+        if (! wp_next_scheduled('free_mail_smtp_cleanup_logs')) {
+            wp_schedule_event(time(), 'hourly', 'free_mail_smtp_cleanup_logs');
+        }
+    }
+
+    public static function cleanup_logs_cron()
+    {
+        $current_retention = get_option('free_mail_smtp_retention_duration', 'forever');
+        if ($current_retention === 'forever') {
+            return;
+        }
+        $instance = new self();
+        $instance->auto_delete_logs($current_retention);
     }
 
     public function enqueue_scripts($hook)
@@ -55,6 +74,11 @@ class Logs
 
     public function render()
     {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['retention_duration_setting'])) {
+            update_option('free_mail_smtp_retention_duration', sanitize_text_field($_POST['retention_duration_setting']));
+        }
+        $current_retention = get_option('free_mail_smtp_retention_duration', 'forever');
+
         $filters = $this->get_filters();
         $logs = $this->get_logs($filters);
         $total_items = $this->get_total_logs($filters);
@@ -74,6 +98,29 @@ class Logs
                 <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="nav-tab nav-tab-active">Email Logs</a>
                 <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="nav-tab">Providers Logs</a>
             </nav>
+                <div class="logs-retention-settings">
+                <h2><?php _e('Logs Retention Settings', 'free_mail_smtp'); ?></h2>
+                <p class="retention-description">
+                    <?php _e('Select how long you want to keep your email logs in the database. Logs older than the selected duration will be automatically deleted.', 'free_mail_smtp'); ?>
+                </p>
+                <form method="post">
+                    <select name="retention_duration_setting">
+                        <option value="forever" <?php selected($current_retention, 'forever'); ?>>
+                            <?php _e('Forever', 'free_mail_smtp'); ?>
+                        </option>
+                        <option value="1_week" <?php selected($current_retention, '1_week'); ?>>
+                            <?php _e('1 Week', 'free_mail_smtp'); ?>
+                        </option>
+                        <option value="1_month" <?php selected($current_retention, '1_month'); ?>>
+                            <?php _e('1 Month', 'free_mail_smtp'); ?>
+                        </option>
+                        <option value="1_year" <?php selected($current_retention, '1_year'); ?>>
+                            <?php _e('1 Year', 'free_mail_smtp'); ?>
+                        </option>
+                    </select>
+                    <input type="submit" class="button" value="<?php _e('Update Retention Setting', 'free_mail_smtp'); ?>">
+                </form>
+            </div>
             <!-- Filters -->
             <div class="tablenav top">
                 <form method="get" class="email-filters">
@@ -132,8 +179,6 @@ class Logs
                     </div>
                 </form>
             </div>
-
-            <!-- Logs Table -->
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
@@ -168,7 +213,8 @@ class Logs
                                         value="<?php echo esc_attr($log->id); ?>">
                                 </th>
                                 <td class="column-date">
-                                    <?php echo esc_html($this->format_date($log->sent_at)); ?>
+                                    <?php echo esc_html($this->format_date($log->sent_at)); ?> <br>
+                                    <small><?php echo esc_html($this->time_diff($log->sent_at)); ?></small>
                                 </td>
                                 <td class="column-provider">
                                     <span class="provider-badge provider-<?php echo esc_attr($log->provider); ?>">
@@ -186,10 +232,6 @@ class Logs
                                         <?php echo esc_html(ucfirst($log->status)); ?>
                                     </span>
                                     <?php if ($log->error_message): ?>
-                                        <!-- <span class="error-icon dashicons dashicons-warning" 
-                                              title="<?php //echo esc_attr($log->error_message); 
-                                                        ?>">
-                                        </span> -->
                                     <?php endif; ?>
                                 </td>
                                 <td class="column-details">
@@ -214,13 +256,11 @@ class Logs
                 </tfoot>
             </table>
 
-            <!-- Pagination -->
             <div class="tablenav bottom">
                 <?php $this->render_pagination($total_items, $total_pages, $filters['paged']); ?>
             </div>
         </div>
 
-        <!-- Log Details Modal -->
         <?php $this->render_modal_template(); ?>
     <?php
     }
@@ -337,14 +377,15 @@ class Logs
     private function get_filters()
     {
         return [
-            'paged' => max(1, intval($_GET['paged'] ?? 1)),
-            'provider' => sanitize_text_field($_GET['provider'] ?? ''),
-            'status' => sanitize_text_field($_GET['status'] ?? ''),
-            'search' => sanitize_text_field($_GET['search'] ?? ''),
-            'date_from' => sanitize_text_field($_GET['date_from'] ?? ''),
-            'date_to' => sanitize_text_field($_GET['date_to'] ?? ''),
-            'orderby' => sanitize_text_field($_GET['orderby'] ?? 'sent_at'),
-            'order' => sanitize_text_field($_GET['order'] ?? 'desc')
+            'paged'             => max(1, intval($_GET['paged'] ?? 1)),
+            'provider'          => sanitize_text_field($_GET['provider'] ?? ''),
+            'status'            => sanitize_text_field($_GET['status'] ?? ''),
+            'search'            => sanitize_text_field($_GET['search'] ?? ''),
+            'date_from'         => sanitize_text_field($_GET['date_from'] ?? ''),
+            'date_to'           => sanitize_text_field($_GET['date_to'] ?? ''),
+            'orderby'           => sanitize_text_field($_GET['orderby'] ?? 'sent_at'),
+            'order'             => sanitize_text_field($_GET['order'] ?? 'desc'),
+            'retention_duration'=> sanitize_text_field($_GET['retention_duration'] ?? 'forever')
         ];
     }
 
@@ -472,5 +513,26 @@ class Logs
             echo '<span class="pagination-links">' . implode("\n", $pagination) . '</span>';
             echo '</div>';
         }
+    }
+
+    private function auto_delete_logs($retention)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'email_log';
+        $cutoff = '';
+        switch ($retention) {
+            case '1_week':
+                $cutoff = date('Y-m-d H:i:s', strtotime('-1 week'));
+                break;
+            case '1_month':
+                $cutoff = date('Y-m-d H:i:s', strtotime('-1 month'));
+                break;
+            case '1_year':
+                $cutoff = date('Y-m-d H:i:s', strtotime('-1 year'));
+                break;
+            default:
+                return;
+        }
+        $wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE sent_at < %s", $cutoff));
     }
 }

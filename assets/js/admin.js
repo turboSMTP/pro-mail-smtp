@@ -111,23 +111,17 @@ $(document).on('submit', '#provider-form', function(e) {
             }
         </style>
     `);
-// Test Provider
 $('.test-provider').on('click', function(e) {
     e.preventDefault();
     var button = $(this);
-    
-    button.prop('disabled', true)
-          .text('Testing...');
-
+    button.prop('disabled', true).text('Testing...');
     $.ajax({
         url: FreeMailSMTPAdmin.ajaxUrl,
         method: 'POST',
         data: {
             action: 'test_provider_connection',
             nonce: FreeMailSMTPAdmin.nonce,
-            provider: button.data('provider'),
-            config_keys: button.data('config_keys'),
-            index: button.data('index')
+            connection_id: button.data('connection_id')
         },
         success: function(response) {
             if (response.success) {
@@ -137,16 +131,11 @@ $('.test-provider').on('click', function(e) {
             }
         },
         error: function(xhr, status, error) {
-            console.error('Test Error:', {
-                status: status,
-                error: error,
-                xhr: xhr
-            });
-            alert('Error testing connection. Check console for details.');
+            console.error('Test Error:', error);
+            alert('Error testing connection.');
         },
         complete: function() {
-            button.prop('disabled', false)
-                  .text('Test');
+            button.prop('disabled', false).text('Test');
         }
     });
 });
@@ -158,14 +147,13 @@ $('.test-provider').on('click', function(e) {
     }
 
     var button = $(this);
-    var index = button.data("index");
-
+    var connection_id = button.data("connection_id");
     $.ajax({
       url: FreeMailSMTPAdmin.ajaxUrl,
       method: "POST",
       data: {
         action: "delete_provider",
-        index: index,
+        connection_id: connection_id,
         nonce: FreeMailSMTPAdmin.nonce,
       },
       success: function (response) {
@@ -179,14 +167,12 @@ $('.test-provider').on('click', function(e) {
   });
 
   $('.edit-provider').on('click', function() {
-    var index = $(this).data('index');
+    var connection_id = $(this).data('connection_id');
     var config = $(this).data('config');
     
-    // Skip to configuration step directly
     $('#step-config').html('<div class="loading">Loading...</div>').show();
     $('#step-provider').hide();
     modal.show();
-    // Load provider form
     $.ajax({
         url: FreeMailSMTPAdmin.ajaxUrl,
         method: 'POST',
@@ -194,14 +180,14 @@ $('.test-provider').on('click', function(e) {
             action: 'load_provider_form',
             provider: config.provider,
             nonce: FreeMailSMTPAdmin.nonce,
-            index: index
+            connection_id: connection_id
         },
         success: function(response) {
             if (response.success) {
                 $('#step-config').html(response.data.html);
                 $('#provider-form .button-primary .save-provider').text('Update Provider');
                 var data = config;
-                data.index = index;
+                data.index = connection_id;
 
                 fillInputs(data);
             } else {
@@ -214,11 +200,16 @@ $('.test-provider').on('click', function(e) {
 
 
 function handleOAuth() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    const provider = urlParams.get('provider');
-
-    if (code) {
+    var params = Object.assign(
+        {},
+        Object.fromEntries(new URLSearchParams(window.location.search)),
+        Object.fromEntries(new URLSearchParams(window.location.hash.substring(1)))
+    );
+    
+    if (params.code && params.state) {
+        console.log('OAuth callback:', params);
+        var code = params.code;
+        var provider = params.state; 
         jQuery.ajax({
             url: FreeMailSMTPOAuth.ajaxUrl,
             type: 'POST',
@@ -230,20 +221,17 @@ function handleOAuth() {
             },
             success: function(response) {
                 if (response.success) {
-                    console.log(provider+' connected successfully');
+                    console.log(provider + ' connected successfully');
                     window.location.href = FreeMailSMTPOAuth.redirectUrl;
                 } else {
-                    console.error(`Failed to connect ${provider}:`, response.data);
+                    console.error('Failed to connect ' + provider + ':', response.data);
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error('AJAX request failed:', textStatus, errorThrown);
             }
         });
-    } else {
-        console.error('No code parameter found in the URL');
     }
 }
 
-// Listen for the Google Auth callback
-window.addEventListener('load', handleGoogleAuth);
+window.addEventListener('load', handleOAuth);

@@ -15,19 +15,23 @@ class Manager {
         $provider_configs = get_option('free_mail_smtp_providers', []);
          
         foreach ($provider_configs as $config) {
-            if (!empty($config['provider']) && !empty($config['config_keys']) && !empty($config['priority'])) {
+            if (!empty($config['provider']) && !empty($config['id']) && !empty($config['priority'])) {
                 $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$config['provider']];
                 if (class_exists($provider_class)) {
+                    $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
+                    $conn = $conn_repo->get_connection($config['id']);
+                    $config_keys = ($conn && isset($conn->connection_data)) ? $conn->connection_data : [];
+                    
+                    $instance = new $provider_class($config_keys);
                     $this->providers[] = [
-                        'instance' => new $provider_class($config['config_keys']),
-                        'priority' => (int)$config['priority'],
+                        'instance' => $instance,
+                        'priority' => $config['priority'],
                         'name' => $config['provider']
                     ];
                 }
             }
         }
         
-        // Sort providers by priority (lower number = higher priority)
         usort($this->providers, function($a, $b) {
             return $a['priority'] - $b['priority'];
         });
@@ -50,13 +54,10 @@ class Manager {
                 ];
                 error_log("Email sending failed for provider {$provider['name']}: {$e->getMessage()}");
                 $this->log_email($email_data ?? [], null, $provider['name'], 'failed', $e->getMessage());
-                
-                // Continue to next provider
                 continue;
             }
         }
         
-        // All providers failed
         $this->log_provider_failures($error_messages);
         return false;
     }

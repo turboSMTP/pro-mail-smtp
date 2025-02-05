@@ -7,13 +7,16 @@ class Mailgun extends BaseProvider
     private $boundary;
     public function __construct($config_keys)
     {
+        if (!isset($config_keys['region']) || empty($config_keys['region'])) {
+            $config_keys['region'] = 'eu';
+        }
         parent::__construct($config_keys);
         $this->boundary = md5(uniqid());
     }
 
     protected function get_api_url()
     {
-        $region = isset($this->config_keys['region']) ? $this->config_keys['region'] : 'us';
+        $region = isset($this->config_keys['region']) ? $this->config_keys['region'] : 'eu';
         if ($region === 'eu') {
             return 'https://api.eu.mailgun.net/v3/';
         }
@@ -34,7 +37,6 @@ class Mailgun extends BaseProvider
         $endpoint = $domain . '/messages';
         $payload = '';
 
-        // Add regular fields
         $fields = [
            'from' => $data['from_email'],
            'to' => implode(",", $data['to']),
@@ -51,7 +53,6 @@ class Mailgun extends BaseProvider
            $payload .= $value . "\r\n";
         }
         
-        // Add attachments
         if (!empty($data['attachments'])) {
            foreach($data['attachments'] as $index => $attachment) {
                $file_content = file_get_contents($attachment['path']);
@@ -92,25 +93,40 @@ class Mailgun extends BaseProvider
     {
         $domain = $this->config_keys['domain'];
         $endpoint = $domain . '/stats/total?event=delivered';
-        $response = $this->request($endpoint, [], false, 'GET');
-        error_log('Response of test mailgun: ' . print_r($response, true));
-        if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+        try {
+            $response = $this->request($endpoint, [], false, 'GET');
+            if (isset($response['error'])) {
+                throw new \Exception($response['error']['message']);
+            }
+            return $response;
+        } catch (\Exception $e) {
+            if (isset($this->config_keys['region']) && $this->config_keys['region'] === 'eu') {
+                $this->config_keys['region'] = 'us';
+                $endpoint = $domain . '/stats/total?event=delivered';
+                $response = $this->request($endpoint, [], false, 'GET');
+                if (isset($response['error'])) {
+                    throw new \Exception($response['error']['message']);
+                }
+                return $response;
+            }
+            throw $e;
         }
-        return $response;
     }
 
     public function get_analytics($filters = [])
     {
         $domain = $this->config_keys['domain'];
-
         $endpoint = $domain . '/events';
-        $begin_date = date('r', strtotime($filters['date_from'])); // Converts to RFC 2822 format
-        $end_date = date('r', strtotime($filters['date_to'])); // Converts to RFC 2822 format
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
+        $offset = ($page - 1) * $per_page;
+        $begin_date = date('r', strtotime($filters['date_from'])); 
+        $end_date = date('r', strtotime($filters['date_to'])); 
         $response = $this->request($endpoint, [
-            'begin' => $begin_date,
-            'end' => $end_date,
-            'limit' => 100
+            'begin'  => $begin_date,
+            'end'    => $end_date,
+            'limit'  => $per_page,
+            'offset' => $offset,
         ], false, 'GET');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);

@@ -91,6 +91,8 @@ class TurboSMTP extends BaseProvider
         $response = $this->request($endpoint, [
             'from' => $filters['date_from'],
             'to' => $filters['date_to'],
+            'page' => $filters['page'] ?? 1,
+            'limit' => $filters['per_page'] ?? 5,
             'status' => ['SUCCESS', 'FAIL']
         ], false, 'GET');
 

@@ -95,11 +95,15 @@ class Brevo extends BaseProvider {
     }
     public function get_analytics($filters = []) {
         $endpoint = 'statistics/events';
-
-        $response = $this->request($endpoint, [
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
+        $response = $this->request($endpoint, array_merge([
             'startDate' => $filters['date_from'],
-            'endDate' => $filters['date_to']
-        ], false ,'GET');
+            'endDate'   => $filters['date_to']
+        ], [
+            'page' => $page,
+            'per_page' => $per_page
+        ]), false ,'GET');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);
         $data['columns'] = $this->analytics_table_columns();

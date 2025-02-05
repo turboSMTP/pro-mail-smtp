@@ -1,11 +1,26 @@
 jQuery(document).ready(function($) {
-    // Apply filters
+    var currentPage = 1;
+    var perPage = 10;
+    var totalPages = 1;
+
     $('#apply-filters').on('click', function() {
-        console.log('Applying filters');
+        currentPage = 1; 
+        loadAnalyticsData();
+    });
+
+    $('#prev-page').on('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            loadAnalyticsData();
+        }
+    });
+    $('#next-page').on('click', function() {
+        currentPage++;
         loadAnalyticsData();
     });
 
     function loadAnalyticsData() {
+        perPage = parseInt($('#per-page').val()) || perPage;
         console.log('Loading analytics data');
         $('#loading-overlay').show();
 
@@ -21,7 +36,9 @@ jQuery(document).ready(function($) {
             provider: $('#provider-filter').val(),
             status: $('#status-filter').val(),
             date_from: $('#date-from').val(),
-            date_to: $('#date-to').val()
+            date_to: $('#date-to').val(),
+            page: currentPage,
+            per_page: perPage
         };
 
         var tbody = $('.analytics-table tbody');
@@ -39,6 +56,14 @@ jQuery(document).ready(function($) {
                 console.log('Analytics response:', response);
                 if (response.success) {
                     refreshTable(response.data);
+                    if (response.data.total_pages !== undefined) {
+                        totalPages = response.data.total_pages;
+                        $('#current-page').text(currentPage + ' of ' + totalPages);
+                        $('#prev-page').prop('disabled', currentPage <= 1);
+                        $('#next-page').prop('disabled', currentPage >= totalPages);
+                    } else {
+                        $('#current-page').text(currentPage);
+                    }
                 } else {
                     alert('Error loading analytics: ' + (response.data || 'Unknown error'));
                     tbody.find('.loading-message').text('Error loading data');

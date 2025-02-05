@@ -2,14 +2,13 @@
     
     <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Gmail Configuration' : 'Add Gmail Provider'; ?></h3>
     <p class="description">Enter your Gmail API credentials below.</p>
-    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo admin_url('free-mail-smtp-oauth.php'); ?></code></p>
+    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo admin_url('wp-admin/'); ?></code></p>
 
     <form id="provider-form" method="post">
         <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
         
-        <!-- Important hidden fields -->
         <input type="hidden" name="provider" id="provider" value="gmail">
-        <input type="hidden" name="provider_index" id="provider_index" value="">
+        <input type="hidden" name="connection_id" id="connection_id" value="">
         
         <table class="form-table">
         <tr>
@@ -82,7 +81,7 @@
         jQuery('#connection_label').val(data.connection_label);
         jQuery('#client_id').val(data.config_keys.client_id);
         jQuery('#client_secret').val(data.config_keys.client_secret);
-        jQuery('#provider_index').val(data.index);
+        jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
         jQuery('.back-step').hide();
     }

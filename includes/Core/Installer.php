@@ -32,10 +32,28 @@ class Installer {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
         
-        // Update version
+        $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql_connections = "CREATE TABLE $connections_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            connection_id varchar(50) NOT NULL,
+            provider varchar(50) NOT NULL,
+            connection_label varchar(255) NOT NULL,
+            priority int NOT NULL DEFAULT 0,
+            connection_data text NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            UNIQUE KEY connection_id (connection_id),
+            UNIQUE KEY priority (priority)
+        ) $charset_collate;";
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql_connections);
+        
         update_option('free_mail_smtp_db_version', $this->db_version);
         
-        // Create default options
         $this->create_default_options();
     }
     

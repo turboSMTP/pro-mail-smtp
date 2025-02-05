@@ -73,12 +73,14 @@ class Postmark extends BaseProvider {
     }
     public function get_analytics($filters = []) {
         $endpoint = '/messages/outbound';
-
+        $page = isset($filters['page']) ? (int)$filters['page'] : 1;
+        $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
+        $offset = ($page - 1) * $per_page;
         $response = $this->request($endpoint, [
             'fromdate' => $filters['date_from'],
-            'todate' => $filters['date_to'],
-            'count' => 100,
-            'offset' => 0
+            'todate'   => $filters['date_to'],
+            'count'    => $per_page,
+            'offset'   => $offset
         ], false ,'GET');
         $data = [];
         $data['data'] = $this->format_analytics_response($response);
