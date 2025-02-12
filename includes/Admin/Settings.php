@@ -1,17 +1,18 @@
 <?php
 
 namespace FreeMailSMTP\Admin;
+use FreeMailSMTP\Providers\ProviderFactory;
 
 class Settings
 {
     private $providersList = [];
-
+    private $provider_factory;
     private $plugin_path;
 
     public function __construct()
     {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('admin_init', [$this, 'handle_form_submissions']);
-        add_action('admin_enqueue_scripts', [$this, 'admin_scripts']);
         add_action('wp_ajax_test_provider_connection', [$this, 'test_provider_connection']);
         add_action('wp_ajax_save_provider', [$this, 'save_provider']);
         add_action('wp_ajax_delete_provider', [$this, 'delete_provider']);
@@ -19,17 +20,44 @@ class Settings
         add_action('wp_ajax_free_mail_smtp_set_oauth_token', [$this, 'free_mail_smtp_set_oauth_token']);
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
+        $this->provider_factory = new ProviderFactory();
 
         $this->plugin_path = dirname(dirname(dirname(__FILE__)));
     }
 
+    public function enqueue_scripts($hook) {
+        if ($hook !== 'toplevel_page_free_mail_smtp-settings') {
+            return;
+        }
+    
+        wp_enqueue_script(
+            'free_mail_smtp-admin',
+            plugins_url('/assets/js/admin.js', dirname(dirname(__FILE__))),
+            ['jquery'],
+            '1.0.0',
+            true
+        );
+
+        wp_localize_script('free_mail_smtp-admin', 'FreeMailSMTPAdmin', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('free_mail_smtp_save_providers'),
+            'debug' => true
+        ]);
+        wp_localize_script('free_mail_smtp-admin', 'FreeMailSMTPOAuth', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'redirectUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
+            'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
+            'debug' => true
+        ]);
+    }
+    
     public function render()
     {
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
+        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $providers_config = $conn_repo->get_all_connections();
         
         $from_email = get_option('free_mail_smtp_from_email', get_option('admin_email'));
@@ -121,8 +149,7 @@ class Settings
             $config_keys['authenticated'] = false;
         }
 
-        $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
-        error_log('FORM DATA'.print_r($form_data, true));
+        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         if (isset($form_data['connection_id']) && !empty($form_data['connection_id'])) {
             $connection_id = sanitize_text_field($form_data['connection_id']);
             $result = $conn_repo->update_connection($connection_id, $config_keys, $connection_label, $priority);
@@ -183,7 +210,7 @@ class Settings
             return;
         }
         
-        $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
+        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $providers = $conn_repo->get_all_connections();
         $connection = null;
         foreach ($providers as $prov) {
@@ -200,11 +227,8 @@ class Settings
         
         $credential = sanitize_text_field($_POST['code']);
         try {
-            $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$connection->provider];
-            if (!class_exists($provider_class)) {
-                throw new \Exception('Invalid provider');
-            }
-            $provider_instance = new $provider_class($connection->connection_data);
+            $provider_instance = $this->provider_factory->get_provider_class($connection);
+            
             if (!method_exists($provider_instance, 'handle_oauth_callback')) {
                 throw new \Exception('Invalid provider');
             }
@@ -232,7 +256,7 @@ class Settings
         }
         
         $connection_id = sanitize_text_field($_POST['connection_id']);
-        $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
+        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -240,11 +264,8 @@ class Settings
         }
         
         try {
-            $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$connection->provider];
-            if (!class_exists($provider_class)) {
-                throw new \Exception('Invalid provider');
-            }
-            $provider_instance = new $provider_class($connection->connection_data);
+            $provider_instance = $this->provider_factory->get_provider_class($connection);
+
             $result = $provider_instance->test_connection();
             if ($result) {
                 wp_send_json_success($result);
@@ -263,9 +284,8 @@ class Settings
             wp_send_json_error('Unauthorized');
             return;
         }
-        error_log('POST TO DELETE'.print_r($_POST));
         $connection_id = sanitize_text_field($_POST['connection_id']);
-        $conn_repo = new \FreeMailSMTP\Connections\ConnectionRepository();
+        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -275,36 +295,6 @@ class Settings
         $conn_repo->delete_connection($connection_id);
         
         wp_send_json_success('Provider deleted successfully.');
-    }
-
-    public function admin_scripts($hook)
-    {
-        if (strpos($hook, 'free_mail_smtp') === false) {
-            return;
-        }
-
-        wp_enqueue_style('dashicons');
-
-        wp_enqueue_script(
-            'free_mail_smtp-settings',
-            plugins_url('/includes/assets/js/admin.js', dirname(dirname(__FILE__))),
-            ['jquery'],
-            time(), 
-            true
-        );
-
-        wp_localize_script('free_mail_smtp-settings', 'FreeMailSMTPAdmin', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('free_mail_smtp_save_providers'),
-            'debug' => true
-        ]);
-
-        wp_localize_script('free_mail_smtp-settings', 'FreeMailSMTPOAuth', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'redirectUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
-            'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
-            'debug' => true
-        ]);
     }
 
     public function load_provider_form()

@@ -12,6 +12,7 @@
         <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="nav-tab nav-tab-active">Providers</a>
         <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="nav-tab">Email Logs</a>
         <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="nav-tab">Providers Logs</a>
+        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="nav-tab">Email Router</a>
     </nav>
 
     <?php settings_errors('free_mail_smtp_messages'); ?>
@@ -63,7 +64,7 @@
                                     <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$provider->provider}.svg", dirname(dirname(dirname(__FILE__))))); ?>" 
                                          alt="" 
                                          class="provider-icon">
-                                    <strong><?php echo esc_html($providers_list[$provider->provider]); ?></strong>
+                                    <strong><?php echo esc_html($providers_list[$provider->provider]['label']); ?></strong>
                                 </td>
                                 <td>
                                     <?php if ($provider->provider === 'gmail' && empty(get_option('free_mail_smtp_gmail_access_token'))): ?>
@@ -113,29 +114,25 @@
                     <button type="button" class="modal-close">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <!-- Step 1: Choose Provider -->
                     <div class="wizard-step" id="step-provider">
                         <p class="description"><?php _e('Select a provider to configure your email settings.', 'free_mail_smtp'); ?></p>
                         <div class="provider-grid">
-                            <?php foreach ($providers_list as $key => $name): ?>
+                            <?php foreach ($providers_list as $key => $info): ?>
                                 <div class="provider-card" data-provider="<?php echo esc_attr($key); ?>">
                                     <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$key}.svg", dirname(dirname(dirname(__FILE__))))); ?>"
-                                        alt="<?php echo esc_attr($name); ?>"
+                                        alt="<?php echo esc_attr($info['label']); ?>"
                                         onerror="this.src='<?php echo esc_url(plugins_url('assets/img/providers/default.svg', dirname(dirname(dirname(__FILE__))))); ?>'">
-                                    <h4><?php echo esc_html($name); ?></h4>
+                                    <h4><?php echo esc_html($info['label']); ?></h4>
                                 </div>
                             <?php endforeach; ?>
                         </div>
                     </div>
-                    <!-- Step 2: Provider Configuration -->
                     <div class="wizard-step" id="step-config" style="display: none;">
-                        <!-- Provider form will be loaded here -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- General Settings -->
         <div class="general-settings-wrapper">
             <h2><?php _e('General Settings', 'free_mail_smtp'); ?></h2>
             <form method="post" action="">

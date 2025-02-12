@@ -97,6 +97,7 @@ class Logs
                 <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="nav-tab">Providers</a>
                 <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="nav-tab nav-tab-active">Email Logs</a>
                 <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="nav-tab">Providers Logs</a>
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="nav-tab">Email Router</a>
             </nav>
                 <div class="logs-retention-settings">
                 <h2><?php _e('Logs Retention Settings', 'free_mail_smtp'); ?></h2>

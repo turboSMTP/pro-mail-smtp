@@ -65,7 +65,6 @@ class Mailgun extends BaseProvider
         }
         
         $payload .= "--{$this->boundary}--\r\n";
-        error_log('Mailgun payload: ' . print_r($payload, true));
         $response = $this->request($endpoint, $payload, false, 'POST', true);
         return [
             'message_id' => 'Mailgun' . uniqid(),
@@ -137,7 +136,6 @@ class Mailgun extends BaseProvider
     private function format_analytics_response($response)
     {
         $formatted_data = [];
-        error_log('Responseeeeeeeeeee Mailgunooo: ' . print_r($response, true));
         foreach ($response['items'] as $data) {
             $formatted_data[] = [
                 'id' => $data['id'],

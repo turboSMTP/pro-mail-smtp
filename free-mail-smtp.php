@@ -10,7 +10,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Enable error logging
 if (!defined('WP_DEBUG')) {
     define('WP_DEBUG', true);
 }
@@ -22,10 +21,6 @@ define('free_mail_smtp_VERSION', '1.0.0');
 define('free_mail_smtp_FILE', __FILE__);
 define('free_mail_smtp_PATH', plugin_dir_path(__FILE__));
 define('free_mail_smtp_URL', plugin_dir_url(__FILE__));
-
-// Debug
-error_log('Free Mail SMTP Plugin loaded');
-error_log('Plugin URL: ' . free_mail_smtp_URL);
 
 if (file_exists(free_mail_smtp_PATH . 'includes/Lib/google/vendor/autoload.php')) {
     require_once free_mail_smtp_PATH . 'includes/Lib/google/vendor/autoload.php';
@@ -45,7 +40,6 @@ spl_autoload_register(function ($class) {
 
     if (file_exists($file)) {
         require $file;
-        // error_log("Loaded class file: $file");
     } else {
         error_log("Failed to load class file: $file");
     }

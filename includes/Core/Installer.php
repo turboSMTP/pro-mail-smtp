@@ -52,6 +52,27 @@ class Installer {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_connections);
         
+        $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql_conditions = "CREATE TABLE IF NOT EXISTS $conditions_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            connection_id varchar(50) NOT NULL,
+            condition_data json NOT NULL,
+            condition_label varchar(255) NOT NULL,
+            overwrite_connection boolean NOT NULL DEFAULT 0,
+            overwrite_sender boolean NOT NULL DEFAULT 0,
+            forced_senderemail varchar(255) NULL,
+            forced_sendername varchar(255) NULL,
+            is_enabled boolean NOT NULL DEFAULT 0,
+            PRIMARY KEY (id),
+            KEY connection_id (connection_id),
+            CONSTRAINT fk_connection_id FOREIGN KEY (connection_id) REFERENCES $connections_table(connection_id) ON DELETE CASCADE
+        ) $charset_collate;";
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql_conditions);
+        
         update_option('free_mail_smtp_db_version', $this->db_version);
         
         $this->create_default_options();

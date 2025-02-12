@@ -51,6 +51,13 @@ class Menu {
                 'capability' => 'manage_options',
                 'slug' => 'free_mail_smtp-analytics',
                 'callback' => 'render_analytics_page'
+            ],
+            [
+                'title' => 'Email Router',
+                'menu_title' => 'Email Router',
+                'capability' => 'manage_options',
+                'slug' => 'free_mail_smtp-email-router',
+                'callback' => 'render_email_router_page'
             ]
         ];
 
@@ -76,5 +83,8 @@ class Menu {
 
     public function render_logs_page() {
         (new Logs())->render();
+    }
+    public function render_email_router_page() {
+        (new EmailRouter())->render();
     }
 }

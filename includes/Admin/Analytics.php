@@ -1,19 +1,19 @@
 <?php
 namespace FreeMailSMTP\Admin;
 
-use FreeMailSMTP\Connections\ConnectionRepository;
-
+use FreeMailSMTP\DB\ConnectionRepository;
+use FreeMailSMTP\Providers\ProviderFactory;
 class Analytics {
     private $providers = [];
-    private $providersList = [];
     private $plugin_path;
     private $connection_repository;
+    private $provider_factory;
 
     public function __construct() {
         $this->plugin_path = dirname(dirname(dirname(__FILE__)));
-        $this->providersList = include __DIR__ . '/../../config/providers-list.php';
         $this->connection_repository = new ConnectionRepository();
         $this->providers = $this->connection_repository->get_all_connections();
+        $this->provider_factory = new ProviderFactory();
 
         add_action('wp_ajax_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
@@ -57,7 +57,6 @@ class Analytics {
             'analytics_data' => $this->get_analytics_data()
         ];
 
-        error_log('Analytics data: ' . json_encode($data));
         $view_file = $this->plugin_path . '/views/admin/analytics/index.php';
         if (file_exists($view_file)) {
             include $view_file;
@@ -66,7 +65,6 @@ class Analytics {
 
     private function get_analytics_data() {
         $filters = $this->get_filter_values();
-        error_log('selected provider '.$filters['selected_provider']);
 
         try {
             if (!empty($filters['selected_provider'])) {
@@ -129,15 +127,7 @@ class Analytics {
         if (!$provider_config) {
             throw new \Exception('Provider configuration not found');
         }
-
-        // Initialize provider class
-        $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->providersList[$provider_config['provider']];
-        if (!class_exists($provider_class)) {
-            throw new \Exception('Invalid provider');
-        }
-    
-        $provider = new $provider_class($provider_config['config_keys']);
-
+        $provider = $this->provider_factory->get_provider_class($provider_config);
         return $provider->get_analytics($filters);
     }
 
@@ -146,12 +136,6 @@ class Analytics {
         if (!$connection) {
             return null;
         }
-
-        return [
-            'id'               => $connection->connection_id,
-            'provider'         => $connection->provider,
-            'connection_label' => $connection->connection_label,
-            'config_keys'      => $connection->connection_data
-        ];
+       return $connection;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace FreeMailSMTP\Connections;
+namespace FreeMailSMTP\DB;
 
 defined('ABSPATH') || exit;
 
@@ -60,7 +60,6 @@ class ConnectionRepository {
             $new_priority,
             $connection_id
         ));
-        error_log("Exists: ".$exists);
         if ($exists > 0) {
             return new \WP_Error('duplicate_priority', 'The priority value must be unique.');
         }

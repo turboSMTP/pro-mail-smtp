@@ -52,6 +52,8 @@
 .button.edit-provider,
 .button.test-provider,
 .button.delete-provider,
+.button.edit-condition,
+.button.delete-condition,
 .button.back-step {
   padding: 4px 12px;
   border: 1px solid #ff6e79;
@@ -86,7 +88,8 @@
   margin-bottom: 20px;
 }
 
-.page-title-action.add-provider {
+.page-title-action.add-provider,
+.page-title-action.add-router-condition {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -102,7 +105,10 @@
 }
 .page-title-action.add-provider:focus,
 .page-title-action.add-provider:active,
-.page-title-action.add-provider:hover {
+.page-title-action.add-provider:hover,
+.page-title-action.add-router-condition:focus,
+.page-title-action.add-router-condition:active,
+.page-title-action.add-router-condition:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -298,7 +304,8 @@ input[type="submit"].button-primary:hover,
   color: #fff;
 }
 
-.button-primary.save-provider {
+.button-primary.save-provider,
+.button-primary.save-condition {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -310,7 +317,8 @@ input[type="submit"].button-primary:hover,
   font-size: 13px;
   text-decoration: none;
 }
-.button-primary:hover.save-provider:hover {
+.button-primary:hover.save-provider:hover,
+.button-primary.save-condition:hover {
   background: #ff5252 !important;
   color: #fff;
 }

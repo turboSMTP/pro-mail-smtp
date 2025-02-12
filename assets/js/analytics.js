@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+    console.log("Free Mail SMTP Analytics JS loaded");
     var currentPage = 1;
     var perPage = 10;
     var totalPages = 1;
