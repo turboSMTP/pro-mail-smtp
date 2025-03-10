@@ -18,25 +18,6 @@ class Logs
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('init', [$this, 'schedule_cleanup_event']);
-        add_action('free_mail_smtp_cleanup_logs', [__CLASS__, 'cleanup_logs_cron']);
-    }
-
-    public function schedule_cleanup_event()
-    {
-        if (! wp_next_scheduled('free_mail_smtp_cleanup_logs')) {
-            wp_schedule_event(time(), 'hourly', 'free_mail_smtp_cleanup_logs');
-        }
-    }
-
-    public static function cleanup_logs_cron()
-    {
-        $current_retention = get_option('free_mail_smtp_retention_duration', 'forever');
-        if ($current_retention === 'forever') {
-            return;
-        }
-        $instance = new self();
-        $instance->auto_delete_logs($current_retention);
     }
 
     public function enqueue_scripts($hook)
@@ -85,6 +66,7 @@ class Logs
         $total_pages = ceil($total_items / $this->per_page);
 
 ?>
+
         <div class="wrap free_mail_smtp-wrap">
             <div class="plugin-header">
                 <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(__FILE__)))); ?>" alt="Free Mail SMTP" class="plugin-logo">
@@ -93,11 +75,12 @@ class Logs
 
             <p class="description">Setup custom SMTP or popular Providers to improve your WordPress email deliverability.</p>
 
-            <nav class="nav-tab-wrapper">
-                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="nav-tab">Providers</a>
-                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="nav-tab nav-tab-active">Email Logs</a>
-                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="nav-tab">Providers Logs</a>
-                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="nav-tab">Email Router</a>
+            <nav class="free-mail-smtp-nav-tab-wrapper">
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-providers'); ?>" class="free-mail-smtp-nav-tab">Providers</a>
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Email Logs</a>
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
+                <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="free-mail-smtp-nav-tab">Settings</a>
             </nav>
                 <div class="logs-retention-settings">
                 <h2><?php _e('Logs Retention Settings', 'free_mail_smtp'); ?></h2>
@@ -191,7 +174,6 @@ class Logs
                                 class="manage-column column-<?php echo esc_attr($key); ?> <?php echo $this->get_column_sort_class($key, $filters); ?>">
                                 <a href="<?php echo esc_url($this->get_sort_url($key)); ?>">
                                     <span><?php echo esc_html($label); ?></span>
-                                    <span class="sorting-indicator"></span>
                                 </a>
                             </th>
                         <?php endforeach; ?>
@@ -514,26 +496,5 @@ class Logs
             echo '<span class="pagination-links">' . implode("\n", $pagination) . '</span>';
             echo '</div>';
         }
-    }
-
-    private function auto_delete_logs($retention)
-    {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'email_log';
-        $cutoff = '';
-        switch ($retention) {
-            case '1_week':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 week'));
-                break;
-            case '1_month':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 month'));
-                break;
-            case '1_year':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 year'));
-                break;
-            default:
-                return;
-        }
-        $wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE sent_at < %s", $cutoff));
     }
 }

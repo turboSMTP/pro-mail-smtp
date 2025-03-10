@@ -79,7 +79,6 @@ class EmailRoutingService {
         $value = $condition->value;
         $operator = $condition->operator;
         $result = false;
-
         switch($operator){
             case 'is':
                 $result = ($field == $value);

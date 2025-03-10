@@ -3,7 +3,7 @@
     <p class="description">Enter your Sparkpost API credentials below.</p>
 
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
+        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
         
         <input type="hidden" name="provider" id="provider" value="sparkpost">
         <input type="hidden" name="connection_id" id="connection_id" value="">

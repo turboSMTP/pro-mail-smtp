@@ -16,6 +16,9 @@ class Outlook extends BaseProvider
     public function get_headers()
     {
         $token = $this->get_access_token();
+        if (empty($token['access_token'])) {
+            return [];
+        }
         return [
             'Authorization' => 'Bearer ' . $token['access_token'],
             'Content-Type' => 'application/json'
@@ -24,6 +27,10 @@ class Outlook extends BaseProvider
 
     private function save_access_token($token)
     {
+        // Add expiration timestamp for proper validation
+        if (isset($token['expires_in'])) {
+            $token['expires_at'] = time() + $token['expires_in']; 
+        }
         update_option('free_mail_smtp_outlook_access_token', $token);
         error_log('Access token saved.');
     }
@@ -52,7 +59,8 @@ class Outlook extends BaseProvider
                 throw new \Exception('Outlook authentication required');
             }
 
-            if (isset($token['expires_in']) && time() >= $token['expires_in']) {
+            // Fixed token expiration check
+            if (isset($token['expires_at']) && time() >= $token['expires_at']) {
                 $this->refresh_token($token['refresh_token']);
                 $token = $this->get_access_token();
             }
@@ -123,24 +131,38 @@ class Outlook extends BaseProvider
                 throw new \Exception('Outlook authentication required');
             }
 
-            $response = $this->request(
-                'https://graph.microsoft.com/v1.0/me',
-                [],
-                [
-                    'Authorization' => 'Bearer ' . $token['access_token'],
-                    'Content-Type' => 'application/json'
-                ],
-                'GET'
-            );
-
-            if (isset($response['error'])) {
-                throw new \Exception('Connection test failed: ' . ($response['error']['message'] ?? 'Unknown error'));
+            $admin_email = get_option('admin_email');
+            $site_name = get_bloginfo('name');
+            $site_url = get_bloginfo('url');
+            
+            $from_email = get_option('free_mail_smtp_from_email');
+            if (empty($from_email) || !is_string($from_email)) {
+                $from_email = $admin_email;
             }
-
-            return [
-                'success' => true,
-                'message' => 'Outlook connection verified successfully.'
+            
+            $test_data = [
+                'to' => [$admin_email],
+                'subject' => 'Free Mail SMTP: Outlook Test Email',
+                'message' => sprintf(
+                    'This is a test email from %s (%s) to verify your Outlook email configuration with Free Mail SMTP plugin.<br><br>If you\'re reading this, your Outlook connection is working properly!<br><br>Sent: %s',
+                    $site_name,
+                    $site_url,
+                    date('Y-m-d H:i:s')
+                ),
+                'from_email' => $from_email,
+                'from_name' => 'Free Mail SMTP Test'
             ];
+            
+            $result = $this->send($test_data);
+            
+            if (!empty($result['message_id'])) {
+                return [
+                    'success' => true,
+                    'message' => 'Outlook connection verified successfully. Test email sent to ' . $admin_email
+                ];
+            } else {
+                throw new \Exception('Test email could not be sent');
+            }
         } catch (\Exception $e) {
             throw new \Exception('Outlook connection test failed: ' . $e->getMessage());
         }
@@ -151,7 +173,7 @@ class Outlook extends BaseProvider
         $params = [
             'client_id'     => $this->config_keys['client_id'],
             'response_type' => 'code',
-            'redirect_uri'  => admin_url('wp-admin/'),
+            'redirect_uri'  => admin_url('admin.php?page=free_mail_smtp-providers'),
             'response_mode' => 'query',
             'scope'         => 'offline_access Mail.Send',
             'state'         => 'outlook'
@@ -198,12 +220,13 @@ class Outlook extends BaseProvider
                     'client_secret' => $this->config_keys['client_secret'],
                     'code' => $code,
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => admin_url('admin.php?page=free_mail_smtp-settings')
+                    'redirect_uri' => admin_url('admin.php?page=free_mail_smtp-providers')
                 ],
-                false,
-                'POST'
+                true,
+                'POST',
+                true
             );
-
+                error_log('Outlook OAuth response: ' . print_r($response, true));
             if (isset($response['error'])) {
                 throw new \Exception('OAuth error: ' . ($response['error_description'] ?? $response['error']));
             }
@@ -222,43 +245,32 @@ class Outlook extends BaseProvider
 
     private function refresh_token($refresh_token)
     {
-        $response = $this->request(
-            $this->token_url,
-            [
-                'client_id' => $this->config_keys['client_id'],
-                'client_secret' => $this->config_keys['client_secret'],
-                'refresh_token' => $refresh_token,
-                'grant_type' => 'refresh_token'
-            ],
-            false,
-            'POST'
-        );
+        try {
+            $response = $this->request(
+                $this->token_url,
+                [
+                    'client_id' => $this->config_keys['client_id'],
+                    'client_secret' => $this->config_keys['client_secret'],
+                    'refresh_token' => $refresh_token,
+                    'grant_type' => 'refresh_token'
+                ],
+                false,
+                'POST'
+            );
 
-        if (isset($response['error'])) {
-            throw new \Exception('Failed to refresh token: ' . ($response['error_description'] ?? $response['error']));
-        }
-
-        $this->save_access_token($response);
-        if (!empty($response['refresh_token'])) {
-            $this->save_refresh_token($response['refresh_token']);
-        }
-    }
-
-    private function validateAccessToken()
-    {
-        $accessToken = $this->get_access_token();
-        if (!empty($accessToken)) {
-            $this->client->setAccessToken($accessToken);
-            if ($this->client->isAccessTokenExpired()) {
-                $this->client->refreshToken($this->get_refresh_token());
-                try {
-                    $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-                    $this->save_access_token($this->client->getAccessToken());
-                    $this->save_refresh_token($this->client->getRefreshToken());
-                } catch (\Exception $e) {
-                    error_log('Token refresh failed: ' . $e->getMessage());
-                }
+            if (isset($response['error'])) {
+                throw new \Exception('Failed to refresh token: ' . ($response['error_description'] ?? $response['error']));
             }
+
+            $this->save_access_token($response);
+            if (!empty($response['refresh_token'])) {
+                $this->save_refresh_token($response['refresh_token']);
+            }
+            
+            return $response;
+        } catch (\Exception $e) {
+            error_log('Token refresh failed: ' . $e->getMessage());
+            throw new \Exception('Authentication expired. Please reconnect your Outlook account.');
         }
     }
 }

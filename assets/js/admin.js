@@ -10,6 +10,28 @@ jQuery(document).ready(function ($) {
     modal.show();
 });
 
+$('#import').on('click', function() {
+    var import_nonce = $(this).data('import_nonce');
+    var plugin = $(this).data('plugin');
+
+    $.ajax({
+        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        method: 'POST',
+        data: {
+            action: 'import_connections',
+            nonce: import_nonce,
+            plugin: plugin
+        },
+        success: function(response) {
+            if (response.success) {
+                alert('Import completed successfully!');
+                location.reload();
+            } else {
+                alert('Import failed: ' + (response.data || 'Unknown error'));
+            }
+        }
+    });
+});
   // Close modal
   $(".modal-close").on("click", function (e) {
     e.preventDefault();
@@ -23,20 +45,18 @@ jQuery(document).ready(function ($) {
     var provider = $(this).data('provider');
     
     $.ajax({
-        url: FreeMailSMTPAdmin.ajaxUrl,
+        url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
             action: 'load_provider_form',
             provider: provider,
-            nonce: FreeMailSMTPAdmin.nonce
+            nonce: FreeMailSMTPAdminProviders.nonce
         },
         success: function(response) {
             if (response.success) {
                 $('#step-config').html(response.data.html);
                 $('#step-provider').hide();
                 $('#step-config').show();
-
-                // Set submit button text for new provider
                 $('#provider-form .button-primary').text('Add Provider');
             } else {
                 alert('Error loading provider form');
@@ -56,12 +76,12 @@ jQuery(document).ready(function ($) {
 $(document).on('submit', '#provider-form', function(e) {
     e.preventDefault();    
     $.ajax({
-        url: FreeMailSMTPAdmin.ajaxUrl,
+        url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
             action: 'save_provider',
             formData: $(this).serialize(),
-            nonce: FreeMailSMTPAdmin.nonce
+            nonce: FreeMailSMTPAdminProviders.nonce
         },
         success: function(response) {
             
@@ -78,7 +98,6 @@ $(document).on('submit', '#provider-form', function(e) {
     });
 });
 
-  // Add basic modal styles
   $("head").append(`
         <style>
             .modal {
@@ -116,11 +135,11 @@ $('.test-provider').on('click', function(e) {
     var button = $(this);
     button.prop('disabled', true).text('Testing...');
     $.ajax({
-        url: FreeMailSMTPAdmin.ajaxUrl,
+        url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
             action: 'test_provider_connection',
-            nonce: FreeMailSMTPAdmin.nonce,
+            nonce: FreeMailSMTPAdminProviders.nonce,
             connection_id: button.data('connection_id')
         },
         success: function(response) {
@@ -149,12 +168,12 @@ $('.test-provider').on('click', function(e) {
     var button = $(this);
     var connection_id = button.data("connection_id");
     $.ajax({
-      url: FreeMailSMTPAdmin.ajaxUrl,
+      url: FreeMailSMTPAdminProviders.ajaxUrl,
       method: "POST",
       data: {
         action: "delete_provider",
         connection_id: connection_id,
-        nonce: FreeMailSMTPAdmin.nonce,
+        nonce: FreeMailSMTPAdminProviders.nonce,
       },
       success: function (response) {
         if (response.success) {
@@ -174,12 +193,12 @@ $('.test-provider').on('click', function(e) {
     $('#step-provider').hide();
     modal.show();
     $.ajax({
-        url: FreeMailSMTPAdmin.ajaxUrl,
+        url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
             action: 'load_provider_form',
             provider: config.provider,
-            nonce: FreeMailSMTPAdmin.nonce,
+            nonce: FreeMailSMTPAdminProviders.nonce,
             connection_id: connection_id
         },
         success: function(response) {
@@ -197,41 +216,3 @@ $('.test-provider').on('click', function(e) {
     });
 });
 });
-
-
-function handleOAuth() {
-    var params = Object.assign(
-        {},
-        Object.fromEntries(new URLSearchParams(window.location.search)),
-        Object.fromEntries(new URLSearchParams(window.location.hash.substring(1)))
-    );
-    
-    if (params.code && params.state) {
-        console.log('OAuth callback:', params);
-        var code = params.code;
-        var provider = params.state; 
-        jQuery.ajax({
-            url: FreeMailSMTPOAuth.ajaxUrl,
-            type: 'POST',
-            data: {
-                action: 'free_mail_smtp_set_oauth_token',
-                code: code,
-                nonce: FreeMailSMTPOAuth.nonce,
-                provider_type: provider
-            },
-            success: function(response) {
-                if (response.success) {
-                    console.log(provider + ' connected successfully');
-                    window.location.href = FreeMailSMTPOAuth.redirectUrl;
-                } else {
-                    console.error('Failed to connect ' + provider + ':', response.data);
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX request failed:', textStatus, errorThrown);
-            }
-        });
-    }
-}
-
-window.addEventListener('load', handleOAuth);

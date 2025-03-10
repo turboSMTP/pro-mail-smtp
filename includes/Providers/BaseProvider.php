@@ -31,7 +31,8 @@ abstract class BaseProvider {
         }else{
             $response = wp_remote_request($this->get_api_url() . $endpoint, $args);
         }
-
+        error_log('Request: ' . print_r($args, true));
+        error_log('Response: ' . print_r($response, true));
         if (is_wp_error($response)) {
 
             throw new \Exception($response->get_error_message());

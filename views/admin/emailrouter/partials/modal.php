@@ -3,7 +3,6 @@
 </head>
 
 <body>
-    <div class="conditions-modal-content">
         <div class="conditions-modal-body">
             <div class="helper-text">
                 <strong>How it works:</strong>
@@ -19,7 +18,8 @@
                 <input type="text" id="routerLabel" placeholder="Enter Router Label" class="router-label-input">
             </div>
             <input type="hidden" name="condition_id" id="condition_id" value="">
-
+            <input type="hidden" name="is_enabled" id="is_enabled" value="">
+            
             <div class="logic-title toggle-header" data-target="#if-section">
                 <span>IF</span>
                 <i class="toggle-indicator material-icons" style="font-size:35px;">arrow_drop_down</i>
@@ -71,5 +71,4 @@
                 </div>
             </div>
         </div>
-    </div>
 </body>

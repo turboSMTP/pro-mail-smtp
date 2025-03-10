@@ -16,6 +16,10 @@ class EmailRouter {
         $this->plugin_path = dirname(dirname(dirname(__FILE__)));
     }
 
+    private function get_active_plugins_list() {
+        return get_option('free_mail_smtp_active_plugins_list', []);
+    }
+
     public function enqueue_scripts($hook) {
 
         if ($hook !== 'free-mail-smtp_page_free_mail_smtp-email-router') {
@@ -40,7 +44,8 @@ class EmailRouter {
         wp_localize_script('free_mail_smtp_email-router', 'FreeMailSMTPEmailRouter', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('free_mail_smtp_email-router'),
-            'debug' => true
+            'debug' => true,
+            'pluginsList' => wp_json_encode($this->get_active_plugins_list()) // Ensure proper JSON encoding
         ]);
     }
     public function render() {
@@ -58,7 +63,7 @@ class EmailRouter {
             include $view_file;
         } else {
             echo '<div class="wrap">';
-            echo '<h1>Free Mail SMTP Settings</h1>';
+            echo '<h1>Free Mail SMTP Email Router</h1>';
             echo '<div class="notice notice-error"><p>Error: View file not found.</p></div>';
             echo '</div>';
         }

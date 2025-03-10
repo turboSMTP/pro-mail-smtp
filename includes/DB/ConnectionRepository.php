@@ -111,4 +111,22 @@ class ConnectionRepository {
         }
         return $results;
     }
+
+    public  function get_available_priority() {
+        global $wpdb;
+        $results = $wpdb->get_results("SELECT priority FROM {$this->table} ORDER BY priority ASC");
+        $priorities = [];
+        if ($results) {
+            foreach ($results as $row) {
+                $priorities[] = $row->priority;
+            }
+        }
+        $available = [];
+        for ($i = 1; $i < 10; $i++) {
+            if (!in_array($i, $priorities)) {
+                $available[] = $i;
+            }
+        }
+        return $available;
+    }
 }

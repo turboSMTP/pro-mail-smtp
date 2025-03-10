@@ -1,15 +1,15 @@
 <div class="wizard-step">
-    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit SMTP2GO Configuration' : 'Add SMTP2GO Provider'; ?></h3>
-    <p class="description">Enter your SMTP2GO API credentials below.</p>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit SendGrid Configuration' : 'Add SendGrid Provider'; ?></h3>
+    <p class="description">Enter your SendGrid API credentials below.</p>
 
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
+        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
         
-        <input type="hidden" name="provider" id="provider" value="smtp2go">
+        <input type="hidden" name="provider" id="provider" value="sendgrid">
         <input type="hidden" name="connection_id" id="connection_id" value="">
         
         <table class="form-table">
-        <tr>
+            <tr>
                 <th scope="row">
                     <label for="connection_label">Connection Label</label>
                 </th>
@@ -32,10 +32,9 @@
                            id="api_key" 
                            class="regular-text" 
                            required>
-                           <span id="toggle_api_key" class="dashicons dashicons-visibility"></span>
-                           </div>
+                    <span id="toggle_api_key" class="dashicons dashicons-visibility"></span>
+                </div>
                 </td>
-              
             </tr>
             <tr>
                 <th scope="row">

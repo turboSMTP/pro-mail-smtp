@@ -1,13 +1,13 @@
-<!-- Modal content -->
 <div class="wizard-step">
-<h3><?php echo isset($is_edit) && $is_edit ? 'Edit Brevo Configuration' : 'Add Brevo Provider'; ?></h3>
-<p class="description">Enter your Brevo SMTP API credentials below.</p>
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Mailgun Configuration' : 'Add Mailgun Provider'; ?></h3>
+    <p class="description">Enter your Mailgun API credentials below.</p>
 
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
+        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
 
-        <input type="hidden" name="provider" id="provider" value="brevo">
+        <input type="hidden" name="provider" id="provider" value="mailgun">
         <input type="hidden" name="connection_id" id="connection_id" value="">
+        <input type="hidden" name="config_keys[region]" value="eu">
 
         <table class="form-table">
             <tr>
@@ -39,6 +39,18 @@
             </tr>
             <tr>
                 <th scope="row">
+                    <label for="domain">Domain</label>
+                </th>
+                <td>
+                    <input type="text"
+                        name="config_keys[domain]"
+                        id="domain"
+                        class="regular-text"
+                        required>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                     <label for="priority">Priority</label>
                 </th>
                 <td>
@@ -54,27 +66,28 @@
         </table>
 
         <div class="submit-wrapper">
-        <?php if (!(isset($is_edit) && $is_edit)): ?>
-            <button type="button" class="button back-step">Back</button>
+            <?php if (!(isset($is_edit) && $is_edit)): ?>
+                <button type="button" class="button back-step">Back</button>
             <?php endif; ?>
             <button type="submit" class="button button-primary save-provider">
-                <?php echo isset($is_edit)  ? 'Update Provider' : 'Add Provider'; ?>
+                <?php echo isset($is_edit) ? 'Update Provider' : 'Add Provider'; ?>
             </button>
         </div>
     </form>
 </div>
-
 <style>
     .api-key-wrapper {
         position: relative;
         display: inline-block;
     }
 
+
     .api-key-wrapper input {
         padding-right: 30px !important;
         width: 28.5em !important;
         max-width: 100% !important;
     }
+
 
     .api-key-wrapper .dashicons {
         position: absolute;
@@ -84,6 +97,7 @@
         cursor: pointer;
         color: #a8a7a8;
     }
+
 
     .api-key-wrapper .dashicons:hover {
         color: #a8a7a8;
@@ -95,11 +109,12 @@
         console.log('filled', data);
         jQuery('#connection_label').val(data.connection_label);
         jQuery('#api_key').val(data.config_keys.api_key);
+        jQuery('#domain').val(data.config_keys.domain);
         jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
+        jQuery('#region').val(data.config_keys.region);
         jQuery('.back-step').hide();
     }
-
     jQuery('#toggle_api_key, #toggle_api_key').on('click', function() {
         var input = jQuery(this).prev('input');
         var type = input.attr('type') === 'password' ? 'text' : 'password';

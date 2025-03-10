@@ -4,6 +4,8 @@ namespace FreeMailSMTP\Email;
 use FreeMailSMTP\Providers\ProviderFactory;
 use FreeMailSMTP\Email\EmailFormatterService;
 use FreeMailSMTP\Email\EmailRoutingService;
+use FreeMailSMTP\Core\WPMailCaller;
+use FreeMailSMTP\Providers\PhpMailerProvider;
 
 /**
  * Class Manager
@@ -18,6 +20,7 @@ class Manager {
     private $providerFactory;
     private $emailFormatterService;
     private $emailRoutingService;
+    private $wpMailCaller;
 
     /**
      * Initialize the Manager with required services and hook into WordPress.
@@ -27,6 +30,7 @@ class Manager {
         $this->providerFactory = new ProviderFactory();
         $this->emailFormatterService = new EmailFormatterService();
         $this->emailRoutingService = new EmailRoutingService();
+        $this->wpMailCaller = new WPMailCaller();
     }
     
     /**
@@ -64,6 +68,10 @@ class Manager {
     public function send_mail($null, $args) {
         $error_messages = [];
         $email_data = $this->emailFormatterService->format($args);
+        
+        $source_plugin = $this->wpMailCaller->get_source_plugin_name();
+        $email_data['source_app'] = $source_plugin;
+
         $matching_conditions = $this->emailRoutingService->getRoutingConditionIfExists($email_data);
         $routing_providers = $this->get_routing_providers($matching_conditions);
         if ($this->trySendMail($routing_providers, $email_data, $error_messages)) {
@@ -75,11 +83,28 @@ class Manager {
         if ($this->trySendMail($remaining_providers, $email_data, $error_messages)) {
             return true;
         }
-        
+
         $this->log_provider_failures($error_messages);
+        if(get_option('free_mail_smtp_fallback_to_wp_mail', false)) {
+            return $this->fallback_to_wp_mail($args);
+        }
         return false;
     }
 
+    private function fallback_to_wp_mail($args) {
+        $phpmailer = new PhpMailerProvider();
+        $result = $phpmailer->send($args);
+        $current_email_data = $this->emailFormatterService->format($args);
+
+        if($result) {
+            $this->log_email($current_email_data, $result, 'phpmailer', 'sent');
+            return true;
+        }
+
+
+        $this->log_email($current_email_data ?? [], null, 'phpmailer', 'failed', 'All providers failed to send email');
+        return false;
+    }
     /**
      * Get providers based on matching routing conditions.
      * 
@@ -203,7 +228,7 @@ class Manager {
                     'error_message' => $error,
                     'sent_at' => current_time('mysql')
                 ],
-                ['%s', '%s', '%s', '%s', '%s', '%s', '%s']
+                ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
             );
         }
     }

@@ -58,3 +58,8 @@ register_activation_hook(__FILE__, function() {
     $installer = new FreeMailSMTP\Core\Installer();
     $installer->install();
 });
+
+// Deactivation hook
+register_deactivation_hook(__FILE__, function() {
+    \FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+});

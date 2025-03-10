@@ -28,7 +28,7 @@ class Gmail extends BaseProvider
             $this->client = new Google_Client();
             $this->client->setClientId($this->config_keys['client_id']);
             $this->client->setClientSecret($this->config_keys['client_secret']);
-            $this->client->setRedirectUri(admin_url('wp-admin/'));
+            $this->client->setRedirectUri(admin_url('admin.php?page=free_mail_smtp-providers'));
             $this->client->setAccessType('offline');
             $this->client->setApprovalPrompt('force');
             $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
@@ -45,6 +45,7 @@ class Gmail extends BaseProvider
 
     private function save_access_token($token)
     {
+        // Store the complete token array instead of just the string
         update_option('free_mail_smtp_gmail_access_token', $token);
         error_log('Access token saved.');
     }
@@ -97,7 +98,8 @@ class Gmail extends BaseProvider
                     $email_parts[] = "Content-Disposition: attachment; filename=\"{$attachment['filename']}\"";
                     $email_parts[] = "Content-Transfer-Encoding: base64";
                     $email_parts[] = "";
-                    $email_parts[] = $attachment['content'];
+                    // Ensure content is base64 encoded
+                    $email_parts[] = base64_encode($attachment['content']);
                 }
             }
 
@@ -128,7 +130,6 @@ class Gmail extends BaseProvider
         try {
             $this->validateAccessToken();
             $this->service->users_labels->listUsersLabels('me');
-            error_log('Gmail connection verified successfully.');
             return [
                 'success' => true,
                 'message' => 'Gmail connection verified successfully.'
@@ -207,39 +208,46 @@ class Gmail extends BaseProvider
     {
         try {
             $token = $this->client->fetchAccessTokenWithAuthCode($code);
+            
+            // Store the complete token array
+            $this->save_access_token($token);
+            
             if (!empty($token['refresh_token'])) {
                 $this->save_refresh_token($token['refresh_token']);
                 error_log('Refresh token saved.');
             } else {
                 error_log('No refresh token received.');
             }
-            $this->save_access_token($token['access_token']);
 
             $this->client->setAccessToken($token);
-
             $this->service = new Google_Service_Gmail($this->client);
-
             return true;
         } catch (\Exception $e) {
             error_log('Error setting Gmail token: ' . $e->getMessage());
             throw new \Exception('Failed to set Gmail token: ' . $e->getMessage());
         }
     }
+    
     private function validateAccessToken()
     {
         $accessToken = $this->get_access_token();
         if (!empty($accessToken)) {
             $this->client->setAccessToken($accessToken);
             if ($this->client->isAccessTokenExpired()) {
-                $this->client->refreshToken($this->get_refresh_token());
                 try {
-                    $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
+                    $refreshToken = $this->get_refresh_token();
+                    if (empty($refreshToken)) {
+                        throw new \Exception('Refresh token is missing. Re-authorization required.');
+                    }
+                    $this->client->fetchAccessTokenWithRefreshToken($refreshToken);
                     $this->save_access_token($this->client->getAccessToken());
-                    $this->save_refresh_token($this->client->getRefreshToken());
                 } catch (\Exception $e) {
                     error_log('Token refresh failed: ' . $e->getMessage());
+                    throw new \Exception('Authentication expired. Please reconnect your Gmail account.');
                 }
             }
+        } else {
+            throw new \Exception('Gmail authentication required. Please connect your account.');
         }
     }
 }

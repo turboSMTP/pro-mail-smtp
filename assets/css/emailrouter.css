@@ -64,6 +64,7 @@ body {
 }
 
 .conditions-modal-body {
+    margin: 10px;
     flex: 1;
 }
 

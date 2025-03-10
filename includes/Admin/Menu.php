@@ -18,25 +18,25 @@ class Menu {
     }
 
     public function add_menu_items() {
-        $parent_slug = 'free_mail_smtp-settings';
+        $parent_slug = 'free_mail_smtp-providers';
 
         add_menu_page(
             'Free Mail SMTP',
             'Free Mail SMTP',
             'manage_options',
             $parent_slug,
-            [$this, 'render_settings_page'],
+            [$this, 'render_providers_page'],
             $this->get_svg_icon(),
             30
         );
 
         $submenu_pages = [
             [
-                'title' => 'Settings',
-                'menu_title' => 'Settings',
+                'title' => 'Providers',
+                'menu_title' => 'Providers',
                 'capability' => 'manage_options',
                 'slug' => $parent_slug,
-                'callback' => 'render_settings_page'
+                'callback' => 'render_providers_page'
             ],
             [
                 'title' => 'Email Logs',
@@ -58,6 +58,13 @@ class Menu {
                 'capability' => 'manage_options',
                 'slug' => 'free_mail_smtp-email-router',
                 'callback' => 'render_email_router_page'
+            ],
+            [
+                'title' => 'Settings',
+                'menu_title' => 'Settings',
+                'capability' => 'manage_options',
+                'slug' => 'free_mail_smtp-settings',
+                'callback' => 'render_settings_page'
             ]
         ];
 
@@ -73,8 +80,8 @@ class Menu {
         }
     }
 
-    public function render_settings_page() {
-        (new Settings())->render();
+    public function render_providers_page() {
+        (new Providers())->render();
     }
 
     public function render_analytics_page() {
@@ -86,5 +93,9 @@ class Menu {
     }
     public function render_email_router_page() {
         (new EmailRouter())->render();
+    }
+
+    public function render_settings_page() {
+        (new Settings())->render();
     }
 }

@@ -1,52 +1,53 @@
 <div class="wizard-step">
-    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Mailgun Configuration' : 'Add Mailgun Provider'; ?></h3>
-    <p class="description">Enter your Mailgun API credentials below.</p>
+    
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Gmail Configuration' : 'Add Gmail Provider'; ?></h3>
+    <p class="description">Enter your Gmail API credentials below.</p>
+    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo admin_url('admin.php?page=free_mail_smtp-providers'); ?></code></p>
 
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
-
-        <input type="hidden" name="provider" id="provider" value="mailgun">
+        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
+        
+        <input type="hidden" name="provider" id="provider" value="gmail">
         <input type="hidden" name="connection_id" id="connection_id" value="">
-        <input type="hidden" name="config_keys[region]" value="eu">
-
+        
         <table class="form-table">
-            <tr>
+        <tr>
                 <th scope="row">
                     <label for="connection_label">Connection Label</label>
                 </th>
                 <td>
+                    <input type="text" 
+                           name="connection_label" 
+                           id="connection_label" 
+                           class="regular-text" 
+                           required>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                <label for="client_id">Client ID</label>
+                </th>
+                <td>
                     <input type="text"
-                        name="connection_label"
-                        id="connection_label"
+                        name="config_keys[client_id]"
+                        id="client_id"
                         class="regular-text"
                         required>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="api_key">API Key</label>
+                    <label for="client_secret">Client Secret</label>
                 </th>
                 <td>
-                    <div class="api-key-wrapper">
+                    <div class="secret-wrapper">
                         <input type="password"
-                            name="config_keys[api_key]"
-                            id="api_key"
+                            name="config_keys[client_secret]"
+                            id="client_secret"
                             class="regular-text"
                             required>
-                        <span id="toggle_api_key" class="dashicons dashicons-visibility"></span>
+                        <span id="toggle_ssecret" class="dashicons dashicons-visibility"></span>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">
-                    <label for="domain">Domain</label>
-                </th>
-                <td>
-                    <input type="text"
-                        name="config_keys[domain]"
-                        id="domain"
-                        class="regular-text"
-                        required>
                 </td>
             </tr>
             <tr>
@@ -54,13 +55,13 @@
                     <label for="priority">Priority</label>
                 </th>
                 <td>
-                    <input type="number"
-                        name="priority"
-                        id="priority"
-                        class="small-text"
-                        min="1"
-                        value="1"
-                        required>
+                    <input type="number" 
+                           name="priority" 
+                           id="priority" 
+                           class="small-text" 
+                           min="1" 
+                           value="1"
+                           required>
                 </td>
             </tr>
         </table>
@@ -75,21 +76,20 @@
         </div>
     </form>
 </div>
+
 <style>
-    .api-key-wrapper {
+    .secret-wrapper {
         position: relative;
         display: inline-block;
     }
 
-
-    .api-key-wrapper input {
+    .secret-wrapper input {
         padding-right: 30px !important;
         width: 28.5em !important;
         max-width: 100% !important;
     }
 
-
-    .api-key-wrapper .dashicons {
+    .secret-wrapper .dashicons {
         position: absolute;
         right: 8px;
         top: 50%;
@@ -98,24 +98,20 @@
         color: #a8a7a8;
     }
 
-
-    .api-key-wrapper .dashicons:hover {
+    .secret-wrapper .dashicons:hover {
         color: #a8a7a8;
     }
 </style>
-
 <script>
-    function fillInputs(data) {
-        console.log('filled', data);
+    function fillInputs(data){
         jQuery('#connection_label').val(data.connection_label);
-        jQuery('#api_key').val(data.config_keys.api_key);
-        jQuery('#domain').val(data.config_keys.domain);
+        jQuery('#client_id').val(data.config_keys.client_id);
+        jQuery('#client_secret').val(data.config_keys.client_secret);
         jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
-        jQuery('#region').val(data.config_keys.region);
         jQuery('.back-step').hide();
     }
-    jQuery('#toggle_api_key, #toggle_api_key').on('click', function() {
+    jQuery('#toggle_ssecret, #toggle_ssecret').on('click', function() {
         var input = jQuery(this).prev('input');
         var type = input.attr('type') === 'password' ? 'text' : 'password';
         input.attr('type', type);

@@ -3,11 +3,32 @@ namespace FreeMailSMTP\Core;
 
 class Installer {
     private $db_version = '1.0';
-    
     public function install() {
+        $installed_version = get_option('free_mail_smtp_db_version', '0');
+        
+        if ($installed_version === '0') {
+            $this->update_db_1_0();
+            $this->create_default_options();
+        }
+        // Future updates
+        // if (version_compare($installed_version, '1.1', '<')) {
+        // }
+        
+        update_option('free_mail_smtp_db_version', $this->db_version);
+
+    }
+    
+    private function create_default_options() {
+        add_option('free_mail_smtp_from_email', get_option('admin_email'));
+        add_option('free_mail_smtp_from_name', get_option('blogname'));
+        add_option('free_mail_smtp_fallback_to_wp_mail', false);
+        add_option('free_mail_smtp_import_easysmtp_notice_dismissed', false);
+        add_option('free_mail_smtp_import_wpmail_notice_dismissed', false);
+    }
+
+    private function  update_db_1_0(){
         global $wpdb;
         
-        // Create email log table
         $table_name = $wpdb->prefix . 'email_log';
         $charset_collate = $wpdb->get_charset_collate();
         
@@ -73,13 +94,5 @@ class Installer {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_conditions);
         
-        update_option('free_mail_smtp_db_version', $this->db_version);
-        
-        $this->create_default_options();
-    }
-    
-    private function create_default_options() {
-        add_option('free_mail_smtp_from_email', get_option('admin_email'));
-        add_option('free_mail_smtp_from_name', get_option('blogname'));
     }
 }

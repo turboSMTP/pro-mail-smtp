@@ -1,18 +1,21 @@
 jQuery(document).ready(function($) {
-    console.log("Free Mail SMTP Email Router JS loaded");
+    let currentEditId = null;
+    let conditionCount = 0;
+    const fields =  [ 'To', 'Subject', 'Source App', 'Message', 'From Email', 'From Name', 'CC', 'BCC', 'Reply To'];
+    const operators = ['Is', 'Is not', 'Contains', 'Does not Contain', 'Start with', 'End with', 'Regex Match', 'Regex Not Match', 'Is Empty', 'Is Not Empty'];
+    const sourceAppOperators = ['Is', 'Is not'];
+
     $('.add-router-condition , #add-router-condition-button').on('click', function(e) {
         e.preventDefault();
         $('#router-modal').show();
     });
-    
+
     $(document).on('click', '.modal-close', function(e) {
         e.preventDefault();
         $(this).closest('.modal').hide();
     });
 
-    let currentEditId = null;
-
-    function closeModal(saved) { 
+    function closeModal(saved) {
         if(!saved){
             if (confirm('Are you sure you want to close? Any unsaved changes will be lost.')) {
                 $('#router-modal').hide();
@@ -22,7 +25,6 @@ jQuery(document).ready(function($) {
             $('#router-modal').hide();
             resetForm();
         }
-       
     }
 
     function resetForm() {
@@ -33,7 +35,7 @@ jQuery(document).ready(function($) {
         $('#emailInfoToggle').prop('checked', false);
         $('#connectionSelect').val('');
         $('#emailInfoContent input').val('');
-        addCondition(); 
+        addCondition();
     }
 
     function collectFormData() {
@@ -49,67 +51,30 @@ jQuery(document).ready(function($) {
                 email: $('#emailInfoContent input[type="email"]').val(),
                 name: $('#emailInfoContent input[type="text"]').val()
             },
-            id: $('#condition_id').val()
+            id: $('#condition_id').val(),
+            is_enabled: $('#is_enabled').val(),
         };
         if (currentEditId) {
             formData.id = currentEditId;
         }
-
         return formData;
     }
 
     function getConditionsData() {
         const conditions = [];
-        
         $('.condition-row').each(function() {
-            const condition = {
+            const conditionData = {
                 field: $(this).find('.field-select').val(),
                 operator: $(this).find('.operator-select').last().val(),
                 value: $(this).find('.value-input').val()
             };
-            
             const logicalOperator = $(this).closest('.condition-container').find('.operator-select').first().val();
             if (logicalOperator) {
-                condition.logical_operator = logicalOperator;
+                conditionData.logical_operator = logicalOperator;
             }
-            
-            conditions.push(condition);
+            conditions.push(conditionData);
         });
-
-        console.log('Collected conditions:', conditions.toString());
         return conditions;
-    }
-
-    function saveRouter() {
-        const formData = collectFormData();
-        if(!formData.id){
-            formData.is_enabled = false;
-        }
-
-        if (!validateForm(formData)) {
-            return;
-        }
-        console.log('Saving form data:', formData);
-        $.ajax({
-            url: FreeMailSMTPEmailRouter.ajaxUrl,
-            type: 'POST',
-            data: {
-                action: 'save_email_router',
-                data: formData,
-                nonce: FreeMailSMTPEmailRouter.nonce  
-            },
-            success: function(response) {
-                if (response.success) {
-                    closeModal(true);
-                    location.reload();
-                } else {
-                    alert('Error saving: ' + response.data.message);
-                }
-            },
-            error: function() {
-                alert('Server error occurred while saving');
-            }
-        });
     }
 
     function validateForm(formData) {
@@ -132,9 +97,81 @@ jQuery(document).ready(function($) {
         return true;
     }
 
-    let conditionCount = 0;
-    const fields =  ['To', 'Subject', 'Message', 'From Email', 'From Name', 'CC', 'BCC', 'Reply To'];
-    const operators = ['Is', 'Is not', 'Contains', 'Does not Contain', 'Start with', 'End with', 'Regex Match', 'Regex Not Match', 'Is Empty', 'Is Not Empty'];
+    function saveRouter() {
+        const formData = collectFormData();
+        if(!formData.id){
+            formData.is_enabled = false; 
+        }
+
+        if (!validateForm(formData)) {
+            return;
+        }
+
+        $.ajax({
+            url: FreeMailSMTPEmailRouter.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'save_email_router',
+                data: formData,
+                nonce: FreeMailSMTPEmailRouter.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    closeModal(true);
+                    location.reload();
+                } else {
+                    alert('Error saving: ' + response.data.message);
+                }
+            },
+            error: function() {
+                alert('Server error occurred while saving');
+            }
+        });
+    }
+
+    function getOperatorsForField(fieldName) {
+        return fieldName.toLowerCase() === 'source_app' ? sourceAppOperators : operators;
+    }
+
+    function createValueInput(fieldName) {
+        if (fieldName.toLowerCase() === 'source_app') {
+            return createSourceAppSelect();
+        } else {
+            return createTextInput();
+        }
+    }
+
+    function createSourceAppSelect() {
+        const select = document.createElement('select');
+        select.className = 'value-input';
+
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Select Plugin';
+        select.appendChild(placeholder);
+
+        if (FreeMailSMTPEmailRouter.pluginsList) {
+            try {
+                const plugins = JSON.parse(FreeMailSMTPEmailRouter.pluginsList);
+                plugins.forEach(plugin => {
+                    const opt = document.createElement('option');
+                    opt.value = plugin.path;
+                    opt.textContent = plugin.name; 
+                    select.appendChild(opt);
+                });
+            } catch (error) {
+                console.error('Error parsing plugins list:', error);
+            }
+        }
+        return select;
+    }
+
+    function createTextInput() {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'value-input';
+        return input;
+    }
 
     function createSelect(options, className, onchange) {
         const select = document.createElement('select');
@@ -148,44 +185,140 @@ jQuery(document).ready(function($) {
         if (onchange) {
             select.onchange = onchange;
         }
+        if (className === 'operator-select') {
+            select.addEventListener('change', handleOperatorChange);
+        }
         return select;
     }
 
-    function addCondition() {
-        const container = document.getElementById('conditions');
+    function handleOperatorChange() {
+        const valueWrapper = this.parentNode.nextElementSibling;
+        if (valueWrapper && valueWrapper.classList.contains('value-wrapper')) {
+            const valueInput = valueWrapper.querySelector('.value-input');
+            if (valueInput) {
+                const isEmptyOperator = this.value === 'is_empty' || this.value === 'is_not_empty';
+                valueInput.disabled = isEmptyOperator;
+                if (isEmptyOperator) {
+                    valueInput.value = '';
+                }
+            }
+        }
+    }
+
+    function createConditionContainer(index) {
         const conditionContainer = document.createElement('div');
         conditionContainer.className = 'condition-container';
 
-        if (container.children.length > 0) {
-            const operatorSelect = createSelect(['AND', 'OR'], 'operator-select');
-            operatorSelect.onchange = updateGrouping;
+        if (index > 0) {
+            const operatorSelect = createLogicalOperatorSelect();
             conditionContainer.appendChild(operatorSelect);
         }
+        return conditionContainer;
+    }
 
+    function createConditionRow(conditionCount, containerLength) {
         const conditionRow = document.createElement('div');
         conditionRow.className = 'condition-row';
         conditionRow.id = `condition-${conditionCount}`;
 
+        const numberSpan = createConditionNumberSpan(containerLength + 1);
+        const fieldSelect = createFieldSelect();
+        const operatorWrapper = createOperatorWrapper();
+        const valueWrapper = createValueWrapper('');
+        
+        const conditionContainer = createConditionContainer(containerLength);
+        const removeButton = createRemoveConditionButton(conditionContainer);
+
+        conditionRow.appendChild(numberSpan);
+        conditionRow.appendChild(fieldSelect);
+        conditionRow.appendChild(operatorWrapper);
+        conditionRow.appendChild(valueWrapper);
+        conditionRow.appendChild(removeButton);
+
+        return conditionRow;
+    }
+
+    function createLogicalOperatorSelect() {
+        const operatorSelect = createSelect(['AND', 'OR'], 'operator-select');
+        operatorSelect.onchange = updateGrouping;
+        return operatorSelect;
+    }
+
+    function createConditionNumberSpan(number) {
         const numberSpan = document.createElement('span');
         numberSpan.className = 'condition-number';
-        numberSpan.textContent = container.children.length + 1;
-        conditionRow.appendChild(numberSpan);
+        numberSpan.textContent = number;
+        return numberSpan;
+    }
 
+    function createFieldSelect() {
         const fieldSelect = createSelect(fields, 'field-select');
+        fieldSelect.addEventListener('change', handleFieldChange);
+        return fieldSelect;
+    }
+
+    function createOperatorWrapper() {
+        const operatorWrapper = document.createElement('div');
+        operatorWrapper.className = 'operator-wrapper';
+        operatorWrapper.appendChild(createSelect(operators, 'operator-select'));
+        return operatorWrapper;
+    }
+
+    function createValueWrapper(initialValue) {
+        const valueWrapper = document.createElement('div');
+        valueWrapper.className = 'value-wrapper';
+        valueWrapper.appendChild(createValueInput(initialValue));
+        return valueWrapper;
+    }
+
+    function createRemoveConditionButton(conditionContainer) {
+        const removeButton = document.createElement('button');
+        removeButton.className = 'delete-condition-btn';
+        removeButton.innerHTML = '<i class="material-icons delete-icon">delete</i>';
+        removeButton.type = 'button';
+        return removeButton;
+    }
+
+    function handleFieldChange() {
+
+        let operatorWrapper = this.nextElementSibling;
+        if (!operatorWrapper || !operatorWrapper.classList.contains('operator-wrapper')) {
+            operatorWrapper = document.createElement('div');
+            operatorWrapper.className = 'operator-wrapper';
+            this.parentNode.insertBefore(operatorWrapper, this.nextSibling);
+        }
+
+        const operators = getOperatorsForField(this.value);
         const operatorSelect = createSelect(operators, 'operator-select');
-        const valueInput = document.createElement('input');
-        valueInput.type = 'text';
-        valueInput.className = 'value-input';
+        operatorWrapper.innerHTML = '';
+        operatorWrapper.appendChild(operatorSelect);
 
-        const removeButton = document.createElement('i');
-        removeButton.className = 'material-icons delete-icon';
-        removeButton.textContent = 'delete';
-        removeButton.onclick = () => removeConditionContainer(conditionContainer);
+        let valueWrapper = operatorWrapper.nextElementSibling;
+        const newValueInput = createValueInput(this.value);
 
-        conditionRow.appendChild(fieldSelect);
-        conditionRow.appendChild(operatorSelect);
-        conditionRow.appendChild(valueInput);
-        conditionRow.appendChild(removeButton);
+        if (valueWrapper && valueWrapper.classList.contains('value-wrapper')) {
+            valueWrapper.innerHTML = '';
+            valueWrapper.appendChild(newValueInput);
+        } else {
+            valueWrapper = document.createElement('div');
+            valueWrapper.className = 'value-wrapper';
+            valueWrapper.appendChild(newValueInput);
+            operatorWrapper.parentNode.insertBefore(valueWrapper, operatorWrapper.nextSibling);
+        }
+
+        const isEmptyOperator = operatorSelect.value === 'is_empty' || operatorSelect.value === 'is_not_empty';
+        newValueInput.disabled = isEmptyOperator;
+    }
+
+    function addCondition() {
+        const container = document.getElementById('conditions');
+        if (!container) {
+            console.error('Conditions container not found');
+            return;
+        }
+        
+        const conditionContainer = createConditionContainer(container.children.length);
+        const conditionRow = createConditionRow(conditionCount, container.children.length);
 
         conditionContainer.appendChild(conditionRow);
         container.appendChild(conditionContainer);
@@ -236,8 +369,15 @@ jQuery(document).ready(function($) {
     }
 
     function removeConditionContainer(container) {
-        container.remove();
-        updateGrouping();
+        if (container && container.parentNode) {
+            container.remove();
+            updateGrouping();
+            
+            const remainingConditions = document.querySelectorAll('.condition-container');
+            if (remainingConditions.length === 0) {
+                addCondition();
+            }
+        }
     }
 
     function setupToggles() {
@@ -246,12 +386,17 @@ jQuery(document).ready(function($) {
         const connectionContent = $('#connectionContent');
         const emailInfoContent = $('#emailInfoContent');
 
-        connectionToggle.on('change', function(){
-            connectionContent.toggleClass('disabled', !connectionToggle.is(':checked'));
-        });
-        emailInfoToggle.on('change', function(){
-            emailInfoContent.toggleClass('disabled', !emailInfoToggle.is(':checked'));
-        });
+        if (connectionToggle.length && connectionContent.length) {
+            connectionToggle.on('change', function(){
+                connectionContent.toggleClass('disabled', !$(this).is(':checked'));
+            });
+        }
+
+        if (emailInfoToggle.length && emailInfoContent.length) {
+            emailInfoToggle.on('change', function(){
+                emailInfoContent.toggleClass('disabled', !$(this).is(':checked'));
+            });
+        }
     }
 
     $('.toggle-header').on('click', function() {
@@ -261,8 +406,21 @@ jQuery(document).ready(function($) {
         indicator.text(indicator.text() === 'arrow_drop_down' ? 'arrow_right' : 'arrow_drop_down');
     });
 
-    addCondition();
-    setupToggles();
+    function initializeForm() {
+        try {
+            addCondition();
+            setupToggles();
+            
+            $('.modal-close').on('click', function(e) {
+                e.preventDefault();
+                $(this).closest('.modal').hide();
+            });
+        } catch (error) {
+            console.error('Error initializing form:', error);
+        }
+    }
+
+    initializeForm();
 
     $(document).keydown(function(e) {
         if (e.key === "Escape" && $('#router-modal').is(':visible')) {
@@ -318,7 +476,7 @@ jQuery(document).ready(function($) {
             }
         });
     });
-    
+
     $(document).on('click', '.delete-condition', function() {
         const conditionId = $(this).data('id');
         if (confirm('Are you sure you want to delete this condition?')) {
@@ -345,65 +503,114 @@ jQuery(document).ready(function($) {
     });
 
     function populateEditForm(condition) {
-        currentEditId = condition.id; 
+        currentEditId = condition.id;
         resetForm();
-        $('#routerLabel').val(condition.condition_label);
-        $('#conditions').empty();
+        setFormHeaderLabel(condition.condition_label);
+        clearConditionsContainer();
         conditionCount = 0;
-        
+        console.log('Populating form with:', condition.id);
         try {
-            let conditionData = condition.condition_data;
-            
-            if (typeof conditionData === 'string') {
-                conditionData = JSON.parse(conditionData);
-            }
-            console.log('Parsed condition data:', conditionData);
+            let conditionData = parseConditionData(condition.condition_data);
 
             if (Array.isArray(conditionData)) {
-                conditionData.forEach((item, index) => {
-                    addCondition();
-                    const $lastRow = $('#conditions').find('.condition-row').last();
-                    const $container = $lastRow.closest('.condition-container');
-                    
-                    if (index > 0) {
-                        const $operatorSelect = $container.find('.operator-select').first();
-                        if ($operatorSelect.length) {
-                            const logicalOp = item.logical_operator || 'and';
-                            $operatorSelect.val(logicalOp.toLowerCase());
-                        }
-                    }
-                    
-                    $lastRow.find('.field-select').val(item.field);
-                    $lastRow.find('.operator-select').last().val(item.operator); 
-                    $lastRow.find('.value-input').val(item.value);
-                });
-                
+                populateConditions(conditionData);
                 updateGrouping();
             }
 
-            if (condition.connection_id) {
-                $('#connectionToggle').prop('checked', true).trigger('change');
-                $('#connectionSelect').val(condition.connection_id);
-            } else {
-                $('#connectionToggle').prop('checked', false).trigger('change');
-            }
+            setConnectionSettings(condition);
+            setEmailInfoSettings(condition);
+            setConditionId(condition.id);
+            setConditionStatus(condition.is_enabled);
 
-            if (condition.forced_senderemail) {
-                $('#emailInfoToggle').prop('checked', true).trigger('change');
-                $('#emailInfoContent input[type="email"]').val(condition.forced_senderemail);
-                $('#emailInfoContent input[type="text"]').val(condition.forced_sendername);
-            } else {
-                $('#emailInfoToggle').prop('checked', false).trigger('change');
-            }
-
-            if(condition.id){
-                $('#condition_id').val(condition.id);
-            }
-            
         } catch (error) {
-            console.error('Error populating form:', error);
-            alert('Error loading condition data');
+            handleFormPopulationError(error);
         }
+    }
+
+    function setFormHeaderLabel(label) {
+        $('#routerLabel').val(label);
+    }
+
+    function clearConditionsContainer() {
+        $('#conditions').empty();
+    }
+
+    function parseConditionData(conditionData) {
+        if (typeof conditionData === 'string') {
+            return JSON.parse(conditionData);
+        }
+        return conditionData;
+    }
+
+    function populateConditions(conditionData) {
+        conditionData.forEach((item, index) => {
+            addCondition();
+            const $lastRow = $('#conditions').find('.condition-row').last();
+            const $container = $lastRow.closest('.condition-container');
+
+            if (index > 0) {
+                setLogicalOperator($container, item.logical_operator);
+            }
+            setConditionRowValues($lastRow, item);
+        });
+    }
+
+    function setLogicalOperator($container, logicalOperator) {
+        const $operatorSelect = $container.find('.operator-select').first();
+        if ($operatorSelect.length) {
+            const logicalOp = logicalOperator || 'and';
+            $operatorSelect.val(logicalOp.toLowerCase());
+        }
+    }
+
+    function setConditionRowValues($lastRow, item) {
+        const $fieldSelect = $lastRow.find('.field-select');
+        $fieldSelect.val(item.field);
+
+        handleFieldChange.call($fieldSelect[0]);
+
+        const $operatorSelect = $lastRow.find('.operator-select').last();
+        $operatorSelect.val(item.operator);
+
+        const isEmptyOperator = item.operator === 'is_empty' || item.operator === 'is_not_empty';
+        const $valueInput = $lastRow.find('.value-input');
+        $valueInput.prop('disabled', isEmptyOperator);
+        $valueInput.val(isEmptyOperator ? '' : item.value);
+    }
+
+    function setConnectionSettings(condition) {
+        if (condition.connection_id) {
+            $('#connectionToggle').prop('checked', true).trigger('change');
+            $('#connectionSelect').val(condition.connection_id);
+        } else {
+            $('#connectionToggle').prop('checked', false).trigger('change');
+        }
+    }
+
+    function setEmailInfoSettings(condition) {
+        if (condition.forced_senderemail) {
+            $('#emailInfoToggle').prop('checked', true).trigger('change');
+            $('#emailInfoContent input[type="email"]').val(condition.forced_senderemail);
+            $('#emailInfoContent input[type="text"]').val(condition.forced_sendername);
+        } else {
+            $('#emailInfoToggle').prop('checked', false).trigger('change');
+        }
+    }
+
+    function setConditionId(id){
+        if(id){
+            $('#condition_id').val(id);
+        }
+    }
+    function setConditionStatus(value){
+        if(value){
+            $('#is_enabled').val(value);
+        }
+    }
+
+    function handleFormPopulationError(error) {
+        console.error('Error populating form:', error);
+        alert('Error loading condition data');
     }
 
     window.FreeMailSMTPRouter = {
@@ -412,5 +619,13 @@ jQuery(document).ready(function($) {
         saveRouter,
         resetForm
     };
+
+    $(document).on('click', '.delete-condition-btn', function(e) {
+        e.preventDefault();
+        const container = $(this).closest('.condition-container');
+        if (container.length) {
+            removeConditionContainer(container[0]);
+        }
+    });
 
 });

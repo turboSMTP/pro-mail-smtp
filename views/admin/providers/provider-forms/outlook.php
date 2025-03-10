@@ -1,47 +1,49 @@
 <div class="wizard-step">
-    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Turbo SMTP Configuration' : 'Add Turbo SMTP Provider'; ?></h3>
+    
+    <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Outlook Configuration' : 'Add Outlook Connection'; ?></h3>
+    <p class="description">Enter your Outlook API credentials below.</p>
+    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo admin_url('admin.php?page=free_mail_smtp-providers'); ?></code></p>
 
-    <p class="description">Enter your Turbo SMTP API credentials below.</p>
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_save_providers', 'free_mail_smtp_nonce'); ?>
-
-        <input type="hidden" name="provider" id="provider" value="turbosmtp">
+        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
+        
+        <input type="hidden" name="provider" id="provider" value="outlook">
         <input type="hidden" name="connection_id" id="connection_id" value="">
-
+        
         <table class="form-table">
-            <tr>
+        <tr>
                 <th scope="row">
                     <label for="connection_label">Connection Label</label>
                 </th>
                 <td>
-                    <input type="text"
-                        name="connection_label"
-                        id="connection_label"
-                        class="regular-text"
-                        required>
+                    <input type="text" 
+                           name="connection_label" 
+                           id="connection_label" 
+                           class="regular-text" 
+                           required>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="consumer_key">Consumer Key</label>
+                <label for="client_id">Application (client) ID</label>
                 </th>
                 <td>
                     <input type="text"
-                        name="config_keys[consumer_key]"
-                        id="consumer_key"
+                        name="config_keys[client_id]"
+                        id="client_id"
                         class="regular-text"
                         required>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="consumer_secret">Consumer Secret</label>
+                    <label for="client_secret">Client Secret</label>
                 </th>
                 <td>
                     <div class="secret-wrapper">
                         <input type="password"
-                            name="config_keys[consumer_secret]"
-                            id="consumer_secret"
+                            name="config_keys[client_secret]"
+                            id="client_secret"
                             class="regular-text"
                             required>
                         <span id="toggle_ssecret" class="dashicons dashicons-visibility"></span>
@@ -50,27 +52,16 @@
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="region">Region</label>
-                </th>
-                <td>
-                    <select name="config_keys[region]" id="region" required>
-                        <option value="us">US</option>
-                        <option value="eu">EU</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">
                     <label for="priority">Priority</label>
                 </th>
                 <td>
-                    <input type="number"
-                        name="priority"
-                        id="priority"
-                        class="small-text"
-                        min="1"
-                        value="1"
-                        required>
+                    <input type="number" 
+                           name="priority" 
+                           id="priority" 
+                           class="small-text" 
+                           min="1" 
+                           value="1"
+                           required>
                 </td>
             </tr>
         </table>
@@ -85,7 +76,6 @@
         </div>
     </form>
 </div>
-
 
 <style>
     .secret-wrapper {
@@ -113,14 +103,13 @@
     }
 </style>
 <script>
-    function fillInputs(data) {
-        console.log('filled', data);
+    function fillInputs(data){
+        console.log('filled',data);
         jQuery('#connection_label').val(data.connection_label);
-        jQuery('#consumer_key').val(data.config_keys.consumer_key);
-        jQuery('#consumer_secret').val(data.config_keys.consumer_secret);
+        jQuery('#client_id').val(data.config_keys.client_id);
+        jQuery('#client_secret').val(data.config_keys.client_secret);
         jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
-        jQuery('#region').val(data.config_keys.region);
         jQuery('.back-step').hide();
     }
     jQuery('#toggle_ssecret, #toggle_ssecret').on('click', function() {
