@@ -14,14 +14,18 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 global $wpdb;
 
 // Drop email logs table
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}email_log");
+if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}email_log") === false) {
+    error_log('Free Mail SMTP: Failed to remove email_log table during uninstall');
+}
 
 // Drop connections table
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections");
-
+if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections") === false) {
+    error_log('Free Mail SMTP: Failed to remove free_mail_smtp_connections table during uninstall');
+}
 // Drop email router conditions table
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_router_conditions");
-
+if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_router_conditions") === false) {
+    error_log('Free Mail SMTP: Failed to remove free_mail_smtp_email_router_conditions table during uninstall');
+}
 // Delete all plugin options
 $options = [
     'free_mail_smtp_db_version',

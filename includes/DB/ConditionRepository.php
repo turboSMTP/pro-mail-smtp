@@ -13,9 +13,7 @@ class ConditionRepository {
 	
 	public function get_condition( $id ) {
 		global $wpdb;
-
-		$sql = $wpdb->prepare( "SELECT * FROM $this->table WHERE id = %d", $id );
-		return $wpdb->get_row( $sql );
+		return $wpdb->get_row($wpdb->prepare( "SELECT * FROM {$this->table} WHERE id = %d", $id ) );
 	}
 	
 	public function add_condition( $data ) {
@@ -43,9 +41,7 @@ class ConditionRepository {
 	
 	public function load_all_conditions() {
 		global $wpdb;
-
-		$sql = "SELECT * FROM $this->table";
-		return $wpdb->get_results( $sql );
+		return $wpdb->get_results( "SELECT * FROM $this->table" );
 	}
 	
 	private function get_format( $data ) {

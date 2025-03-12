@@ -1,9 +1,11 @@
 <?php
 /**
- * Plugin Name: Free Mail SMTP Plugin
- * Description: Send emails using various email service providers
+ * Plugin Name: Free Mail SMTP
+ * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, logging, and advanced routing.
  * Version: 1.0.0
  * Author: Osama
+ * License: GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 if (!defined('ABSPATH')) {
@@ -40,14 +42,11 @@ spl_autoload_register(function ($class) {
 
     if (file_exists($file)) {
         require $file;
-    } else {
-        error_log("Failed to load class file: $file");
     }
 });
 
 // Initialize plugin
 function free_mail_smtp_init() {
-    error_log('Initializing Free Mail SMTP Plugin');
     $plugin = new FreeMailSMTP\Core\Plugin();
     $plugin->init();
 }

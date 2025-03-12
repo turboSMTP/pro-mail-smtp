@@ -73,7 +73,7 @@ class PhpMailerProvider { // Assuming you implement ProviderInterface
 
             return ['message_id' => $mail->getLastMessageID()];
         } catch (PHPMailerException $e) {
-            throw new \Exception('PHPMailer error: ' . $e->getMessage());
+            throw new \Exception('PHPMailer error: ' . esc_html($e->getMessage()));
         }
     }
 

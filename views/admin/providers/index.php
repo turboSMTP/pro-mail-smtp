@@ -9,11 +9,11 @@
     <p class="description">Setup custom SMTP or popular Providers to improve your WordPress email deliverability.</p>
 
     <nav class="free-mail-smtp-nav-tab-wrapper">
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-providers'); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Providers</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="free-mail-smtp-nav-tab">Settings</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Providers</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab">Settings</a>
     </nav>
 
     <?php settings_errors('free_mail_smtp_messages'); ?>
@@ -21,15 +21,15 @@
     <div class="tabset-content">
         <?php if ($import_available['easySMTP']): ?>
             <div id="import-banner" class="import-banner" style="background-color:#ff6e7914; border: 1px solid #ff6e79; padding: 10px; margin-bottom: 20px; position: relative;">
-                <span> <?php _e('We noticed you have Easy WP SMTP installed. Would you like to import your settings?', 'free_mail_smtp'); ?> </span>
-                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo wp_create_nonce('free_mail_smtp_import'); ?>" data-plugin="easySMTP">Import Providers</button>
+                <span> <?php esc_html_e('We noticed you have Easy WP SMTP installed. Would you like to import your settings?', 'free-mail-smtp'); ?> </span>
+                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="easySMTP">Import Providers</button>
                 <span class="dismiss-banner" style="position: absolute; top: 5px; right: 10px; cursor: pointer;">&times;</span>
             </div>
         <?php endif; ?>
         <?php if ($import_available['wpMail']): ?>
             <div id="import-banner" class="import-banner" style="background-color:#ff6e7914; border: 1px solid #ff6e79; padding: 10px; margin-bottom: 20px; position: relative;">
-                <span> <?php _e('We noticed you have WP Mail SMTP installed. Would you like to import your settings?', 'free_mail_smtp'); ?></span>
-                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo wp_create_nonce('free_mail_smtp_import'); ?>" data-plugin="wpMail">Import Providers</button>
+                <span> <?php esc_html_e('We noticed you have WP Mail SMTP installed. Would you like to import your settings?', 'free-mail-smtp'); ?></span>
+                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="wpMail">Import Providers</button>
                 <span class="dismiss-banner" style="position: absolute; top: 5px; right: 10px; cursor: pointer;">&times;</span>
             </div>
         <?php endif; ?>
@@ -44,11 +44,11 @@
             <table class="widefat fixed providers-table">
                 <thead>
                     <tr>
-                        <th class="column-label"><?php _e('Label', 'free_mail_smtp'); ?></th>
-                        <th class="column-priority"><?php _e('Priority', 'free_mail_smtp'); ?></th>
-                        <th class="column-provider"><?php _e('Provider', 'free_mail_smtp'); ?></th>
-                        <th class="column-status"><?php _e('Required Actions', 'free_mail_smtp'); ?></th>
-                        <th class="column-actions"><?php _e('Actions', 'free_mail_smtp'); ?></th>
+                        <th class="column-label"><?php esc_html_e('Label', 'free-mail-smtp'); ?></th>
+                        <th class="column-priority"><?php esc_html_e('Priority', 'free-mail-smtp'); ?></th>
+                        <th class="column-provider"><?php esc_html_e('Provider', 'free-mail-smtp'); ?></th>
+                        <th class="column-status"><?php esc_html_e('Required Actions', 'free-mail-smtp'); ?></th>
+                        <th class="column-actions"><?php esc_html_e('Actions', 'free-mail-smtp'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,7 +56,21 @@
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
                                 <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="No providers" class="empty-state-icon">
-                                <p>It seems you haven't added any providers yet. Get started now.</p>
+                                <p>It seems you haven't added any providers yet.</p>
+                                <p>
+                                    Our plugin supports the most important SMTP providers to improve email deliverability.
+                                </p>
+                                <p> Get started now.</p>
+                                <div class="suggested-providers">
+                                    <?php
+                                    foreach ($providers_list as $provider): ?>
+                                        <?php if ($provider['name'] !== 'other'): ?>
+                                            <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$provider['name']}.svg", dirname(dirname(dirname(__FILE__))))); ?>"
+                                                alt=""
+                                                class="provider-icon">
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
                                 <button type="button" class="button button-primary save-provider" id="add-provider-button">
                                     <span class="dashicons dashicons-plus-alt2"></span> Add Provider
                                 </button>
@@ -107,7 +121,7 @@
                                         data-connection_id="<?php echo esc_attr($provider->connection_id); ?>"
                                         data-provider="<?php echo esc_attr($provider->provider); ?>"
                                         data-api-key='<?php echo esc_attr(json_encode($provider->connection_data)); ?>'>
-                                        <?php _e('Test', 'free_mail_smtp'); ?>
+                                        <?php esc_html_e('Test', 'free-mail-smtp'); ?>
                                     </button>
                                     <button type="button"
                                         class="button delete-provider"
@@ -126,12 +140,12 @@
         <div id="provider-modal" class="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2><?php _e('Configure Provider', 'free_mail_smtp'); ?></h2>
+                    <h2><?php esc_html_e('Configure Provider', 'free-mail-smtp'); ?></h2>
                     <button type="button" class="modal-close">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="wizard-step" id="step-provider">
-                        <p class="description"><?php _e('Select a provider to configure your email settings.', 'free_mail_smtp'); ?></p>
+                        <p class="description"><?php esc_html_e('Select a provider to configure your email settings.', 'free-mail-smtp'); ?></p>
                         <div class="provider-grid">
                             <?php foreach ($providers_list as $key => $info): ?>
                                 <div class="provider-card <?php echo !empty($info['recommended']) ? 'recommended' : ''; ?>" data-provider="<?php echo esc_attr($key); ?>">
@@ -214,6 +228,23 @@
                 justify-content: center;
             }
 
+            .suggested-providers {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .suggested-providers img {
+                width: 50px;
+                height: auto;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .suggested-providers img:hover {
+                transform: scale(1.1);
+            }
+
             .toggle-settings:focus {
                 outline: 1px dotted #ccd0d4;
             }
@@ -239,7 +270,6 @@
                 padding: 20px;
             }
 
-            /* Recommended ribbon styling */
             .provider-card {
                 position: relative;
                 overflow: hidden;

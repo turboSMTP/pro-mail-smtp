@@ -112,9 +112,14 @@ class ConnectionRepository {
         return $results;
     }
 
-    public  function get_available_priority() {
+    public function get_available_priority() {
         global $wpdb;
-        $results = $wpdb->get_results("SELECT priority FROM {$this->table} ORDER BY priority ASC");
+        $table_name_esc = esc_sql($this->table);
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT priority FROM {$table_name_esc} ORDER BY priority ASC"
+            )
+        );
         $priorities = [];
         if ($results) {
             foreach ($results as $row) {
@@ -128,5 +133,14 @@ class ConnectionRepository {
             }
         }
         return $available;
+    }
+
+    public function provider_exists($provider) {
+        global $wpdb;
+        $count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM {$this->table} WHERE provider = %s",
+            $provider
+        ));
+        return $count > 0;
     }
 }

@@ -24,22 +24,24 @@ class TurboSMTP extends BaseProvider
         $payload = [
             'from' => $data['from_email'],
             'subject' => $data['subject'],
-            'content' => $data['message'],
             'to' => implode(",", $data['to']),
             'reply_to' => $data['reply_to'] ?? $data['from_email'],
         ];
+        
+        if( $data['message'] !== wp_strip_all_tags($data['message']) ) {
+            $payload['html_content'] = $data['message'];
+        }else{
+            $payload['content'] = $data['message'];
+        }
 
-        // Add CC recipients if any
         if (!empty($data['cc'])) {
             $payload['cc'] = implode(",", $data['cc']);
         }
 
-        // Add BCC recipients if any
         if (!empty($data['bcc'])) {
             $payload['bcc'] = implode(",", $data['bcc']);
         }
 
-        // Add attachments if any
         if (!empty($data['attachments'])) {
             $payload['attachments'] = array_map(function ($attachment) {
                 return [
@@ -79,7 +81,7 @@ class TurboSMTP extends BaseProvider
         $response = $this->request($endpoint, [], false, 'GET');
 
         if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+            throw new \Exception(esc_html($response['error']['message']));
         }
 
         return $response;

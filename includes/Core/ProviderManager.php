@@ -6,28 +6,24 @@ use FreeMailSMTP\DB\ConnectionRepository;
 
 class ProviderManager
 {
+    private $conn_repo;
+    
+    public function __construct() {
+        $this->conn_repo = new ConnectionRepository();
+    }
 
     public function save_provider($data)
     {
         $provider = sanitize_text_field($data['provider']);
 
-        global $wpdb;
         if ($provider === 'gmail' && !$data['connection_id']) {
-            $count = $wpdb->get_var($wpdb->prepare(
-                "SELECT COUNT(*) FROM {$wpdb->prefix}free_mail_smtp_connections WHERE provider = %s",
-                'gmail'
-            ));
-            if ($count > 0) {
+            if ($this->conn_repo->provider_exists('gmail')) {
                 wp_send_json_error('Only one Gmail provider can be added.');
                 return;
             }
         }
         if ($provider === 'outlook' && !$data['connection_id'] ) {
-            $count = $wpdb->get_var($wpdb->prepare(
-                "SELECT COUNT(*) FROM {$wpdb->prefix}free_mail_smtp_connections WHERE provider = %s",
-                'outlook'
-            ));
-            if ($count > 0) {
+            if ($this->conn_repo->provider_exists('outlook')) {
                 wp_send_json_error('Only one Outlook provider can be added.');
                 return;
             }
@@ -70,17 +66,16 @@ class ProviderManager
             $config_keys['authenticated'] = false;
         }
 
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         if (isset($data['connection_id']) && !empty($data['connection_id'])) {
             $connection_id = sanitize_text_field($data['connection_id']);
-            $result = $conn_repo->update_connection($connection_id, $config_keys, $connection_label, $priority);
+            $result = $this->conn_repo->update_connection($connection_id, $config_keys, $connection_label, $priority);
             if ($result === false) {
                 wp_send_json_error('Failed to update provider.');
                 return;
             }
         } else {
             $connection_id = uniqid();
-            $result = $conn_repo->insert_connection($connection_id, $provider, $config_keys, $priority, $connection_label);
+            $result = $this->conn_repo->insert_connection($connection_id, $provider, $config_keys, $priority, $connection_label);
             if (is_wp_error($result)) {
                 wp_send_json_error($result->get_error_message());
                 return;
@@ -94,7 +89,6 @@ class ProviderManager
 
     public function get_available_priority()
     {
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
-        return $conn_repo->get_available_priority();
+        return $this->conn_repo->get_available_priority();
     }
 }

@@ -88,7 +88,7 @@ class Brevo extends BaseProvider {
         $response = $this->request($endpoint, [], true,'GET');
 
         if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+            throw new \Exception(esc_html($response['error']['message']));
         }
         
         return $response;

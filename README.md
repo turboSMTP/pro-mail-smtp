@@ -1,51 +1,125 @@
+# Free Mail SMTP
 
-# Free Mail SMTP Plugin
+![Free Mail SMTP](assets/img/icon-svg.svg)
 
-Free Mail SMTP Plugin allows you to send emails using various email service providers. This plugin is designed to be easy to configure and use, providing a reliable way to send emails from your WordPress site.
+A powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
 
-## Features
+## 🚀 Features
 
-Supports multiple email service providers:
+- **Multiple Provider Support**:
+  - Standard SMTP servers
+  - Gmail (with secure OAuth authentication)
+  - Brevo (formerly Sendinblue)
+  - TurboSMTP
+  - SMTP2GO
+  - Mailgun
+  - And more...
 
-- TurboSMTP
-- Brevo
-- SMTP2GO
+- **Smart Email Routing**:
+  - Route emails through specific providers based on custom conditions
+  - Automatic failover system using priority levels
+  - Set conditions based on email type, recipient, or sending plugin
 
-Easy configuration through the WordPress admin interface
+- **Comprehensive Logging**:
+  - Track email status (sent, delivered, failed)
+  - View detailed error messages
+  - Configurable log retention
+  - Email content inspection
 
-Email logging and analytics
+- **Analytics Dashboard**:
+  - Monitor provider performance
+  - View delivery rates
+  - Track email engagement
+  - Regular summary reports
 
-Secure connection using OAuth for Gmail
+- **Advanced Settings**:
+  - Custom From Email and From Name
+  - OAuth authentication for supported providers
+  - Fallback to WordPress mail system
+  - Easy import from other SMTP plugins
 
-## Installation
+## 📋 Requirements
 
-1. Download the plugin zip file.
-2. Go to your WordPress admin dashboard.
-3. Navigate to **Plugins > Add New**.
-4. Click on **Upload Plugin** and choose the downloaded zip file.
-5. Click **Install Now** and then **Activate**.
+- WordPress 5.2 or higher
+- PHP 7.2 or higher
+- Access to your site's server or hosting control panel
 
-## Configuration
+## 🔧 Installation
 
-1. Go to **Settings > Free Mail SMTP**.
-2. Configure the **From Email** and **From Name** fields.
-3. Add and configure your email providers:
-   - Click on **Add Provider**.
-   - Select the provider and fill in the required details.
-   - Save the settings.
+1. Download the plugin from WordPress.org or via your WordPress dashboard
+2. Navigate to **Plugins → Add New → Upload Plugin**
+3. Select the downloaded zip file and click **Install Now**
+4. After installation completes, click **Activate Plugin**
 
-## Usage
+## ⚙️ Configuration
 
-Once configured, the plugin will automatically use the selected email provider to send emails from your WordPress site.
+### General Setup
 
-## Priority
+1. Navigate to **Free Mail SMTP → Settings**
+2. Configure your default "From Email" and "From Name"
+3. Choose whether to enable email summaries and set your preferred frequency
 
-Each email connection you configure will be assigned a priority level, establishing a hierarchical backup system. If the primary connection fails, the system automatically attempts to send through the next highest-priority connection, ensuring reliable email delivery.
+### Adding Email Providers
 
-## Email Logs
+1. Go to **Free Mail SMTP → Providers**
+2. Click **Add Provider**
+3. Select your email service provider
+4. Enter your credentials:
+   - For SMTP: Server, port, username, password, encryption type
+   - For API-based services: API key and required settings
+   - For OAuth services: Follow the authentication flow
+5. Set a priority level for each provider (lower numbers = higher priority)
+6. Test the connection before saving
 
-You can view the email logs by navigating to **Email Logs** in the WordPress admin menu. The logs provide detailed information about each email sent attempt from your connections, including the status and any errors.
+### Email Routing (Optional)
 
-## Providers Logs
+1. Navigate to **Free Mail SMTP → Email Router**
+2. Create rules to route specific emails through particular providers
+3. Set conditions based on recipient email, source plugin, or other factors
 
-The plugin provides your connections email logs fetched by their API. Navigate to **Providers Logs** in the WordPress admin menu to view detailed logs.
+## 📊 Monitoring Your Emails
+
+### Email Logs
+
+Access detailed logs of all emails sent through the plugin:
+
+1. Go to **Free Mail SMTP → Email Logs**
+2. View status, recipient, subject, and timestamp
+3. Click on any email to see its full details including headers and content
+
+### Provider Analytics
+
+View performance metrics for each provider:
+
+1. Navigate to **Free Mail SMTP → Providers Logs**
+2. See delivery rates, bounces, and other provider-specific metrics
+
+## 🧩 Advanced Usage
+
+### Importing from Other SMTP Plugins
+
+The plugin can automatically detect and import settings from:
+- WP Mail SMTP
+- Easy SMTP
+
+When detected, you'll see an import banner on the Providers page.
+
+### Data Management
+
+For plugin cleanup or troubleshooting:
+
+1. Go to **Free Mail SMTP → Settings**
+2. Scroll to the Data Management section
+3. Use with caution - deletion actions cannot be undone
+
+## 🤝 Support
+
+Need help with configuration or experiencing issues?
+
+- [Documentation](https://example.com/docs) - Detailed setup guides
+- [Support Forum](https://wordpress.org/support/plugin/free-mail-smtp/) - Community help
+- [Contact Us](https://example.com/contact) - Direct support
+
+## 📄 License
+
+Free Mail SMTP is licensed under the [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.txt)

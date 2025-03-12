@@ -1,6 +1,6 @@
 <?php
-$current_month_start = date('Y-m-01');
-$current_month_end = date('Y-m-d');
+$current_month_start = gmdate('Y-m-01');
+$current_month_end = gmdate('Y-m-d');
 ?>
 <div class="tablenav top">
     <div class="alignleft actions filters-group">
@@ -35,7 +35,7 @@ $current_month_end = date('Y-m-d');
                placeholder="Rows per page">
 
         <button type="button" class="button action apply-filter" id="apply-filters">
-            <?php _e('Apply Filters', 'free_mail_smtp'); ?>
+            <?php esc_html_e('Apply Filters', 'free-mail-smtp'); ?>
         </button>
     </div>
 </div>

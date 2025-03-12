@@ -8,11 +8,11 @@
     <p class="description">Setup custom SMTP or popular Providers to improve your WordPress email deliverability.</p>
 
     <nav class="free-mail-smtp-nav-tab-wrapper">
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-providers'); ?>" class="free-mail-smtp-nav-tab">Providers</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-logs'); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-analytics'); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-email-router'); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Email Router</a>
-        <a href="<?php echo admin_url('admin.php?page=free_mail_smtp-settings'); ?>" class="free-mail-smtp-nav-tab">Settings</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab">Providers</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Email Router</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab">Settings</a>
 
     </nav>
 
@@ -29,9 +29,9 @@
             <table class="widefat fixed providers-table">
                 <thead>
                     <tr>
-                        <th class="column-label"><?php _e('Label', 'free_mail_smtp'); ?></th>
-                        <th class="column-provider"><?php _e('Enabled', 'free_mail_smtp'); ?></th>
-                        <th class="column-actions"><?php _e('Actions', 'free_mail_smtp'); ?></th>
+                        <th class="column-label"><?php esc_html_e('Label', 'free-mail-smtp'); ?></th>
+                        <th class="column-provider"><?php esc_html_e('Enabled', 'free-mail-smtp'); ?></th>
+                        <th class="column-actions"><?php esc_html_e('Actions', 'free-mail-smtp'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,7 +76,7 @@
         <div id="router-modal" class="modal" style="display:none;">
             <div class="conditions-modal-content">
                 <div class="conditions-modal-header">
-                    <h2><?php _e('Configure Router Condition', 'free_mail_smtp'); ?></h2>
+                    <h2><?php esc_html_e('Configure Router Condition', 'free-mail-smtp'); ?></h2>
                     <button type="button" onclick="FreeMailSMTPRouter.closeModal(false)" class="conditions-modal-close">&times;</button>
                 </div>
                 <div class="conditions-modal-body">

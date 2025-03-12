@@ -66,7 +66,7 @@ class Providers
     public function render()
     {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
         }
 
         $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
@@ -93,13 +93,19 @@ class Providers
             return;
         }
 
-        parse_str(urldecode($_POST['formData']), $form_data);
+        if (!isset($_POST['formData'])) {
+            wp_send_json_error('Form data is required');
+            return;
+        }
+
+        $sanitized_form_data = sanitize_text_field($_POST['formData']);
+        parse_str(urldecode($sanitized_form_data), $form_data);
+        
         if (empty($form_data['provider'])) {
             wp_send_json_error('Provider is required');
             return;
         }
         try {
-
             $connection_id = $this->provider_manager->save_provider($form_data);
         } catch (\Exception $e) {
             wp_send_json_error($e->getMessage());

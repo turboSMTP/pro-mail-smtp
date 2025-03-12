@@ -66,7 +66,7 @@ class SMTP2GO extends BaseProvider {
         $endpoint = 'stats/email_history';
         $response = $this->request($endpoint, [], false,'POST');
         if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+            throw new \Exception(esc_html($response['error']['message']));
         }
         
         return $response;
@@ -78,7 +78,7 @@ class SMTP2GO extends BaseProvider {
         $offset = ($page - 1) * $per_page;
         $response = $this->request($endpoint, [
             'start_date' => $filters['date_from'],
-            'end_date'   => date('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
+            'end_date'   => gmdate('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
             'limit'      => $per_page,
             'offset'     => $offset
         ], false ,'POST');

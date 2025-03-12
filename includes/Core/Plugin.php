@@ -85,7 +85,7 @@ class Plugin
             'title' => 'Free Mail SMTP',
             'href'  => admin_url('admin.php?page=free_mail_smtp-providers'),
             'meta'  => [
-                'title' => __('Free Mail SMTP Plugin'),
+                'title' => __('Free Mail SMTP Plugin', 'free-mail-smtp'),
             ],
         ]);
     }

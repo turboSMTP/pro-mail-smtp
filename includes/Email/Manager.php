@@ -195,7 +195,6 @@ class Manager {
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
-                error_log("Email sending failed for provider {$provider_name}: {$e->getMessage()}");
                 $this->log_email($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage());
             }
         }

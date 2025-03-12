@@ -78,7 +78,6 @@ class Analytics {
                 return $all_data;
             }
         } catch (\Exception $e) {
-            error_log('Analytics Error: ' . $e->getMessage());
             return [];
         }
     }
@@ -97,12 +96,17 @@ class Analytics {
     public function fetch_provider_analytics() {
         check_ajax_referer('free_mail_smtp_analytics', 'nonce');
 
-        $provider_id = sanitize_text_field($_POST['filters']['provider']);
+        $provider_id = isset($_POST['filters']['provider']) ? sanitize_text_field($_POST['filters']['provider']) : '';
         $status = isset($_POST['filters']['status']) ? sanitize_text_field($_POST['filters']['status']) : '';
-        $date_from = sanitize_text_field($_POST['filters']['date_from']);
-        $date_to = sanitize_text_field($_POST['filters']['date_to']);
+        $date_from = isset($_POST['filters']['date_from']) ? sanitize_text_field($_POST['filters']['date_from']) : '';
+        $date_to = isset($_POST['filters']['date_to']) ? sanitize_text_field($_POST['filters']['date_to']) : '';
         $page = isset($_POST['filters']['page']) ? (int) $_POST['filters']['page'] : 1;
         $per_page = isset($_POST['filters']['per_page']) ? (int) $_POST['filters']['per_page'] : 10;
+
+        if (empty($provider_id)) {
+            wp_send_json_error('Provider ID is required');
+            return;
+        }
 
         try {
             $provider_data = $this->get_provider_analytics(

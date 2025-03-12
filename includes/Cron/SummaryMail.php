@@ -73,19 +73,14 @@ class SummaryMail implements CronInterface
 
         $subject = sprintf('Email Log Summary - %s', get_bloginfo('name'));
         $message = $this->prepare_summary_message($logs);
-        $result = wp_mail($admin_email, $subject, $message);
-
-        if ($result) {
-            error_log('Free Mail SMTP: Summary email sent successfully');
-        } else {
-            error_log('Free Mail SMTP: Failed to send summary email');
-        }
+        wp_mail($admin_email, $subject, $message);
     }
 
     private function get_logs_since_last_summary()
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'email_log';
+        $table_name_esc = esc_sql($table_name);
 
         $frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
         if ($frequency === 'weekly') {
@@ -94,7 +89,7 @@ class SummaryMail implements CronInterface
             $date_range = '-30 days';
         }
 
-        $since_date = date('Y-m-d H:i:s', strtotime($date_range));
+        $since_date = gmdate('Y-m-d H:i:s', strtotime($date_range));
 
         $results = $wpdb->get_results(
             $wpdb->prepare(
@@ -102,7 +97,7 @@ class SummaryMail implements CronInterface
                     provider, 
                     status, 
                     COUNT(*) as count 
-                 FROM {$table_name} 
+                 FROM {$table_name_esc} 
                  WHERE sent_at >= %s 
                  GROUP BY provider, status",
                 $since_date
@@ -115,7 +110,7 @@ class SummaryMail implements CronInterface
                 "SELECT 
                     status, 
                     COUNT(*) as count 
-                 FROM {$table_name} 
+                 FROM {$table_name_esc} 
                  WHERE sent_at >= %s 
                  GROUP BY status",
                 $since_date
@@ -136,7 +131,7 @@ class SummaryMail implements CronInterface
         $period_text = ($logs['period'] === 'weekly') ? 'Week' : 'Month';
 
         $message = "Free Mail SMTP Plugin: Email Summary for the Past {$period_text}\n";
-        $message .= "Period: " . date('Y-m-d', strtotime($logs['since_date'])) . " to " . date('Y-m-d') . "\n\n";
+        $message .= "Period: " . gmdate('Y-m-d', strtotime($logs['since_date'])) . " to " . gmdate('Y-m-d') . "\n\n";
 
         $providers = [];
         foreach ($logs['by_provider'] as $entry) {

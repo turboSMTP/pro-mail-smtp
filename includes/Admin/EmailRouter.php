@@ -45,12 +45,12 @@ class EmailRouter {
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('free_mail_smtp_email-router'),
             'debug' => true,
-            'pluginsList' => wp_json_encode($this->get_active_plugins_list()) // Ensure proper JSON encoding
+            'pluginsList' => wp_json_encode($this->get_active_plugins_list())
         ]);
     }
     public function render() {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
         }
         $conditions_repo = new \FreeMailSMTP\DB\ConditionRepository();
         $connections_repo = new \FreeMailSMTP\DB\ConnectionRepository();
@@ -63,8 +63,8 @@ class EmailRouter {
             include $view_file;
         } else {
             echo '<div class="wrap">';
-            echo '<h1>Free Mail SMTP Email Router</h1>';
-            echo '<div class="notice notice-error"><p>Error: View file not found.</p></div>';
+            echo '<h1>' . esc_html__('Free Mail SMTP Email Router', 'free-mail-smtp') . '</h1>';
+            echo '<div class="notice notice-error"><p>' . esc_html__('Error: View file not found.', 'free-mail-smtp') . '</p></div>';
             echo '</div>';
         }
     }
@@ -94,12 +94,12 @@ class EmailRouter {
             $success = $condition_repo->update_condition($condition_id, $prepared_data);
             
             if (!$success) {
-                wp_send_json_error(['message' => 'Failed to update router condition.']);
+                wp_send_json_error(['message' => esc_html__('Failed to update router condition.', 'free-mail-smtp')]);
                 return;
             }
             
             wp_send_json_success([
-                'message' => 'Router condition updated successfully!',
+                'message' => esc_html__('Router condition updated successfully!', 'free-mail-smtp'),
                 'id' => $condition_id,
                 'operation' => 'update'
             ]);
@@ -108,12 +108,12 @@ class EmailRouter {
             $insert_id = $condition_repo->add_condition($prepared_data);
             
             if (!$insert_id) {
-                wp_send_json_error(['message' => 'Failed to create new router condition.']);
+                wp_send_json_error(['message' => esc_html__('Failed to create new router condition.', 'free-mail-smtp')]);
                 return;
             }
             
             wp_send_json_success([
-                'message' => 'New router condition created successfully!',
+                'message' => esc_html__('New router condition created successfully!', 'free-mail-smtp'),
                 'id' => $insert_id,
                 'operation' => 'insert'
             ]);
@@ -131,7 +131,7 @@ class EmailRouter {
         $status = isset($_POST['status']) ? absint($_POST['status']) : 0;
 
         if (!$condition_id) {
-            wp_send_json_error(['message' => 'Invalid condition ID']);
+            wp_send_json_error(['message' => esc_html__('Invalid condition ID', 'free-mail-smtp')]);
             return;
         }
 
@@ -140,9 +140,9 @@ class EmailRouter {
         $updated = $condition_repo->update_condition($condition_id, $update_data);
 
         if (!$updated) {
-            wp_send_json_error(['message' => 'Failed to update status.']);
+            wp_send_json_error(['message' => esc_html__('Failed to update status.', 'free-mail-smtp')]);
         } else {
-            wp_send_json_success(['message' => 'Status updated successfully']);
+            wp_send_json_success(['message' => esc_html__('Status updated successfully', 'free-mail-smtp')]);
         }
     }
 
@@ -154,13 +154,13 @@ class EmailRouter {
         }
         $condition_id = isset($_POST['condition_id']) ? absint($_POST['condition_id']) : 0;
         if (!$condition_id) {
-            wp_send_json_error(['message' => 'Invalid condition ID']);
+            wp_send_json_error(['message' => esc_html__('Invalid condition ID', 'free-mail-smtp')]);
             return;
         }
         $condition_repo = new \FreeMailSMTP\DB\ConditionRepository();
         $condition = $condition_repo->get_condition($condition_id);
         if (!$condition) {
-            wp_send_json_error(['message' => 'Condition not found']);
+            wp_send_json_error(['message' => esc_html__('Condition not found', 'free-mail-smtp')]);
             return;
         }
         $condition->condition_data = json_decode($condition->condition_data, true);
@@ -176,7 +176,7 @@ class EmailRouter {
 
         $condition_id = isset($_POST['condition_id']) ? absint($_POST['condition_id']) : 0;
         if (!$condition_id) {
-            wp_send_json_error(['message' => 'Invalid condition ID']);
+            wp_send_json_error(['message' => esc_html__('Invalid condition ID', 'free-mail-smtp')]);
             return;
         }
 
@@ -184,9 +184,9 @@ class EmailRouter {
         $deleted = $condition_repo->delete_condition($condition_id);
 
         if (!$deleted) {
-            wp_send_json_error(['message' => 'Failed to delete condition.']);
+            wp_send_json_error(['message' => esc_html__('Failed to delete condition.', 'free-mail-smtp')]);
         } else {
-            wp_send_json_success(['message' => 'Condition deleted successfully']);
+            wp_send_json_success(['message' => esc_html__('Condition deleted successfully', 'free-mail-smtp')]);
         }
     }
 }

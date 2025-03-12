@@ -8,8 +8,8 @@
 
     <div class="welcome-container">
         <div class="welcome-section consent-section">
-            <h2><?php _e('Data Collection Consent', 'free_mail_smtp'); ?></h2>
-            <p><?php _e('To improve your experience with Free Mail SMTP, we collect anonymous usage data. This helps us understand how you use our plugin and improve it accordingly.', 'free_mail_smtp'); ?></p>
+            <h2><?php esc_html_e('Data Collection Consent', 'free-mail-smtp'); ?></h2>
+            <p><?php esc_html_e('To improve your experience with Free Mail SMTP, we collect anonymous usage data. This helps us understand how you use our plugin and improve it accordingly.', 'free-mail-smtp'); ?></p>
             
             <div class="consent-options">
                 <form method="post" action="" id="consent-form">
@@ -17,16 +17,16 @@
                     
                     <label>
                         <input type="radio" name="data_collection_consent" value="yes" class="consent-radio">
-                        <?php _e('Yes, I allow Free Mail SMTP to collect anonymous usage data', 'free_mail_smtp'); ?>
+                        <?php esc_html_e('Yes, I allow Free Mail SMTP to collect anonymous usage data', 'free-mail-smtp'); ?>
                     </label>
                     
                     <label>
                         <input type="radio" name="data_collection_consent" value="no" class="consent-radio">
-                        <?php _e('No, I don\'t want to share anonymous usage data', 'free_mail_smtp'); ?>
+                        <?php esc_html_e('No, I don\'t want to share anonymous usage data', 'free-mail-smtp'); ?>
                     </label>
                     
                     <div class="welcome-buttons">
-                        <button type="submit" name="save_consent" id="continue-btn" class="button button-primary" disabled><?php _e('Continue', 'free_mail_smtp'); ?></button>
+                        <button type="submit" name="save_consent" id="continue-btn" class="button button-primary" disabled><?php esc_html_e('Continue', 'free-mail-smtp'); ?></button>
                     </div>
                 </form>
             </div>

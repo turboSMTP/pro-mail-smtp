@@ -15,27 +15,25 @@ class Settings
     }
     public function enqueue_scripts($hook)
     {
-        // Check if the script is already enqueued before adding it
-            wp_enqueue_script(
-                'free-mail-smtp-settings',
-                plugins_url('/assets/js/settings.js', dirname(dirname(__FILE__))),
-                ['jquery'],
-                '1.0.0',
-                true
-            );
+        wp_enqueue_script(
+            'free-mail-smtp-settings',
+            plugins_url('/assets/js/settings.js', dirname(dirname(__FILE__))),
+            ['jquery'],
+            '1.0.0',
+            true
+        );
 
-            wp_localize_script('free-mail-smtp-settings', 'FreeMailSMTPAdminSettings', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('free_mail_smtp_nonce_settings'),
-                'adminUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
-                'debug' => true
-            ]);
-        
+        wp_localize_script('free-mail-smtp-settings', 'FreeMailSMTPAdminSettings', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('free_mail_smtp_nonce_settings'),
+            'adminUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
+            'debug' => true
+        ]);
     }
     public function render()
     {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have sufficient permissions to access this page.'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
         }
 
         $from_email = get_option('free_mail_smtp_from_email');
@@ -60,55 +58,60 @@ class Settings
     {
         if (
             !isset($_GET['page']) || $_GET['page'] !== 'free_mail_smtp-settings' ||
-            $_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['free_mail_smtp_nonce_settings'])
+            !isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST' ||
+            !isset($_POST['free_mail_smtp_nonce_settings'])
         ) {
             return;
         }
 
-        if (!wp_verify_nonce($_POST['free_mail_smtp_nonce_settings'], 'free_mail_smtp_settings')) {
+        if (!wp_verify_nonce(sanitize_key(wp_unslash($_POST['free_mail_smtp_nonce_settings'])), 'free_mail_smtp_settings')) {
             add_settings_error(
                 'free_mail_smtp_messages',
                 'invalid_nonce',
-                __('Security check failed.', 'free_mail_smtp'),
+                __('Security check failed.', 'free-mail-smtp'),
                 'error'
             );
             return;
         }
-            error_log(print_r($_POST, true));
+
         if (isset($_POST['save_settings'])) {
             try {
-                update_option('free_mail_smtp_from_email', sanitize_email($_POST['from_email']));
-                update_option('free_mail_smtp_from_name', sanitize_text_field($_POST['from_name']));
-                update_option('free_mail_smtp_enable_summary', isset($_POST['enable_email_summary']) ? 1 : 0);
-
+                if (isset($_POST['from_email'])) {
+                    update_option('free_mail_smtp_from_email', sanitize_email(wp_unslash($_POST['from_email'])));
+                }
+                if (isset($_POST['from_name'])) {
+                    update_option('free_mail_smtp_from_name', sanitize_text_field(wp_unslash($_POST['from_name'])));
+                }
+                if (isset($_POST['retention_duration'])) {
+                    update_option('free_mail_smtp_enable_summary', isset($_POST['enable_email_summary']) ? 1 : 0);
+                }
                 if (isset($_POST['summary_email'])) {
-                    update_option('free_mail_smtp_summary_email', sanitize_email($_POST['summary_email']));
+                    update_option('free_mail_smtp_summary_email', sanitize_email(wp_unslash($_POST['summary_email'])));
                 }
 
                 if (isset($_POST['summary_frequency'])) {
                     $allowed_frequencies = ['daily', 'weekly', 'monthly'];
-                    $frequency = sanitize_text_field($_POST['summary_frequency']);
+                    $frequency = sanitize_text_field(wp_unslash($_POST['summary_frequency']));
                     if (in_array($frequency, $allowed_frequencies)) {
                         update_option('free_mail_smtp_summary_frequency', $frequency);
                     }
                 }
 
                 update_option('free_mail_smtp_fallback_to_wp_mail', isset($_POST['enable_fallback']) ? 1 : 0);
-                
+
                 update_option('free_mail_smtp_analytics_consent', isset($_POST['allow_data_collection']) ? 1 : 0);
 
                 add_settings_error(
                     'free_mail_smtp_messages',
                     'settings_updated',
-                    __('Settings saved successfully.', 'free_mail_smtp'),
+                    __('Settings saved successfully.', 'free-mail-smtp'),
                     'success'
                 );
-
             } catch (\Exception $e) {
                 add_settings_error(
                     'free_mail_smtp_messages',
                     'save_error',
-                    __('Error saving settings: ', 'free_mail_smtp') . $e->getMessage(),
+                    __('Error saving settings: ', 'free-mail-smtp') . $e->getMessage(),
                     'error'
                 );
             }
@@ -128,16 +131,16 @@ class Settings
             global $wpdb;
 
             $wpdb->query('START TRANSACTION');
-            
+
             $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
-            $wpdb->query("DELETE FROM $conditions_table");
+            $wpdb->query("DELETE FROM `$conditions_table`");
             
             $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
-            $wpdb->query("DELETE FROM $connections_table");
+            $wpdb->query("DELETE FROM `$connections_table`");
 
             $logs_table = $wpdb->prefix . 'email_log';
-            $wpdb->query("DELETE FROM $logs_table");
-            
+            $wpdb->query("DELETE FROM `$logs_table`");
+
             $wpdb->query('COMMIT');
 
             $options = [

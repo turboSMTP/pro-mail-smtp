@@ -106,7 +106,7 @@ class Sparkpost extends BaseProvider {
         $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
         $response = $this->request($endpoint, [
             'from'     => $filters['date_from'],
-            'end_date' => date('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
+            'end_date' => gmdate('Y-m-d', strtotime($filters['date_to'] . ' +1 day')),
             'page'     => $page,
             'per_page' => $per_page
         ], false ,'GET');

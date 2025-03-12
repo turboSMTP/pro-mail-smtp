@@ -62,19 +62,19 @@ class LogsCleanup implements CronInterface
 
         switch ($retention) {
             case '1_week':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 week'));
+                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 week'));
                 break;
             case '1_month':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 month'));
+                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 month'));
                 break;
             case '1_year':
-                $cutoff = date('Y-m-d H:i:s', strtotime('-1 year'));
+                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 year'));
                 break;
             default:
                 return;
         }
 
-        $rows_affected = $wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE sent_at < %s", $cutoff));
-        error_log("Free Mail SMTP: Deleted $rows_affected log entries older than $cutoff");
+        $table_name_esc = esc_sql($table_name);
+        $wpdb->query($wpdb->prepare("DELETE FROM {$table_name_esc} WHERE sent_at < %s", $cutoff));
     }
 }

@@ -104,7 +104,7 @@ class Mailgun extends BaseProvider
                 $endpoint = $domain . '/stats/total?event=delivered';
                 $response = $this->request($endpoint, [], false, 'GET');
                 if (isset($response['error'])) {
-                    throw new \Exception($response['error']['message']);
+                    throw new \Exception(esc_html($response['error']['message']));
                 }
                 return $response;
             }
@@ -119,8 +119,8 @@ class Mailgun extends BaseProvider
         $page = isset($filters['page']) ? (int)$filters['page'] : 1;
         $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
         $offset = ($page - 1) * $per_page;
-        $begin_date = date('r', strtotime($filters['date_from'])); 
-        $end_date = date('r', strtotime($filters['date_to'])); 
+        $begin_date = gmdate('r', strtotime($filters['date_from'])); 
+        $end_date = gmdate('r', strtotime($filters['date_to'])); 
         $response = $this->request($endpoint, [
             'begin'  => $begin_date,
             'end'    => $end_date,
@@ -142,7 +142,7 @@ class Mailgun extends BaseProvider
                 'subject' => $data['message']['headers']['subject'],
                 'sender' => $data['envelope']['sender'],
                 'recipient' => $data['recipient'],
-                'send_time' => date('Y-m-d H:i:s', $data['timestamp']),
+                'send_time' => gmdate('Y-m-d H:i:s', $data['timestamp']),
                 'status' => $data['event']
             ];
         }

@@ -91,7 +91,7 @@ class Sendgrid extends BaseProvider {
     public function test_connection() {
         $response = $this->request('tracking_settings', [], false, 'GET');
         if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+            throw new \Exception(esc_html($response['error']['message']));
         }
         
         return true;
@@ -118,7 +118,7 @@ class Sendgrid extends BaseProvider {
         $response = $this->request($endpoint, $query_params, false, 'GET');
         
         if (isset($response['error'])) {
-            throw new \Exception($response['error']['message']);
+            throw new \Exception(esc_html($response['error']['message']));
         }
         
         $data = [];

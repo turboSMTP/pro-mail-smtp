@@ -38,22 +38,18 @@ class Gmail extends BaseProvider
             $this->validateAccessToken();
             $this->service = new Google_Service_Gmail($this->client);
         } catch (\Exception $e) {
-            error_log('Gmail provider initialization error: ' . $e->getMessage());
-            throw new \Exception('Failed to initialize Gmail provider: ' . $e->getMessage());
+            throw new \Exception('Failed to initialize Gmail provider: ' . esc_html($e->getMessage()));
         }
     }
 
     private function save_access_token($token)
     {
-        // Store the complete token array instead of just the string
         update_option('free_mail_smtp_gmail_access_token', $token);
-        error_log('Access token saved.');
     }
 
     private function save_refresh_token($token)
     {
         update_option('free_mail_smtp_gmail_refresh_token', $token);
-        error_log('Refresh token saved.');
     }
 
     private function get_access_token()
@@ -72,7 +68,7 @@ class Gmail extends BaseProvider
 
         try {
             // Create the email message
-            $boundary = uniqid(rand(), true);
+            $boundary = uniqid(wp_rand(), true);
             $email_parts = [];
 
             // Add headers
@@ -113,15 +109,12 @@ class Gmail extends BaseProvider
             // Send the message
             $result = $this->service->users_messages->send('me', $message);
 
-            error_log('Gmail send response: ' . print_r($result, true));
-
             return [
                 'message_id' => $result->getId(),
                 'provider_response' => $result
             ];
         } catch (\Exception $e) {
-            error_log('Gmail send error: ' . $e->getMessage());
-            throw new \Exception('Failed to send email via Gmail: ' . $e->getMessage());
+            throw new \Exception('Failed to send email via Gmail: ' . esc_html($e->getMessage()));
         }
     }
 
@@ -135,7 +128,7 @@ class Gmail extends BaseProvider
                 'message' => 'Gmail connection verified successfully.'
             ];
         } catch (\Exception $e) {
-            throw new \Exception('Gmail connection test failed: ' . $e->getMessage());
+            throw new \Exception('Gmail connection test failed: ' . esc_html($e->getMessage()));
         }
     }
 
@@ -170,7 +163,6 @@ class Gmail extends BaseProvider
                 'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
             ]);
             $analytics = [];
-            error_log('Gmail analytics response: ' . print_r($messages->getMessages(), true));
             foreach ($messages->getMessages() as $message) {
                 $msg = $this->service->users_messages->get('me', $message->getId());
                 $headers = $this->get_message_headers($msg);
@@ -189,8 +181,7 @@ class Gmail extends BaseProvider
                 'columns' => ['id', 'subject', 'to', 'date', 'status']
             ];
         } catch (\Exception $e) {
-            error_log('Gmail analytics error: ' . $e->getMessage());
-            throw new \Exception('Failed to get Gmail analytics: ' . $e->getMessage());
+            throw new \Exception('Failed to get Gmail analytics: ' . esc_html($e->getMessage()));
         }
     }
 
@@ -209,22 +200,16 @@ class Gmail extends BaseProvider
         try {
             $token = $this->client->fetchAccessTokenWithAuthCode($code);
             
-            // Store the complete token array
             $this->save_access_token($token);
             
             if (!empty($token['refresh_token'])) {
                 $this->save_refresh_token($token['refresh_token']);
-                error_log('Refresh token saved.');
-            } else {
-                error_log('No refresh token received.');
             }
-
             $this->client->setAccessToken($token);
             $this->service = new Google_Service_Gmail($this->client);
             return true;
         } catch (\Exception $e) {
-            error_log('Error setting Gmail token: ' . $e->getMessage());
-            throw new \Exception('Failed to set Gmail token: ' . $e->getMessage());
+            throw new \Exception('Failed to set Gmail token: ' . esc_html($e->getMessage()));
         }
     }
     
@@ -242,7 +227,6 @@ class Gmail extends BaseProvider
                     $this->client->fetchAccessTokenWithRefreshToken($refreshToken);
                     $this->save_access_token($this->client->getAccessToken());
                 } catch (\Exception $e) {
-                    error_log('Token refresh failed: ' . $e->getMessage());
                     throw new \Exception('Authentication expired. Please reconnect your Gmail account.');
                 }
             }

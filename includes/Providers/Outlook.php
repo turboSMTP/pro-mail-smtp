@@ -27,18 +27,15 @@ class Outlook extends BaseProvider
 
     private function save_access_token($token)
     {
-        // Add expiration timestamp for proper validation
         if (isset($token['expires_in'])) {
             $token['expires_at'] = time() + $token['expires_in']; 
         }
         update_option('free_mail_smtp_outlook_access_token', $token);
-        error_log('Access token saved.');
     }
 
     private function save_refresh_token($token)
     {
         update_option('free_mail_smtp_outlook_refresh_token', $token);
-        error_log('Refresh token saved.');
     }
 
     private function get_access_token()
@@ -118,7 +115,6 @@ class Outlook extends BaseProvider
                 'provider_response' => $response
             ];
         } catch (\Exception $e) {
-            error_log('Outlook send error: ' . $e->getMessage());
             throw $e;
         }
     }
@@ -147,7 +143,7 @@ class Outlook extends BaseProvider
                     'This is a test email from %s (%s) to verify your Outlook email configuration with Free Mail SMTP plugin.<br><br>If you\'re reading this, your Outlook connection is working properly!<br><br>Sent: %s',
                     $site_name,
                     $site_url,
-                    date('Y-m-d H:i:s')
+                    gmdate('Y-m-d H:i:s')
                 ),
                 'from_email' => $from_email,
                 'from_name' => 'Free Mail SMTP Test'
@@ -164,7 +160,7 @@ class Outlook extends BaseProvider
                 throw new \Exception('Test email could not be sent');
             }
         } catch (\Exception $e) {
-            throw new \Exception('Outlook connection test failed: ' . $e->getMessage());
+            throw new \Exception('Outlook connection test failed: ' . esc_html($e->getMessage()));
         }
     }
 
@@ -226,7 +222,6 @@ class Outlook extends BaseProvider
                 'POST',
                 true
             );
-                error_log('Outlook OAuth response: ' . print_r($response, true));
             if (isset($response['error'])) {
                 throw new \Exception('OAuth error: ' . ($response['error_description'] ?? $response['error']));
             }
@@ -238,8 +233,7 @@ class Outlook extends BaseProvider
 
             return true;
         } catch (\Exception $e) {
-            error_log('Outlook OAuth error: ' . $e->getMessage());
-            throw new \Exception('Failed to authenticate with Outlook: ' . $e->getMessage());
+            throw new \Exception('Failed to authenticate with Outlook: ' . esc_html($e->getMessage()));
         }
     }
 
@@ -269,7 +263,6 @@ class Outlook extends BaseProvider
             
             return $response;
         } catch (\Exception $e) {
-            error_log('Token refresh failed: ' . $e->getMessage());
             throw new \Exception('Authentication expired. Please reconnect your Outlook account.');
         }
     }
