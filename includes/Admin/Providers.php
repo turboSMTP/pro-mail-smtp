@@ -98,8 +98,7 @@ class Providers
             return;
         }
 
-        $sanitized_form_data = sanitize_text_field($_POST['formData']);
-        parse_str(urldecode($sanitized_form_data), $form_data);
+        parse_str(urldecode($_POST['formData']), $form_data);
         
         if (empty($form_data['provider'])) {
             wp_send_json_error('Provider is required');
