@@ -37,12 +37,13 @@ class Settings
         }
 
         $from_email = get_option('free_mail_smtp_from_email');
+        error_log('From email: ' . $from_email);
         $from_name = get_option('free_mail_smtp_from_name');
-        $enable_summary = get_option('free_mail_smtp_enable_summary', 0);
+        $enable_summary = get_option('free_mail_smtp_enable_summary', false);
         $summary_email = get_option('free_mail_smtp_summary_email', '');
         $summary_frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
-        $enable_fallback = get_option('free_mail_smtp_fallback_to_wp_mail', 0);
-        $allow_data_collection = get_option('free_mail_smtp_analytics_consent', 0) === 'not_set' ? 0 : get_option('free_mail_smtp_analytics_consent', 0);
+        $enable_fallback = get_option('free_mail_smtp_fallback_to_wp_mail', true);
+        $allow_data_collection = get_option('free_mail_smtp_analytics_consent', false) === 'not_set' ? 0 : get_option('free_mail_smtp_analytics_consent', 0);
         $view_file = $this->plugin_path . '/views/admin/settings/index.php';
         if (file_exists($view_file)) {
             include $view_file;

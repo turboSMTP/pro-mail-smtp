@@ -16,6 +16,7 @@ class OtherSMTP
     private $smtpUsername;
     private $smtpPassword;
     private $smtpSecurity;
+    private $smtpForcedSenderEmail;
 
     public function __construct($credentials)
     {
@@ -24,6 +25,7 @@ class OtherSMTP
         $this->smtpHost = $credentials['smtp_host'];
         $this->smtpPort = $credentials['smtp_port'] ?? 587;
         $this->smtpSecurity = $credentials['smtp_encryption'] ?? 'tls';
+        $this->smtpForcedSenderEmail = $credentials['smtp_forced_sender_email'] ?? '';
     }
 
     public function send($params)
@@ -40,10 +42,11 @@ class OtherSMTP
             if (empty($recipients)) {
                 throw new Exception('No valid recipient email addresses found');
             }
-
+            
             $subject = sanitize_text_field($params['subject']);
             $body = wp_kses_post($params['message']);
-            $from = filter_var($params['from_email'], FILTER_VALIDATE_EMAIL);
+            $email_from = $this->smtpForcedSenderEmail ? $this->smtpForcedSenderEmail : $params['from_email'];
+            $from = filter_var($email_from , FILTER_VALIDATE_EMAIL);
             $fromName = sanitize_text_field($params['from_name'] ?? '');
             $cc = isset($params['cc']) ? array_map('filter_var', (array)$params['cc'], array_fill(0, count((array)$params['cc']), FILTER_SANITIZE_EMAIL)) : [];
             $bcc = isset($params['bcc']) ? array_map('filter_var', (array)$params['bcc'], array_fill(0, count((array)$params['bcc']), FILTER_SANITIZE_EMAIL)) : [];

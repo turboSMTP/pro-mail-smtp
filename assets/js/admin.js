@@ -28,6 +28,7 @@ $('#import').on('click', function() {
                 location.reload();
             } else {
                 alert('Import failed: ' + (response.data || 'Unknown error'));
+                location.reload();
             }
         }
     });

@@ -23,6 +23,19 @@
             </tr>
             <tr>
                 <th scope="row">
+                    <label for="email_from_overwrite">Email From</label>
+                </th>
+                <td>
+                    <input type="email"
+                        name="config_keys[email_from_overwrite]"
+                        id="email_from_overwrite"
+                        class="regular-text"
+                        >
+                        <p class="description">(Optional) Force sender email for this provider</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                     <label for="api_key">API Key</label>
                 </th>
                 <td>
@@ -98,6 +111,7 @@
         jQuery('#api_key').val(data.config_keys.api_key);
         jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
+        jQuery('#email_from_overwrite').val(data.config_keys.email_from_overwrite);
         jQuery('.back-step').hide();
     }
     jQuery('#toggle_api_key, #toggle_api_key').on('click', function() {

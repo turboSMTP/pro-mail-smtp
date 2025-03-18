@@ -61,6 +61,7 @@ class Outlook extends BaseProvider
                 $this->refresh_token($token['refresh_token']);
                 $token = $this->get_access_token();
             }
+            $email_from = $this->config_keys['email_from_overwrite'] ?? $data['from_email'];
 
             $email_data = [
                 'message' => [
@@ -78,7 +79,7 @@ class Outlook extends BaseProvider
                     }, (array)$data['to']),
                     'from' => [
                         'emailAddress' => [
-                            'address' => $data['from_email'],
+                            'address' => $email_from,
                             'name' => $data['from_name']
                         ]
                     ]
@@ -131,7 +132,7 @@ class Outlook extends BaseProvider
             $site_name = get_bloginfo('name');
             $site_url = get_bloginfo('url');
             
-            $from_email = get_option('free_mail_smtp_from_email');
+            $from_email = get_option('free_mail_smtp_from_email', get_option('admin_email'));
             if (empty($from_email) || !is_string($from_email)) {
                 $from_email = $admin_email;
             }

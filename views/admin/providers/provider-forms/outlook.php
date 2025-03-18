@@ -25,6 +25,19 @@
             </tr>
             <tr>
                 <th scope="row">
+                    <label for="email_from_overwrite">Email From</label>
+                </th>
+                <td>
+                    <input type="email"
+                        name="config_keys[email_from_overwrite]"
+                        id="email_from_overwrite"
+                        class="regular-text"
+                        >
+                        <p class="description">(Optional) Force sender email for this provider</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
                 <label for="client_id">Application (client) ID</label>
                 </th>
                 <td>
@@ -110,6 +123,7 @@
         jQuery('#client_secret').val(data.config_keys.client_secret);
         jQuery('#connection_id').val(data.index);
         jQuery('#priority').val(data.priority);
+        jQuery('#email_from_overwrite').val(data.config_keys.email_from_overwrite);
         jQuery('.back-step').hide();
     }
     jQuery('#toggle_ssecret, #toggle_ssecret').on('click', function() {

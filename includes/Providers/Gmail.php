@@ -70,10 +70,11 @@ class Gmail extends BaseProvider
             // Create the email message
             $boundary = uniqid(wp_rand(), true);
             $email_parts = [];
+            $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
 
             // Add headers
             $email_parts[] = "To: {$data['to'][0]}";
-            $email_parts[] = "From: {$data['from_name']} <{$data['from_email']}>";
+            $email_parts[] = "From: {$data['from_name']} <{$email_from}>";
             $email_parts[] = "Subject: {$data['subject']}";
             $email_parts[] = "MIME-Version: 1.0";
             $email_parts[] = "Content-Type: multipart/mixed; boundary=\"{$boundary}\"";

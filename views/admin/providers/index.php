@@ -237,6 +237,7 @@
 
             .suggested-providers img {
                 width: 50px;
+                padding: 8px;
                 height: auto;
                 transition: transform 0.3s ease-in-out;
             }

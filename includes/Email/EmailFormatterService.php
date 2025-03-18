@@ -11,11 +11,12 @@ class EmailFormatterService
      * Format email data for sending
      *
      * @param array $data The raw email data to format
-     * @return void
+     * @return array The formatted email data
      */
     public function format($data)
     {
-       return $this->prepareEmailData($data);
+       $formatted = $this->prepareEmailData($data);
+        return $formatted;
     }
 
     /**
@@ -28,17 +29,19 @@ class EmailFormatterService
     {
         $to = is_array($args['to']) ? $args['to'] : [$args['to']];
         $headers = $this->parse_headers($args['headers']);
-        return [
+        error_log('Parsed headers: ' . print_r($headers, true));
+        $result =  [
             'to' => $to,
             'subject' => $args['subject'],
             'message' => $args['message'],
-            'from_email' => get_option('free_mail_smtp_from_email') ?? $headers['from_email'],
-            'from_name' => get_option('free_mail_smtp_from_name') ?? $headers['from_name'],
+            'from_email' =>  $headers['from_email'] ?? get_option('free_mail_smtp_from_email', get_option('admin_email')) ,
+            'from_name' => $headers['from_name'] ?? get_option('free_mail_smtp_from_name', get_option('blog_name')),
             'reply_to' => $headers['reply_to'] ?? '',
             'cc' => $headers['cc'] ?? [],
             'bcc' => $headers['bcc'] ?? [],
             'attachments' => $this->prepare_attachments($args['attachments'])
         ];
+        return $result;
     }
 
     /**

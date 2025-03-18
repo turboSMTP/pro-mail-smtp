@@ -27,9 +27,10 @@ class Sparkpost extends BaseProvider {
 
     public function send($data) {
         $endpoint = 'transmissions';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
         $payload = [
             'content' => [
-                'from' => $data['from_email'],
+                'from' => $email_from,
                 'subject' => $data['subject'],
                 'html' => $data['message'],
             ],

@@ -68,7 +68,7 @@ class Manager {
     public function send_mail($null, $args) {
         $error_messages = [];
         $email_data = $this->emailFormatterService->format($args);
-        
+        error_log('Formatted email data send_email: ' . print_r($email_data, true));
         $source_plugin = $this->wpMailCaller->get_source_plugin_name();
         $email_data['source_app'] = $source_plugin;
 
@@ -85,7 +85,7 @@ class Manager {
         }
 
         $this->log_provider_failures($error_messages);
-        if(get_option('free_mail_smtp_fallback_to_wp_mail', false)) {
+        if(get_option('free_mail_smtp_fallback_to_wp_mail', true)) {
             return $this->fallback_to_wp_mail($args);
         }
         return false;
@@ -195,6 +195,7 @@ class Manager {
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
+                error_log("Email sending failed for provider {$provider_name}: {$e->getMessage()}");
                 $this->log_email($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage());
             }
         }

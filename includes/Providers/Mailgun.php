@@ -36,9 +36,10 @@ class Mailgun extends BaseProvider
         $domain = $this->config_keys['domain'];
         $endpoint = $domain . '/messages';
         $payload = '';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
 
         $fields = [
-           'from' => $data['from_email'],
+           'from' => $email_from,
            'to' => implode(",", $data['to']),
            'subject' => $data['subject'],
            'html' => $data['message']

@@ -15,8 +15,9 @@ class SMTP2GO extends BaseProvider {
 
     public function send($data) {
         $endpoint = 'email/send';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
         $payload = [
-            'sender' => $data['from_email'],
+            'sender' => $email_from,
             'to' => $data['to'],
             'subject' => $data['subject'],
             'text_body' => $data['message'],

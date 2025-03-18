@@ -27,7 +27,7 @@
             <table class="form-table" role="presentation">
                 <tr>
                     <th scope="row"><label for="from_email"><?php esc_html_e('From Email', 'free-mail-smtp'); ?></label></th>
-                    <td><input name="from_email" type="email" id="from_email" value="<?php echo esc_attr($from_email); ?>" class="regular-text"></td>
+                    <td><input name="from_email" type="email" id="from_email" value="<?php echo esc_attr($from_email); ?>" class="regular-text" required></td>
                 </tr>
                 <tr>
                     <th scope="row"><label for="from_name"><?php esc_html_e('From Name', 'free-mail-smtp'); ?></label></th>

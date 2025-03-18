@@ -25,7 +25,7 @@ class ImportConnections
 
     private function isWpMailSMTPAvailable()
     {
-        $wpMailSMTP =$this->wpmailOption;
+        $wpMailSMTP = $this->wpmailOption;
         if (!$wpMailSMTP) {
             $this->dismissNotice('free_mail_smtp_import_wpmail_notice_dismissed');
             return false;
@@ -75,33 +75,21 @@ class ImportConnections
                     case 'smtp2go':
                         $this->importSMTP2GOProvider($value);
                         break;
-                    // case 'sendgrid':
-                    //     $this->importSendGridProvider($value);
-                    //     break;
+                    case 'sendgrid':
+                        $this->importSendGridProvider($value);
+                        break;
                     case 'postmark':
                         $this->importPostmarkProvider($value);
                         break;
                     case 'sparkpost':
                         $this->importSparkpostProvider($value);
                         break;
-                    // case 'amazon_ses':
-                    //     $this->importAmazonSESProvider($value);
-                    //     break;
-                    // case 'smtpcom':
-                    //     $this->importSMTPcomProvider($value);
-                    //     break;
-                    // case 'brevo':
-                    //     $this->importBrevoProvider($value);
-                    //     break;
                     case 'gmail':
                         $this->importGmailProvider($value);
                         break;
-                    // case 'outlook':
-                    //     $this->importOutlookProvider($value);
-                    //     break;
-                    // case 'zoho':
-                    //     $this->importZohoProvider($value);
-                    //     break;
+                    case 'outlook':
+                        $this->importOutlookProvider($value);
+                        break;
                     default:
                     break;
                 }
@@ -120,6 +108,7 @@ class ImportConnections
             return;
         }
         $available_priority = $this->providerManager->get_available_priority();
+        
         $providerData = [
             'provider' => 'other',
             'connection_id' => '',
@@ -130,10 +119,66 @@ class ImportConnections
                 'smtp_port' => $data['port'],
                 'smtp_encryption' => $data['encryption'],
                 'smtp_user' => $data['user'],
-                'smtp_pw' => $data['pass']
+                'smtp_pw' => $this->decodeWpMailPassword($data['pass'])
             ]
         ];
         $this->providerManager->save_provider($providerData);
+    }
+
+
+    private function decodeWpMailPassword($encrypted)
+    {
+        // Check for filter or missing functions
+        if (apply_filters('wp_mail_smtp_helpers_crypto_stop', false) ||
+            !function_exists('\mb_strlen') || 
+            !function_exists('\mb_substr') || 
+            !function_exists('\sodium_crypto_secretbox_open')) {
+            return $encrypted;
+        }
+
+        // Try to decode from base64
+        $decoded = base64_decode($encrypted);
+        if (false === $decoded) {
+            return $encrypted;
+        }
+
+        // Check if the decoded string is long enough
+        if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
+            return $encrypted;
+        }
+
+        // Extract nonce and ciphertext
+        $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
+        $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
+        
+        // Get secret key
+        $secret_key = $this->getWpMailSecretKey();
+        if (empty($secret_key)) {
+            return $encrypted;
+        }
+
+        // Try to decrypt
+        $message = sodium_crypto_secretbox_open($ciphertext, $nonce, $secret_key);
+        return $message !== false ? $message : $encrypted;
+    }
+
+    private function getWpMailSecretKey()
+    {
+        // Check for constant definition first
+        if (defined('WPMS_CRYPTO_KEY')) {
+            return WPMS_CRYPTO_KEY;
+        }
+
+        // Get key from options and apply filters
+        $secret_key = get_option('wp_mail_smtp_mail_key');
+        $secret_key = apply_filters('wp_mail_smtp_helpers_crypto_get_secret_key', $secret_key);
+        
+        // Decode if we have a key
+        if (false !== $secret_key) {
+            $secret_key = base64_decode($secret_key);
+        }
+
+        return $secret_key;
     }
 
     private function importMailgunProvider($data)
@@ -174,20 +219,23 @@ class ImportConnections
         $this->providerManager->save_provider($providerData);
     }
 
-    // private function importSendGridProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'sendgrid',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported SendGrid',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'sendgrid_key' => $data['key']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
+    private function importSendGridProvider($data)
+    {
+        if ($data['api_key'] == '')  {
+            return;
+        }
+        $available_priority = $this->providerManager->get_available_priority();
+        $providerData = [
+            'provider' => 'sendgrid',
+            'connection_id' => '',
+            'connection_label' => 'Imported SendGrid',
+            'priority' => $available_priority[0],
+            'config_keys' => [
+                'sendgrid_key' => $data['api_key']
+            ]
+        ];
+        $this->providerManager->save_provider($providerData);
+    }
     private function importPostmarkProvider($data)
     {
         if ($data['server_api_token'] == '') {
@@ -223,50 +271,6 @@ class ImportConnections
         ];
         $this->providerManager->save_provider($providerData);
     }
-    // private function importAmazonSESProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'amazon_ses',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported Amazon SES',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'access_key' => $data['access_key'],
-    //             'secret_key' => $data['secret_key']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
-
-    // private function importSMTPcomProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'smtpcom',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported SMTPcom',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'api_key' => $data['api_key']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
-    // private function importBrevoProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'brevo',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported Brevo',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'api_key' => $data['key']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
     private function importGmailProvider($data)
     {
         if ($data['client_secret']=='' || $data['client_id']=='') {
@@ -286,33 +290,22 @@ class ImportConnections
         $this->providerManager->save_provider($providerData);
     }
 
-    // private function importOutlookProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'outlook',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported Outlook',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'client_id' => $data['client_id'],
-    //             'client_secret' => $data['client_secret']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
-    // private function importZohoProvider($data)
-    // {
-    //     $available_priority = $this->providerManager->get_available_priority();
-    //     $providerData = [
-    //         'provider' => 'zoho',
-    //         'connection_id' => '',
-    //         'connection_label' => 'Imported Zoho',
-    //         'priority' => $available_priority[0],
-    //         'config_keys' => [
-    //             'zoho_key' => $data['key']
-    //         ]
-    //     ];
-    //     $this->providerManager->save_provider($providerData);
-    // }
+    private function importOutlookProvider($data)
+    {
+        if ($data['client_secret']=='' || $data['client_id']=='') {
+            return;
+        }
+        $available_priority = $this->providerManager->get_available_priority();
+        $providerData = [
+            'provider' => 'outlook',
+            'connection_id' => '',
+            'connection_label' => 'Imported Outlook',
+            'priority' => $available_priority[0],
+            'config_keys' => [
+                'client_id' => $data['client_id'],
+                'client_secret' => $data['client_secret']
+            ]
+        ];
+        $this->providerManager->save_provider($providerData);
+    }
 }

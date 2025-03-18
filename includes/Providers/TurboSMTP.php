@@ -21,11 +21,13 @@ class TurboSMTP extends BaseProvider
     public function send($data)
     {
         $endpoint = 'https://api.turbo-smtp.com/api/v2/mail/send';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
+        error_log('Email from: ' . $email_from);
         $payload = [
-            'from' => $data['from_email'],
+            'from' => $email_from,
             'subject' => $data['subject'],
             'to' => implode(",", $data['to']),
-            'reply_to' => $data['reply_to'] ?? $data['from_email'],
+            'reply_to' => $data['reply_to'] ?? $email_from,
         ];
         
         if( $data['message'] !== wp_strip_all_tags($data['message']) ) {

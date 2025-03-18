@@ -15,8 +15,9 @@ class Postmark extends BaseProvider {
 
     public function send($data) {
         $endpoint = '/email';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
         $payload = [
-            'From' => $data['from_email'],
+            'From' => $email_from,
             'To' => $data['to'][0],
             'Subject' => $data['subject'],
             'HtmlBody' => $data['message'],

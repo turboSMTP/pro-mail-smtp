@@ -28,14 +28,13 @@ class ProviderManager
                 return;
             }
         }
-
         $config_keys = [];
         if (isset($data['config_keys']) && is_array($data['config_keys'])) {
             foreach ($data['config_keys'] as $key => $value) {
-                if (empty($value)) {
+                if(($key === 'client_secret' || $key === 'client_id' || $key === 'api_key' ) && empty($value)) {
                     wp_send_json_error('API key is required');
                     return;
-                }
+                } 
                 $config_keys[$key] = sanitize_text_field($value);
             }
         } else {

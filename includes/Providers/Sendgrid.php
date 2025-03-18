@@ -15,7 +15,8 @@ class Sendgrid extends BaseProvider {
     
     public function send($data) {
         $endpoint = 'mail/send';
-        
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
+
         $payload = [
             'personalizations' => [
                 [
@@ -25,7 +26,7 @@ class Sendgrid extends BaseProvider {
                 ]
             ],
             'from' => [
-                'email' => $data['from_email'],
+                'email' => $email_from,
                 'name' => $data['from_name']
             ],
             'subject' => $data['subject'],

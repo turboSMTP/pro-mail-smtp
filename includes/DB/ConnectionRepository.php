@@ -116,9 +116,7 @@ class ConnectionRepository {
         global $wpdb;
         $table_name_esc = esc_sql($this->table);
         $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT priority FROM {$table_name_esc} ORDER BY priority ASC"
-            )
+            "SELECT priority FROM {$table_name_esc} ORDER BY priority ASC"
         );
         $priorities = [];
         if ($results) {

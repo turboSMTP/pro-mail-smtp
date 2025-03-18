@@ -15,9 +15,11 @@ class Brevo extends BaseProvider {
 
     public function send($data) {
         $endpoint = 'email';
+        $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
+
         $payload = [
             'sender' => [
-                'email' => $data['from_email'],
+                'email' => $email_from,
                 'name' => $data['from_name']
             ],
             'to' => array_map(function($recipient) {
@@ -28,7 +30,7 @@ class Brevo extends BaseProvider {
             'subject' => $data['subject'],
             'htmlContent' => $data['message'],
             'replyTo' => [
-                'email' => $data['from_email'],
+                'email' => $email_from,
                 'name' => $data['from_name']
             ],
         ];

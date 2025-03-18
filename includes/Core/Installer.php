@@ -5,10 +5,10 @@ class Installer {
     private $db_version = '1.0';
     public function install() {
         $installed_version = get_option('free_mail_smtp_db_version', '0');
-        
+        $this->create_default_options();
+
         if ($installed_version === '0') {
             $this->update_db_1_0();
-            $this->create_default_options();
         }
         // Future updates
         // if (version_compare($installed_version, '1.1', '<')) {
@@ -19,9 +19,12 @@ class Installer {
     }
     
     private function create_default_options() {
+        error_log('Creating default options');
+        error_log(get_option('admin_email'));
+        error_log(get_option('blogname'));
         add_option('free_mail_smtp_from_email', get_option('admin_email'));
         add_option('free_mail_smtp_from_name', get_option('blogname'));
-        add_option('free_mail_smtp_fallback_to_wp_mail', false);
+        add_option('free_mail_smtp_fallback_to_wp_mail', true);
         add_option('free_mail_smtp_import_easysmtp_notice_dismissed', false);
         add_option('free_mail_smtp_import_wpmail_notice_dismissed', false);
     }

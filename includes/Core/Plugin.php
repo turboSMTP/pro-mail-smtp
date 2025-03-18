@@ -37,7 +37,7 @@ class Plugin
             new \FreeMailSMTP\Admin\Analytics();
             new \FreeMailSMTP\Admin\EmailRouter();
             new \FreeMailSMTP\Admin\Settings();
-            new \FreeMailSMTP\Admin\Welcome(); // Add this line
+            new \FreeMailSMTP\Admin\Welcome();
         }
 
         $email_manager = new \FreeMailSMTP\Email\Manager();
