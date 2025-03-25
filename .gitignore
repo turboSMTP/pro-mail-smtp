@@ -51,3 +51,6 @@ yarn-error.log
 *.sql
 *.zip
 *.tar.gz
+.DS_Store
+includes/.DS_Store
+includes/Lib/.DS_Store

@@ -2,18 +2,18 @@
 
 <div class="wrap">
     <div class="plugin-header">
-        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="Free Mail SMTP" class="plugin-logo">
-        <h1>FREE MAIL <span>SMTP</span></h1>
+        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="<?php esc_attr_e('Free Mail SMTP', 'free-mail-smtp'); ?>" class="plugin-logo">
+        <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
     </div>
 
-    <p class="description">Setup custom SMTP or popular Providers to improve your WordPress email deliverability.</p>
+    <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'free-mail-smtp'); ?></p>
 
     <nav class="free-mail-smtp-nav-tab-wrapper">
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Providers</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab">Settings</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active"><?php esc_html_e('Providers', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Email Logs', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Providers Logs', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Email Router', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Settings', 'free-mail-smtp'); ?></a>
     </nav>
 
     <?php settings_errors('free_mail_smtp_messages'); ?>
@@ -22,20 +22,20 @@
         <?php if ($import_available['easySMTP']): ?>
             <div id="import-banner" class="import-banner" style="background-color:#ff6e7914; border: 1px solid #ff6e79; padding: 10px; margin-bottom: 20px; position: relative;">
                 <span> <?php esc_html_e('We noticed you have Easy WP SMTP installed. Would you like to import your settings?', 'free-mail-smtp'); ?> </span>
-                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="easySMTP">Import Providers</button>
+                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="easySMTP"><?php esc_html_e('Import Providers', 'free-mail-smtp'); ?></button>
                 <span class="dismiss-banner" style="position: absolute; top: 5px; right: 10px; cursor: pointer;">&times;</span>
             </div>
         <?php endif; ?>
         <?php if ($import_available['wpMail']): ?>
             <div id="import-banner" class="import-banner" style="background-color:#ff6e7914; border: 1px solid #ff6e79; padding: 10px; margin-bottom: 20px; position: relative;">
                 <span> <?php esc_html_e('We noticed you have WP Mail SMTP installed. Would you like to import your settings?', 'free-mail-smtp'); ?></span>
-                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="wpMail">Import Providers</button>
+                <button id="import" class="button" style="margin-left: 10px;" data-import_nonce="<?php echo esc_attr(wp_create_nonce('free_mail_smtp_import')); ?>" data-plugin="wpMail"><?php esc_html_e('Import Providers', 'free-mail-smtp'); ?></button>
                 <span class="dismiss-banner" style="position: absolute; top: 5px; right: 10px; cursor: pointer;">&times;</span>
             </div>
         <?php endif; ?>
         <div class="table-header">
             <a href="#" class="page-title-action add-provider">
-                <span class="dashicons dashicons-plus-alt2"></span> Add Provider
+                <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Provider', 'free-mail-smtp'); ?>
             </a>
         </div>
 
@@ -55,12 +55,12 @@
                     <?php if (empty($providers_config)): ?>
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
-                                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="No providers" class="empty-state-icon">
-                                <p>It seems you haven't added any providers yet.</p>
+                                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="<?php esc_attr_e('No providers', 'free-mail-smtp'); ?>" class="empty-state-icon">
+                                <p><?php esc_html_e('It seems you haven\'t added any providers yet.', 'free-mail-smtp'); ?></p>
                                 <p>
-                                    Our plugin supports the most important SMTP providers to improve email deliverability.
+                                    <?php esc_html_e('Our plugin supports the most important SMTP providers to improve email deliverability.', 'free-mail-smtp'); ?>
                                 </p>
-                                <p> Get started now.</p>
+                                <p><?php esc_html_e('Get started now.', 'free-mail-smtp'); ?></p>
                                 <div class="suggested-providers">
                                     <?php
                                     foreach ($providers_list as $provider): ?>
@@ -72,7 +72,7 @@
                                     <?php endforeach; ?>
                                 </div>
                                 <button type="button" class="button button-primary save-provider" id="add-provider-button">
-                                    <span class="dashicons dashicons-plus-alt2"></span> Add Provider
+                                    <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Provider', 'free-mail-smtp'); ?>
                                 </button>
                             </td>
                         </tr>
@@ -98,10 +98,10 @@
                                 </td>
                                 <td>
                                     <?php if ($provider->provider === 'gmail' && empty(get_option('free_mail_smtp_gmail_access_token'))): ?>
-                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary google-sign">Connect Gmail Account</a>
+                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary google-sign"><?php esc_html_e('Connect Gmail Account', 'free-mail-smtp'); ?></a>
                                     <?php endif; ?>
                                     <?php if ($provider->provider === 'outlook' && empty(get_option('free_mail_smtp_outlook_access_token'))): ?>
-                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary outlook-sign">Connect Outlook Account</a>
+                                        <a href="<?php echo esc_url(isset($provider->connection_data['auth_url']) ? $provider->connection_data['auth_url'] : '#'); ?>" class="button button-primary outlook-sign"><?php esc_html_e('Connect Outlook Account', 'free-mail-smtp'); ?></a>
                                     <?php endif; ?>
                                 </td>
                                 <td class="column-actions">
@@ -114,7 +114,7 @@
                                                             'priority' => $provider->priority,
                                                             'connection_label' => $provider->connection_label
                                                         ])); ?>'>
-                                        Edit
+                                        <?php esc_html_e('Edit', 'free-mail-smtp'); ?>
                                     </button>
                                     <button type="button"
                                         class="button test-provider"
@@ -126,7 +126,7 @@
                                     <button type="button"
                                         class="button delete-provider"
                                         data-connection_id="<?php echo esc_attr($provider->connection_id); ?>">
-                                        Delete
+                                        <?php esc_html_e('Delete', 'free-mail-smtp'); ?>
                                     </button>
                                 </td>
                             </tr>
@@ -150,7 +150,7 @@
                             <?php foreach ($providers_list as $key => $info): ?>
                                 <div class="provider-card <?php echo !empty($info['recommended']) ? 'recommended' : ''; ?>" data-provider="<?php echo esc_attr($key); ?>">
                                     <?php if ($info['recommended']): ?>
-                                        <div class="ribbon-recommended">Recommended</div>
+                                        <div class="ribbon-recommended"><?php esc_html_e('Recommended', 'free-mail-smtp'); ?></div>
                                     <?php endif; ?>
                                     <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$key}.svg", dirname(dirname(dirname(__FILE__))))); ?>"
                                         alt="<?php echo esc_attr($info['label']); ?>"
@@ -304,6 +304,12 @@
                     const isExpanded = toggle.attr('aria-expanded') === 'true';
                     toggle.attr('aria-expanded', !isExpanded);
                     content.toggleClass('expanded');
+                });
+                
+                $('.dismiss-banner').on('click', function() {
+                    $(this).closest('.import-banner').fadeOut(300, function() {
+                        $(this).remove();
+                    });
                 });
             });
         </script>

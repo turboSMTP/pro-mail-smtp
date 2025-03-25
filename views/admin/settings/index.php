@@ -2,18 +2,18 @@
 
 <div class="wrap">
     <div class="plugin-header">
-        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="Free Mail SMTP" class="plugin-logo">
-        <h1>FREE MAIL <span>SMTP</span></h1>
+        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(dirname(__FILE__))))); ?>" alt="<?php esc_attr_e('Free Mail SMTP', 'free-mail-smtp'); ?>" class="plugin-logo">
+        <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
     </div>
 
-    <p class="description">Configure general settings for Free Mail SMTP.</p>
+    <p class="description"><?php esc_html_e('Configure general settings for Free Mail SMTP.', 'free-mail-smtp'); ?></p>
 
     <nav class="free-mail-smtp-nav-tab-wrapper">
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab">Providers</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab">Email Logs</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Settings</a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Providers', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Email Logs', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Providers Logs', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Email Router', 'free-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active"><?php esc_html_e('Settings', 'free-mail-smtp'); ?></a>
     </nav>
 
     <?php settings_errors('free_mail_smtp_messages'); ?>
@@ -86,39 +86,8 @@
             </table>
         </div>
 
-        <!-- New Data Collection Section -->
-        <div class="settings-section">
-            <h2><?php esc_html_e('Data Collection Settings', 'free-mail-smtp'); ?></h2>
-            <p class="description"><?php esc_html_e('Configure how Free Mail SMTP collects and processes data.', 'free-mail-smtp'); ?></p>
-            <table class="form-table" role="presentation">
-                <tr>
-                    <th scope="row"><label for="allow_data_collection"><?php esc_html_e('Allow Data Collection', 'free-mail-smtp'); ?></label></th>
-                    <td>
-                        <input type="checkbox" name="allow_data_collection" id="allow_data_collection" value="1" <?php checked($allow_data_collection, 1); ?>>
-                        <p class="description"><?php esc_html_e('Allow Free Mail SMTP to collect anonymous usage data to help improve the plugin.', 'free-mail-smtp'); ?></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"></th>
-                    <td>
-                        <div class="notice notice-info inline" style="margin: 10px 0;">
-                            <p>
-                                <?php esc_html_e('Data collected includes:', 'free-mail-smtp'); ?>
-                                <ul style="list-style-type: disc; margin-left: 20px;">
-                                    <li><?php esc_html_e('Plugin settings (not your credentials)', 'free-mail-smtp'); ?></li>
-                                    <li><?php esc_html_e('Email sending statistics', 'free-mail-smtp'); ?></li>
-                                    <li><?php esc_html_e('WordPress environment information', 'free-mail-smtp'); ?></li>
-                                </ul>
-                                <a href="#" target="_blank"><?php esc_html_e('View our privacy policy', 'free-mail-smtp'); ?></a>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
         <p class="submit">
-        <input type="submit" name="save_settings"  class="save-settings" value="<?php esc_html_e('Save Changes', 'free-mail-smtp'); ?>">
+        <input type="submit" name="save_settings" class="save-settings" value="<?php esc_attr_e('Save Changes', 'free-mail-smtp'); ?>">
         </p>
     </form>
     <div class="settings-section danger-zone">
@@ -162,7 +131,7 @@
             </ul>
             <p><strong><?php esc_html_e('This action cannot be undone.', 'free-mail-smtp'); ?></strong></p>
             <p><?php esc_html_e('Please type "DELETE" to confirm:', 'free-mail-smtp'); ?></p>
-            <input type="text" class="confirmation-input" id="delete-confirmation" placeholder="DELETE">
+            <input type="text" class="confirmation-input" id="delete-confirmation" placeholder="<?php esc_attr_e('DELETE', 'free-mail-smtp'); ?>">
         </div>
         <div class="modal-actions">
             <button type="button" class="button modal-cancel"><?php esc_html_e('Cancel', 'free-mail-smtp'); ?></button>
@@ -201,7 +170,7 @@
             const isEnabled = enableSummary.is(':checked');
             summaryEmail.prop('disabled', !isEnabled);
             summaryFrequency.prop('disabled', !isEnabled);
-                        summaryEmail.closest('tr').toggleClass('disabled-field', !isEnabled);
+            summaryEmail.closest('tr').toggleClass('disabled-field', !isEnabled);
             summaryFrequency.closest('tr').toggleClass('disabled-field', !isEnabled);
         }
 

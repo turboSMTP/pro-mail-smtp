@@ -43,7 +43,6 @@ class Settings
         $summary_email = get_option('free_mail_smtp_summary_email', '');
         $summary_frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
         $enable_fallback = get_option('free_mail_smtp_fallback_to_wp_mail', true);
-        $allow_data_collection = get_option('free_mail_smtp_analytics_consent', false) === 'not_set' ? 0 : get_option('free_mail_smtp_analytics_consent', 0);
         $view_file = $this->plugin_path . '/views/admin/settings/index.php';
         if (file_exists($view_file)) {
             include $view_file;
@@ -100,7 +99,6 @@ class Settings
 
                 update_option('free_mail_smtp_fallback_to_wp_mail', isset($_POST['enable_fallback']) ? 1 : 0);
 
-                update_option('free_mail_smtp_analytics_consent', isset($_POST['allow_data_collection']) ? 1 : 0);
 
                 add_settings_error(
                     'free_mail_smtp_messages',
@@ -155,7 +153,6 @@ class Settings
                 'free_mail_smtp_gmail_refresh_token',
                 'free_mail_smtp_outlook_refresh_token',
                 'free_mail_smtp_outlook_access_token',
-                'free_mail_smtp_analytics_consent',
                 'free_mail_smtp_import_easysmtp_notice_dismissed',
                 'free_mail_smtp_import_wpmail_notice_dismissed',
                 'free_mail_smtp_retention_duration'

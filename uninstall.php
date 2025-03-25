@@ -39,7 +39,6 @@ $options = [
     'free_mail_smtp_gmail_refresh_token',
     'free_mail_smtp_outlook_refresh_token',
     'free_mail_smtp_outlook_access_token',
-    'free_mail_smtp_analytics_consent',
     'free_mail_smtp_import_easysmtp_notice_dismissed',
     'free_mail_smtp_import_wpmail_notice_dismissed',
     'free_mail_smtp_retention_duration'
