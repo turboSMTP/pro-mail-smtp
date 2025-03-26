@@ -84,18 +84,14 @@ class Batch
     {
         $body = '';
         $classes = [];
-        $batchHttpTemplate = <<<EOF
---%s
-Content-Type: application/http
-Content-Transfer-Encoding: binary
-MIME-Version: 1.0
-Content-ID: %s
+$batchHttpTemplate = "--%s\n";
+$batchHttpTemplate .= "Content-Type: application/http\n";
+$batchHttpTemplate .= "Content-Transfer-Encoding: binary\n";
+$batchHttpTemplate .= "MIME-Version: 1.0\n";
+$batchHttpTemplate .= "Content-ID: %s\n\n";
+$batchHttpTemplate .= "%s\n";
+$batchHttpTemplate .= "%s%s\n\n";
 
-%s
-%s%s
-
-
-EOF;
 
         /** @var RequestInterface $request */
         foreach ($this->requests as $key => $request) {
