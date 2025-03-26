@@ -112,14 +112,6 @@ For plugin cleanup or troubleshooting:
 2. Scroll to the Data Management section
 3. Use with caution - deletion actions cannot be undone
 
-## 🤝 Support
-
-Need help with configuration or experiencing issues?
-
-- [Documentation](https://example.com/docs) - Detailed setup guides
-- [Support Forum](https://wordpress.org/support/plugin/free-mail-smtp/) - Community help
-- [Contact Us](https://example.com/contact) - Direct support
-
 ## 📄 License
 
 Free Mail SMTP is licensed under the [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.txt)
