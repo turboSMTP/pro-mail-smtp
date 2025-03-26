@@ -1,6 +1,6 @@
 === Free Mail SMTP ===
-Tags: smtp, email, wp mail, gmail, email delivery
-Requires at least: 5.2
+Tags: smtp, email, wp mail, gmail, outlook
+Requires at least: 5.5
 Tested up to: 6.7
 Stable tag: 1.0.0
 Requires PHP: 7.2
@@ -93,17 +93,14 @@ Yes! You can configure multiple providers and set priorities for automatic failo
 
 Yes, Free Mail SMTP works with all major contact form plugins including Contact Form 7, WPForms, Gravity Forms, and more.
 
-= Is my email data secure? =
-
-Yes. All sensitive information like passwords and API keys are stored securely in your WordPress database using encryption.
-
 == Screenshots ==
 
-1. Main dashboard with email analytics
-2. Provider configuration screen
-3. Email logs view
-4. Routing rules configuration
-5. Settings page
+1. Provider configuration screen
+2. Email logs view
+3. Providers Logs Page
+4. Settings page
+5. Email Router Configurations
+6. Email Router page
 
 == Changelog ==
 

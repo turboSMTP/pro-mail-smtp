@@ -73,7 +73,6 @@ class Settings
             );
             return;
         }
-
         if (isset($_POST['save_settings'])) {
             try {
                 if (isset($_POST['from_email'])) {
@@ -82,7 +81,7 @@ class Settings
                 if (isset($_POST['from_name'])) {
                     update_option('free_mail_smtp_from_name', sanitize_text_field(wp_unslash($_POST['from_name'])));
                 }
-                if (isset($_POST['retention_duration'])) {
+                if (isset($_POST['enable_email_summary'])) {
                     update_option('free_mail_smtp_enable_summary', isset($_POST['enable_email_summary']) ? 1 : 0);
                 }
                 if (isset($_POST['summary_email'])) {

@@ -3,7 +3,8 @@
  * Plugin Name: Free Mail SMTP
  * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, logging, and advanced routing.
  * Version: 1.0.0
- * Author: Osama
+ * Author: turbosmtp
+ * textdomain: free-mail-smtp
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
