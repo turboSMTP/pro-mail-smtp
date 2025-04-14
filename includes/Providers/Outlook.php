@@ -90,7 +90,7 @@ class Outlook extends BaseProvider
                 $email_data['message']['attachments'] = array_map(function($attachment) {
                     return [
                         '@odata.type' => '#microsoft.graph.fileAttachment',
-                        'name' => $attachment['filename'],
+                        'name' => $attachment['name'],
                         'contentType' => $attachment['type'],
                         'contentBytes' => base64_encode($attachment['content'])
                     ];

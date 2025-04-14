@@ -54,3 +54,5 @@ yarn-error.log
 .DS_Store
 includes/.DS_Store
 includes/Lib/.DS_Store
+assets/.DS_Store
+assets/img/.DS_Store

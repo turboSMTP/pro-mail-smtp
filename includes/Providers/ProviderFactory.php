@@ -10,7 +10,6 @@ class ProviderFactory {
     }
 
     public function get_provider_class($connection) {
-
         if (!isset($connection->provider) || empty($connection->provider)) {
             throw new \Exception('Provider not found');
         }

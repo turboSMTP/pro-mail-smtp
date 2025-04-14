@@ -10,22 +10,45 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
+// Setup array to collect error messages
+$uninstall_errors = [];
+
 // Delete database tables
 global $wpdb;
 
 // Drop email logs table
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}email_log") === false) {
-    error_log('Free Mail SMTP: Failed to remove email_log table during uninstall');
+    $uninstall_errors[] = 'Failed to remove email log table.';
 }
 
 // Drop connections table
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections") === false) {
-    error_log('Free Mail SMTP: Failed to remove free_mail_smtp_connections table during uninstall');
+    $uninstall_errors[] = 'Failed to remove connections table.';
 }
+
 // Drop email router conditions table
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_router_conditions") === false) {
-    error_log('Free Mail SMTP: Failed to remove free_mail_smtp_email_router_conditions table during uninstall');
+    $uninstall_errors[] = 'Failed to remove email router conditions table.';
 }
+
+// If we have errors and we're in the admin area, show them to the user
+if (!empty($uninstall_errors) && is_admin() && function_exists('add_action')) {
+    // This displays the message on the next page load after uninstall
+    add_action('admin_notices', function() use ($uninstall_errors) {
+        echo '<div class="notice notice-warning is-dismissible">';
+        echo '<p><strong>Free Mail SMTP uninstall encountered issues:</strong></p>';
+        echo '<ul>';
+        foreach ($uninstall_errors as $error) {
+            echo '<li>' . esc_html($error) . '</li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+    });
+}
+
 // Delete all plugin options
 $options = [
     'free_mail_smtp_db_version',

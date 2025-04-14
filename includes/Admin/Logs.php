@@ -7,14 +7,10 @@ use FreeMailSMTP\DB\EmailLogRepository;
 class Logs
 {
     private $per_page = 20;
+    private $providersList = [];
     private $statuses = [
         'sent' => '#3498db',
-        'delivered' => '#2ecc71',
-        'opened' => '#f1c40f',
-        'clicked' => '#9b59b6',
-        'failed' => '#e74c3c',
-        'bounced' => '#e67e22',
-        'spam' => '#c0392b'
+        'failed' => '#e74c3c'
     ];
     private $log_repository;
 
@@ -22,6 +18,8 @@ class Logs
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         $this->log_repository = new EmailLogRepository();
+        $this->providersList = include __DIR__ . '/../../config/providers-list.php';
+
     }
 
     public function enqueue_scripts($hook)
@@ -59,13 +57,33 @@ class Logs
 
     public function render()
     {
-        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['retention_duration_setting'])) {
-            if (isset($_POST['free_mail_smtp_retention_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_retention_nonce'])), 'free_mail_smtp_update_retention')) {
-                update_option('free_mail_smtp_retention_duration', sanitize_text_field(wp_unslash($_POST['retention_duration_setting'])));
-            }
+        if (isset($_POST['retention_duration_setting']) && 
+            isset($_POST['free_mail_smtp_retention_nonce']) && 
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_retention_nonce'])), 'free_mail_smtp_update_retention')) {
+            
+            update_option('free_mail_smtp_retention_duration', sanitize_text_field(wp_unslash($_POST['retention_duration_setting'])));
         }
+        
+        if (isset($_POST['filter_action']) && 
+            isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_logs_filter_nonce'])), 'free_mail_smtp_logs_filter')) {
+            
+            $filter_data = [
+                'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : '',
+                'status'    => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : '',
+                'search'    => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : '',
+                'date_from' => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : '',
+                'date_to'   => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : '',
+                'orderby'   => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : 'sent_at',
+                'order'     => isset($_POST['order']) && in_array(strtolower(wp_unslash($_POST['order'])), ['asc', 'desc'], true) 
+                            ? strtolower(sanitize_text_field(wp_unslash($_POST['order']))) 
+                            : 'desc',
+            ];
+            
+            update_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', $filter_data);
+        }
+        
         $current_retention = get_option('free_mail_smtp_retention_duration', 'forever');
-
         $filters = $this->get_filters();
         $logs = $this->get_logs($filters);
         $total_items = $this->get_total_logs($filters);
@@ -114,15 +132,20 @@ class Logs
             </div>
             <!-- Filters -->
             <div class="tablenav top">
-                <form method="get" class="email-filters">
+                <form method="post" class="email-filters">
                     <input type="hidden" name="page" value="free_mail_smtp-logs">
+                    <input type="hidden" name="filter_action" value="filter_logs">
+                    <input type="hidden" name="paged" value="<?php echo isset($filters['paged']) ? absint($filters['paged']) : 1; ?>">
+                    <input type="hidden" name="orderby" value="<?php echo esc_attr($filters['orderby']); ?>">
+                    <input type="hidden" name="order" value="<?php echo esc_attr($filters['order']); ?>">
+                    <?php wp_nonce_field('free_mail_smtp_logs_filter', 'free_mail_smtp_logs_filter_nonce'); ?>
                     <div class="alignleft actions filters">
                         <select name="provider" class="provider-filter">
                             <option value=""><?php echo esc_html__('All Providers', 'free-mail-smtp'); ?></option>
-                            <?php foreach ($this->get_providers() as $key => $name): ?>
+                            <?php foreach ($this->get_providers() as $key => $provider): ?>
                                 <option value="<?php echo esc_attr($key); ?>"
                                     <?php selected(esc_attr($filters['provider']), $key); ?>>
-                                    <?php echo esc_html($name); ?>
+                                    <?php echo esc_html($provider); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -158,6 +181,10 @@ class Logs
                         <input type="submit"
                             class="button apply-filter"
                             value="<?php echo esc_attr__('Filter', 'free-mail-smtp'); ?>">
+                            
+                        <button type="button" class="button reset-filter">
+                            <?php echo esc_html__('Reset Filters', 'free-mail-smtp'); ?>
+                        </button>
                     </div>
 
                     <div class="alignright">
@@ -175,13 +202,10 @@ class Logs
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
-                        <td class="manage-column column-cb check-column">
-                            <input type="checkbox" id="cb-select-all-1">
-                        </td>
                         <?php foreach ($this->get_columns() as $key => $label): ?>
                             <th scope="col"
                                 class="manage-column column-<?php echo esc_attr($key); ?> <?php echo esc_attr($this->get_column_sort_class($key, $filters)); ?>">
-                                <a href="<?php echo esc_url($this->get_sort_url($key)); ?>">
+                                <a href="#" class="sort-column" data-column="<?php echo esc_attr($key); ?>">
                                     <span><?php echo esc_html($label); ?></span>
                                 </a>
                             </th>
@@ -192,18 +216,13 @@ class Logs
                 <tbody>
                     <?php if (empty($logs)): ?>
                         <tr class="no-items">
-                            <td class="colspanchange" colspan="<?php echo count($this->get_columns()) + 1; ?>">
+                            <td class="colspanchange" colspan="<?php echo count($this->get_columns()); ?>">
                                 <?php esc_html_e('No logs found.', 'free-mail-smtp'); ?>
                             </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($logs as $log): ?>
                             <tr>
-                                <th scope="row" class="check-column">
-                                    <input type="checkbox"
-                                        name="log_ids[]"
-                                        value="<?php echo esc_attr($log->id); ?>">
-                                </th>
                                 <td class="column-date">
                                     <?php echo esc_html($this->format_date($log->sent_at)); ?> <br>
                                     <small><?php echo esc_html($this->time_diff($log->sent_at)); ?></small>
@@ -228,7 +247,7 @@ class Logs
                                 </td>
                                 <td class="column-details">
                                     <?php echo esc_html($log->error_message); ?>
-
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -236,9 +255,6 @@ class Logs
 
                 <tfoot>
                     <tr>
-                        <td class="manage-column column-cb check-column">
-                            <input type="checkbox" id="cb-select-all-2">
-                        </td>
                         <?php foreach ($this->get_columns() as $key => $label): ?>
                             <th scope="col" class="manage-column column-<?php echo esc_attr($key); ?>">
                                 <?php echo esc_html($label); ?>
@@ -354,30 +370,89 @@ class Logs
 
     private function get_providers()
     {
-        return [
-            'sendgrid' => 'SendGrid',
-            'mailgun' => 'Mailgun',
-            'ses' => 'Amazon SES',
-            'postmark' => 'Postmark',
-            'turbosmtp' => 'TurboSMTP',
-            'brevo' => 'Brevo',
-            'gmail' => 'Gmail',
-            'smtp2go' => 'SMTP2GO',
-        ];
+        $providersArray = [];
+        foreach ($this->providersList as $key => $provider) {
+            $providersArray[$key] = $provider['label'];
+        }
+        $providersArray['phpmailer'] = __('Phpmailer', 'free-mail-smtp');
+        return $providersArray;
     }
 
     private function get_filters()
     {
-        return [
-            'paged'     => isset($_GET['paged']) ? max(1, absint($_GET['paged'])) : 1,
-            'provider'  => isset($_GET['provider']) ? sanitize_text_field($_GET['provider']) : '',
-            'status'    => isset($_GET['status']) ? sanitize_text_field($_GET['status']) : '',
-            'search'    => isset($_GET['search']) ? sanitize_text_field($_GET['search']) : '',
-            'date_from' => isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : '',
-            'date_to'   => isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : '',
-            'orderby'   => isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'sent_at',
-            'order'     => isset($_GET['order']) && in_array(strtolower($_GET['order']), ['asc', 'desc']) ? strtolower($_GET['order']) : 'desc',
+        $defaults = [
+            'paged'     => 1,
+            'provider'  => '',
+            'status'    => '',
+            'search'    => '',
+            'date_from' => '',
+            'date_to'   => '',
+            'orderby'   => 'sent_at',
+            'order'     => 'desc',
         ];
+        
+        // Check if filter form was submitted with all empty values (reset)
+        if (isset($_POST['filter_action']) && 
+            isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
+            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_logs_filter_nonce'])), 'free_mail_smtp_logs_filter')) {
+            
+            // Check if all filter fields are empty (indicating a reset)
+            $is_reset = empty($_POST['provider']) && 
+                        empty($_POST['status']) && 
+                        empty($_POST['search']) && 
+                        empty($_POST['date_from']) && 
+                        empty($_POST['date_to']) && 
+                        !empty($_POST['orderby']) && 
+                        $_POST['orderby'] === 'sent_at' && 
+                        !empty($_POST['order']) &&
+                        $_POST['order'] === 'desc';
+            
+            if ($is_reset) {
+                // Clear saved filters
+                delete_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters');
+                return $defaults;
+            }
+            
+            // Process and save the filter values
+            $filter_data = [
+                'paged'     => isset($_POST['paged']) ? max(1, absint(wp_unslash($_POST['paged']))) : $defaults['paged'],
+                'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : $defaults['provider'],
+                'status'    => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : $defaults['status'],
+                'search'    => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : $defaults['search'],
+                'date_from' => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : $defaults['date_from'],
+                'date_to'   => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : $defaults['date_to'],
+                'orderby'   => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : $defaults['orderby'],
+                'order'     => isset($_POST['order']) && in_array(strtolower(wp_unslash($_POST['order'])), ['asc', 'desc'], true) 
+                            ? strtolower(sanitize_text_field(wp_unslash($_POST['order']))) 
+                            : $defaults['order'],
+            ];
+            
+            update_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', $filter_data);
+            return $filter_data;
+        }
+        
+        // Check if viewing a specific page via GET
+        if (isset($_GET['paged'])) {
+            return [
+                'paged'     => max(1, absint(wp_unslash($_GET['paged']))),
+                'provider'  => $defaults['provider'],
+                'status'    => $defaults['status'],
+                'search'    => $defaults['search'],
+                'date_from' => $defaults['date_from'],
+                'date_to'   => $defaults['date_to'],
+                'orderby'   => $defaults['orderby'],
+                'order'     => $defaults['order'],
+            ];
+        }
+        
+        // Otherwise try to get saved filter values
+        $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', true);
+        if (!empty($saved_filters) && is_array($saved_filters)) {
+            return array_merge($defaults, $saved_filters);
+        }
+        
+        // Default to initial values
+        return $defaults;
     }
 
     private function get_logs($filters)
@@ -385,24 +460,9 @@ class Logs
         return $this->log_repository->get_logs($filters);
     }
 
-    private function get_total_logs($filters)
+    private function get_total_logs()
     {
         return $this->log_repository->get_total_logs();
-    }
-
-    private function get_sort_url($column)
-    {
-        $current_orderby = isset($_GET['orderby']) ? sanitize_text_field(wp_unslash($_GET['orderby'])) : 'sent_at';
-        $current_order = isset($_GET['order']) ? sanitize_text_field(wp_unslash($_GET['order'])) : 'desc';
-
-        $order = ($current_orderby === $column && $current_order === 'desc') ? 'asc' : 'desc';
-
-        $params = array_merge(isset($_GET) ? $_GET : [], [
-            'orderby' => $column,
-            'order' => $order
-        ]);
-
-        return add_query_arg($params);
     }
 
     private function get_column_sort_class($column, $filters)
@@ -429,29 +489,39 @@ class Logs
 
     private function render_pagination($total_items, $total_pages, $current_page) 
     {
-        $pagination = paginate_links([
-            'base' => esc_url(add_query_arg('paged', '%#%')),
-            'format' => '',
-            'prev_text' => '&laquo;',
-            'next_text' => '&raquo;',
-            'total' => absint($total_pages),
-            'current' => absint($current_page),
-            'type' => 'array'
-        ]);
-
-        if ($pagination) {
-            echo '<div class="tablenav-pages">';
-            echo '<span class="displaying-num">' . esc_html(sprintf(
-                /* translators: %s: number of items */
-                _n('%s item', '%s items', $total_items, 'free-mail-smtp'),
-                number_format_i18n($total_items)
-            )) . '</span>';
-            
-            echo '<span class="pagination-links">';
-            echo wp_kses_post(implode("\n", array_map('wp_kses_post', $pagination)));
-            echo '</span>';
-            
-            echo '</div>';
+        if ($total_pages <= 1) {
+            return;
         }
+        
+        echo '<div class="tablenav-pages">';
+        
+        echo '<span class="displaying-num">' . esc_html(sprintf(
+            /* translators: %s: number of items */
+            _n('%s item', '%s items', $total_items, 'free-mail-smtp'),
+            number_format_i18n($total_items)
+        )) . '</span>';
+        
+        echo '<span class="pagination-links">';
+        
+        $first_page_disabled = $current_page <= 1 ? 'disabled' : '';
+        echo '<a class="first-page button ' . esc_attr($first_page_disabled) . '" href="' . esc_url(add_query_arg('paged', 1)) . '" aria-label="' . esc_attr__('Go to the first page', 'free-mail-smtp') . '">&laquo;</a>';
+        
+        $prev_page = max(1, $current_page - 1);
+        $prev_page_disabled = $current_page <= 1 ? 'disabled' : '';
+        echo '<a class="prev-page button ' . esc_attr($prev_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $prev_page)) . '" aria-label="' . esc_attr__('Go to the previous page', 'free-mail-smtp') . '">&lsaquo;</a>';
+        
+        echo '<span class="paging-input">';
+        echo '<span class="tablenav-paging-text">' . absint($current_page) . ' ' . esc_html__('of', 'free-mail-smtp') . ' <span class="total-pages">' . absint($total_pages) . '</span>';
+        echo '</span>';
+        
+        $next_page = min($total_pages, $current_page + 1);
+        $next_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
+        echo '<a class="next-page button ' . esc_attr($next_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $next_page)) . '" aria-label="' . esc_attr__('Go to the next page', 'free-mail-smtp') . '">&rsaquo;</a>';
+        
+        $last_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
+        echo '<a class="last-page button ' . esc_attr($last_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $total_pages)) . '" aria-label="' . esc_attr__('Go to the last page', 'free-mail-smtp') . '">&raquo;</a>';
+        
+        echo '</span>';
+        echo '</div>';
     }
 }

@@ -73,7 +73,7 @@ class WPMailCaller
      */
     private function get_source_info()
     {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 100);
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 100); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
 
         foreach ($backtrace as $item) {
             if (isset($item['function']) && $item['function'] === 'wp_mail') {

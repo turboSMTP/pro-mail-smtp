@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
         }
     });
     $('#next-page').on('click', function() {
-        currentPage++;
+            currentPage++;
         loadAnalyticsData();
     });
 
@@ -24,7 +24,6 @@ jQuery(document).ready(function($) {
         perPage = parseInt($('#per-page').val()) || perPage;
         console.log('Loading analytics data');
         $('#loading-overlay').show();
-
         var tbody = $('.analytics-table tbody');
         tbody.empty();
         tbody.append(`
@@ -33,6 +32,9 @@ jQuery(document).ready(function($) {
             </tr>
         `);
 
+        // Make sure perPage is a number and at least 1
+        perPage = Math.max(1, parseInt(perPage) || 10);
+        
         var filters = {
             provider: $('#provider-filter').val(),
             status: $('#status-filter').val(),
@@ -44,7 +46,7 @@ jQuery(document).ready(function($) {
 
         var tbody = $('.analytics-table tbody');
         var thead = $('.analytics-table thead');
-       
+
         $.ajax({
             url: FreeMailSMTPAnalytics.ajaxUrl,
             method: 'POST',
@@ -55,7 +57,7 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 console.log('Analytics response:', response);
-                if (response.success) {
+                if (response.success && response.data) {
                     refreshTable(response.data);
                     if (response.data.total_pages !== undefined) {
                         totalPages = response.data.total_pages;
@@ -91,32 +93,34 @@ jQuery(document).ready(function($) {
             tbody.append(`
                 <tr>
                     <td colspan="8" class="no-data">No data found</td>
-                </tr>
+                    </tr>
             `);
-            return;
-        }
+                return;
+            }
 
         var headers = data.columns.map(function(column) {
             return `<th>${escapeHtml(column)}</th>`;
         }).join('');
         thead.append(`<tr>${headers}</tr>`);
 
-        data.data.forEach(function(row) {
-            var rowHtml = data.columns.map(function(column) {
-                var cellData = row[column] || '';
-                var cellHtml = escapeHtml(cellData.toString());
+                data.data.forEach(function(row) {
+                    var rowHtml = data.columns.map(function(column) {
+                        var cellData = row[column] || '';
+                        var cellHtml = escapeHtml(cellData.toString());
                 if (column === 'status') {
                     var statusClass = cellData.toLowerCase();
-                    cellHtml = `<span class="status-badge status-${statusClass}">${cellHtml}</span>`;
+                            cellHtml = `<span class="status-badge status-${statusClass}">${cellHtml}</span>`;
                 } else if (column === 'provider_message') {
                     var shortErrorText = cellHtml.length > 30 ? cellHtml.substring(0, 30) + '...' : cellHtml;
                     var errorPopup = cellHtml.length > 30 ? `<a href="#" class="see-more" data-error="${cellHtml}">See more</a>` : '';
                     cellHtml = `${shortErrorText} ${errorPopup}`;
-                }
-                return `<td>${cellHtml}</td>`;
-            }).join('');
-            tbody.append(`<tr>${rowHtml}</tr>`);
-        });
+                        }
+
+                        return `<td>${cellHtml}</td>`;
+                    }).join('');
+
+                    tbody.append(`<tr>${rowHtml}</tr>`);
+                });
 
         $('.see-more').on('click', function(e) {
             e.preventDefault();

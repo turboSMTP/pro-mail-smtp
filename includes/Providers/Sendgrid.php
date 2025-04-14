@@ -60,7 +60,7 @@ class Sendgrid extends BaseProvider {
             $payload['attachments'] = array_map(function($attachment) {
                 return [
                     'content' => $attachment['content'],
-                    'filename' => $attachment['filename'],
+                    'filename' => $attachment['name'],
                     'type' => $attachment['type'],
                     'disposition' => 'attachment'
                 ];

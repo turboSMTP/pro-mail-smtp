@@ -12,10 +12,13 @@
             // Get parameters from both the URL query string and hash fragment
             var queryParams = new URLSearchParams(window.location.search);
             var hashParams = new URLSearchParams(window.location.hash.substring(1));
-            
+            console.log('Query Params:', queryParams.toString());
+            console.log('Hash Params:', hashParams.toString());
             var code = queryParams.get('code') || hashParams.get('code');
             var state = queryParams.get('state') || hashParams.get('state');
-            
+            console.log('OAuth Code:', code);
+            console.log('OAuth State:', state);
+            console.log('valid state:', isOAuthProvider(state));
             // Only proceed if we have oauth parameters and state is one of our supported providers
             if (code && state && isOAuthProvider(state)) {
                 console.log('OAuth callback detected for provider:', state);
@@ -37,20 +40,21 @@
     // Check if the state parameter matches one of our supported OAuth providers
     function isOAuthProvider(state) {
         // Add all your supported OAuth providers here
-        var supportedProviders = ['gmail', 'outlook', 'yahoo', 'zoho'];
+        var supportedProviders = ['gmail', 'outlook'];
         return supportedProviders.includes(state.toLowerCase());
     }
     
     // Process the OAuth callback
     function processOAuthCallback(code, state, notificationDiv) {
-        // Determine ajaxurl if it's not already defined
-        var ajaxUrl = window.ajaxurl || '/wp-admin/admin-ajax.php';
+        // Get ajaxUrl from the localized script data
+        var ajaxUrl = (typeof FreeMailSMTPOAuth !== 'undefined' && FreeMailSMTPOAuth.ajaxUrl) 
+            ? FreeMailSMTPOAuth.ajaxUrl 
+            : window.ajaxurl;
         
-        // Get nonce from global variable if available, otherwise proceed without it
+        // Get nonce from global variable if available
         var nonce = '';
         if (typeof FreeMailSMTPOAuth !== 'undefined' && FreeMailSMTPOAuth.nonce) {
             nonce = FreeMailSMTPOAuth.nonce;
-            ajaxUrl = FreeMailSMTPOAuth.ajaxUrl || ajaxUrl;
         }
         
         console.log('Processing OAuth callback for ' + state + ' provider');

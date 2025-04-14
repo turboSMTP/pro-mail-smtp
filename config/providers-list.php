@@ -64,19 +64,19 @@ return [
         'description' => 'Gmail is a popular email service provider that offers a secure and reliable email delivery service.',
         'recommended' => false,
     ],
+    'sendgrid' => [
+        'label' => 'Sendgrid',
+        'name'  => 'sendgrid',
+        'class' => 'Sendgrid',
+        'description' => 'Sendgrid is a powerful email API service that allows you to send, receive, and track emails effortlessly.',
+        'recommended' => false,
+    ]
     // 'amazonses' => [
     //     'label' => 'AmazonSES',
     //     'class' => 'AmazonSES',
     //     'description' => 'AmazonSES is a reliable email delivery service that ensures your emails reach the inbox.',
     //     'recommended' => false,
     // ],
-    'sendgrid' => [
-        'label' => 'SendGrid',
-        'name'  => 'sendgrid',
-        'class' => 'SendGrid',
-        'description' => 'SendGrid is a powerful email API service that allows you to send, receive, and track emails effortlessly.',
-        'recommended' => false,
-    ],
     // 'smtpcom' => [
     //     'label' => 'SMTPcom',
     //     'class' => 'SMTPcom',

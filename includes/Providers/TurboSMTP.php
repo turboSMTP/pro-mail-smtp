@@ -22,7 +22,6 @@ class TurboSMTP extends BaseProvider
     {
         $endpoint = 'https://api.turbo-smtp.com/api/v2/mail/send';
         $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
-        error_log('Email from: ' . $email_from);
         $payload = [
             'from' => $email_from,
             'subject' => $data['subject'],
@@ -99,7 +98,6 @@ class TurboSMTP extends BaseProvider
             'limit' => $filters['per_page'] ?? 5,
             'status' => ['SUCCESS', 'FAIL']
         ], false, 'GET');
-
         $data = [];
         $data['data'] = $this->format_analytics_response($response);
         $data['columns'] = $this->analytics_table_columns();

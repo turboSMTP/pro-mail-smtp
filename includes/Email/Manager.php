@@ -68,7 +68,6 @@ class Manager {
     public function send_mail($null, $args) {
         $error_messages = [];
         $email_data = $this->emailFormatterService->format($args);
-        error_log('Formatted email data send_email: ' . print_r($email_data, true));
         $source_plugin = $this->wpMailCaller->get_source_plugin_name();
         $email_data['source_app'] = $source_plugin;
 
@@ -84,7 +83,6 @@ class Manager {
             return true;
         }
 
-        $this->log_provider_failures($error_messages);
         if(get_option('free_mail_smtp_fallback_to_wp_mail', true)) {
             return $this->fallback_to_wp_mail($args);
         }
@@ -195,7 +193,6 @@ class Manager {
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
-                error_log("Email sending failed for provider {$provider_name}: {$e->getMessage()}");
                 $this->log_email($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage());
             }
         }
@@ -217,6 +214,7 @@ class Manager {
         $table_name = $wpdb->prefix . 'email_log';
         
         foreach ($data['to'] as $to) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $wpdb->insert(
                 $table_name,
                 [
@@ -230,19 +228,6 @@ class Manager {
                 ],
                 ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
             );
-        }
-    }
-    
-    /**
-     * Log provider failures to error log.
-     * 
-     * @param array $errors Array of provider errors
-     * @return void
-     */
-    private function log_provider_failures($errors) {
-        error_log('Email sending failed for all providers:');
-        foreach ($errors as $error) {
-            error_log("Provider {$error['provider']}: {$error['error']}");
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace FreeMailSMTP\Admin;
 
+use Error;
 use FreeMailSMTP\Providers\ProviderFactory;
 
 class Providers
@@ -61,6 +62,16 @@ class Providers
                 'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
                 'debug' => true
             ]);
+            
+            wp_localize_script(
+                'free-mail-smtp-oauth-handler',
+                'FreeMailSMTPOAuth',
+                array(
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce'   => wp_create_nonce('free_mail_smtp_oauth_nonce'),
+                    'redirectUrl' => admin_url('admin.php?page=free-mail-smtp')
+                )
+            );
     }
 
     public function render()
@@ -97,13 +108,17 @@ class Providers
             wp_send_json_error('Form data is required');
             return;
         }
-
-        parse_str(urldecode($_POST['formData']), $form_data);
+        
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+        $form_data_string = wp_unslash($_POST['formData']);
+        
+        parse_str($form_data_string, $form_data);
         
         if (empty($form_data['provider'])) {
             wp_send_json_error('Provider is required');
             return;
         }
+                
         try {
             $connection_id = $this->provider_manager->save_provider($form_data);
         } catch (\Exception $e) {
@@ -124,12 +139,11 @@ class Providers
             return;
         }
 
-        $provider_type = sanitize_text_field($_POST['provider_type']);
-        if (empty($provider_type)) {
+        if (empty($_POST['provider_type'])) {
             wp_send_json_error('Provider type not found');
             return;
         }
-
+        $provider_type = sanitize_text_field(wp_unslash($_POST['provider_type']));
         $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $providers = $conn_repo->get_all_connections();
         $connection = null;
@@ -144,8 +158,11 @@ class Providers
             wp_send_json_error('Provider not found');
             return;
         }
-
-        $credential = sanitize_text_field($_POST['code']);
+        if (empty($_POST['code'])) {
+            wp_send_json_error('Code not found');
+            return;
+        }
+        $credential = sanitize_text_field(wp_unslash($_POST['code']));
         try {
             $provider_instance = $this->provider_factory->get_provider_class($connection);
             if (!method_exists($provider_instance, 'handle_oauth_callback')) {
@@ -174,8 +191,11 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-
-        $connection_id = sanitize_text_field($_POST['connection_id']);
+        if (empty($_POST['connection_id'])) {
+            wp_send_json_error('Connection ID not found');
+            return;
+        }
+        $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
         $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
@@ -204,7 +224,11 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-        $connection_id = sanitize_text_field($_POST['connection_id']);
+        if (empty($_POST['connection_id'])) {
+            wp_send_json_error('Connection ID not found');
+            return;
+        }
+        $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
         $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
@@ -225,10 +249,14 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-        $provider = sanitize_text_field($_POST['provider']);
+        if (empty($_POST['provider'])) {
+            wp_send_json_error('Provider not found');
+            return;
+        }
+        $provider = sanitize_text_field(wp_unslash($_POST['provider']));
         $is_edit = isset($_POST['connection_id']) ? true : false;
         if ($is_edit) {
-            $connection_id = sanitize_text_field($_POST['connection_id']);
+            $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
         }
         $form_file = $this->plugin_path . "/views/admin/providers/provider-forms/{$provider}.php";
 
@@ -263,7 +291,12 @@ class Providers
             return;
         }
         try {
-            $result =  $this->import_connections->importProviders($_POST['plugin']);
+            if (empty($_POST['plugin'])) {
+                wp_send_json_error('Plugin not found');
+                return;
+            }
+            $plugin = sanitize_text_field(wp_unslash($_POST['plugin']));
+            $result =  $this->import_connections->importProviders($plugin);
             return wp_send_json_success([$result]);
         } catch (\Exception $e) {
             wp_send_json_error($e->getMessage());

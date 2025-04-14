@@ -35,16 +35,14 @@ class PluginListUpdater {
             ];
         }
 
-        try {
+        
             $theme = wp_get_theme();
             $theme_name = $theme->get( 'Name' );
             $plugins[] = [
                 'name' => 'Theme: ' . $theme_name,
                 'path' => $theme_name,
             ];
-        } catch ( \Exception $e ) {
-            error_log( 'Free Mail SMTP: ' . $e->getMessage() );
-        }
+    
 
         $plugins[] = [
             'name' => 'Core WP',

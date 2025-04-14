@@ -75,8 +75,10 @@ class EmailRouter {
             wp_send_json_error('Unauthorized');
             return;
         }
-
-        $data = isset($_POST['data']) ? $_POST['data'] : array();
+        $unslashed_data = wp_unslash( $_POST );
+        $sanitized_data = map_deep( $unslashed_data, 'sanitize_text_field' );
+        
+        $data = isset($sanitized_data['data']) ? $sanitized_data['data'] : array();
         $prepared_data = [
             'connection_id'        => sanitize_text_field($data['connection']['selected']),
             'condition_data'       => wp_json_encode($data['conditions']),

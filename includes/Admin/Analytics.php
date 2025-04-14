@@ -65,7 +65,6 @@ class Analytics {
 
     private function get_analytics_data() {
         $filters = $this->get_filter_values();
-
         try {
             if (!empty($filters['selected_provider'])) {
                 return $this->get_provider_analytics($filters['selected_provider'], $filters);
@@ -83,25 +82,61 @@ class Analytics {
     }
 
     private function get_filter_values() {
-        return [
-            'selected_provider' => isset($_GET['provider']) ? sanitize_text_field($_GET['provider']) : '',
-            'selected_status'   => isset($_GET['status']) ? sanitize_text_field($_GET['status']) : '',
-            'date_from'         => isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : '',
-            'date_to'           => isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : '',
-            'page'              => isset($_GET['page']) ? (int) $_GET['page'] : 1,
-            'per_page'          => isset($_GET['per_page']) ? (int) $_GET['per_page'] : 10
+        $defaults = [
+            'selected_provider' => '',
+            'selected_status'   => '',
+            'date_from'         => '',
+            'date_to'           => '',
+            'page'              => 1,
+            'per_page'          => 10
         ];
+        
+        if (isset($_POST['filter_action']) && $_POST['filter_action'] === 'filter_analytics') {
+            if (!isset($_POST['free_mail_smtp_analytics_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_analytics_nonce'])), 'free_mail_smtp_analytics')) {
+                wp_die('Security check failed. Please try again.');
+            }
+            
+            $filter_data = [
+                'selected_provider' => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : $defaults['selected_provider'],
+                'selected_status'   => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : $defaults['selected_status'],
+                'date_from'         => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : $defaults['date_from'],
+                'date_to'           => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : $defaults['date_to'],
+                'page'              => isset($_POST['page']) ? (int) $_POST['page'] : $defaults['page'],
+                'per_page'          => isset($_POST['per_page']) ? (int) $_POST['per_page'] : $defaults['per_page']
+            ];
+            
+            update_user_meta(get_current_user_id(), 'free_mail_smtp_analytics_filters', $filter_data);
+            return $filter_data;
+        }
+        
+        if (isset($_GET['provider']) || isset($_GET['status']) || isset($_GET['date_from']) || isset($_GET['date_to'])) {
+            return [
+                'selected_provider' => isset($_GET['provider']) ? sanitize_text_field(wp_unslash($_GET['provider'])) : $defaults['selected_provider'],
+                'selected_status'   => isset($_GET['status']) ? sanitize_text_field(wp_unslash($_GET['status'])) : $defaults['selected_status'],
+                'date_from'         => isset($_GET['date_from']) ? sanitize_text_field(wp_unslash($_GET['date_from'])) : $defaults['date_from'],
+                'date_to'           => isset($_GET['date_to']) ? sanitize_text_field(wp_unslash($_GET['date_to'])) : $defaults['date_to'],
+                'page'              => isset($_GET['page']) ? (int) $_GET['page'] : $defaults['page'],
+                'per_page'          => isset($_GET['per_page']) ? (int) $_GET['per_page'] : $defaults['per_page']
+            ];
+        }
+        
+        $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_analytics_filters', true);
+        if (!empty($saved_filters) && is_array($saved_filters)) {
+            return array_merge($defaults, $saved_filters);
+        }
+        
+        return $defaults;
     }
 
     public function fetch_provider_analytics() {
         check_ajax_referer('free_mail_smtp_analytics', 'nonce');
 
-        $provider_id = isset($_POST['filters']['provider']) ? sanitize_text_field($_POST['filters']['provider']) : '';
-        $status = isset($_POST['filters']['status']) ? sanitize_text_field($_POST['filters']['status']) : '';
-        $date_from = isset($_POST['filters']['date_from']) ? sanitize_text_field($_POST['filters']['date_from']) : '';
-        $date_to = isset($_POST['filters']['date_to']) ? sanitize_text_field($_POST['filters']['date_to']) : '';
-        $page = isset($_POST['filters']['page']) ? (int) $_POST['filters']['page'] : 1;
-        $per_page = isset($_POST['filters']['per_page']) ? (int) $_POST['filters']['per_page'] : 10;
+        $provider_id = isset($_POST['filters']['provider']) ? sanitize_text_field(wp_unslash($_POST['filters']['provider'])) : '';
+        $status = isset($_POST['filters']['status']) ? sanitize_text_field(wp_unslash($_POST['filters']['status'])) : '';
+        $date_from = isset($_POST['filters']['date_from']) ? sanitize_text_field(wp_unslash($_POST['filters']['date_from'])) : '';
+        $date_to = isset($_POST['filters']['date_to']) ? sanitize_text_field(wp_unslash($_POST['filters']['date_to'])) : '';
+        $page = isset($_POST['filters']['page']) ? max(1, (int) $_POST['filters']['page']) : 1;
+        $per_page = isset($_POST['filters']['per_page']) ? max(1, (int) $_POST['filters']['per_page']) : 10;
 
         if (empty($provider_id)) {
             wp_send_json_error('Provider ID is required');

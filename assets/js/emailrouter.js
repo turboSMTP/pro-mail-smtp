@@ -35,6 +35,8 @@ jQuery(document).ready(function($) {
         $('#emailInfoToggle').prop('checked', false);
         $('#connectionSelect').val('');
         $('#emailInfoContent input').val('');
+        $('#condition_id').val('');
+        $('#is_enabled').val('');
         addCondition();
     }
 

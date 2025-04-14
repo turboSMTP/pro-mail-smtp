@@ -19,9 +19,6 @@ class Installer {
     }
     
     private function create_default_options() {
-        error_log('Creating default options');
-        error_log(get_option('admin_email'));
-        error_log(get_option('blogname'));
         add_option('free_mail_smtp_from_email', get_option('admin_email'));
         add_option('free_mail_smtp_from_name', get_option('blogname'));
         add_option('free_mail_smtp_fallback_to_wp_mail', true);

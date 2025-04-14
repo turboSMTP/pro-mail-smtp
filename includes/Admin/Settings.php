@@ -37,7 +37,6 @@ class Settings
         }
 
         $from_email = get_option('free_mail_smtp_from_email');
-        error_log('From email: ' . $from_email);
         $from_name = get_option('free_mail_smtp_from_name');
         $enable_summary = get_option('free_mail_smtp_enable_summary', false);
         $summary_email = get_option('free_mail_smtp_summary_email', '');
@@ -121,24 +120,37 @@ class Settings
         check_ajax_referer('free_mail_smtp_nonce_settings', 'nonce');
 
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Unauthorized');
-            return;
+            wp_send_json_error(__('You do not have permission to perform this action.', 'free-mail-smtp')); // Added localization
         }
 
+        global $wpdb;
+
+        $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
+        $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
+        $logs_table = $wpdb->prefix . 'email_log';
+
         try {
-            global $wpdb;
-
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query('START TRANSACTION');
-
-            $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
-            $wpdb->query("DELETE FROM `$conditions_table`");
-            
-            $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
-            $wpdb->query("DELETE FROM `$connections_table`");
-
-            $logs_table = $wpdb->prefix . 'email_log';
-            $wpdb->query("DELETE FROM `$logs_table`");
-
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            $result1 = $wpdb->delete('free_mail_smtp_email_router_conditions', array());
+            if (false === $result1) {
+                // translators: %1$s is the table name, %2$s is the database error message.
+                throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $conditions_table, $wpdb->last_error));
+            }
+		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            $result2 = $wpdb->delete('free_mail_smtp_connections', array());
+            if (false === $result2) {
+                // translators: %1$s is the table name, %2$s is the database error message.
+                throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $connections_table, $wpdb->last_error));
+            }
+		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            $result3 = $wpdb->delete('email_log', array());
+            if (false === $result3) {
+                // translators: %1$s is the table name, %2$s is the database error message.
+                throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $logs_table, $wpdb->last_error));
+            }
+		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query('COMMIT');
 
             $options = [
@@ -160,11 +172,18 @@ class Settings
             foreach ($options as $option) {
                 delete_option($option);
             }
-            \FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
-            wp_send_json_success('All plugin data has been deleted');
+
+            if (class_exists('\FreeMailSMTP\Cron\CronManager') && method_exists(\FreeMailSMTP\Cron\CronManager::class, 'get_instance')) {
+                 \FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+            }
+
+            wp_send_json_success(__('All plugin data has been deleted successfully.', 'free-mail-smtp')); // Added localization
+
         } catch (\Exception $e) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query('ROLLBACK');
-            wp_send_json_error('Error: ' . $e->getMessage());
+            // translators: %s is the exception error message.
+            wp_send_json_error(sprintf(__('Error deleting plugin data: %s', 'free-mail-smtp'), $e->getMessage())); // Added localization
         }
     }
 }
