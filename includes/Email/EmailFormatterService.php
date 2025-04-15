@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Email;
+namespace TurboSMTP\FreeMailSMTP\Email;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Class EmailFormatterService
@@ -29,7 +30,6 @@ class EmailFormatterService
     {
         $to = is_array($args['to']) ? $args['to'] : [$args['to']];
         $headers = $this->parse_headers($args['headers']);
-        error_log('Parsed headers: ' . print_r($headers, true));
         $result =  [
             'to' => $to,
             'subject' => $args['subject'],

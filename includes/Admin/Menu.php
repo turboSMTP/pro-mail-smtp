@@ -1,12 +1,13 @@
 <?php
-namespace FreeMailSMTP\Admin;
+namespace TurboSMTP\FreeMailSMTP\Admin;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Menu {
     private $plugin_path;
 
     public function __construct() {
         add_action('admin_menu', [$this, 'add_menu_items']);
-        $this->plugin_path = plugin_dir_path(dirname(dirname(__FILE__)));
+        $this->plugin_path = FREE_MAIL_SMTP_PATH;
     }
 
     private function get_svg_icon() {
@@ -18,7 +19,7 @@ class Menu {
     }
 
     public function add_menu_items() {
-        $parent_slug = 'free_mail_smtp-providers';
+        $parent_slug = 'free-mail-smtp-providers';
 
         add_menu_page(
             'Free Mail SMTP',
@@ -42,28 +43,28 @@ class Menu {
                 'title' => 'Email Logs',
                 'menu_title' => 'Email Logs',
                 'capability' => 'manage_options',
-                'slug' => 'free_mail_smtp-logs',
+                'slug' => 'free-mail-smtp-logs',
                 'callback' => 'render_logs_page'
             ],
             [
                 'title' => 'Providers Logs',
                 'menu_title' => 'Providers Logs',
                 'capability' => 'manage_options',
-                'slug' => 'free_mail_smtp-analytics',
+                'slug' => 'free-mail-smtp-analytics',
                 'callback' => 'render_analytics_page'
             ],
             [
                 'title' => 'Email Router',
                 'menu_title' => 'Email Router',
                 'capability' => 'manage_options',
-                'slug' => 'free_mail_smtp-email-router',
+                'slug' => 'free-mail-smtp-email-router',
                 'callback' => 'render_email_router_page'
             ],
             [
                 'title' => 'Settings',
                 'menu_title' => 'Settings',
                 'capability' => 'manage_options',
-                'slug' => 'free_mail_smtp-settings',
+                'slug' => 'free-mail-smtp-settings',
                 'callback' => 'render_settings_page'
             ]
         ];

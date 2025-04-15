@@ -1,6 +1,8 @@
 <?php
-namespace FreeMailSMTP\Email;
-use FreeMailSMTP\DB\ConditionRepository;
+namespace TurboSMTP\FreeMailSMTP\Email;
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+use TurboSMTP\FreeMailSMTP\DB\ConditionRepository;
 
 class EmailRoutingService {
    private $conditionRepo;
@@ -86,10 +88,10 @@ class EmailRoutingService {
             case 'contains':
                 $result = (strpos($field, $value) !== false);
                 break;
-            case 'starts_with':
+            case 'start_with':
                 $result = (strpos($field, $value) === 0);
                 break;
-            case 'ends_ith':
+            case 'end_with':
                 $result = (substr($field, -strlen($value)) === $value);
                 break;
             case 'is_not':
@@ -98,7 +100,7 @@ class EmailRoutingService {
             case 'does_not_contain':
                 $result = (strpos($field, $value) === false);
                 break;
-            case 'regex_atch':
+            case 'regex_match':
                 $result = (preg_match($value, $field));
                 break;
             case 'regex_not_match':

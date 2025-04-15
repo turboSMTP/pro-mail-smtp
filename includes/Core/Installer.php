@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Core;
+namespace TurboSMTP\FreeMailSMTP\Core;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Installer {
     private $db_version = '1.0';
@@ -19,9 +20,6 @@ class Installer {
     }
     
     private function create_default_options() {
-        error_log('Creating default options');
-        error_log(get_option('admin_email'));
-        error_log(get_option('blogname'));
         add_option('free_mail_smtp_from_email', get_option('admin_email'));
         add_option('free_mail_smtp_from_name', get_option('blogname'));
         add_option('free_mail_smtp_fallback_to_wp_mail', true);
@@ -29,10 +27,10 @@ class Installer {
         add_option('free_mail_smtp_import_wpmail_notice_dismissed', false);
     }
 
-    private function  update_db_1_0(){
+    private function update_db_1_0(){
         global $wpdb;
         
-        $table_name = $wpdb->prefix . 'email_log';
+        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
         $charset_collate = $wpdb->get_charset_collate();
         
         $sql = "CREATE TABLE IF NOT EXISTS $table_name (
@@ -53,7 +51,9 @@ class Installer {
             KEY sent_at (sent_at)
         ) $charset_collate;";
         
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        if (!function_exists('dbDelta')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        }
         dbDelta($sql);
         
         $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
@@ -73,7 +73,6 @@ class Installer {
             UNIQUE KEY priority (priority)
         ) $charset_collate;";
         
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_connections);
         
         $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
@@ -94,7 +93,6 @@ class Installer {
             CONSTRAINT fk_connection_id FOREIGN KEY (connection_id) REFERENCES $connections_table(connection_id) ON DELETE CASCADE
         ) $charset_collate;";
         
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql_conditions);
         
     }

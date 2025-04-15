@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Helpers;
+namespace TurboSMTP\FreeMailSMTP\Helpers;
+ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginListUpdater {
 
@@ -11,7 +12,7 @@ class PluginListUpdater {
      */
     public function updateActivePluginsOption() {
         if ( ! function_exists( 'get_plugins' ) ) {
-            include ABSPATH . '/wp-admin/includes/plugin.php';
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
         $plugins     = [];
@@ -35,16 +36,14 @@ class PluginListUpdater {
             ];
         }
 
-        try {
+        
             $theme = wp_get_theme();
             $theme_name = $theme->get( 'Name' );
             $plugins[] = [
                 'name' => 'Theme: ' . $theme_name,
                 'path' => $theme_name,
             ];
-        } catch ( \Exception $e ) {
-            error_log( 'Free Mail SMTP: ' . $e->getMessage() );
-        }
+    
 
         $plugins[] = [
             'name' => 'Core WP',

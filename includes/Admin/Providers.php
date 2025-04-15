@@ -1,8 +1,9 @@
 <?php
 
-namespace FreeMailSMTP\Admin;
+namespace TurboSMTP\FreeMailSMTP\Admin;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-use FreeMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
 
 class Providers
 {
@@ -15,52 +16,76 @@ class Providers
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('wp_ajax_test_provider_connection', [$this, 'test_provider_connection']);
-        add_action('wp_ajax_save_provider', [$this, 'save_provider']);
-        add_action('wp_ajax_delete_provider', [$this, 'delete_provider']);
-        add_action('wp_ajax_load_provider_form', [$this, 'load_provider_form']);
-        add_action('wp_ajax_import_connections', [$this, 'import_connections']);
+        add_action('wp_ajax_free_mail_smtp_test_provider_connection', [$this, 'test_provider_connection']);
+        add_action('wp_ajax_free_mail_smtp_save_provider', [$this, 'save_provider']);
+        add_action('wp_ajax_free_mail_smtp_delete_provider', [$this, 'delete_provider']);
+        add_action('wp_ajax_free_mail_smtp_load_provider_form', [$this, 'load_provider_form']);
+        add_action('wp_ajax_free_mail_smtp_import_connections', [$this, 'import_connections']);
         add_action('wp_ajax_free_mail_smtp_set_oauth_token', [$this, 'free_mail_smtp_set_oauth_token']);
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
         $this->provider_factory = new ProviderFactory();
-        $this->import_connections = new \FreeMailSMTP\Core\ImportConnections();
-        $this->plugin_path = dirname(dirname(dirname(__FILE__)));
-        $this->provider_manager = new \FreeMailSMTP\Core\ProviderManager();
+        $this->import_connections = new \TurboSMTP\FreeMailSMTP\Core\ImportConnections();
+        $this->plugin_path = FREE_MAIL_SMTP_PATH;
+        $this->provider_manager = new \TurboSMTP\FreeMailSMTP\Core\ProviderManager();
     }
 
     public function enqueue_scripts($hook)
     {
-        if ($hook !== 'toplevel_page_free_mail_smtp-providers') {
+        if ($hook !== 'toplevel_page_free-mail-smtp-providers') {
             return;
         }
             wp_enqueue_script(
-                'free_mail_smtp-admin',
-                plugins_url('/assets/js/admin.js', dirname(dirname(__FILE__))),
+                'free-mail-smtp-admin',
+                plugins_url('/assets/js/admin.js', FREE_MAIL_SMTP_FILE),
                 ['jquery'],
-                '1.0.0',
+                FREE_MAIL_SMTP_VERSION,
                 true
             );
             wp_enqueue_script(
-                'free_mail_smtp-oauth-handler',
-                plugins_url('/assets/js/oauth-handler.js', dirname(dirname(__FILE__))),
+                'free-mail-smtp-oauth-handler',
+                plugins_url('/assets/js/oauth-handler.js', FREE_MAIL_SMTP_FILE),
                 ['jquery'],
-                '1.0.0',
+                FREE_MAIL_SMTP_VERSION,
                 true
             );
+            wp_enqueue_script(
+                'free-mail-smtp-provider-forms',
+                plugins_url('/assets/js/provider-forms.js', FREE_MAIL_SMTP_FILE),
+                ['jquery'],
+                FREE_MAIL_SMTP_VERSION,
+                true
+            );
+            
+            wp_enqueue_style(
+                'free-mail-smtp-provider-forms',
+                plugins_url('/assets/css/provider-forms.css', FREE_MAIL_SMTP_FILE),
+                [],
+                FREE_MAIL_SMTP_VERSION
+            );
 
-            wp_localize_script('free_mail_smtp-admin', 'FreeMailSMTPAdminProviders', [
+            wp_localize_script('free-mail-smtp-admin', 'FreeMailSMTPAdminProviders', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('free_mail_smtp_nonce_providers'),
-                'adminUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
+                'adminUrl' => admin_url('admin.php?page=free-mail-smtp-settings'),
                 'debug' => true
             ]);
-            wp_localize_script('free_mail_smtp-admin', 'FreeMailSMTPOAuth', [
+            wp_localize_script('free-mail-smtp-admin', 'FreeMailSMTPOAuth', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'redirectUrl' => admin_url('admin.php?page=free_mail_smtp-providers'),
+                'redirectUrl' => admin_url('admin.php?page=free-mail-smtp-providers'),
                 'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
                 'debug' => true
             ]);
+            
+            wp_localize_script(
+                'free-mail-smtp-oauth-handler',
+                'FreeMailSMTPOAuth',
+                array(
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce'   => wp_create_nonce('free_mail_smtp_oauth_nonce'),
+                    'redirectUrl' => admin_url('admin.php?page=free-mail-smtp-providers')
+                )
+            );
     }
 
     public function render()
@@ -69,7 +94,7 @@ class Providers
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
         }
 
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
         $providers_config = $conn_repo->get_all_connections();
         $providers_list = $this->providersList;
         $import_available = $this->import_connections->isImportAvailable();
@@ -97,13 +122,17 @@ class Providers
             wp_send_json_error('Form data is required');
             return;
         }
-
-        parse_str(urldecode($_POST['formData']), $form_data);
+        
+		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+        $form_data_string = wp_unslash($_POST['formData']);
+        
+        parse_str($form_data_string, $form_data);
         
         if (empty($form_data['provider'])) {
             wp_send_json_error('Provider is required');
             return;
         }
+                
         try {
             $connection_id = $this->provider_manager->save_provider($form_data);
         } catch (\Exception $e) {
@@ -124,13 +153,12 @@ class Providers
             return;
         }
 
-        $provider_type = sanitize_text_field($_POST['provider_type']);
-        if (empty($provider_type)) {
+        if (empty($_POST['provider_type'])) {
             wp_send_json_error('Provider type not found');
             return;
         }
-
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        $provider_type = sanitize_text_field(wp_unslash($_POST['provider_type']));
+        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
         $providers = $conn_repo->get_all_connections();
         $connection = null;
         foreach ($providers as $prov) {
@@ -144,8 +172,11 @@ class Providers
             wp_send_json_error('Provider not found');
             return;
         }
-
-        $credential = sanitize_text_field($_POST['code']);
+        if (empty($_POST['code'])) {
+            wp_send_json_error('Code not found');
+            return;
+        }
+        $credential = sanitize_text_field(wp_unslash($_POST['code']));
         try {
             $provider_instance = $this->provider_factory->get_provider_class($connection);
             if (!method_exists($provider_instance, 'handle_oauth_callback')) {
@@ -174,9 +205,12 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-
-        $connection_id = sanitize_text_field($_POST['connection_id']);
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        if (empty($_POST['connection_id'])) {
+            wp_send_json_error('Connection ID not found');
+            return;
+        }
+        $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
+        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -204,8 +238,12 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-        $connection_id = sanitize_text_field($_POST['connection_id']);
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        if (empty($_POST['connection_id'])) {
+            wp_send_json_error('Connection ID not found');
+            return;
+        }
+        $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
+        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -225,10 +263,14 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-        $provider = sanitize_text_field($_POST['provider']);
+        if (empty($_POST['provider'])) {
+            wp_send_json_error('Provider not found');
+            return;
+        }
+        $provider = sanitize_text_field(wp_unslash($_POST['provider']));
         $is_edit = isset($_POST['connection_id']) ? true : false;
         if ($is_edit) {
-            $connection_id = sanitize_text_field($_POST['connection_id']);
+            $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
         }
         $form_file = $this->plugin_path . "/views/admin/providers/provider-forms/{$provider}.php";
 
@@ -263,7 +305,12 @@ class Providers
             return;
         }
         try {
-            $result =  $this->import_connections->importProviders($_POST['plugin']);
+            if (empty($_POST['plugin'])) {
+                wp_send_json_error('Plugin not found');
+                return;
+            }
+            $plugin = sanitize_text_field(wp_unslash($_POST['plugin']));
+            $result =  $this->import_connections->importProviders($plugin);
             return wp_send_json_success([$result]);
         } catch (\Exception $e) {
             wp_send_json_error($e->getMessage());

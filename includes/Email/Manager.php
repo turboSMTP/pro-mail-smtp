@@ -1,11 +1,12 @@
 <?php
-namespace FreeMailSMTP\Email;
+namespace TurboSMTP\FreeMailSMTP\Email;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-use FreeMailSMTP\Providers\ProviderFactory;
-use FreeMailSMTP\Email\EmailFormatterService;
-use FreeMailSMTP\Email\EmailRoutingService;
-use FreeMailSMTP\Core\WPMailCaller;
-use FreeMailSMTP\Providers\PhpMailerProvider;
+use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\FreeMailSMTP\Email\EmailFormatterService;
+use TurboSMTP\FreeMailSMTP\Email\EmailRoutingService;
+use TurboSMTP\FreeMailSMTP\Core\WPMailCaller;
+use TurboSMTP\FreeMailSMTP\Providers\PhpMailerProvider;
 
 /**
  * Class Manager
@@ -13,7 +14,7 @@ use FreeMailSMTP\Providers\PhpMailerProvider;
  * Manages email sending operations through multiple providers with routing capabilities.
  * Handles provider initialization, email routing, and sending attempts with fallback support.
  * 
- * @package FreeMailSMTP\Email
+ * @package TurboSMTP\FreeMailSMTP\Email
  */
 class Manager {
     private $connections = [];
@@ -40,7 +41,7 @@ class Manager {
      * @return void
      */
     public function init_providers() {
-        $conn_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
         $provider_configs = $conn_repo->get_all_connections();
         foreach ($provider_configs as $config) {
             if (!empty($config->provider) && !empty($config->id) && !empty($config->priority)) {
@@ -68,8 +69,7 @@ class Manager {
     public function send_mail($null, $args) {
         $error_messages = [];
         $email_data = $this->emailFormatterService->format($args);
-        error_log('Formatted email data send_email: ' . print_r($email_data, true));
-        $source_plugin = $this->wpMailCaller->get_source_plugin_name();
+        $source_plugin = $this->wpMailCaller->getSourcePluginName();
         $email_data['source_app'] = $source_plugin;
 
         $matching_conditions = $this->emailRoutingService->getRoutingConditionIfExists($email_data);
@@ -84,7 +84,6 @@ class Manager {
             return true;
         }
 
-        $this->log_provider_failures($error_messages);
         if(get_option('free_mail_smtp_fallback_to_wp_mail', true)) {
             return $this->fallback_to_wp_mail($args);
         }
@@ -195,7 +194,6 @@ class Manager {
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
-                error_log("Email sending failed for provider {$provider_name}: {$e->getMessage()}");
                 $this->log_email($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage());
             }
         }
@@ -214,9 +212,10 @@ class Manager {
      */
     private function log_email($data, $result, $provider, $status, $error = null) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'email_log';
+        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
         
         foreach ($data['to'] as $to) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $wpdb->insert(
                 $table_name,
                 [
@@ -230,19 +229,6 @@ class Manager {
                 ],
                 ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
             );
-        }
-    }
-    
-    /**
-     * Log provider failures to error log.
-     * 
-     * @param array $errors Array of provider errors
-     * @return void
-     */
-    private function log_provider_failures($errors) {
-        error_log('Email sending failed for all providers:');
-        foreach ($errors as $error) {
-            error_log("Provider {$error['provider']}: {$error['error']}");
         }
     }
 }

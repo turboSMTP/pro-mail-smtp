@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Cron;
+namespace TurboSMTP\FreeMailSMTP\Cron;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class SummaryMail implements CronInterface
 {
@@ -79,8 +80,6 @@ class SummaryMail implements CronInterface
     private function get_logs_since_last_summary()
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'email_log';
-        $table_name_esc = esc_sql($table_name);
 
         $frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
         if ($frequency === 'weekly') {
@@ -90,33 +89,28 @@ class SummaryMail implements CronInterface
         }
 
         $since_date = gmdate('Y-m-d H:i:s', strtotime($date_range));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $results = $wpdb->get_results($wpdb->prepare(
+            "SELECT 
+                provider, 
+                status, 
+                COUNT(*) as count 
+             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
+             WHERE sent_at >= %s 
+             GROUP BY provider, status",
+            $since_date
+        ), OBJECT);
 
-        $results = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT 
-                    provider, 
-                    status, 
-                    COUNT(*) as count 
-                 FROM {$table_name_esc} 
-                 WHERE sent_at >= %s 
-                 GROUP BY provider, status",
-                $since_date
-            ),
-            OBJECT
-        );
-
-        $totals = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT 
-                    status, 
-                    COUNT(*) as count 
-                 FROM {$table_name_esc} 
-                 WHERE sent_at >= %s 
-                 GROUP BY status",
-                $since_date
-            ),
-            OBJECT
-        );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $totals = $wpdb->get_results($wpdb->prepare(
+            "SELECT 
+                status, 
+                COUNT(*) as count 
+             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
+             WHERE sent_at >= %s 
+             GROUP BY status",
+            $since_date
+        ), OBJECT);
 
         return [
             'by_provider' => $results,

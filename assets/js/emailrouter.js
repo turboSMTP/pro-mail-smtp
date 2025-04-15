@@ -35,6 +35,8 @@ jQuery(document).ready(function($) {
         $('#emailInfoToggle').prop('checked', false);
         $('#connectionSelect').val('');
         $('#emailInfoContent input').val('');
+        $('#condition_id').val('');
+        $('#is_enabled').val('');
         addCondition();
     }
 
@@ -111,7 +113,7 @@ jQuery(document).ready(function($) {
             url: FreeMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'save_email_router',
+                action: 'free_mail_smtp_save_email_router',
                 data: formData,
                 nonce: FreeMailSMTPEmailRouter.nonce
             },
@@ -435,7 +437,7 @@ jQuery(document).ready(function($) {
             url: FreeMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'update_email_router_status',
+                action: 'free_mail_smtp_update_email_router_status',
                 condition_id: conditionId,
                 status: newStatus,
                 nonce: FreeMailSMTPEmailRouter.nonce
@@ -459,7 +461,7 @@ jQuery(document).ready(function($) {
             url: FreeMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'get_email_router_condition',
+                action: 'free_mail_smtp_get_email_router_condition',
                 condition_id: conditionId,
                 nonce: FreeMailSMTPEmailRouter.nonce
             },
@@ -484,7 +486,7 @@ jQuery(document).ready(function($) {
                 url: FreeMailSMTPEmailRouter.ajaxUrl,
                 type: 'POST',
                 data: {
-                    action: 'delete_email_router_condition',
+                    action: 'free_mail_smtp_delete_email_router_condition',
                     condition_id: conditionId,
                     nonce: FreeMailSMTPEmailRouter.nonce
                 },
@@ -508,7 +510,6 @@ jQuery(document).ready(function($) {
         setFormHeaderLabel(condition.condition_label);
         clearConditionsContainer();
         conditionCount = 0;
-        console.log('Populating form with:', condition.id);
         try {
             let conditionData = parseConditionData(condition.condition_data);
 

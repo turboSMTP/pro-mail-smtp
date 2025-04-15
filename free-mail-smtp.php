@@ -13,25 +13,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (!defined('WP_DEBUG')) {
-    define('WP_DEBUG', true);
-}
-if (!defined('WP_DEBUG_LOG')) {
-    define('WP_DEBUG_LOG', true);
-}
+define('FREE_MAIL_SMTP_VERSION', '1.0.0');
+define('FREE_MAIL_SMTP_FILE', __FILE__);
+define('FREE_MAIL_SMTP_PATH', plugin_dir_path(__FILE__));
+define('FREE_MAIL_SMTP_URL', plugin_dir_url(__FILE__));
 
-define('free_mail_smtp_VERSION', '1.0.0');
-define('free_mail_smtp_FILE', __FILE__);
-define('free_mail_smtp_PATH', plugin_dir_path(__FILE__));
-define('free_mail_smtp_URL', plugin_dir_url(__FILE__));
-
-if (file_exists(free_mail_smtp_PATH . 'includes/Lib/google/vendor/autoload.php')) {
-    require_once free_mail_smtp_PATH . 'includes/Lib/google/vendor/autoload.php';
-}
 // Autoloader
 spl_autoload_register(function ($class) {
-    $prefix = 'FreeMailSMTP\\';
-    $base_dir = plugin_dir_path(__FILE__) . 'includes/';
+    $prefix = 'TurboSMTP\FreeMailSMTP\\';
+    $base_dir = FREE_MAIL_SMTP_PATH . 'includes/';
 
     $len = strlen($prefix);
     if (strncmp($prefix, $class, $len) !== 0) {
@@ -48,18 +38,18 @@ spl_autoload_register(function ($class) {
 
 // Initialize plugin
 function free_mail_smtp_init() {
-    $plugin = new FreeMailSMTP\Core\Plugin();
+    $plugin = new TurboSMTP\FreeMailSMTP\Core\Plugin();
     $plugin->init();
 }
 add_action('plugins_loaded', 'free_mail_smtp_init');
 
 // Activation hook
 register_activation_hook(__FILE__, function() {
-    $installer = new FreeMailSMTP\Core\Installer();
+    $installer = new TurboSMTP\FreeMailSMTP\Core\Installer();
     $installer->install();
 });
 
 // Deactivation hook
 register_deactivation_hook(__FILE__, function() {
-    \FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+    \TurboSMTP\FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
 });

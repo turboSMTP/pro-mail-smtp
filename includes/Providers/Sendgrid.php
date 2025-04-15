@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Sendgrid extends BaseProvider {
     protected function get_api_url() {
@@ -60,7 +61,7 @@ class Sendgrid extends BaseProvider {
             $payload['attachments'] = array_map(function($attachment) {
                 return [
                     'content' => $attachment['content'],
-                    'filename' => $attachment['filename'],
+                    'filename' => $attachment['name'],
                     'type' => $attachment['type'],
                     'disposition' => 'attachment'
                 ];

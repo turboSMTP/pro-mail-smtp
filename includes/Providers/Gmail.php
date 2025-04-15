@@ -1,16 +1,29 @@
 <?php
 
-namespace FreeMailSMTP\Providers;
-
-use Google_Client;
-use Google_Service_Gmail;
-use Google_Service_Gmail_Message;
-
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 class Gmail extends BaseProvider
 {
+    const GMAIL_API_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/';
+    const OAUTH2_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+    const OAUTH2_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+    const SCOPES = [
+        'https://www.googleapis.com/auth/gmail.send',
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/gmail.labels',
+    ];
+
+    private $access_token_data = null;
+
+    public function __construct($config_keys)
+    {
+        parent::__construct($config_keys);
+    }
+
     public function get_api_url()
     {
-        return;
+        return self::GMAIL_API_URL;
     }
 
     public function get_headers()
@@ -18,33 +31,21 @@ class Gmail extends BaseProvider
         return [];
     }
 
-    private $client;
-    private $service;
-
-    public function __construct($config_keys)
+    private function save_access_token_data($token_data)
     {
-        parent::__construct($config_keys);
-        try {
-            $this->client = new Google_Client();
-            $this->client->setClientId($this->config_keys['client_id']);
-            $this->client->setClientSecret($this->config_keys['client_secret']);
-            $this->client->setRedirectUri(admin_url('admin.php?page=free_mail_smtp-providers'));
-            $this->client->setAccessType('offline');
-            $this->client->setApprovalPrompt('force');
-            $this->client->addScope(Google_Service_Gmail::GMAIL_SEND);
-            $this->client->addScope(Google_Service_Gmail::GMAIL_READONLY);
-            $this->client->addScope(Google_Service_Gmail::GMAIL_LABELS);
-
-            $this->validateAccessToken();
-            $this->service = new Google_Service_Gmail($this->client);
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to initialize Gmail provider: ' . esc_html($e->getMessage()));
+        if (isset($token_data['expires_in'])) {
+            $token_data['created_at'] = time();
         }
+        update_option('free_mail_smtp_gmail_access_token_data', $token_data);
+        $this->access_token_data = $token_data;
     }
 
-    private function save_access_token($token)
+    private function get_access_token_data()
     {
-        update_option('free_mail_smtp_gmail_access_token', $token);
+        if ($this->access_token_data === null) {
+            $this->access_token_data = get_option('free_mail_smtp_gmail_access_token_data', false);
+        }
+        return $this->access_token_data;
     }
 
     private function save_refresh_token($token)
@@ -52,187 +53,401 @@ class Gmail extends BaseProvider
         update_option('free_mail_smtp_gmail_refresh_token', $token);
     }
 
-    private function get_access_token()
-    {
-        return get_option('free_mail_smtp_gmail_access_token');
-    }
-
     private function get_refresh_token()
     {
         return get_option('free_mail_smtp_gmail_refresh_token');
     }
 
-    public function send($data)
+    private function save_access_token($token)
     {
-        $this->validateAccessToken();
+        update_option('free_mail_smtp_gmail_access_token', $token);
+    }
 
-        try {
-            // Create the email message
-            $boundary = uniqid(wp_rand(), true);
-            $email_parts = [];
-            $email_from = $this->config_keys['email_from_overwrite'] ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
+    private function get_valid_access_token()
+    {
+        $token_data = $this->get_access_token_data();
 
-            // Add headers
-            $email_parts[] = "To: {$data['to'][0]}";
-            $email_parts[] = "From: {$data['from_name']} <{$email_from}>";
-            $email_parts[] = "Subject: {$data['subject']}";
-            $email_parts[] = "MIME-Version: 1.0";
-            $email_parts[] = "Content-Type: multipart/mixed; boundary=\"{$boundary}\"";
-            $email_parts[] = "";
+        if (empty($token_data) || empty($token_data['access_token'])) {
+            throw new \Exception('Gmail authentication required. Please connect your account.');
+        }
 
-            // Add HTML content
-            $email_parts[] = "--{$boundary}";
-            $email_parts[] = "Content-Type: text/html; charset=UTF-8";
-            $email_parts[] = "Content-Transfer-Encoding: base64";
-            $email_parts[] = "";
-            $email_parts[] = base64_encode($data['message']);
-
-            // Add attachments if any
-            if (!empty($data['attachments'])) {
-                foreach ($data['attachments'] as $attachment) {
-                    $email_parts[] = "--{$boundary}";
-                    $email_parts[] = "Content-Type: {$attachment['type']}; name=\"{$attachment['filename']}\"";
-                    $email_parts[] = "Content-Disposition: attachment; filename=\"{$attachment['filename']}\"";
-                    $email_parts[] = "Content-Transfer-Encoding: base64";
-                    $email_parts[] = "";
-                    // Ensure content is base64 encoded
-                    $email_parts[] = base64_encode($attachment['content']);
-                }
+        $expires_at = ($token_data['created_at'] ?? 0) + ($token_data['expires_in'] ?? 0) - 60;
+        if (time() >= $expires_at) {
+            $refresh_token = $this->get_refresh_token();
+            if (empty($refresh_token)) {
+                delete_option('free_mail_smtp_gmail_access_token_data');
+                $this->access_token_data = null;
+                throw new \Exception('Refresh token is missing or invalid. Re-authorization required.');
             }
 
-            $email_parts[] = "--{$boundary}--";
-
-            // Create the message
-            $email_content = implode("\n", $email_parts);
-            $message = new Google_Service_Gmail_Message();
-            $message->setRaw(base64_encode($email_content));
-
-            // Send the message
-            $result = $this->service->users_messages->send('me', $message);
-
-            return [
-                'message_id' => $result->getId(),
-                'provider_response' => $result
-            ];
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to send email via Gmail: ' . esc_html($e->getMessage()));
+            try {
+                $new_token_data = $this->fetch_access_token_with_refresh_token($refresh_token);
+                $new_token_data['refresh_token'] = $refresh_token;
+                $this->save_access_token_data($new_token_data);
+                $this->save_access_token($new_token_data['access_token']);
+                return $new_token_data['access_token'];
+            } catch (\Exception $e) {
+                delete_option('free_mail_smtp_gmail_access_token_data');
+                delete_option('free_mail_smtp_gmail_refresh_token');
+                delete_option('free_mail_smtp_gmail_access_token');
+                $this->access_token_data = null;
+                throw new \Exception('Authentication expired or failed to refresh. Please reconnect your Gmail account. Details: ' . esc_html($e->getMessage()));
+            }
         }
+
+        return $token_data['access_token'];
+    }
+
+    private function fetch_access_token_with_refresh_token($refresh_token)
+    {
+        $args = [
+            'method' => 'POST',
+            'timeout' => 30,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            'body' => [
+                'client_id' => $this->config_keys['client_id'],
+                'client_secret' => $this->config_keys['client_secret'],
+                'refresh_token' => $refresh_token,
+                'grant_type' => 'refresh_token',
+            ],
+        ];
+
+        $response = wp_remote_post(self::OAUTH2_TOKEN_URL, $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('HTTP request failed during token refresh: ' . esc_html($response->get_error_message()));
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        $http_code = wp_remote_retrieve_response_code($response);
+
+        if ($http_code >= 400 || empty($data) || isset($data['error'])) {
+            throw new \Exception(esc_html($this->get_error_message($body, $http_code)));
+        }
+
+        return $data;
+    }
+
+    public function send($data)
+    {
+        $access_token = $this->get_valid_access_token();
+
+        $boundary = uniqid(wp_rand(), true);
+        $email_parts = [];
+        $email_from = !empty($this->config_keys['email_from_overwrite']) ? $this->config_keys['email_from_overwrite'] : $data['from_email'];
+        $from_name = !empty($data['from_name']) ? $data['from_name'] : $email_from;
+
+        $to_emails = [];
+        if (isset($data['to']) && is_array($data['to'])) {
+            foreach ($data['to'] as $to_entry) {
+                if (is_string($to_entry)) {
+                    $to_emails[] = $to_entry;
+                } elseif (is_array($to_entry) && isset($to_entry['email'])) {
+                    $to_emails[] = isset($to_entry['name'])
+                        ? "{$to_entry['name']} <{$to_entry['email']}>"
+                        : $to_entry['email'];
+                }
+            }
+        } elseif (isset($data['to']) && is_string($data['to'])) {
+            $to_emails[] = $data['to'];
+        }
+
+        if (empty($to_emails)) {
+            throw new \Exception('No valid recipient provided.');
+        }
+
+        $email_parts[] = "To: " . implode(', ', $to_emails);
+        $email_parts[] = "From: {$from_name} <{$email_from}>";
+        $email_parts[] = "Subject: {$data['subject']}";
+        $email_parts[] = "MIME-Version: 1.0";
+        $email_parts[] = "Content-Type: multipart/mixed; boundary=\"{$boundary}\"";
+
+        if (!empty($data['reply_to'])) {
+            $reply_to_address = is_array($data['reply_to']) ? $data['reply_to']['email'] : $data['reply_to'];
+            $reply_to_name = is_array($data['reply_to']) && isset($data['reply_to']['name']) ? $data['reply_to']['name'] : '';
+            $email_parts[] = "Reply-To: " . ($reply_to_name ? "{$reply_to_name} <{$reply_to_address}>" : $reply_to_address);
+        }
+
+        foreach (['cc', 'bcc'] as $field) {
+            if (!empty($data[$field])) {
+                $addresses = [];
+                if (is_string($data[$field])) $addresses[] = $data[$field];
+                elseif (is_array($data[$field])) $addresses = $data[$field];
+
+                if (!empty($addresses)) {
+                    $email_parts[] = ucfirst($field) . ": " . implode(', ', $addresses);
+                }
+            }
+        }
+        $email_parts[] = "";
+
+        $email_parts[] = "--{$boundary}";
+        if ($data['message'] !== wp_strip_all_tags($data['message'])) {
+            $content_type = 'text/html';
+        } else {
+            $content_type = 'text/plain';
+        }
+        $email_parts[] = "Content-Type: {$content_type}; charset=UTF-8";
+        $email_parts[] = "Content-Transfer-Encoding: base64";
+        $email_parts[] = "";
+        $email_parts[] = rtrim(base64_encode($data['message']));
+        $email_parts[] = "";
+
+        if (!empty($data['attachments']) && is_array($data['attachments'])) {
+            foreach ($data['attachments'] as $attachment) {
+                if (empty($attachment['content']) || empty($attachment['name']) || empty($attachment['type'])) {
+                    continue;
+                }
+                $email_parts[] = "--{$boundary}";
+                $email_parts[] = "Content-Type: {$attachment['type']}; name=\"{$attachment['name']}\"";
+                $email_parts[] = "Content-Disposition: attachment; filename=\"{$attachment['name']}\"";
+                $email_parts[] = "Content-Transfer-Encoding: base64";
+                $email_parts[] = "";
+                $email_parts[] = $attachment['content'];
+                $email_parts[] = "";
+            }
+        }
+
+        $email_parts[] = "--{$boundary}--";
+
+        $raw_email_message = implode("\r\n", $email_parts);
+
+        $encoded_message = rtrim(strtr(base64_encode($raw_email_message), '+/', '-_'), '=');
+
+        $args = [
+            'method' => 'POST',
+            'timeout' => 30,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $access_token,
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode(['raw' => $encoded_message]),
+        ];
+
+        $response = wp_remote_post(self::GMAIL_API_URL . 'messages/send', $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('HTTP request failed during email send: ' . esc_html($response->get_error_message()));
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $result_data = json_decode($body, true);
+        $http_code = wp_remote_retrieve_response_code($response);
+
+        if ($http_code >= 400 || empty($result_data) || isset($result_data['error'])) {
+            throw new \Exception(esc_html($this->get_error_message($body, $http_code)));
+        }
+
+        return [
+            'message_id' => $result_data['id'] ?? null,
+            'provider_response' => $result_data,
+        ];
     }
 
     public function test_connection()
     {
-        try {
-            $this->validateAccessToken();
-            $this->service->users_labels->listUsersLabels('me');
-            return [
-                'success' => true,
-                'message' => 'Gmail connection verified successfully.'
-            ];
-        } catch (\Exception $e) {
-            throw new \Exception('Gmail connection test failed: ' . esc_html($e->getMessage()));
+        $access_token = $this->get_valid_access_token();
+
+        $args = [
+            'method' => 'GET',
+            'timeout' => 15,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $access_token,
+            ],
+        ];
+
+        $response = wp_remote_get(self::GMAIL_API_URL . 'labels?maxResults=1', $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('HTTP request failed during connection test: ' . esc_html($response->get_error_message()));
         }
+
+        $body = wp_remote_retrieve_body($response);
+        $http_code = wp_remote_retrieve_response_code($response);
+
+        if ($http_code >= 400) {
+            throw new \Exception('Gmail connection test failed: ' . esc_html($this->get_error_message($body, $http_code)));
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Gmail connection verified successfully.',
+        ];
     }
 
     public function get_auth_url()
     {
-        $this->client->setState('gmail');
-        return $this->client->createAuthUrl();
+        $params = [
+            'client_id' => $this->config_keys['client_id'],
+            'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
+            'response_type' => 'code',
+            'scope' => implode(' ', self::SCOPES),
+            'access_type' => 'offline',
+            'prompt' => 'consent',
+            'state' => 'gmail'
+        ];
+
+        return self::OAUTH2_AUTH_URL . '?' . http_build_query($params);
+    }
+
+    public function handle_oauth_callback($code)
+    {
+        $args = [
+            'method' => 'POST',
+            'timeout' => 30,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            'body' => [
+                'code' => $code,
+                'client_id' => $this->config_keys['client_id'],
+                'client_secret' => $this->config_keys['client_secret'],
+                'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
+                'grant_type' => 'authorization_code',
+            ],
+        ];
+
+        $response = wp_remote_post(self::OAUTH2_TOKEN_URL, $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('HTTP request failed during token exchange: ' . esc_html($response->get_error_message()));
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $data = json_decode($body, true);
+        $http_code = wp_remote_retrieve_response_code($response);
+
+        if ($http_code >= 400 || empty($data) || isset($data['error']) || !isset($data['access_token'])) {
+            delete_option('free_mail_smtp_gmail_access_token_data');
+            delete_option('free_mail_smtp_gmail_refresh_token');
+            delete_option('free_mail_smtp_gmail_access_token');
+            $this->access_token_data = null;
+            throw new \Exception('Failed to exchange authorization code for token: ' . esc_html($this->get_error_message($body, $http_code)));
+        }
+
+        $this->save_access_token_data($data);
+        $this->save_access_token($data['access_token']);
+        if (!empty($data['refresh_token'])) {
+            $this->save_refresh_token($data['refresh_token']);
+        }
+
+        return true;
+    }
+
+    public function get_analytics($filters = [])
+    {
+        $access_token = $this->get_valid_access_token();
+
+        $per_page = isset($filters['per_page']) ? max(1, (int) $filters['per_page']) : 10;
+        $query_params = [
+            'maxResults' => $per_page,
+            'labelIds' => 'SENT',
+        ];
+
+        $q_parts = [];
+        if (!empty($filters['date_from'])) {
+            $q_parts[] = 'after:' . strtotime($filters['date_from']);
+        }
+        if (!empty($filters['date_to'])) {
+            $q_parts[] = 'before:' . (strtotime($filters['date_to']) + 86400);
+        }
+        if (!empty($q_parts)) {
+            $query_params['q'] = implode(' ', $q_parts);
+        }
+
+        $list_url = self::GMAIL_API_URL . 'messages?' . http_build_query($query_params);
+
+        $args = [
+            'method' => 'GET',
+            'timeout' => 30,
+            'headers' => ['Authorization' => 'Bearer ' . $access_token],
+        ];
+
+        $response = wp_remote_get($list_url, $args);
+
+        if (is_wp_error($response)) {
+            throw new \Exception('HTTP request failed fetching message list for analytics: ' . esc_html($response->get_error_message()));
+        }
+
+        $body = wp_remote_retrieve_body($response);
+        $list_data = json_decode($body, true);
+        $http_code = wp_remote_retrieve_response_code($response);
+
+        if ($http_code >= 400 || isset($list_data['error'])) {
+            throw new \Exception('Failed to list Gmail messages for analytics: ' . esc_html($this->get_error_message($body, $http_code)));
+        }
+
+        $analytics = [];
+        if (!empty($list_data['messages'])) {
+            foreach ($list_data['messages'] as $message_stub) {
+                if (empty($message_stub['id'])) continue;
+
+                $get_url = self::GMAIL_API_URL . 'messages/' . $message_stub['id'] . '?format=metadata&metadataHeaders=Subject&metadataHeaders=To&metadataHeaders=Date';
+                $msg_response = wp_remote_get($get_url, $args);
+
+                if (!is_wp_error($msg_response) && wp_remote_retrieve_response_code($msg_response) < 400) {
+                    $msg_body = wp_remote_retrieve_body($msg_response);
+                    $msg_data = json_decode($msg_body, true);
+
+                    if ($msg_data && isset($msg_data['payload']['headers'])) {
+                        $headers = $this->parse_api_headers($msg_data['payload']['headers']);
+                        $analytics[] = [
+                            'id' => esc_html($message_stub['id']),
+                            'subject' => esc_html($headers['subject'] ?? ''),
+                            'to' => esc_html($headers['to'] ?? ''),
+                            'date' => esc_html($headers['date'] ?? ''),
+                            'status' => 'sent',
+                        ];
+                    }
+                } else {
+                    throw new \Exception('Failed to fetch message details for analytics: ' . esc_html($this->get_error_message(wp_remote_retrieve_body($msg_response), wp_remote_retrieve_response_code($msg_response))));
+                }
+            }
+        }
+
+        return [
+            'data' => $analytics,
+            'columns' => ['id', 'subject', 'to', 'date', 'status'],
+            'nextPageToken' => $list_data['nextPageToken'] ?? null,
+            'totalMessages' => $list_data['resultSizeEstimate'] ?? count($analytics),
+        ];
+    }
+
+    private function parse_api_headers($api_headers)
+    {
+        $headers = [];
+        if (is_array($api_headers)) {
+            foreach ($api_headers as $header) {
+                if (isset($header['name']) && isset($header['value'])) {
+                    $headers[strtolower($header['name'])] = $header['value'];
+                }
+            }
+        }
+        return $headers;
     }
 
     protected function get_error_message($body, $code)
     {
         $data = json_decode($body, true);
+        $message = "Unknown Gmail API error.";
 
         if (isset($data['error']['message'])) {
-            return "Gmail API error: {$data['error']['message']}. (HTTP $code)";
-        }
-
-        if (isset($data['message'])) {
-            return "Gmail API error: {$data['message']}. (HTTP $code)";
-        }
-
-        return "Gmail API error (HTTP $code)";
-    }
-
-    public function get_analytics($filters = [])
-    {
-        try {
-            $this->validateAccessToken();
-            $per_page = isset($filters['per_page']) ? (int)$filters['per_page'] : 10;
-            $messages = $this->service->users_messages->listUsersMessages('me', [
-                'maxResults' => $per_page,
-                'q' => "in:sent after:{$filters['date_from']} before:{$filters['date_to']}"
-            ]);
-            $analytics = [];
-            foreach ($messages->getMessages() as $message) {
-                $msg = $this->service->users_messages->get('me', $message->getId());
-                $headers = $this->get_message_headers($msg);
-
-                $analytics[] = [
-                    'id' => $message->getId(),
-                    'subject' => $headers['subject'] ?? '',
-                    'to' => $headers['to'] ?? '',
-                    'date' => $headers['date'] ?? '',
-                    'status' => 'sent'
-                ];
+            $message = esc_html($data['error']['message']);
+            if (isset($data['error']['errors'][0]['reason'])) {
+                $message .= " (Reason: " . esc_html($data['error']['errors'][0]['reason']) . ")";
             }
-
-            return [
-                'data' => $analytics,
-                'columns' => ['id', 'subject', 'to', 'date', 'status']
-            ];
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to get Gmail analytics: ' . esc_html($e->getMessage()));
-        }
-    }
-
-    private function get_message_headers($message)
-    {
-        $headers = [];
-        foreach ($message->getPayload()->getHeaders() as $header) {
-            $headers[strtolower($header->getName())] = $header->getValue();
-        }
-        return $headers;
-    }
-
-
-    public function handle_oauth_callback($code)
-    {
-        try {
-            $token = $this->client->fetchAccessTokenWithAuthCode($code);
-            
-            $this->save_access_token($token);
-            
-            if (!empty($token['refresh_token'])) {
-                $this->save_refresh_token($token['refresh_token']);
+        } elseif (isset($data['error_description'])) {
+            $message = esc_html($data['error_description']);
+            if (isset($data['error'])) {
+                $message .= " (Type: " . esc_html($data['error']) . ")";
             }
-            $this->client->setAccessToken($token);
-            $this->service = new Google_Service_Gmail($this->client);
-            return true;
-        } catch (\Exception $e) {
-            throw new \Exception('Failed to set Gmail token: ' . esc_html($e->getMessage()));
+        } elseif (is_string($body) && !empty($body)) {
+            $message = wp_strip_all_tags($body);
         }
-    }
-    
-    private function validateAccessToken()
-    {
-        $accessToken = $this->get_access_token();
-        if (!empty($accessToken)) {
-            $this->client->setAccessToken($accessToken);
-            if ($this->client->isAccessTokenExpired()) {
-                try {
-                    $refreshToken = $this->get_refresh_token();
-                    if (empty($refreshToken)) {
-                        throw new \Exception('Refresh token is missing. Re-authorization required.');
-                    }
-                    $this->client->fetchAccessTokenWithRefreshToken($refreshToken);
-                    $this->save_access_token($this->client->getAccessToken());
-                } catch (\Exception $e) {
-                    throw new \Exception('Authentication expired. Please reconnect your Gmail account.');
-                }
-            }
-        } else {
-            throw new \Exception('Gmail authentication required. Please connect your account.');
-        }
+
+        return "Gmail API Error: " . $message . " (HTTP " . esc_html($code) . ")";
     }
 }

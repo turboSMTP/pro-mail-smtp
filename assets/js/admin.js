@@ -2,8 +2,6 @@ jQuery(document).ready(function ($) {
   console.log("Free Mail SMTP Admin JS loaded");
 
   var modal = $("#provider-modal");
-  console.log("Modal element:", modal.length ? "found" : "not found");
-
   $('.add-provider, #add-provider-button').on('click', function() {
     $('#step-provider').show();
     $('#step-config').hide();
@@ -11,14 +9,14 @@ jQuery(document).ready(function ($) {
 });
 
 $('#import').on('click', function() {
-    var import_nonce = $(this).data('import_nonce');
+    var import_nonce = $(this).data('import-nonce');
     var plugin = $(this).data('plugin');
 
     $.ajax({
         url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'import_connections',
+            action: 'free_mail_smtp_import_connections',
             nonce: import_nonce,
             plugin: plugin
         },
@@ -49,7 +47,7 @@ $('#import').on('click', function() {
         url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'load_provider_form',
+            action: 'free_mail_smtp_load_provider_form',
             provider: provider,
             nonce: FreeMailSMTPAdminProviders.nonce
         },
@@ -80,7 +78,7 @@ $(document).on('submit', '#provider-form', function(e) {
         url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'save_provider',
+            action: 'free_mail_smtp_save_provider',
             formData: $(this).serialize(),
             nonce: FreeMailSMTPAdminProviders.nonce
         },
@@ -139,7 +137,7 @@ $('.test-provider').on('click', function(e) {
         url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'test_provider_connection',
+            action: 'free_mail_smtp_test_provider_connection',
             nonce: FreeMailSMTPAdminProviders.nonce,
             connection_id: button.data('connection_id')
         },
@@ -172,7 +170,7 @@ $('.test-provider').on('click', function(e) {
       url: FreeMailSMTPAdminProviders.ajaxUrl,
       method: "POST",
       data: {
-        action: "delete_provider",
+        action: "free_mail_smtp_delete_provider",
         connection_id: connection_id,
         nonce: FreeMailSMTPAdminProviders.nonce,
       },
@@ -197,7 +195,7 @@ $('.test-provider').on('click', function(e) {
         url: FreeMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'load_provider_form',
+            action: 'free_mail_smtp_load_provider_form',
             provider: config.provider,
             nonce: FreeMailSMTPAdminProviders.nonce,
             connection_id: connection_id
@@ -216,4 +214,21 @@ $('.test-provider').on('click', function(e) {
         }
     });
 });
+
+  // Settings Toggle Functionality
+  const toggle = $('.toggle-settings');
+  const content = $('.settings-content');
+
+  toggle.on('click', function() {
+      const isExpanded = toggle.attr('aria-expanded') === 'true';
+      toggle.attr('aria-expanded', !isExpanded);
+      content.toggleClass('expanded');
+  });
+  
+  // Banner Dismissal
+  $('.dismiss-banner').on('click', function() {
+      $(this).closest('.import-banner').fadeOut(300, function() {
+          $(this).remove();
+      });
+  });
 });

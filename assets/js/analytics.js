@@ -16,15 +16,13 @@ jQuery(document).ready(function($) {
         }
     });
     $('#next-page').on('click', function() {
-        currentPage++;
+            currentPage++;
         loadAnalyticsData();
     });
 
     function loadAnalyticsData() {
         perPage = parseInt($('#per-page').val()) || perPage;
-        console.log('Loading analytics data');
         $('#loading-overlay').show();
-
         var tbody = $('.analytics-table tbody');
         tbody.empty();
         tbody.append(`
@@ -33,6 +31,9 @@ jQuery(document).ready(function($) {
             </tr>
         `);
 
+        // Make sure perPage is a number and at least 1
+        perPage = Math.max(1, parseInt(perPage) || 10);
+        
         var filters = {
             provider: $('#provider-filter').val(),
             status: $('#status-filter').val(),
@@ -44,36 +45,60 @@ jQuery(document).ready(function($) {
 
         var tbody = $('.analytics-table tbody');
         var thead = $('.analytics-table thead');
-       
+
         $.ajax({
             url: FreeMailSMTPAnalytics.ajaxUrl,
             method: 'POST',
             data: {
-                action: 'fetch_provider_analytics',
+                action: 'free_mail_smtp_fetch_provider_analytics',
                 nonce: FreeMailSMTPAnalytics.nonce,
                 filters: filters
             },
             success: function(response) {
-                console.log('Analytics response:', response);
-                if (response.success) {
-                    refreshTable(response.data);
-                    if (response.data.total_pages !== undefined) {
-                        totalPages = response.data.total_pages;
+                if (response.success && response.data) {
+                    refreshTable(response.data); 
+
+                    // Default button states
+                    let isLastPage = false;
+                    let isFirstPage = currentPage <= 1;
+
+                    if (response.data.total_pages !== undefined && !isNaN(parseInt(response.data.total_pages))) {
+                        totalPages = parseInt(response.data.total_pages);
+                        totalPages = Math.max(1, totalPages); 
+                        currentPage = Math.min(currentPage, totalPages); 
+                        isLastPage = currentPage >= totalPages;
                         $('#current-page').text(currentPage + ' of ' + totalPages);
-                        $('#prev-page').prop('disabled', currentPage <= 1);
-                        $('#next-page').prop('disabled', currentPage >= totalPages);
                     } else {
+                        totalPages = currentPage; 
                         $('#current-page').text(currentPage);
                     }
+
+                    if (response.data.data && response.data.data.length < perPage) {
+                        isLastPage = true; 
+                        
+                        if (response.data.total_pages !== undefined) {
+                             totalPages = currentPage;
+                             $('#current-page').text(currentPage + ' of ' + totalPages); 
+                        }
+                    }
+
+                    $('#prev-page').prop('disabled', isFirstPage);
+                    $('#next-page').prop('disabled', isLastPage);
+
                 } else {
                     alert('Error loading analytics: ' + (response.data || 'Unknown error'));
                     tbody.find('.loading-message').text('Error loading data');
+                    $('#current-page').text('1');
+                    $('#prev-page').prop('disabled', true);
+                    $('#next-page').prop('disabled', true);
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Ajax error:', error);
                 alert('Error loading analytics data');
                 tbody.find('.loading-message').text('Error loading data');
+                $('#current-page').text('1');
+                $('#prev-page').prop('disabled', true);
+                $('#next-page').prop('disabled', true);
             },
             complete: function() {
                 $('#loading-overlay').hide();
@@ -87,13 +112,21 @@ jQuery(document).ready(function($) {
         tbody.empty();
         thead.empty();
 
-        if (!data || data.length === 0) {
+        if (!data || !data.data || data.data.length === 0) {
             tbody.append(`
                 <tr>
                     <td colspan="8" class="no-data">No data found</td>
                 </tr>
             `);
-            return;
+             if (data && data.columns) {
+                 var headers = data.columns.map(function(column) {
+                     return `<th>${escapeHtml(column)}</th>`;
+                 }).join('');
+                 thead.append(`<tr>${headers}</tr>`);
+             } else {
+                 thead.append(`<tr><th colspan="8">Columns definition missing</th></tr>`);
+             }
+            return; 
         }
 
         var headers = data.columns.map(function(column) {
@@ -110,7 +143,7 @@ jQuery(document).ready(function($) {
                     cellHtml = `<span class="status-badge status-${statusClass}">${cellHtml}</span>`;
                 } else if (column === 'provider_message') {
                     var shortErrorText = cellHtml.length > 30 ? cellHtml.substring(0, 30) + '...' : cellHtml;
-                    var errorPopup = cellHtml.length > 30 ? `<a href="#" class="see-more" data-error="${cellHtml}">See more</a>` : '';
+                    var errorPopup = cellHtml.length > 30 ? `<a href="#" class="see-more" data-error="${escapeHtml(cellHtml)}">See more</a>` : ''; // Ensure error data is escaped for attribute
                     cellHtml = `${shortErrorText} ${errorPopup}`;
                 }
                 return `<td>${cellHtml}</td>`;
@@ -118,7 +151,7 @@ jQuery(document).ready(function($) {
             tbody.append(`<tr>${rowHtml}</tr>`);
         });
 
-        $('.see-more').on('click', function(e) {
+        $('.see-more').off('click').on('click', function(e) { 
             e.preventDefault();
             var errorText = $(this).data('error');
             alert(errorText);

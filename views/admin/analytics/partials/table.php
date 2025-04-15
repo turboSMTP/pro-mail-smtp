@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <table class="wp-list-table widefat fixed striped analytics-table" id="analytics-table">
     <thead>
         <tr>
@@ -22,22 +23,3 @@
     <span id="current-page">1</span>
     <button id="next-page">Next</button>
 </div>
-
-<style>
-.status-badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.status-success {
-    background-color: #d1e7dd;
-    color: #0f5132;
-}
-
-.status-fail {
-    background-color: #f8d7da;
-    color: #842029;
-}
-</style>

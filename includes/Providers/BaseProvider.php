@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 abstract class BaseProvider {
     protected $config_keys;
@@ -26,7 +27,6 @@ abstract class BaseProvider {
                 $args['body'] = json_encode($data);
             }
         }
-        error_log('Request to ' . $endpoint . ' with data: ' . json_encode($data));
         if($override_base_api_url){
             $response = wp_remote_request($endpoint, $args);
         }else{
