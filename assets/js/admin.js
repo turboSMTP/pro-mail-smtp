@@ -2,8 +2,6 @@ jQuery(document).ready(function ($) {
   console.log("Free Mail SMTP Admin JS loaded");
 
   var modal = $("#provider-modal");
-  console.log("Modal element:", modal.length ? "found" : "not found");
-
   $('.add-provider, #add-provider-button').on('click', function() {
     $('#step-provider').show();
     $('#step-config').hide();

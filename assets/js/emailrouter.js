@@ -510,7 +510,6 @@ jQuery(document).ready(function($) {
         setFormHeaderLabel(condition.condition_label);
         clearConditionsContainer();
         conditionCount = 0;
-        console.log('Populating form with:', condition.id);
         try {
             let conditionData = parseConditionData(condition.condition_data);
 

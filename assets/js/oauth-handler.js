@@ -6,22 +6,14 @@
     console.log('Free Mail SMTP OAuth Handler loaded');
     // Execute immediately to capture parameters as early as possible
     function handleOAuthCallback() {
-        console.log('Free Mail SMTP OAuth Handler initialized');
         
         try {
             // Get parameters from both the URL query string and hash fragment
             var queryParams = new URLSearchParams(window.location.search);
             var hashParams = new URLSearchParams(window.location.hash.substring(1));
-            console.log('Query Params:', queryParams.toString());
-            console.log('Hash Params:', hashParams.toString());
             var code = queryParams.get('code') || hashParams.get('code');
             var state = queryParams.get('state') || hashParams.get('state');
-            console.log('OAuth Code:', code);
-            console.log('OAuth State:', state);
-            console.log('valid state:', isOAuthProvider(state));
-            // Only proceed if we have oauth parameters and state is one of our supported providers
             if (code && state && isOAuthProvider(state)) {
-                console.log('OAuth callback detected for provider:', state);
                 
                 // Show processing notification
                 var notificationDiv = document.createElement('div');
@@ -37,27 +29,21 @@
         }
     }
     
-    // Check if the state parameter matches one of our supported OAuth providers
     function isOAuthProvider(state) {
-        // Add all your supported OAuth providers here
         var supportedProviders = ['gmail', 'outlook'];
         return supportedProviders.includes(state.toLowerCase());
     }
     
-    // Process the OAuth callback
     function processOAuthCallback(code, state, notificationDiv) {
-        // Get ajaxUrl from the localized script data
         var ajaxUrl = (typeof FreeMailSMTPOAuth !== 'undefined' && FreeMailSMTPOAuth.ajaxUrl) 
             ? FreeMailSMTPOAuth.ajaxUrl 
             : window.ajaxurl;
         
-        // Get nonce from global variable if available
         var nonce = '';
         if (typeof FreeMailSMTPOAuth !== 'undefined' && FreeMailSMTPOAuth.nonce) {
             nonce = FreeMailSMTPOAuth.nonce;
         }
         
-        console.log('Processing OAuth callback for ' + state + ' provider');
         
         jQuery.ajax({
             url: ajaxUrl,
@@ -70,18 +56,14 @@
             },
             success: function(response) {
                 if (response.success) {
-                    console.log(state + ' connected successfully');
                     notificationDiv.innerHTML = state + ' connected successfully! Redirecting...';
                     notificationDiv.style.borderLeftColor = '#46b450';
                     
-                    // Redirect to plugin page or remove parameters
                     if (typeof FreeMailSMTPOAuth !== 'undefined' && FreeMailSMTPOAuth.redirectUrl) {
                         window.location.href = FreeMailSMTPOAuth.redirectUrl;
                     } else {
-                        // Remove code and state from URL without refreshing
                         var newUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
                         window.history.replaceState({}, document.title, newUrl);
-                        // Reload after a short delay to ensure settings are updated
                         setTimeout(function() {
                             window.location.reload();
                         }, 1000);
@@ -100,9 +82,7 @@
         });
     }
 
-    // Run the handler function immediately
     handleOAuthCallback();
     
-    // Also attach to DOMContentLoaded in case body isn't ready yet
     document.addEventListener('DOMContentLoaded', handleOAuthCallback);
 })();

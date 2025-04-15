@@ -22,7 +22,6 @@ jQuery(document).ready(function($) {
 
     function loadAnalyticsData() {
         perPage = parseInt($('#per-page').val()) || perPage;
-        console.log('Loading analytics data');
         $('#loading-overlay').show();
         var tbody = $('.analytics-table tbody');
         tbody.empty();
@@ -56,7 +55,6 @@ jQuery(document).ready(function($) {
                 filters: filters
             },
             success: function(response) {
-                console.log('Analytics response:', response);
                 if (response.success && response.data) {
                     refreshTable(response.data);
                     if (response.data.total_pages !== undefined) {

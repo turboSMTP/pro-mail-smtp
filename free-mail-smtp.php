@@ -13,14 +13,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (!defined('WP_DEBUG')) {
-    define('WP_DEBUG', true);
-}
-if (!defined('WP_DEBUG_LOG')) {
-    define('WP_DEBUG_LOG', true);
-}
-
-// Updated constants with WordPress standard naming convention
 define('FREE_MAIL_SMTP_VERSION', '1.0.0');
 define('FREE_MAIL_SMTP_FILE', __FILE__);
 define('FREE_MAIL_SMTP_PATH', plugin_dir_path(__FILE__));

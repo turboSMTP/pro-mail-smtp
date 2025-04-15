@@ -16,6 +16,20 @@ class Settings
     }
     public function enqueue_scripts($hook)
     {
+        // Only load on settings page
+        if (strpos($hook, 'free-mail-smtp-settings') === false) {
+            return;
+        }
+
+        // Enqueue the CSS file
+        wp_enqueue_style(
+            'free-mail-smtp-settings-css',
+            plugins_url('/assets/css/settings.css', FREE_MAIL_SMTP_FILE),
+            [],
+            '1.0.0'
+        );
+
+        // Enqueue the JS file
         wp_enqueue_script(
             'free-mail-smtp-settings',
             plugins_url('/assets/js/settings.js', FREE_MAIL_SMTP_FILE),
@@ -64,7 +78,7 @@ class Settings
             return;
         }
 
-        if (!wp_verify_nonce(sanitize_key(wp_unslash($_POST['free_mail_smtp_nonce_settings'])), 'free_mail_smtp_settings')) {
+        if (!wp_verify_nonce(sanitize_key($_POST['free_mail_smtp_nonce_settings']), 'free-mail-smtp-settings')) {
             add_settings_error(
                 'free_mail_smtp_messages',
                 'invalid_nonce',

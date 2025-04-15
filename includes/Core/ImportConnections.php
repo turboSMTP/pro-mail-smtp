@@ -129,7 +129,6 @@ class ImportConnections
 
     private function decodeWpMailPassword($encrypted)
     {
-        // Check for filter or missing functions, External options
         if (apply_filters('wp_mail_smtp_helpers_crypto_stop', false) ||
             !function_exists('\mb_strlen') || 
             !function_exists('\mb_substr') || 
@@ -137,44 +136,36 @@ class ImportConnections
             return $encrypted;
         }
 
-        // Try to decode from base64
         $decoded = base64_decode($encrypted);
         if (false === $decoded) {
             return $encrypted;
         }
 
-        // Check if the decoded string is long enough
         if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + SODIUM_CRYPTO_SECRETBOX_MACBYTES)) {
             return $encrypted;
         }
 
-        // Extract nonce and ciphertext
         $nonce = mb_substr($decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit');
         $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
         
-        // Get secret key
         $secret_key = $this->getWpMailSecretKey();
         if (empty($secret_key)) {
             return $encrypted;
         }
 
-        // Try to decrypt
         $message = sodium_crypto_secretbox_open($ciphertext, $nonce, $secret_key);
         return $message !== false ? $message : $encrypted;
     }
 
     private function getWpMailSecretKey()
     {
-        // Check for constant definition first
         if (defined('WPMS_CRYPTO_KEY')) {
             return WPMS_CRYPTO_KEY;
         }
 
-        // Get key from options and apply filters, external options
         $secret_key = get_option('wp_mail_smtp_mail_key');
         $secret_key = apply_filters('wp_mail_smtp_helpers_crypto_get_secret_key', $secret_key);
         
-        // Decode if we have a key
         if (false !== $secret_key) {
             $secret_key = base64_decode($secret_key);
         }

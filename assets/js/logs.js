@@ -1,5 +1,4 @@
 jQuery(document).ready(function($) {
-    console.log('FreeMailSMTPLogs loaded');
     $('.sort-column').on('click', function(e) {
         e.preventDefault();
         

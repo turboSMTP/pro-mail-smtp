@@ -24,7 +24,7 @@ class Logs
 
     public function enqueue_scripts($hook)
     {
-        $expected_hook = 'free-mail-smtp-providers_page_free-mail-smtp-logs';
+        $expected_hook = 'free-mail-smtp_page_free-mail-smtp-logs';
         if ($hook !== $expected_hook) {
             return;
         }
@@ -392,12 +392,10 @@ class Logs
             'order'     => 'desc',
         ];
         
-        // Check if filter form was submitted with all empty values (reset)
         if (isset($_POST['filter_action']) && 
             isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
             wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_logs_filter_nonce'])), 'free_mail_smtp_logs_filter')) {
             
-            // Check if all filter fields are empty (indicating a reset)
             $is_reset = empty($_POST['provider']) && 
                         empty($_POST['status']) && 
                         empty($_POST['search']) && 
@@ -414,7 +412,6 @@ class Logs
                 return $defaults;
             }
             
-            // Process and save the filter values
             $filter_data = [
                 'paged'     => isset($_POST['paged']) ? max(1, absint(wp_unslash($_POST['paged']))) : $defaults['paged'],
                 'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : $defaults['provider'],
@@ -432,7 +429,6 @@ class Logs
             return $filter_data;
         }
         
-        // Check if viewing a specific page via GET
         if (isset($_GET['paged'])) {
             return [
                 'paged'     => max(1, absint(wp_unslash($_GET['paged']))),
@@ -446,13 +442,11 @@ class Logs
             ];
         }
         
-        // Otherwise try to get saved filter values
         $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', true);
         if (!empty($saved_filters) && is_array($saved_filters)) {
             return array_merge($defaults, $saved_filters);
         }
         
-        // Default to initial values
         return $defaults;
     }
 
