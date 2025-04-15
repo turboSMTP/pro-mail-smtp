@@ -33,7 +33,7 @@ class Logs
             'free-mail-smtp-logs',
             plugins_url('assets/js/logs.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
-            '1.0.0',
+            FREE_MAIL_SMTP_VERSION,
             true
         );
 
@@ -41,7 +41,7 @@ class Logs
             'free-mail-smtp-logs',
             plugins_url('assets/css/logs.css', FREE_MAIL_SMTP_FILE),
             [],
-            '1.0.0'
+            FREE_MAIL_SMTP_VERSION
         );
 
         wp_localize_script('free-mail-smtp-logs', 'FreeMailSMTPLogs', [

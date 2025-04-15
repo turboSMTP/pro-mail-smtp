@@ -26,7 +26,7 @@ class Settings
             'free-mail-smtp-settings-css',
             plugins_url('/assets/css/settings.css', FREE_MAIL_SMTP_FILE),
             [],
-            '1.0.0'
+            FREE_MAIL_SMTP_VERSION
         );
 
         // Enqueue the JS file
@@ -34,7 +34,7 @@ class Settings
             'free-mail-smtp-settings',
             plugins_url('/assets/js/settings.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
-            '1.0.0',
+            FREE_MAIL_SMTP_VERSION,
             true
         );
 

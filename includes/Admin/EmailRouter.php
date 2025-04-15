@@ -31,14 +31,14 @@ class EmailRouter {
             'free-mail-smtp-email-router',
             plugins_url('/assets/css/emailrouter.css', FREE_MAIL_SMTP_FILE),
             [],
-            '1.0.0'
+            FREE_MAIL_SMTP_VERSION
         );
     
         wp_enqueue_script(
             'free-mail-smtp-email-router',
             plugins_url('/assets/js/emailrouter.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
-            '1.0.0',
+            FREE_MAIL_SMTP_VERSION,
             true
         );
         

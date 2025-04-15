@@ -39,21 +39,21 @@ class Providers
                 'free-mail-smtp-admin',
                 plugins_url('/assets/js/admin.js', FREE_MAIL_SMTP_FILE),
                 ['jquery'],
-                '1.0.0',
+                FREE_MAIL_SMTP_VERSION,
                 true
             );
             wp_enqueue_script(
                 'free-mail-smtp-oauth-handler',
                 plugins_url('/assets/js/oauth-handler.js', FREE_MAIL_SMTP_FILE),
                 ['jquery'],
-                '1.0.0',
+                FREE_MAIL_SMTP_VERSION,
                 true
             );
             wp_enqueue_script(
                 'free-mail-smtp-provider-forms',
                 plugins_url('/assets/js/provider-forms.js', FREE_MAIL_SMTP_FILE),
                 ['jquery'],
-                '1.0.0',
+                FREE_MAIL_SMTP_VERSION,
                 true
             );
             
@@ -61,7 +61,7 @@ class Providers
                 'free-mail-smtp-provider-forms',
                 plugins_url('/assets/css/provider-forms.css', FREE_MAIL_SMTP_FILE),
                 [],
-                '1.0.0'
+                FREE_MAIL_SMTP_VERSION
             );
 
             wp_localize_script('free-mail-smtp-admin', 'FreeMailSMTPAdminProviders', [

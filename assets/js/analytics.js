@@ -56,24 +56,49 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success && response.data) {
-                    refreshTable(response.data);
-                    if (response.data.total_pages !== undefined) {
-                        totalPages = response.data.total_pages;
+                    refreshTable(response.data); 
+
+                    // Default button states
+                    let isLastPage = false;
+                    let isFirstPage = currentPage <= 1;
+
+                    if (response.data.total_pages !== undefined && !isNaN(parseInt(response.data.total_pages))) {
+                        totalPages = parseInt(response.data.total_pages);
+                        totalPages = Math.max(1, totalPages); 
+                        currentPage = Math.min(currentPage, totalPages); 
+                        isLastPage = currentPage >= totalPages;
                         $('#current-page').text(currentPage + ' of ' + totalPages);
-                        $('#prev-page').prop('disabled', currentPage <= 1);
-                        $('#next-page').prop('disabled', currentPage >= totalPages);
                     } else {
+                        totalPages = currentPage; 
                         $('#current-page').text(currentPage);
                     }
+
+                    if (response.data.data && response.data.data.length < perPage) {
+                        isLastPage = true; 
+                        
+                        if (response.data.total_pages !== undefined) {
+                             totalPages = currentPage;
+                             $('#current-page').text(currentPage + ' of ' + totalPages); 
+                        }
+                    }
+
+                    $('#prev-page').prop('disabled', isFirstPage);
+                    $('#next-page').prop('disabled', isLastPage);
+
                 } else {
                     alert('Error loading analytics: ' + (response.data || 'Unknown error'));
                     tbody.find('.loading-message').text('Error loading data');
+                    $('#current-page').text('1');
+                    $('#prev-page').prop('disabled', true);
+                    $('#next-page').prop('disabled', true);
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Ajax error:', error);
                 alert('Error loading analytics data');
                 tbody.find('.loading-message').text('Error loading data');
+                $('#current-page').text('1');
+                $('#prev-page').prop('disabled', true);
+                $('#next-page').prop('disabled', true);
             },
             complete: function() {
                 $('#loading-overlay').hide();
@@ -87,40 +112,46 @@ jQuery(document).ready(function($) {
         tbody.empty();
         thead.empty();
 
-        if (!data || data.length === 0) {
+        if (!data || !data.data || data.data.length === 0) {
             tbody.append(`
                 <tr>
                     <td colspan="8" class="no-data">No data found</td>
-                    </tr>
+                </tr>
             `);
-                return;
-            }
+             if (data && data.columns) {
+                 var headers = data.columns.map(function(column) {
+                     return `<th>${escapeHtml(column)}</th>`;
+                 }).join('');
+                 thead.append(`<tr>${headers}</tr>`);
+             } else {
+                 thead.append(`<tr><th colspan="8">Columns definition missing</th></tr>`);
+             }
+            return; 
+        }
 
         var headers = data.columns.map(function(column) {
             return `<th>${escapeHtml(column)}</th>`;
         }).join('');
         thead.append(`<tr>${headers}</tr>`);
 
-                data.data.forEach(function(row) {
-                    var rowHtml = data.columns.map(function(column) {
-                        var cellData = row[column] || '';
-                        var cellHtml = escapeHtml(cellData.toString());
+        data.data.forEach(function(row) {
+            var rowHtml = data.columns.map(function(column) {
+                var cellData = row[column] || '';
+                var cellHtml = escapeHtml(cellData.toString());
                 if (column === 'status') {
                     var statusClass = cellData.toLowerCase();
-                            cellHtml = `<span class="status-badge status-${statusClass}">${cellHtml}</span>`;
+                    cellHtml = `<span class="status-badge status-${statusClass}">${cellHtml}</span>`;
                 } else if (column === 'provider_message') {
                     var shortErrorText = cellHtml.length > 30 ? cellHtml.substring(0, 30) + '...' : cellHtml;
-                    var errorPopup = cellHtml.length > 30 ? `<a href="#" class="see-more" data-error="${cellHtml}">See more</a>` : '';
+                    var errorPopup = cellHtml.length > 30 ? `<a href="#" class="see-more" data-error="${escapeHtml(cellHtml)}">See more</a>` : ''; // Ensure error data is escaped for attribute
                     cellHtml = `${shortErrorText} ${errorPopup}`;
-                        }
+                }
+                return `<td>${cellHtml}</td>`;
+            }).join('');
+            tbody.append(`<tr>${rowHtml}</tr>`);
+        });
 
-                        return `<td>${cellHtml}</td>`;
-                    }).join('');
-
-                    tbody.append(`<tr>${rowHtml}</tr>`);
-                });
-
-        $('.see-more').on('click', function(e) {
+        $('.see-more').off('click').on('click', function(e) { 
             e.preventDefault();
             var errorText = $(this).data('error');
             alert(errorText);

@@ -21,7 +21,7 @@ class Analytics {
 
     public function enqueue_scripts($hook) {
 
-        if ($hook !== 'free-mail-smtp_page_free_mail_smtp-analytics') {
+        if ($hook !== 'free-mail-smtp_page_free-mail-smtp-analytics') {
             return;
         }
     
@@ -29,14 +29,14 @@ class Analytics {
             'free-mail-smtp-analytics',
             plugins_url('/assets/css/analytics.css', FREE_MAIL_SMTP_FILE),
             [],
-            '1.0.0'
+            FREE_MAIL_SMTP_VERSION
         );
     
         wp_enqueue_script(
             'free-mail-smtp-analytics',
             plugins_url('/assets/js/analytics.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
-            '1.0.0',
+            FREE_MAIL_SMTP_VERSION,
             true
         );
 
