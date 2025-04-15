@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Admin;
+namespace TurboSMTP\FreeMailSMTP\Admin;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EmailRouter {
     private $providersList = [];
@@ -7,13 +8,13 @@ class EmailRouter {
 
     public function __construct() {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('wp_ajax_save_email_router', [$this, 'save_email_router']);
-        add_action('wp_ajax_update_email_router_status', [$this, 'update_condition_status']); 
-        add_action('wp_ajax_get_email_router_condition', [$this, 'get_email_router_condition']); 
-        add_action('wp_ajax_delete_email_router_condition', [$this, 'delete_email_router_condition']); 
+        add_action('wp_ajax_free_mail_smtp_save_email_router', [$this, 'save_email_router']);
+        add_action('wp_ajax_free_mail_smtp_update_email_router_status', [$this, 'update_condition_status']); 
+        add_action('wp_ajax_free_mail_smtp_get_email_router_condition', [$this, 'get_email_router_condition']); 
+        add_action('wp_ajax_free_mail_smtp_delete_email_router_condition', [$this, 'delete_email_router_condition']); 
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
-        $this->plugin_path = dirname(dirname(dirname(__FILE__)));
+        $this->plugin_path = FREE_MAIL_SMTP_PATH;
     }
 
     private function get_active_plugins_list() {
@@ -22,28 +23,28 @@ class EmailRouter {
 
     public function enqueue_scripts($hook) {
 
-        if ($hook !== 'free-mail-smtp_page_free_mail_smtp-email-router') {
+        if ($hook !== 'free-mail-smtp_page_free-mail-smtp-email-router') {
             return;
         }
     
         wp_enqueue_style(
-            'free_mail_smtp_email-router',
-            plugins_url('/assets/css/emailrouter.css', dirname(dirname(__FILE__))),
+            'free-mail-smtp-email-router',
+            plugins_url('/assets/css/emailrouter.css', FREE_MAIL_SMTP_FILE),
             [],
             '1.0.0'
         );
     
         wp_enqueue_script(
-            'free_mail_smtp_email-router',
-            plugins_url('/assets/js/emailrouter.js', dirname(dirname(__FILE__))),
+            'free-mail-smtp-email-router',
+            plugins_url('/assets/js/emailrouter.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
             '1.0.0',
             true
         );
         
-        wp_localize_script('free_mail_smtp_email-router', 'FreeMailSMTPEmailRouter', [
+        wp_localize_script('free-mail-smtp-email-router', 'FreeMailSMTPEmailRouter', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('free_mail_smtp_email-router'),
+            'nonce' => wp_create_nonce('free_mail_smtp_email_router'),
             'debug' => true,
             'pluginsList' => wp_json_encode($this->get_active_plugins_list())
         ]);
@@ -52,8 +53,8 @@ class EmailRouter {
         if (!current_user_can('manage_options')) {
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
         }
-        $conditions_repo = new \FreeMailSMTP\DB\ConditionRepository();
-        $connections_repo = new \FreeMailSMTP\DB\ConnectionRepository();
+        $conditions_repo = new \TurboSMTP\FreeMailSMTP\DB\ConditionRepository();
+        $connections_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
 
         $conditions_list = $conditions_repo->load_all_conditions();
         $connections_list = $connections_repo->get_all_connections();
@@ -70,15 +71,15 @@ class EmailRouter {
     }
     
     public function save_email_router() {
-        check_ajax_referer('free_mail_smtp_email-router', 'nonce');
+        check_ajax_referer('free_mail_smtp_email_router', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
         }
+
         $unslashed_data = wp_unslash( $_POST );
-        $sanitized_data = map_deep( $unslashed_data, 'sanitize_text_field' );
-        
-        $data = isset($sanitized_data['data']) ? $sanitized_data['data'] : array();
+        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $data = isset($unslashed_data['data']) ? $unslashed_data['data'] : array();
         $prepared_data = [
             'connection_id'        => sanitize_text_field($data['connection']['selected']),
             'condition_data'       => wp_json_encode($data['conditions']),
@@ -90,7 +91,7 @@ class EmailRouter {
             'is_enabled'           => $data['is_enabled'],
         ];
 
-        $condition_repo = new \FreeMailSMTP\DB\ConditionRepository();
+        $condition_repo = new \TurboSMTP\FreeMailSMTP\DB\ConditionRepository();
         if (isset($data['id']) && !empty($data['id'])) {
             $condition_id = absint($data['id']);
             $success = $condition_repo->update_condition($condition_id, $prepared_data);
@@ -123,7 +124,7 @@ class EmailRouter {
     }
 
     public function update_condition_status() {
-        check_ajax_referer('free_mail_smtp_email-router', 'nonce');
+        check_ajax_referer('free_mail_smtp_email_router', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -138,7 +139,7 @@ class EmailRouter {
         }
 
         $update_data = ['is_enabled' => $status];
-        $condition_repo = new \FreeMailSMTP\DB\ConditionRepository();
+        $condition_repo = new \TurboSMTP\FreeMailSMTP\DB\ConditionRepository();
         $updated = $condition_repo->update_condition($condition_id, $update_data);
 
         if (!$updated) {
@@ -149,7 +150,7 @@ class EmailRouter {
     }
 
     public function get_email_router_condition() {
-        check_ajax_referer('free_mail_smtp_email-router', 'nonce');
+        check_ajax_referer('free_mail_smtp_email_router', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -159,7 +160,7 @@ class EmailRouter {
             wp_send_json_error(['message' => esc_html__('Invalid condition ID', 'free-mail-smtp')]);
             return;
         }
-        $condition_repo = new \FreeMailSMTP\DB\ConditionRepository();
+        $condition_repo = new \TurboSMTP\FreeMailSMTP\DB\ConditionRepository();
         $condition = $condition_repo->get_condition($condition_id);
         if (!$condition) {
             wp_send_json_error(['message' => esc_html__('Condition not found', 'free-mail-smtp')]);
@@ -170,7 +171,7 @@ class EmailRouter {
     }
 
     public function delete_email_router_condition() {
-        check_ajax_referer('free_mail_smtp_email-router', 'nonce');
+        check_ajax_referer('free_mail_smtp_email_router', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -182,7 +183,7 @@ class EmailRouter {
             return;
         }
 
-        $condition_repo = new \FreeMailSMTP\DB\ConditionRepository();
+        $condition_repo = new \TurboSMTP\FreeMailSMTP\DB\ConditionRepository();
         $deleted = $condition_repo->delete_condition($condition_id);
 
         if (!$deleted) {

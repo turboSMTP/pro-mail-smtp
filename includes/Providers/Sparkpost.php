@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Sparkpost extends BaseProvider {
     public function __construct($config_keys) {

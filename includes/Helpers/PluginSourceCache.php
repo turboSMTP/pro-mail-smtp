@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Helpers;
+namespace TurboSMTP\FreeMailSMTP\Helpers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginSourceCache {
     private static $instance = null;

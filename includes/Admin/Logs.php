@@ -1,8 +1,8 @@
 <?php
+namespace TurboSMTP\FreeMailSMTP\Admin;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-namespace FreeMailSMTP\Admin;
-
-use FreeMailSMTP\DB\EmailLogRepository;
+use TurboSMTP\FreeMailSMTP\DB\EmailLogRepository;
 
 class Logs
 {
@@ -24,26 +24,27 @@ class Logs
 
     public function enqueue_scripts($hook)
     {
-        if (strpos($hook, 'free_mail_smtp-logs') === false) {
+        $expected_hook = 'free-mail-smtp-providers_page_free-mail-smtp-logs';
+        if ($hook !== $expected_hook) {
             return;
         }
 
         wp_enqueue_script(
-            'free_mail_smtp-logs',
-            plugins_url('assets/js/logs.js', dirname(dirname(__FILE__))),
+            'free-mail-smtp-logs',
+            plugins_url('assets/js/logs.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
             '1.0.0',
             true
         );
 
         wp_enqueue_style(
-            'free_mail_smtp-logs',
-            plugins_url('assets/css/logs.css', dirname(dirname(__FILE__))),
+            'free-mail-smtp-logs',
+            plugins_url('assets/css/logs.css', FREE_MAIL_SMTP_FILE),
             [],
             '1.0.0'
         );
 
-        wp_localize_script('free_mail_smtp-logs', 'FreeMailSMTPLogs', [
+        wp_localize_script('free-mail-smtp-logs', 'FreeMailSMTPLogs', [
             'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
             'nonce' => wp_create_nonce('free_mail_smtp_logs'),
             'i18n' => [
@@ -93,18 +94,18 @@ class Logs
 
         <div class="wrap free_mail_smtp-wrap">
             <div class="plugin-header">
-                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', dirname(dirname(__FILE__)))); ?>" alt="Free Mail SMTP" class="plugin-logo">
+                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="Free Mail SMTP" class="plugin-logo">
                 <h1>FREE MAIL <span>SMTP</span></h1>
             </div>
 
             <p class="description">Setup custom SMTP or popular Providers to improve your WordPress email deliverability.</p>
 
             <nav class="free-mail-smtp-nav-tab-wrapper">
-                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-providers')); ?>" class="free-mail-smtp-nav-tab">Providers</a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-logs')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Email Logs</a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-email-router')); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp-settings')); ?>" class="free-mail-smtp-nav-tab">Settings</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-providers')); ?>" class="free-mail-smtp-nav-tab">Providers</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=free_mail_smtp_logs')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active">Email Logs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-analytics')); ?>" class="free-mail-smtp-nav-tab">Providers Logs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-email-router')); ?>" class="free-mail-smtp-nav-tab">Email Router</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-settings')); ?>" class="free-mail-smtp-nav-tab">Settings</a>
             </nav>
                 <div class="logs-retention-settings">
                 <h2><?php esc_html_e('Logs Retention Settings', 'free-mail-smtp'); ?></h2>

@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Admin;
+namespace TurboSMTP\FreeMailSMTP\Admin;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Settings
 {
@@ -8,7 +9,7 @@ class Settings
 
     public function __construct()
     {
-        $this->plugin_path = dirname(dirname(dirname(__FILE__)));
+        $this->plugin_path = FREE_MAIL_SMTP_PATH;
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
         add_action('admin_init', [$this, 'handle_form_submissions']);
         add_action('wp_ajax_free_mail_smtp_delete_all_data', [$this, 'delete_all_plugin_data']);
@@ -17,7 +18,7 @@ class Settings
     {
         wp_enqueue_script(
             'free-mail-smtp-settings',
-            plugins_url('/assets/js/settings.js', dirname(dirname(__FILE__))),
+            plugins_url('/assets/js/settings.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
             '1.0.0',
             true
@@ -26,7 +27,7 @@ class Settings
         wp_localize_script('free-mail-smtp-settings', 'FreeMailSMTPAdminSettings', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('free_mail_smtp_nonce_settings'),
-            'adminUrl' => admin_url('admin.php?page=free_mail_smtp-settings'),
+            'adminUrl' => admin_url('admin.php?page=free-mail-smtp-settings'),
             'debug' => true
         ]);
     }
@@ -56,7 +57,7 @@ class Settings
     public function handle_form_submissions()
     {
         if (
-            !isset($_GET['page']) || $_GET['page'] !== 'free_mail_smtp-settings' ||
+            !isset($_GET['page']) || $_GET['page'] !== 'free-mail-smtp-settings' ||
             !isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST' ||
             !isset($_POST['free_mail_smtp_nonce_settings'])
         ) {
@@ -127,30 +128,30 @@ class Settings
 
         $conditions_table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
         $connections_table = $wpdb->prefix . 'free_mail_smtp_connections';
-        $logs_table = $wpdb->prefix . 'email_log';
+        $logs_table = $wpdb->prefix . 'free_mail_smtp_email_log';
 
         try {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query('START TRANSACTION');
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-            $result1 = $wpdb->delete('free_mail_smtp_email_router_conditions', array());
+            $result1 = $wpdb->query("DELETE FROM ". $wpdb->prefix . 'free_mail_smtp_email_router_conditions');
             if (false === $result1) {
                 // translators: %1$s is the table name, %2$s is the database error message.
                 throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $conditions_table, $wpdb->last_error));
             }
-		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-            $result2 = $wpdb->delete('free_mail_smtp_connections', array());
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            $result2 = $wpdb->query("DELETE FROM " . $wpdb->prefix . 'free_mail_smtp_connections');
             if (false === $result2) {
                 // translators: %1$s is the table name, %2$s is the database error message.
                 throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $connections_table, $wpdb->last_error));
             }
-		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-            $result3 = $wpdb->delete('email_log', array());
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            $result3 = $wpdb->query("DELETE FROM " . $wpdb->prefix . 'free_mail_smtp_email_log');
             if (false === $result3) {
                 // translators: %1$s is the table name, %2$s is the database error message.
                 throw new \Exception(sprintf(__('Error deleting from %1$s: %2$s', 'free-mail-smtp'), $logs_table, $wpdb->last_error));
             }
-		    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
             $wpdb->query('COMMIT');
 
             $options = [
@@ -173,8 +174,8 @@ class Settings
                 delete_option($option);
             }
 
-            if (class_exists('\FreeMailSMTP\Cron\CronManager') && method_exists(\FreeMailSMTP\Cron\CronManager::class, 'get_instance')) {
-                 \FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+            if (class_exists('TurboSMTP\FreeMailSMTP\Cron\CronManager') && method_exists(\TurboSMTP\FreeMailSMTP\Cron\CronManager::class, 'get_instance')) {
+                 \TurboSMTP\FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
             }
 
             wp_send_json_success(__('All plugin data has been deleted successfully.', 'free-mail-smtp')); // Added localization

@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
             url: FreeMailSMTPAnalytics.ajaxUrl,
             method: 'POST',
             data: {
-                action: 'fetch_provider_analytics',
+                action: 'free_mail_smtp_fetch_provider_analytics',
                 nonce: FreeMailSMTPAnalytics.nonce,
                 filters: filters
             },

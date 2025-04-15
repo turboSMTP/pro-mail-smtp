@@ -1,5 +1,5 @@
 <?php
-namespace FreeMailSMTP\DB;
+namespace TurboSMTP\FreeMailSMTP\DB;
 
 defined( 'ABSPATH' ) || exit;
 

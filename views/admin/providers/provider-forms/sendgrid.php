@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <div class="wizard-step">
     <h3><?php echo isset($is_edit) && $is_edit ? 'Edit SendGrid Configuration' : 'Add SendGrid Provider'; ?></h3>
     <p class="description">Enter your SendGrid API credentials below.</p>
@@ -75,48 +76,3 @@
         </div>
     </form>
 </div>
-<style>
-   .api-key-wrapper {
-       position: relative;
-       display: inline-block;
-   }
-
-
-   .api-key-wrapper input {
-       padding-right: 30px !important;
-       width: 28.5em !important;
-       max-width: 100% !important;
-   }
-
-
-   .api-key-wrapper .dashicons {
-       position: absolute;
-       right: 8px;
-       top: 50%;
-       transform: translateY(-50%);
-       cursor: pointer;
-       color: #a8a7a8;
-   }
-
-
-   .api-key-wrapper .dashicons:hover {
-       color: #a8a7a8;
-   }
-</style>
-<script>
-    function fillInputs(data){
-        console.log('filled',data);
-        jQuery('#connection_label').val(data.connection_label);
-        jQuery('#api_key').val(data.config_keys.api_key);
-        jQuery('#connection_id').val(data.index);
-        jQuery('#priority').val(data.priority);
-        jQuery('#email_from_overwrite').val(data.config_keys.email_from_overwrite);
-        jQuery('.back-step').hide();
-    }
-    jQuery('#toggle_api_key, #toggle_api_key').on('click', function() {
-       var input = jQuery(this).prev('input');
-       var type = input.attr('type') === 'password' ? 'text' : 'password';
-       input.attr('type', type);
-       jQuery(this).toggleClass('dashicons-visibility dashicons-hidden');
-   });
-</script>

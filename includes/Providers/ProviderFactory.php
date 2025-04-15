@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ProviderFactory {
 
@@ -13,7 +14,7 @@ class ProviderFactory {
         if (!isset($connection->provider) || empty($connection->provider)) {
             throw new \Exception('Provider not found');
         }
-        $provider_class = '\\FreeMailSMTP\\Providers\\' . $this->integrated_providers[$connection->provider]['class'];
+        $provider_class = '\\TurboSMTP\\FreeMailSMTP\\Providers\\' . $this->integrated_providers[$connection->provider]['class'];
         if (class_exists($provider_class)) {
             return new $provider_class((array)$connection->connection_data);
         }

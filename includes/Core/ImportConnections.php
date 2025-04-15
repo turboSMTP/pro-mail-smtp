@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Core;
+namespace TurboSMTP\FreeMailSMTP\Core;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 class ImportConnections
@@ -128,7 +129,7 @@ class ImportConnections
 
     private function decodeWpMailPassword($encrypted)
     {
-        // Check for filter or missing functions
+        // Check for filter or missing functions, External options
         if (apply_filters('wp_mail_smtp_helpers_crypto_stop', false) ||
             !function_exists('\mb_strlen') || 
             !function_exists('\mb_substr') || 
@@ -169,7 +170,7 @@ class ImportConnections
             return WPMS_CRYPTO_KEY;
         }
 
-        // Get key from options and apply filters
+        // Get key from options and apply filters, external options
         $secret_key = get_option('wp_mail_smtp_mail_key');
         $secret_key = apply_filters('wp_mail_smtp_helpers_crypto_get_secret_key', $secret_key);
         

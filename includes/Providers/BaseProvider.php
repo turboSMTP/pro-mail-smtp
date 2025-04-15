@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 abstract class BaseProvider {
     protected $config_keys;

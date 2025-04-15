@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Outlook extends BaseProvider
 {
@@ -170,7 +171,7 @@ class Outlook extends BaseProvider
         $params = [
             'client_id'     => $this->config_keys['client_id'],
             'response_type' => 'code',
-            'redirect_uri'  => admin_url('admin.php?page=free_mail_smtp-providers'),
+            'redirect_uri'  => admin_url('admin.php?page=free-mail-smtp-providers'),
             'response_mode' => 'query',
             'scope'         => 'offline_access Mail.Send',
             'state'         => 'outlook'
@@ -217,7 +218,7 @@ class Outlook extends BaseProvider
                     'client_secret' => $this->config_keys['client_secret'],
                     'code' => $code,
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => admin_url('admin.php?page=free_mail_smtp-providers')
+                    'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers')
                 ],
                 true,
                 'POST',

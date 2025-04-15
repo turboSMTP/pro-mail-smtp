@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Cron;
+namespace TurboSMTP\FreeMailSMTP\Cron;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class SummaryMail implements CronInterface
 {
@@ -94,7 +95,7 @@ class SummaryMail implements CronInterface
                 provider, 
                 status, 
                 COUNT(*) as count 
-             FROM $wpdb->prefix" . "email_log 
+             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
              WHERE sent_at >= %s 
              GROUP BY provider, status",
             $since_date
@@ -105,7 +106,7 @@ class SummaryMail implements CronInterface
             "SELECT 
                 status, 
                 COUNT(*) as count 
-             FROM $wpdb->prefix" . "email_log 
+             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
              WHERE sent_at >= %s 
              GROUP BY status",
             $since_date

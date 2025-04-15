@@ -1,9 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Providers;
-
-use WP_Error;
-
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 class Gmail extends BaseProvider
 {
     const GMAIL_API_URL = 'https://gmail.googleapis.com/gmail/v1/users/me/';
@@ -284,7 +282,7 @@ class Gmail extends BaseProvider
     {
         $params = [
             'client_id' => $this->config_keys['client_id'],
-            'redirect_uri' => admin_url('admin.php?page=free_mail_smtp-providers'),
+            'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
             'response_type' => 'code',
             'scope' => implode(' ', self::SCOPES),
             'access_type' => 'offline',
@@ -307,7 +305,7 @@ class Gmail extends BaseProvider
                 'code' => $code,
                 'client_id' => $this->config_keys['client_id'],
                 'client_secret' => $this->config_keys['client_secret'],
-                'redirect_uri' => admin_url('admin.php?page=free_mail_smtp-providers'),
+                'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
                 'grant_type' => 'authorization_code',
             ],
         ];

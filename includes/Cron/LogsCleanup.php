@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Cron;
+namespace TurboSMTP\FreeMailSMTP\Cron;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class LogsCleanup implements CronInterface
 {
@@ -57,7 +58,7 @@ class LogsCleanup implements CronInterface
     private function auto_delete_logs($retention)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'email_log';
+        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
         $cutoff = '';
 
         switch ($retention) {

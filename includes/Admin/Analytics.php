@@ -1,8 +1,8 @@
 <?php
-namespace FreeMailSMTP\Admin;
+namespace TurboSMTP\FreeMailSMTP\Admin;
 
-use FreeMailSMTP\DB\ConnectionRepository;
-use FreeMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\FreeMailSMTP\DB\ConnectionRepository;
+use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
 class Analytics {
     private $providers = [];
     private $plugin_path;
@@ -10,12 +10,12 @@ class Analytics {
     private $provider_factory;
 
     public function __construct() {
-        $this->plugin_path = dirname(dirname(dirname(__FILE__)));
+        $this->plugin_path = FREE_MAIL_SMTP_PATH;
         $this->connection_repository = new ConnectionRepository();
         $this->providers = $this->connection_repository->get_all_connections();
         $this->provider_factory = new ProviderFactory();
 
-        add_action('wp_ajax_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
+        add_action('wp_ajax_free_mail_smtp_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
@@ -26,22 +26,22 @@ class Analytics {
         }
     
         wp_enqueue_style(
-            'free_mail_smtp_analytics',
-            plugins_url('/assets/css/analytics.css', dirname(dirname(__FILE__))),
+            'free-mail-smtp-analytics',
+            plugins_url('/assets/css/analytics.css', FREE_MAIL_SMTP_FILE),
             [],
             '1.0.0'
         );
     
         wp_enqueue_script(
-            'free_mail_smtp_analytics',
-            plugins_url('/assets/js/analytics.js', dirname(dirname(__FILE__))),
+            'free-mail-smtp-analytics',
+            plugins_url('/assets/js/analytics.js', FREE_MAIL_SMTP_FILE),
             ['jquery'],
             '1.0.0',
             true
         );
 
         wp_localize_script(
-            'free_mail_smtp_analytics',
+            'free-mail-smtp-analytics',
             'FreeMailSMTPAnalytics',
             [
                 'ajaxUrl' => admin_url('admin-ajax.php'),

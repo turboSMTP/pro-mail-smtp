@@ -1,3 +1,5 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
+
 <?php
 $current_month_start = gmdate('Y-m-01');
 $current_month_end = gmdate('Y-m-d');

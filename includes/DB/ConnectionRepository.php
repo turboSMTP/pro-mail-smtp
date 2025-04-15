@@ -1,7 +1,7 @@
 <?php
-namespace FreeMailSMTP\DB;
+namespace TurboSMTP\FreeMailSMTP\DB;
 
-defined('ABSPATH') || exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class ConnectionRepository {
 
@@ -15,7 +15,7 @@ class ConnectionRepository {
     public function insert_connection($connection_id, $provider, $connection_data, $priority = 0, $connection_label = '') {
         global $wpdb;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table}"));
+        $count = $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
 
 
         if ($count >= 5) {

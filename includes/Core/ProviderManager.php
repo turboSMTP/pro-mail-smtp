@@ -1,8 +1,9 @@
 <?php
 
-namespace FreeMailSMTP\Core;
+namespace TurboSMTP\FreeMailSMTP\Core;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-use FreeMailSMTP\DB\ConnectionRepository;
+use TurboSMTP\FreeMailSMTP\DB\ConnectionRepository;
 
 class ProviderManager
 {
@@ -49,7 +50,7 @@ class ProviderManager
         $config_keys['connection_label'] = $connection_label;
 
         if ($provider === 'gmail') {
-            $gmail = new \FreeMailSMTP\Providers\Gmail([
+            $gmail = new \TurboSMTP\FreeMailSMTP\Providers\Gmail([
                 'client_id'     => $config_keys['client_id'],
                 'client_secret' => $config_keys['client_secret']
             ]);
@@ -57,7 +58,7 @@ class ProviderManager
             $config_keys['authenticated'] = false;
         }
         if ($provider === 'outlook') {
-            $outlook = new \FreeMailSMTP\Providers\Outlook([
+            $outlook = new \TurboSMTP\FreeMailSMTP\Providers\Outlook([
                 'client_id'     => $config_keys['client_id'],
                 'client_secret' => $config_keys['client_secret']
             ]);

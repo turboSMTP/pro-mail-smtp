@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Cron;
+namespace TurboSMTP\FreeMailSMTP\Cron;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * CronManager - Manages and initializes all cron jobs for Free Mail SMTP.

@@ -102,6 +102,78 @@ Yes, Free Mail SMTP works with all major contact form plugins including Contact 
 5. Email Router Configurations
 6. Email Router page
 
+== Third-Party Services ==
+
+Free Mail SMTP connects to various third-party email service providers to send your WordPress site's emails. When you configure and use these services, your site will transmit data to these external services. Below is information about each service:
+
+= Gmail =
+* **Service Description**: Google's email service used for sending emails from your WordPress site.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, sender information, and authentication data.
+* **When Data is Sent**: When an email is sent through Gmail via the plugin and during authentication.
+* **Terms of Service**: [https://policies.google.com/terms](https://policies.google.com/terms)
+* **Privacy Policy**: [https://policies.google.com/privacy](https://policies.google.com/privacy)
+
+= Brevo (formerly Sendinblue) =
+* **Service Description**: Email marketing and transactional email service.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through Brevo via the plugin.
+* **Terms of Service**: [https://www.brevo.com/legal/termsofuse/](https://www.brevo.com/legal/termsofuse/)
+* **Privacy Policy**: [https://www.brevo.com/legal/privacy-policy/](https://www.brevo.com/legal/privacy-policy/)
+
+= Outlook/Microsoft =
+* **Service Description**: Microsoft's email service used for sending emails.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, sender information, and authentication data.
+* **When Data is Sent**: When an email is sent through Outlook via the plugin and during authentication.
+* **Terms of Service**: [https://www.microsoft.com/licensing/terms/](https://www.microsoft.com/licensing/terms/)
+* **Privacy Policy**: [https://privacy.microsoft.com/](https://privacy.microsoft.com/)
+
+= Mailgun =
+* **Service Description**: Email API service for sending, receiving, and tracking emails.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through Mailgun via the plugin.
+* **Terms of Service**: [https://www.mailgun.com/terms/](https://www.mailgun.com/terms/)
+* **Privacy Policy**: [https://www.mailgun.com/privacy-policy/](https://www.mailgun.com/privacy-policy/)
+
+= Postmark =
+* **Service Description**: Transactional email delivery service.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through Postmark via the plugin.
+* **Terms of Service**: [https://postmarkapp.com/terms-of-service](https://postmarkapp.com/terms-of-service)
+* **Privacy Policy**: [https://wildbit.com/privacy-policy](https://wildbit.com/privacy-policy)
+
+= Sendgrid =
+* **Service Description**: Email delivery platform for transactional and marketing emails.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through Sendgrid via the plugin.
+* **Terms of Service**: [https://sendgrid.com/policies/tos/](https://sendgrid.com/policies/tos/)
+* **Privacy Policy**: [https://sendgrid.com/policies/privacy/](https://sendgrid.com/policies/privacy/)
+
+= SMTP2Go =
+* **Service Description**: Email delivery service for reliable email sending.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through SMTP2Go via the plugin.
+* **Terms of Service**: [https://www.smtp2go.com/terms-of-service/](https://www.smtp2go.com/terms-of-service/)
+* **Privacy Policy**: [https://www.smtp2go.com/privacy-policy/](https://www.smtp2go.com/privacy-policy/)
+
+= Sparkpost =
+* **Service Description**: Email delivery service for sending and analyzing emails.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through Sparkpost via the plugin.
+* **Terms of Service**: [https://www.sparkpost.com/policies/tou/](https://www.sparkpost.com/policies/tou/)
+* **Privacy Policy**: [https://www.sparkpost.com/policies/privacy/](https://www.sparkpost.com/policies/privacy/)
+
+= TurboSMTP =
+* **Service Description**: Professional SMTP relay service for reliable email delivery.
+* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
+* **When Data is Sent**: When an email is sent through TurboSMTP via the plugin.
+* **Terms of Service**: [https://www.serversmtp.com/en/terms-of-service](https://www.serversmtp.com/en/terms-of-service)
+* **Privacy Policy**: [https://www.serversmtp.com/en/privacy-policy](https://www.serversmtp.com/en/privacy-policy)
+
+= Other SMTP Servers =
+When using custom SMTP servers, your email data will be transmitted to the SMTP service you configure. Please refer to your SMTP service provider's terms of service and privacy policy for details on how they handle your data.
+
+**Important Note**: This plugin does not collect or share any data with these services beyond what is necessary to send emails. Your email content and recipient information is only sent to the services you explicitly configure in the plugin settings.
+
 == Changelog ==
 
 = 1.0.0 =

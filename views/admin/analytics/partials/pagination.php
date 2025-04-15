@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 <?php
 // Create a nonce for pagination
 $pagination_nonce = wp_create_nonce('free_mail_smtp_pagination_nonce');

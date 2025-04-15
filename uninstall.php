@@ -18,7 +18,7 @@ global $wpdb;
 
 // Drop email logs table
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}email_log") === false) {
+if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_log") === false) {
     $uninstall_errors[] = 'Failed to remove email log table.';
 }
 
@@ -72,5 +72,6 @@ foreach ($options as $option) {
 }
 
 // Clear any scheduled cron events
-require_once plugin_dir_path(__FILE__) . 'includes/Cron/CronManager.php';
-\FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+require_once FREE_MAIL_SMTP_FILE; 
+require_once dirname(FREE_MAIL_SMTP_FILE) . '/includes/Cron/CronManager.php';
+\TurboSMTP\FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();

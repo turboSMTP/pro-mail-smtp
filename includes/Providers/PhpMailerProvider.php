@@ -1,11 +1,6 @@
 <?php
-namespace FreeMailSMTP\Providers;
-
-if ( ! class_exists( 'PHPMailer\PHPMailer\PHPMailer' ) ) {
-    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
-    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
-    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
-}
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;

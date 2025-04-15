@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Providers;
+namespace TurboSMTP\FreeMailSMTP\Providers;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Mailgun extends BaseProvider
 {

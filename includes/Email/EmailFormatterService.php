@@ -1,5 +1,6 @@
 <?php
-namespace FreeMailSMTP\Email;
+namespace TurboSMTP\FreeMailSMTP\Email;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Class EmailFormatterService

@@ -1,6 +1,7 @@
 <?php
 
-namespace FreeMailSMTP\Helpers;
+namespace TurboSMTP\FreeMailSMTP\Helpers;
+ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginListUpdater {
 
@@ -11,7 +12,7 @@ class PluginListUpdater {
      */
     public function updateActivePluginsOption() {
         if ( ! function_exists( 'get_plugins' ) ) {
-            include ABSPATH . '/wp-admin/includes/plugin.php';
+            require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
 
         $plugins     = [];
