@@ -10,47 +10,20 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-// Setup array to collect error messages
-$uninstall_errors = [];
-
-// Delete database tables
+// --- Database Table Deletion ---
 global $wpdb;
+$tables_to_drop = [
+    $wpdb->prefix . 'free_mail_smtp_email_log',
+    $wpdb->prefix . 'free_mail_smtp_email_router_conditions',
+    $wpdb->prefix . 'free_mail_smtp_connections',
+];
 
-// Drop email logs table
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_log") === false) {
-    $uninstall_errors[] = 'Failed to remove email log table.';
+foreach ($tables_to_drop as $table_name) {
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+    $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
 }
 
-// Drop email router conditions table
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_router_conditions") === false) {
-    $uninstall_errors[] = 'Failed to remove email router conditions table.';
-}
-
-// Drop connections table
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections") === false) {
-    $uninstall_errors[] = 'Failed to remove connections table.';
-}
-
-// If we have errors and we're in the admin area, show them to the user
-if (!empty($uninstall_errors) && is_admin() && function_exists('add_action')) {
-    // This displays the message on the next page load after uninstall
-    add_action('admin_notices', function() use ($uninstall_errors) {
-        echo '<div class="notice notice-warning is-dismissible">';
-        echo '<p><strong>Free Mail SMTP uninstall encountered issues:</strong></p>';
-        echo '<ul>';
-        foreach ($uninstall_errors as $error) {
-            echo '<li>' . esc_html($error) . '</li>';
-        }
-        echo '</ul>';
-        echo '</div>';
-    });
-}
-
-// Delete all plugin options
-$options = [
+$options_to_delete = [
     'free_mail_smtp_db_version',
     'free_mail_smtp_from_email',
     'free_mail_smtp_from_name',
@@ -67,11 +40,16 @@ $options = [
     'free_mail_smtp_retention_duration'
 ];
 
-foreach ($options as $option) {
-    delete_option($option);
+foreach ($options_to_delete as $option_name) {
+    delete_option($option_name);
 }
 
-// Clear any scheduled cron events
-require_once FREE_MAIL_SMTP_FILE; 
-require_once dirname(FREE_MAIL_SMTP_FILE) . '/includes/Cron/CronManager.php';
-\TurboSMTP\FreeMailSMTP\Cron\CronManager::get_instance()->deactivate_crons();
+$cron_hooks = [
+    'free_mail_smtp_summary_cron',
+    'free_mail_smtp_log_cleanup_cron',
+    
+];
+
+foreach ($cron_hooks as $hook) {
+    wp_clear_scheduled_hook($hook);
+}

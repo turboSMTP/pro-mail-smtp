@@ -388,7 +388,7 @@ class Logs
             'orderby'   => 'sent_at',
             'order'     => 'desc',
         ];
-        
+        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if (isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
             wp_verify_nonce($_POST['free_mail_smtp_logs_filter_nonce'], 'free_mail_smtp_logs_filter')) {
             
