@@ -41,7 +41,7 @@ A powerful WordPress plugin that enhances email deliverability by connecting you
 ## 📋 Requirements
 
 - WordPress 5.2 or higher
-- PHP 7.2 or higher
+- PHP 7.4 or higher
 - Access to your site's server or hosting control panel
 
 ## 🔧 Installation
