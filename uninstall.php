@@ -22,16 +22,16 @@ if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_log")
     $uninstall_errors[] = 'Failed to remove email log table.';
 }
 
-// Drop connections table
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections") === false) {
-    $uninstall_errors[] = 'Failed to remove connections table.';
-}
-
 // Drop email router conditions table
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
 if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_email_router_conditions") === false) {
     $uninstall_errors[] = 'Failed to remove email router conditions table.';
+}
+
+// Drop connections table
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
+if ($wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}free_mail_smtp_connections") === false) {
+    $uninstall_errors[] = 'Failed to remove connections table.';
 }
 
 // If we have errors and we're in the admin area, show them to the user
