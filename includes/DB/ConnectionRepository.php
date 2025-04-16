@@ -115,7 +115,8 @@ class ConnectionRepository {
         $results = $wpdb->get_results("SELECT * FROM {$this->table} ORDER BY priority ASC");
         if ($results) {
             foreach ($results as &$row) {
-                $row->connection_data = json_decode($row->connection_data, true);
+                $decoded_data = json_decode($row->connection_data, true);
+                $row->connection_data = is_array($decoded_data) ? $decoded_data : [];
             }
         }
         return $results;

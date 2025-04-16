@@ -92,7 +92,8 @@ class Analytics {
         ];
         
         if (isset($_POST['filter_action']) && $_POST['filter_action'] === 'filter_analytics') {
-            if (!isset($_POST['free_mail_smtp_analytics_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_analytics_nonce'])), 'free_mail_smtp_analytics')) {
+            if (!isset($_POST['free_mail_smtp_analytics_nonce']) || 
+                !wp_verify_nonce($_POST['free_mail_smtp_analytics_nonce'], 'free_mail_smtp_analytics')) {
                 wp_die('Security check failed. Please try again.');
             }
             
@@ -109,17 +110,6 @@ class Analytics {
             return $filter_data;
         }
         
-        if (isset($_GET['provider']) || isset($_GET['status']) || isset($_GET['date_from']) || isset($_GET['date_to'])) {
-            return [
-                'selected_provider' => isset($_GET['provider']) ? sanitize_text_field(wp_unslash($_GET['provider'])) : $defaults['selected_provider'],
-                'selected_status'   => isset($_GET['status']) ? sanitize_text_field(wp_unslash($_GET['status'])) : $defaults['selected_status'],
-                'date_from'         => isset($_GET['date_from']) ? sanitize_text_field(wp_unslash($_GET['date_from'])) : $defaults['date_from'],
-                'date_to'           => isset($_GET['date_to']) ? sanitize_text_field(wp_unslash($_GET['date_to'])) : $defaults['date_to'],
-                'page'              => isset($_GET['page']) ? (int) $_GET['page'] : $defaults['page'],
-                'per_page'          => isset($_GET['per_page']) ? (int) $_GET['per_page'] : $defaults['per_page']
-            ];
-        }
-        
         $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_analytics_filters', true);
         if (!empty($saved_filters) && is_array($saved_filters)) {
             return array_merge($defaults, $saved_filters);
@@ -129,7 +119,7 @@ class Analytics {
     }
 
     public function fetch_provider_analytics() {
-        check_ajax_referer('free_mail_smtp_analytics', 'nonce');
+        check_ajax_referer('free_mail_smtp_analytics', 'nonce', true);
 
         $provider_id = isset($_POST['filters']['provider']) ? sanitize_text_field(wp_unslash($_POST['filters']['provider'])) : '';
         $status = isset($_POST['filters']['status']) ? sanitize_text_field(wp_unslash($_POST['filters']['status'])) : '';

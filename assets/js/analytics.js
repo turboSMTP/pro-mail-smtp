@@ -4,20 +4,54 @@ jQuery(document).ready(function($) {
     var perPage = 10;
     var totalPages = 1;
 
+    $('#analytics-filter-form').on('submit', function(e) {
+        e.preventDefault();
+        currentPage = 1; 
+        loadAnalyticsData();
+    });
+
     $('#apply-filters').on('click', function() {
         currentPage = 1; 
         loadAnalyticsData();
     });
 
+    // Handle pagination via AJAX
     $('#prev-page').on('click', function() {
         if (currentPage > 1) {
             currentPage--;
             loadAnalyticsData();
         }
     });
+    
     $('#next-page').on('click', function() {
-            currentPage++;
+        currentPage++;
         loadAnalyticsData();
+    });
+    
+    function updatePaginationFormFromFilters() {
+        $('#pagination-provider-input').val($('#provider-filter').val());
+        $('#pagination-status-input').val($('#status-filter').val());
+        $('#pagination-date-from-input').val($('#date-from').val());
+        $('#pagination-date-to-input').val($('#date-to').val());
+        $('#pagination-per-page-input').val($('#per-page').val());
+    }
+    
+    $('.pagination-form-submit').on('click', function() {
+        if (!$(this).prop('disabled')) {
+            updatePaginationFormFromFilters();
+            
+            if ($(this).hasClass('prev-page')) {
+                var currentPageNum = parseInt($('#current-page').text().split(' ')[0]);
+                $('#pagination-page-input').val(Math.max(1, currentPageNum - 1));
+            } else {
+                var currentPageNum = parseInt($('#current-page').text().split(' ')[0]);
+                $('#pagination-page-input').val(currentPageNum + 1);
+            }
+            
+            // Submit the hidden form
+            $('#pagination-form').submit();
+        }
+        return false;
     });
 
     function loadAnalyticsData() {

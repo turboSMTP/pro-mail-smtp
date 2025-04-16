@@ -48,9 +48,6 @@ class Logs
             'ajaxUrl' => esc_url(admin_url('admin-ajax.php')),
             'nonce' => wp_create_nonce('free_mail_smtp_logs'),
             'i18n' => [
-                'confirmDelete' => __('Are you sure you want to delete the selected logs?', 'free-mail-smtp'),
-                'noLogsSelected' => __('Please select at least one log to delete.', 'free-mail-smtp'),
-                'deleted' => __('Selected logs have been deleted.', 'free-mail-smtp'),
                 'error' => __('An error occurred. Please try again.', 'free-mail-smtp')
             ]
         ]);
@@ -392,54 +389,56 @@ class Logs
             'order'     => 'desc',
         ];
         
-        if (isset($_POST['filter_action']) && 
-            isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
-            wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['free_mail_smtp_logs_filter_nonce'])), 'free_mail_smtp_logs_filter')) {
-            
-            $is_reset = empty($_POST['provider']) && 
-                        empty($_POST['status']) && 
-                        empty($_POST['search']) && 
-                        empty($_POST['date_from']) && 
-                        empty($_POST['date_to']) && 
-                        !empty($_POST['orderby']) && 
-                        $_POST['orderby'] === 'sent_at' && 
-                        !empty($_POST['order']) &&
-                        $_POST['order'] === 'desc';
-            
-            if ($is_reset) {
-                // Clear saved filters
-                delete_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters');
-                return $defaults;
-            }
+        if (isset($_POST['free_mail_smtp_logs_filter_nonce']) && 
+            wp_verify_nonce($_POST['free_mail_smtp_logs_filter_nonce'], 'free_mail_smtp_logs_filter')) {
             
             $filter_data = [
-                'paged'     => isset($_POST['paged']) ? max(1, absint(wp_unslash($_POST['paged']))) : $defaults['paged'],
+                'paged'     => isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : $defaults['paged'],
                 'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : $defaults['provider'],
                 'status'    => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : $defaults['status'],
                 'search'    => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : $defaults['search'],
                 'date_from' => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : $defaults['date_from'],
                 'date_to'   => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : $defaults['date_to'],
                 'orderby'   => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : $defaults['orderby'],
-                'order'     => isset($_POST['order']) && in_array(strtolower(wp_unslash($_POST['order'])), ['asc', 'desc'], true) 
+                'order'     => isset($_POST['order']) && in_array(strtolower($_POST['order']), ['asc', 'desc'], true) 
                             ? strtolower(sanitize_text_field(wp_unslash($_POST['order']))) 
                             : $defaults['order'],
             ];
             
-            update_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', $filter_data);
+            $is_pagination_or_sort_only = isset($_POST['filter_action']) && 
+                                          $_POST['filter_action'] === 'filter_logs' &&
+                                          isset($_POST['paged']);
+                                          
+            $is_reset = isset($_POST['filter_action']) && 
+                        $_POST['filter_action'] === 'filter_logs' &&
+                        empty($_POST['provider']) && 
+                        empty($_POST['status']) && 
+                        empty($_POST['search']) && 
+                        empty($_POST['date_from']) && 
+                        empty($_POST['date_to']) &&
+                        $_POST['paged'] == 1 &&
+                        $_POST['orderby'] === 'sent_at' && 
+                        $_POST['order'] === 'desc';
+            
+            if ($is_reset) {
+                delete_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters');
+                return $defaults;
+            }
+            
+            if (!$is_pagination_or_sort_only || isset($_POST['provider']) || isset($_POST['status']) || 
+                !empty($_POST['search']) || !empty($_POST['date_from']) || !empty($_POST['date_to'])) {
+                
+                $filter_save = $filter_data;
+                $filter_save['paged'] = 1; 
+                update_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', $filter_save);
+            } else {
+                $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', true);
+                if (!empty($saved_filters) && is_array($saved_filters)) {
+                    $filter_data = array_merge($saved_filters, ['paged' => $filter_data['paged']]);
+                }
+            }
+            
             return $filter_data;
-        }
-        
-        if (isset($_GET['paged'])) {
-            return [
-                'paged'     => max(1, absint(wp_unslash($_GET['paged']))),
-                'provider'  => $defaults['provider'],
-                'status'    => $defaults['status'],
-                'search'    => $defaults['search'],
-                'date_from' => $defaults['date_from'],
-                'date_to'   => $defaults['date_to'],
-                'orderby'   => $defaults['orderby'],
-                'order'     => $defaults['order'],
-            ];
         }
         
         $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_log_filters', true);
@@ -499,11 +498,11 @@ class Logs
         echo '<span class="pagination-links">';
         
         $first_page_disabled = $current_page <= 1 ? 'disabled' : '';
-        echo '<a class="first-page button ' . esc_attr($first_page_disabled) . '" href="' . esc_url(add_query_arg('paged', 1)) . '" aria-label="' . esc_attr__('Go to the first page', 'free-mail-smtp') . '">&laquo;</a>';
+        echo '<button type="button" class="first-page button pagination-button ' . esc_attr($first_page_disabled) . '" data-page="1" aria-label="' . esc_attr__('Go to the first page', 'free-mail-smtp') . '">&laquo;</button>';
         
         $prev_page = max(1, $current_page - 1);
         $prev_page_disabled = $current_page <= 1 ? 'disabled' : '';
-        echo '<a class="prev-page button ' . esc_attr($prev_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $prev_page)) . '" aria-label="' . esc_attr__('Go to the previous page', 'free-mail-smtp') . '">&lsaquo;</a>';
+        echo '<button type="button" class="prev-page button pagination-button ' . esc_attr($prev_page_disabled) . '" data-page="' . esc_attr($prev_page) . '" aria-label="' . esc_attr__('Go to the previous page', 'free-mail-smtp') . '">&lsaquo;</button>';
         
         echo '<span class="paging-input">';
         echo '<span class="tablenav-paging-text">' . absint($current_page) . ' ' . esc_html__('of', 'free-mail-smtp') . ' <span class="total-pages">' . absint($total_pages) . '</span>';
@@ -511,10 +510,10 @@ class Logs
         
         $next_page = min($total_pages, $current_page + 1);
         $next_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
-        echo '<a class="next-page button ' . esc_attr($next_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $next_page)) . '" aria-label="' . esc_attr__('Go to the next page', 'free-mail-smtp') . '">&rsaquo;</a>';
+        echo '<button type="button" class="next-page button pagination-button ' . esc_attr($next_page_disabled) . '" data-page="' . esc_attr($next_page) . '" aria-label="' . esc_attr__('Go to the next page', 'free-mail-smtp') . '">&rsaquo;</button>';
         
         $last_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
-        echo '<a class="last-page button ' . esc_attr($last_page_disabled) . '" href="' . esc_url(add_query_arg('paged', $total_pages)) . '" aria-label="' . esc_attr__('Go to the last page', 'free-mail-smtp') . '">&raquo;</a>';
+        echo '<button type="button" class="last-page button pagination-button ' . esc_attr($last_page_disabled) . '" data-page="' . esc_attr($total_pages) . '" aria-label="' . esc_attr__('Go to the last page', 'free-mail-smtp') . '">&raquo;</button>';
         
         echo '</span>';
         echo '</div>';

@@ -7,12 +7,14 @@ $current_month_end = gmdate('Y-m-d');
 <div class="tablenav top">
     <div class="alignleft actions filters-group">
         <form method="post" id="analytics-filter-form">
-            <?php wp_nonce_field('free_mail_smtp_analytics', 'free_mail_smtp_analytics_nonce'); ?>
+            <?php 
+            wp_nonce_field('free_mail_smtp_analytics', 'free_mail_smtp_analytics_nonce'); 
+            ?>
             <input type="hidden" name="filter_action" value="filter_analytics">
             
             <label for="provider-filter">Provider</label>
             <select id="provider-filter" name="provider">
-                                <?php foreach ($data['providers'] as $provider): ?>
+                <?php foreach ($data['providers'] as $provider): ?>
                     <option value="<?php echo esc_attr($provider->connection_id); ?>"
                             <?php selected($data['filters']['selected_provider'], $provider->connection_id); ?>>
                         <?php echo esc_html($provider->connection_label); ?>
@@ -42,9 +44,9 @@ $current_month_end = gmdate('Y-m-d');
                    min="1" 
                    placeholder="Rows per page">
                    
-            <input type="hidden" name="page" value="<?php echo esc_attr($data['filters']['page'] ?: 1); ?>">
+            <input type="hidden" id="current-page-input" name="page" value="<?php echo esc_attr($data['filters']['page'] ?: 1); ?>">
             
-            <input type="submit" class="button action apply-filter" value="<?php esc_attr_e('Apply Filters', 'free-mail-smtp'); ?>">
+            <button type="submit" class="button action apply-filter"><?php esc_html_e('Apply Filters', 'free-mail-smtp'); ?></button>
         </form>
     </div>
 </div>

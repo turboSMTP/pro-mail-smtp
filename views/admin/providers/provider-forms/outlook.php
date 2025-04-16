@@ -6,7 +6,7 @@
     <p class="description">Note: Ensure your redirect URL is set to <code><?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-providers')); ?></code></p>
 
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
+    <?php wp_nonce_field('free_mail_smtp_nonce_providers', 'free_mail_smtp_nonce_providers'); ?>
         
         <input type="hidden" name="provider" id="provider" value="outlook">
         <input type="hidden" name="connection_id" id="connection_id" value="">

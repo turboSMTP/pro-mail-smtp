@@ -4,7 +4,7 @@
 
     <p class="description">Enter your Turbo SMTP API credentials below.</p>
     <form id="provider-form" method="post">
-        <?php wp_nonce_field('free_mail_smtp_nonce', 'free_mail_smtp_nonce'); ?>
+    <?php wp_nonce_field('free_mail_smtp_nonce_providers', 'free_mail_smtp_nonce_providers'); ?>
 
         <input type="hidden" name="provider" id="provider" value="turbosmtp">
         <input type="hidden" name="connection_id" id="connection_id" value="">
