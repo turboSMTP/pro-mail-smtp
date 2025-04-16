@@ -2,8 +2,8 @@
 
 <div class="wrap">
     <div class="plugin-header">
-        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="<?php esc_attr_e('Free Mail SMTP', 'free-mail-smtp'); ?>" class="plugin-logo">
-        <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
+    <span class="plugin-logo"></span>
+    <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
     </div>
 
     <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'free-mail-smtp'); ?></p>
@@ -55,8 +55,8 @@
                     <?php if (empty($providers_config)): ?>
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
-                                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="<?php esc_attr_e('No providers', 'free-mail-smtp'); ?>" class="empty-state-icon">
-                                <p><?php esc_html_e('It seems you haven\'t added any providers yet.', 'free-mail-smtp'); ?></p>
+                            <span class="empty-state-icon"></span>
+                            <p><?php esc_html_e('It seems you haven\'t added any providers yet.', 'free-mail-smtp'); ?></p>
                                 <p>
                                     <?php esc_html_e('Our plugin supports the most important SMTP providers to improve email deliverability.', 'free-mail-smtp'); ?>
                                 </p>
@@ -65,9 +65,9 @@
                                     <?php
                                     foreach ($providers_list as $provider): ?>
                                         <?php if ($provider['name'] !== 'other'): ?>
-                                            <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$provider['name']}.svg", FREE_MAIL_SMTP_FILE)); ?>"
-                                                alt=""
-                                                class="provider-icon">
+                                            <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider['name']); ?>"
+      title="<?php echo esc_attr($provider['label']); ?>"></span>
+
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 </div>
@@ -91,9 +91,9 @@
                                     <?php echo esc_html($provider->priority); ?>
                                 </td>
                                 <td class="column-provider">
-                                    <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$provider->provider}.svg", FREE_MAIL_SMTP_FILE)); ?>"
-                                        alt=""
-                                        class="provider-icon">
+                                <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider->provider); ?>"
+      title="<?php echo esc_attr($providers_list[$provider->provider]['label']); ?>"></span>
+
                                     <strong><?php echo esc_html($providers_list[$provider->provider]['label']); ?></strong>
                                 </td>
                                 <td>
@@ -152,9 +152,9 @@
                                     <?php if ($info['recommended']): ?>
                                         <div class="ribbon-recommended"><?php esc_html_e('Recommended', 'free-mail-smtp'); ?></div>
                                     <?php endif; ?>
-                                    <img src="<?php echo esc_url(plugins_url("assets/img/providers/{$key}.svg", FREE_MAIL_SMTP_FILE)); ?>"
-                                        alt="<?php echo esc_attr($info['label']); ?>"
-                                        onerror="this.src='<?php echo esc_url(plugins_url('assets/img/providers/default.svg', FREE_MAIL_SMTP_FILE)); ?>'">
+                                    <span class="provider-icon-css provider-icon-<?php echo esc_attr($key); ?>"
+      title="<?php echo esc_attr($info['label']);?>"></span>
+
                                     <h4><?php echo esc_html($info['label']); ?></h4>
                                 </div>
                             <?php endforeach; ?>

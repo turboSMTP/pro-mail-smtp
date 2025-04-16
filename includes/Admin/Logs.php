@@ -91,7 +91,7 @@ class Logs
 
         <div class="wrap free_mail_smtp-wrap">
             <div class="plugin-header">
-                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="Free Mail SMTP" class="plugin-logo">
+            <span class="plugin-logo"></span>
                 <h1>FREE MAIL <span>SMTP</span></h1>
             </div>
 

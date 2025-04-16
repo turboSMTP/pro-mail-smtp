@@ -1,8 +1,8 @@
 <?php defined('ABSPATH') || exit; ?>
 <div class="wrap">
     <div class="plugin-header">
-        <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="<?php esc_attr_e('Free Mail SMTP', 'free-mail-smtp'); ?>" class="plugin-logo">
-        <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
+    <span class="plugin-logo"></span>
+    <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
     </div>
 
     <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'free-mail-smtp'); ?></p>
@@ -37,7 +37,7 @@
                     <?php if (empty($conditions_list)): ?>
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
-                                <img src="<?php echo esc_url(plugins_url('assets/img/icon-svg.svg', FREE_MAIL_SMTP_FILE)); ?>" alt="<?php esc_attr_e('No providers', 'free-mail-smtp'); ?>" class="empty-state-icon">
+                                <span class="empty-state-icon"></span>
                                 <p><?php esc_html_e('It seems you haven\'t added any routing condition yet. Get started now.', 'free-mail-smtp'); ?></p>
                                 <button type="button" class="button button-primary save-condition" id="add-router-condition-button">
                                     <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Router Condition', 'free-mail-smtp'); ?>

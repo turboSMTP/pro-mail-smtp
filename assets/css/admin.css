@@ -44,6 +44,7 @@
   font-size: 15px;
   font-weight: bold;
 }
+
 .free-mail-smtp-nav-tab:hover {
   color: #ff6e79;
 }
@@ -112,6 +113,7 @@
   float: right;
   top: -12px;
 }
+
 .page-title-action.add-provider:focus,
 .page-title-action.add-provider:active,
 .page-title-action.add-provider:hover,
@@ -159,7 +161,9 @@
   vertical-align: middle !important;
   gap: 8px;
 }
-.column-provider img, strong {
+
+.column-provider img,
+strong {
   padding: 9px 9px 9px !important;
 }
 
@@ -168,6 +172,7 @@
   vertical-align: middle !important;
   padding: 9px 18px 9px !important;
 }
+
 .column-priority {
   font-weight: 500;
   vertical-align: middle !important;
@@ -265,7 +270,7 @@
   background: white;
   padding: 24px;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
 
@@ -323,6 +328,7 @@ input[type="email"] {
   font-size: 13px;
   text-decoration: none;
 }
+
 .button-primary:hover.save-provider:hover,
 .button-primary.save-condition:hover {
   background: #ff5252 !important;
@@ -348,7 +354,14 @@ input[type="email"] {
 
 .empty-state-icon {
   width: 130px;
+  height: 130px;
   margin-bottom: 20px;
+  display: inline-block;
+  background-image: url('../img/icon-svg.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
 }
 
 .empty-state p {
@@ -383,199 +396,256 @@ input[type="email"] {
 }
 
 .danger-zone {
-    border-top: 1px solid #ddd;
-    margin-top: 30px;
-    padding-top: 20px;
+  border-top: 1px solid #ddd;
+  margin-top: 30px;
+  padding-top: 20px;
 }
 
 .button-danger {
-    background: #dc3545 !important;
-    border-color: #dc3545 !important;
-    color: #fff !important;
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
 }
 
 .button-danger:hover {
-    background: #bd2130 !important;
-    border-color: #bd2130 !important;
+  background: #bd2130 !important;
+  border-color: #bd2130 !important;
 }
 
 #data-deletion-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 #data-deletion-modal .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 400px;
-    border-radius: 5px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  border-radius: 5px;
 }
 
 #data-deletion-modal .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 #data-deletion-modal .modal-body {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 #data-deletion-modal .modal-actions {
-    text-align: right;
+  text-align: right;
 }
 
 #data-deletion-modal .modal-close {
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 #data-deletion-modal .confirmation-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
 }
 
 /* Import Button Animation */
 #import {
-    background: linear-gradient(45deg, #ff6e79, rgb(248, 156, 163));
-    border: none;
-    color: black;
-    animation: gradientGlow 3s ease-in-out infinite alternate;
-    background-size: 200% 200%;
-    transition: all 0.3s ease;
+  background: linear-gradient(45deg, #ff6e79, rgb(248, 156, 163));
+  border: none;
+  color: black;
+  animation: gradientGlow 3s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+  transition: all 0.3s ease;
 }
 
 #import:hover {
-    background-size: 100% 100%;
-    transform: translateY(-2px);
+  background-size: 100% 100%;
+  transform: translateY(-2px);
 }
 
 @keyframes gradientGlow {
-    0% {
-        background-position: 0% 50%;
-        filter: brightness(100%);
-    }
+  0% {
+    background-position: 0% 50%;
+    filter: brightness(100%);
+  }
 
-    100% {
-        background-position: 100% 50%;
-        filter: brightness(130%);
-    }
+  100% {
+    background-position: 100% 50%;
+    filter: brightness(130%);
+  }
 }
 
 /* Settings Wrapper */
 .general-settings-wrapper {
-    background: #fff;
-    border: 1px solid #ccd0d4;
-    border-radius: 4px;
-    margin-top: 20px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  border-radius: 4px;
+  margin-top: 20px;
 }
 
 .settings-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #ccd0d4;
-    background: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #ccd0d4;
+  background: #f8f9fa;
 }
 
 .settings-header h2 {
-    margin: 0;
-    font-size: 16px;
-    color: #1d2327;
+  margin: 0;
+  font-size: 16px;
+  color: #1d2327;
 }
 
 .toggle-container {
-    position: relative;
+  position: relative;
 }
 
 .toggle-settings {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .suggested-providers {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .suggested-providers img {
-    width: 50px;
-    padding: 8px;
-    height: auto;
-    transition: transform 0.3s ease-in-out;
+  width: 50px;
+  padding: 8px;
+  height: auto;
+  transition: transform 0.3s ease-in-out;
 }
 
 .suggested-providers img:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 .toggle-settings:focus {
-    outline: 1px dotted #ccd0d4;
+  outline: 1px dotted #ccd0d4;
 }
 
 .toggle-icon {
-    fill: currentColor;
-    transition: transform 0.2s ease;
+  fill: currentColor;
+  transition: transform 0.2s ease;
 }
 
 .toggle-settings[aria-expanded="true"] .toggle-icon {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .settings-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-    padding: 0 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  padding: 0 20px;
 }
 
 .settings-content.expanded {
-    max-height: 800px;
-    padding: 20px;
+  max-height: 800px;
+  padding: 20px;
 }
 
 .provider-card {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 
 .provider-card.recommended {
-    border: 1px solid #ff6e79;
+  border: 1px solid #ff6e79;
 }
 
 .ribbon-recommended {
-    position: absolute;
-    top: 22px;
-    right: -33px;
-    background: #ff6e79;
-    color: white;
-    font-size: 9px;
-    font-weight: bold;
-    padding: 3px 30px;
-    transform: rotate(45deg);
-    z-index: 1;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 22px;
+  right: -33px;
+  background: #ff6e79;
+  color: white;
+  font-size: 9px;
+  font-weight: bold;
+  padding: 3px 30px;
+  transform: rotate(45deg);
+  z-index: 1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+
+.plugin-header .plugin-logo {
+  display: inline-block;
+  background-image: url('../img/icon-svg.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+  padding: 5px;
+}
+
+.provider-icon-css {
+  display: inline-block; 
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle; 
+}
+
+/* --- Specific Provider Icons --- */
+.provider-icon-css.provider-icon-gmail { background-image: url('../img/providers/gmail.svg'); }
+.provider-icon-css.provider-icon-outlook { background-image: url('../img/providers/outlook.svg'); }
+.provider-icon-css.provider-icon-sendgrid { background-image: url('../img/providers/sendgrid.svg'); }
+.provider-icon-css.provider-icon-mailgun { background-image: url('../img/providers/mailgun.svg'); }
+.provider-icon-css.provider-icon-smtp2go { background-image: url('../img/providers/smtp2go.svg'); }
+.provider-icon-css.provider-icon-postmark { background-image: url('../img/providers/postmark.svg'); }
+.provider-icon-css.provider-icon-sparkpost { background-image: url('../img/providers/sparkpost.svg'); }
+.provider-icon-css.provider-icon-other { background-image: url('../img/providers/other.svg'); }
+.provider-icon-css.provider-icon-default { background-image: url('../img/providers/default.svg'); }
+.provider-icon-css.provider-icon-turbosmtp { background-image: url('../img/providers/turbosmtp.svg'); }
+.provider-icon-css.provider-icon-brevo { background-image: url('../img/providers/brevo.svg'); }
+
+
+
+
+
+.suggested-providers .provider-icon-css {
+  width: 32px;
+  height: 32px;
+  margin: 5px;
+}
+
+.providers-table .column-provider .provider-icon-css {
+  width: 30px; 
+  height: 30px;
+  margin-right: 5px; 
+}
+
+.provider-card .provider-icon-css {
+  width: 40px; 
+  height: 40px;
+  margin-bottom: 10px;
+  display: block; 
+  margin-right: 10px;
+}
+
