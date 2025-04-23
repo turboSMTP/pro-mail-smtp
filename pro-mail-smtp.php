@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name: Pro Mail SMTP
- * Plugin URI: https://www.promailsmtp.com
  * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, logging, and advanced routing.
  * Version: 1.0.0
  * Author: turbosmtp

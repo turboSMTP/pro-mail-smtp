@@ -6,7 +6,6 @@ class Installer {
     private $db_version = '1.0';
     public function install() {
         $installed_version = get_option('pro_mail_smtp_db_version', '0');
-        error_log('Installed version: ' . $installed_version);
         $this->create_default_options();
 
         if ($installed_version === '0') {
