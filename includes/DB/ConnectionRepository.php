@@ -1,5 +1,5 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\DB;
+namespace TurboSMTP\ProMailSMTP\DB;
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -9,7 +9,7 @@ class ConnectionRepository {
 
     public function __construct() {
         global $wpdb;
-        $this->table = $wpdb->prefix . 'free_mail_smtp_connections';
+        $this->table = $wpdb->prefix . 'pro_mail_smtp_connections';
     }
     
     public function insert_connection($connection_id, $provider, $connection_data, $priority = 0, $connection_label = '') {

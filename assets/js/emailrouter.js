@@ -110,12 +110,12 @@ jQuery(document).ready(function($) {
         }
 
         $.ajax({
-            url: FreeMailSMTPEmailRouter.ajaxUrl,
+            url: ProMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'free_mail_smtp_save_email_router',
+                action: 'pro_mail_smtp_save_email_router',
                 data: formData,
-                nonce: FreeMailSMTPEmailRouter.nonce
+                nonce: ProMailSMTPEmailRouter.nonce
             },
             success: function(response) {
                 if (response.success) {
@@ -152,9 +152,9 @@ jQuery(document).ready(function($) {
         placeholder.textContent = 'Select Plugin';
         select.appendChild(placeholder);
 
-        if (FreeMailSMTPEmailRouter.pluginsList) {
+        if (ProMailSMTPEmailRouter.pluginsList) {
             try {
-                const plugins = JSON.parse(FreeMailSMTPEmailRouter.pluginsList);
+                const plugins = JSON.parse(ProMailSMTPEmailRouter.pluginsList);
                 plugins.forEach(plugin => {
                     const opt = document.createElement('option');
                     opt.value = plugin.path;
@@ -434,13 +434,13 @@ jQuery(document).ready(function($) {
         const conditionId = $(this).data('id');
         const newStatus = $(this).is(':checked') ? 1 : 0;
         $.ajax({
-            url: FreeMailSMTPEmailRouter.ajaxUrl,
+            url: ProMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'free_mail_smtp_update_email_router_status',
+                action: 'pro_mail_smtp_update_email_router_status',
                 condition_id: conditionId,
                 status: newStatus,
-                nonce: FreeMailSMTPEmailRouter.nonce
+                nonce: ProMailSMTPEmailRouter.nonce
             },
             success: function(response) {
                 if(response.success) {
@@ -458,12 +458,12 @@ jQuery(document).ready(function($) {
     $(document).on('click', '.edit-condition', function() {
         const conditionId = $(this).data('id');
         $.ajax({
-            url: FreeMailSMTPEmailRouter.ajaxUrl,
+            url: ProMailSMTPEmailRouter.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'free_mail_smtp_get_email_router_condition',
+                action: 'pro_mail_smtp_get_email_router_condition',
                 condition_id: conditionId,
-                nonce: FreeMailSMTPEmailRouter.nonce
+                nonce: ProMailSMTPEmailRouter.nonce
             },
             success: function(response) {
                 if (response.success) {
@@ -483,12 +483,12 @@ jQuery(document).ready(function($) {
         const conditionId = $(this).data('id');
         if (confirm('Are you sure you want to delete this condition?')) {
             $.ajax({
-                url: FreeMailSMTPEmailRouter.ajaxUrl,
+                url: ProMailSMTPEmailRouter.ajaxUrl,
                 type: 'POST',
                 data: {
-                    action: 'free_mail_smtp_delete_email_router_condition',
+                    action: 'pro_mail_smtp_delete_email_router_condition',
                     condition_id: conditionId,
-                    nonce: FreeMailSMTPEmailRouter.nonce
+                    nonce: ProMailSMTPEmailRouter.nonce
                 },
                 success: function(response) {
                     if (response.success) {
@@ -614,7 +614,7 @@ jQuery(document).ready(function($) {
         alert('Error loading condition data');
     }
 
-    window.FreeMailSMTPRouter = {
+    window.ProMailSMTPRouter = {
         closeModal,
         addCondition,
         saveRouter,

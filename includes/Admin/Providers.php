@@ -1,9 +1,9 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Admin;
+namespace TurboSMTP\ProMailSMTP\Admin;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\ProMailSMTP\Providers\ProviderFactory;
 
 class Providers
 {
@@ -16,74 +16,74 @@ class Providers
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
-        add_action('wp_ajax_free_mail_smtp_test_provider_connection', [$this, 'test_provider_connection']);
-        add_action('wp_ajax_free_mail_smtp_save_provider', [$this, 'save_provider']);
-        add_action('wp_ajax_free_mail_smtp_delete_provider', [$this, 'delete_provider']);
-        add_action('wp_ajax_free_mail_smtp_load_provider_form', [$this, 'load_provider_form']);
-        add_action('wp_ajax_free_mail_smtp_import_connections', [$this, 'import_connections']);
-        add_action('wp_ajax_free_mail_smtp_set_oauth_token', [$this, 'free_mail_smtp_set_oauth_token']);
+        add_action('wp_ajax_pro_mail_smtp_test_provider_connection', [$this, 'test_provider_connection']);
+        add_action('wp_ajax_pro_mail_smtp_save_provider', [$this, 'save_provider']);
+        add_action('wp_ajax_pro_mail_smtp_delete_provider', [$this, 'delete_provider']);
+        add_action('wp_ajax_pro_mail_smtp_load_provider_form', [$this, 'load_provider_form']);
+        add_action('wp_ajax_pro_mail_smtp_import_connections', [$this, 'import_connections']);
+        add_action('wp_ajax_pro_mail_smtp_set_oauth_token', [$this, 'pro_mail_smtp_set_oauth_token']);
 
         $this->providersList = include __DIR__ . '/../../config/providers-list.php';
         $this->provider_factory = new ProviderFactory();
-        $this->import_connections = new \TurboSMTP\FreeMailSMTP\Core\ImportConnections();
-        $this->plugin_path = FREE_MAIL_SMTP_PATH;
-        $this->provider_manager = new \TurboSMTP\FreeMailSMTP\Core\ProviderManager();
+        $this->import_connections = new \TurboSMTP\ProMailSMTP\Core\ImportConnections();
+        $this->plugin_path = PRO_MAIL_SMTP_PATH;
+        $this->provider_manager = new \TurboSMTP\ProMailSMTP\Core\ProviderManager();
     }
 
     public function enqueue_scripts($hook)
     {
-        if ($hook !== 'toplevel_page_free-mail-smtp-providers') {
+        if ($hook !== 'toplevel_page_pro-mail-smtp-providers') {
             return;
         }
             wp_enqueue_script(
-                'free-mail-smtp-admin',
-                plugins_url('/assets/js/admin.js', FREE_MAIL_SMTP_FILE),
+                'pro-mail-smtp-admin',
+                plugins_url('/assets/js/admin.js', PRO_MAIL_SMTP_FILE),
                 ['jquery'],
-                FREE_MAIL_SMTP_VERSION,
+                PRO_MAIL_SMTP_VERSION,
                 true
             );
             wp_enqueue_script(
-                'free-mail-smtp-oauth-handler',
-                plugins_url('/assets/js/oauth-handler.js', FREE_MAIL_SMTP_FILE),
+                'pro-mail-smtp-oauth-handler',
+                plugins_url('/assets/js/oauth-handler.js', PRO_MAIL_SMTP_FILE),
                 ['jquery'],
-                FREE_MAIL_SMTP_VERSION,
+                PRO_MAIL_SMTP_VERSION,
                 true
             );
             wp_enqueue_script(
-                'free-mail-smtp-provider-forms',
-                plugins_url('/assets/js/provider-forms.js', FREE_MAIL_SMTP_FILE),
+                'pro-mail-smtp-provider-forms',
+                plugins_url('/assets/js/provider-forms.js', PRO_MAIL_SMTP_FILE),
                 ['jquery'],
-                FREE_MAIL_SMTP_VERSION,
+                PRO_MAIL_SMTP_VERSION,
                 true
             );
             
             wp_enqueue_style(
-                'free-mail-smtp-provider-forms',
-                plugins_url('/assets/css/provider-forms.css', FREE_MAIL_SMTP_FILE),
+                'pro-mail-smtp-provider-forms',
+                plugins_url('/assets/css/provider-forms.css', PRO_MAIL_SMTP_FILE),
                 [],
-                FREE_MAIL_SMTP_VERSION
+                PRO_MAIL_SMTP_VERSION
             );
 
-            wp_localize_script('free-mail-smtp-admin', 'FreeMailSMTPAdminProviders', [
+            wp_localize_script('pro-mail-smtp-admin', 'ProMailSMTPAdminProviders', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('free_mail_smtp_nonce_providers'),
-                'adminUrl' => admin_url('admin.php?page=free-mail-smtp-settings'),
+                'nonce' => wp_create_nonce('pro_mail_smtp_nonce_providers'),
+                'adminUrl' => admin_url('admin.php?page=pro-mail-smtp-settings'),
                 'debug' => true
             ]);
-            wp_localize_script('free-mail-smtp-admin', 'FreeMailSMTPOAuth', [
+            wp_localize_script('pro-mail-smtp-admin', 'ProMailSMTPOAuth', [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'redirectUrl' => admin_url('admin.php?page=free-mail-smtp-providers'),
-                'nonce' => wp_create_nonce('free_mail_smtp_set_oauth_token'),
+                'redirectUrl' => admin_url('admin.php?page=pro-mail-smtp-providers'),
+                'nonce' => wp_create_nonce('pro_mail_smtp_set_oauth_token'),
                 'debug' => true
             ]);
             
             wp_localize_script(
-                'free-mail-smtp-oauth-handler',
-                'FreeMailSMTPOAuth',
+                'pro-mail-smtp-oauth-handler',
+                'ProMailSMTPOAuth',
                 array(
                     'ajaxUrl' => admin_url('admin-ajax.php'),
-                    'nonce'   => wp_create_nonce('free_mail_smtp_oauth_nonce'),
-                    'redirectUrl' => admin_url('admin.php?page=free-mail-smtp-providers')
+                    'nonce'   => wp_create_nonce('pro_mail_smtp_oauth_nonce'),
+                    'redirectUrl' => admin_url('admin.php?page=pro-mail-smtp-providers')
                 )
             );
     }
@@ -91,10 +91,10 @@ class Providers
     public function render()
     {
         if (!current_user_can('manage_options')) {
-            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'free-mail-smtp'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'pro-mail-smtp'));
         }
 
-        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
         $providers_config = $conn_repo->get_all_connections();
         $providers_list = $this->providersList;
         $import_available = $this->import_connections->isImportAvailable();
@@ -104,7 +104,7 @@ class Providers
             include $view_file;
         } else {
             echo '<div class="wrap">';
-            echo '<h1>Free Mail SMTP Providers</h1>';
+            echo '<h1>Pro Mail SMTP Providers</h1>';
             echo '<div class="notice notice-error"><p>Error: View file not found.</p></div>';
             echo '</div>';
         }
@@ -112,7 +112,7 @@ class Providers
 
     public function save_provider()
     {
-        check_ajax_referer('free_mail_smtp_nonce_providers', 'nonce');
+        check_ajax_referer('pro_mail_smtp_nonce_providers', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -145,9 +145,9 @@ class Providers
         ]);
     }
 
-    public function free_mail_smtp_set_oauth_token()
+    public function pro_mail_smtp_set_oauth_token()
     {
-        check_ajax_referer('free_mail_smtp_set_oauth_token', 'nonce');
+        check_ajax_referer('pro_mail_smtp_set_oauth_token', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -158,7 +158,7 @@ class Providers
             return;
         }
         $provider_type = sanitize_text_field(wp_unslash($_POST['provider_type']));
-        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
         $providers = $conn_repo->get_all_connections();
         $connection = null;
         foreach ($providers as $prov) {
@@ -200,7 +200,7 @@ class Providers
 
     public function test_provider_connection()
     {
-        check_ajax_referer('free_mail_smtp_nonce_providers', 'nonce');
+        check_ajax_referer('pro_mail_smtp_nonce_providers', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -210,7 +210,7 @@ class Providers
             return;
         }
         $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
-        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -233,7 +233,7 @@ class Providers
 
     public function delete_provider()
     {
-        check_ajax_referer('free_mail_smtp_nonce_providers', 'nonce');
+        check_ajax_referer('pro_mail_smtp_nonce_providers', 'nonce');
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
             return;
@@ -243,7 +243,7 @@ class Providers
             return;
         }
         $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
-        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
         $connection = $conn_repo->get_connection($connection_id);
         if (!$connection) {
             wp_send_json_error('Provider not found');
@@ -257,7 +257,7 @@ class Providers
 
     public function load_provider_form()
     {
-        check_ajax_referer('free_mail_smtp_nonce_providers', 'nonce');
+        check_ajax_referer('pro_mail_smtp_nonce_providers', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');
@@ -290,15 +290,15 @@ class Providers
     private function clear_provider_tokens($provider)
     {
         if ($provider['provider'] === 'gmail') {
-            delete_option('free_mail_smtp_gmail_access_token');
-            delete_option('free_mail_smtp_gmail_refresh_token');
+            delete_option('pro_mail_smtp_gmail_access_token');
+            delete_option('pro_mail_smtp_gmail_refresh_token');
         }
     }
 
 
     public function import_connections()
     {
-        check_ajax_referer('free_mail_smtp_import', 'nonce');
+        check_ajax_referer('pro_mail_smtp_import', 'nonce');
 
         if (!current_user_can('manage_options')) {
             wp_send_json_error('Unauthorized');

@@ -8,7 +8,7 @@ $current_month_end = gmdate('Y-m-d');
     <div class="alignleft actions filters-group">
         <form method="post" id="analytics-filter-form">
             <?php 
-            wp_nonce_field('free_mail_smtp_analytics', 'free_mail_smtp_analytics_nonce'); 
+            wp_nonce_field('pro_mail_smtp_analytics', 'pro_mail_smtp_analytics_nonce'); 
             ?>
             <input type="hidden" name="filter_action" value="filter_analytics">
             
@@ -46,7 +46,7 @@ $current_month_end = gmdate('Y-m-d');
                    
             <input type="hidden" id="current-page-input" name="page" value="<?php echo esc_attr($data['filters']['page'] ?: 1); ?>">
             
-            <button type="submit" class="button action apply-filter"><?php esc_html_e('Apply Filters', 'free-mail-smtp'); ?></button>
+            <button type="submit" class="button action apply-filter"><?php esc_html_e('Apply Filters', 'pro-mail-smtp'); ?></button>
         </form>
     </div>
 </div>

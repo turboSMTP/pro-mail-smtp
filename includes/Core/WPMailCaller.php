@@ -1,9 +1,9 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Core;
+namespace TurboSMTP\ProMailSMTP\Core;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-use TurboSMTP\FreeMailSMTP\Helpers\PluginSourceCache;
+use TurboSMTP\ProMailSMTP\Helpers\PluginSourceCache;
 
 class WPMailCaller
 {

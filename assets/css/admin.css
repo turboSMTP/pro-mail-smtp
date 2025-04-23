@@ -27,13 +27,13 @@
 }
 
 /* Tabs */
-.free-mail-smtp-nav-tab-wrapper {
+.pro-mail-smtp-nav-tab-wrapper {
   border-bottom: 1px solid #ddd;
   margin-bottom: 25px;
   padding-top: 0;
 }
 
-.free-mail-smtp-nav-tab {
+.pro-mail-smtp-nav-tab {
   display: inline-block;
   padding: 12px 24px;
   color: #666;
@@ -45,16 +45,16 @@
   font-weight: bold;
 }
 
-.free-mail-smtp-nav-tab:hover {
+.pro-mail-smtp-nav-tab:hover {
   color: #ff6e79;
 }
 
-.free-mail-smtp-nav-tab-active {
+.pro-mail-smtp-nav-tab-active {
   color: #ff6e79;
   border-bottom: 2px solid #ff6e79;
 }
 
-.free-mail-smtp-nav-tab-active:hover {
+.pro-mail-smtp-nav-tab-active:hover {
   color: #666;
 }
 

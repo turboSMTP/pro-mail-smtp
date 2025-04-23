@@ -27,7 +27,7 @@
             <div id="if-section" class="toggle-content">
                 <div id="conditionBuilder">
                     <div id="conditions"></div>
-                    <button type="button" class="btn add-btn" onclick="FreeMailSMTPRouter.addCondition()">Add Condition</button>
+                    <button type="button" class="btn add-btn" onclick="ProMailSMTPRouter.addCondition()">Add Condition</button>
                 </div>
             </div>
 

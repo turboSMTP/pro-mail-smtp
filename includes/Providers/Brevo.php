@@ -1,5 +1,5 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\Providers;
+namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Brevo extends BaseProvider {

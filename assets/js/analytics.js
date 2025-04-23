@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    console.log("Free Mail SMTP Analytics JS loaded");
+    console.log("Pro Mail SMTP Analytics JS loaded");
     var currentPage = 1;
     var perPage = 10;
     var totalPages = 1;
@@ -81,11 +81,11 @@ jQuery(document).ready(function($) {
         var thead = $('.analytics-table thead');
 
         $.ajax({
-            url: FreeMailSMTPAnalytics.ajaxUrl,
+            url: ProMailSMTPAnalytics.ajaxUrl,
             method: 'POST',
             data: {
-                action: 'free_mail_smtp_fetch_provider_analytics',
-                nonce: FreeMailSMTPAnalytics.nonce,
+                action: 'pro_mail_smtp_fetch_provider_analytics',
+                nonce: ProMailSMTPAnalytics.nonce,
                 filters: filters
             },
             success: function(response) {

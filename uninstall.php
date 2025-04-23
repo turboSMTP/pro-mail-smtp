@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall script for Free Mail SMTP
+ * Uninstall script for Pro Mail SMTP
  *
  * This file runs when the plugin is deleted from the WordPress admin.
  */
@@ -13,9 +13,9 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 // --- Database Table Deletion ---
 global $wpdb;
 $tables_to_drop = [
-    $wpdb->prefix . 'free_mail_smtp_email_log',
-    $wpdb->prefix . 'free_mail_smtp_email_router_conditions',
-    $wpdb->prefix . 'free_mail_smtp_connections',
+    $wpdb->prefix . 'pro_mail_smtp_email_log',
+    $wpdb->prefix . 'pro_mail_smtp_email_router_conditions',
+    $wpdb->prefix . 'pro_mail_smtp_connections',
 ];
 
 foreach ($tables_to_drop as $table_name) {
@@ -24,20 +24,20 @@ foreach ($tables_to_drop as $table_name) {
 }
 
 $options_to_delete = [
-    'free_mail_smtp_db_version',
-    'free_mail_smtp_from_email',
-    'free_mail_smtp_from_name',
-    'free_mail_smtp_enable_summary',
-    'free_mail_smtp_summary_email',
-    'free_mail_smtp_summary_frequency',
-    'free_mail_smtp_fallback_to_wp_mail',
-    'free_mail_smtp_gmail_access_token',
-    'free_mail_smtp_gmail_refresh_token',
-    'free_mail_smtp_outlook_refresh_token',
-    'free_mail_smtp_outlook_access_token',
-    'free_mail_smtp_import_easysmtp_notice_dismissed',
-    'free_mail_smtp_import_wpmail_notice_dismissed',
-    'free_mail_smtp_retention_duration'
+    'pro_mail_smtp_db_version',
+    'pro_mail_smtp_from_email',
+    'pro_mail_smtp_from_name',
+    'pro_mail_smtp_enable_summary',
+    'pro_mail_smtp_summary_email',
+    'pro_mail_smtp_summary_frequency',
+    'pro_mail_smtp_fallback_to_wp_mail',
+    'pro_mail_smtp_gmail_access_token',
+    'pro_mail_smtp_gmail_refresh_token',
+    'pro_mail_smtp_outlook_refresh_token',
+    'pro_mail_smtp_outlook_access_token',
+    'pro_mail_smtp_import_easysmtp_notice_dismissed',
+    'pro_mail_smtp_import_wpmail_notice_dismissed',
+    'pro_mail_smtp_retention_duration'
 ];
 
 foreach ($options_to_delete as $option_name) {
@@ -45,8 +45,8 @@ foreach ($options_to_delete as $option_name) {
 }
 
 $cron_hooks = [
-    'free_mail_smtp_summary_cron',
-    'free_mail_smtp_log_cleanup_cron',
+    'pro_mail_smtp_summary_cron',
+    'pro_mail_smtp_log_cleanup_cron',
     
 ];
 

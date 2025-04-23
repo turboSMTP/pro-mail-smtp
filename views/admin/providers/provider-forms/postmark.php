@@ -4,7 +4,7 @@
     <p class="description">Enter your Postmark API credentials below.</p>
 
     <form id="provider-form" method="post">
-    <?php wp_nonce_field('free_mail_smtp_nonce_providers', 'free_mail_smtp_nonce_providers'); ?>
+    <?php wp_nonce_field('pro_mail_smtp_nonce_providers', 'pro_mail_smtp_nonce_providers'); ?>
         
         <input type="hidden" name="provider" id="provider" value="postmark">
         <input type="hidden" name="connection_id" id="connection_id" value="">

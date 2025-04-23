@@ -1,12 +1,12 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\DB;
+namespace TurboSMTP\ProMailSMTP\DB;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EmailLogRepository {
     public function get_logs($filters) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
 
         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM {$table_name}";
         $where = [];

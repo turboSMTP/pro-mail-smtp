@@ -1,5 +1,5 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\DB;
+namespace TurboSMTP\ProMailSMTP\DB;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,7 +8,7 @@ class ConditionRepository {
 	
 	public function __construct( ) {
 		global $wpdb;
-		$this->table = $wpdb->prefix . 'free_mail_smtp_email_router_conditions';
+		$this->table = $wpdb->prefix . 'pro_mail_smtp_email_router_conditions';
 	}
 	
 	public function get_condition( $id ) {

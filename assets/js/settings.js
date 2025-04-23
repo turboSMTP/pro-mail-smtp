@@ -1,8 +1,8 @@
 jQuery(document).ready(function ($) {
-    console.log("Free Mail SMTP Settings JS loaded");
+    console.log("Pro Mail SMTP Settings JS loaded");
   
     // Open modal when delete button is clicked
-    $('#free-mail-smtp-delete-data').on('click', function() {
+    $('#pro-mail-smtp-delete-data').on('click', function() {
         $('#data-deletion-modal').show();
     });
     
@@ -25,17 +25,17 @@ jQuery(document).ready(function ($) {
             $button.text('Deleting...').prop('disabled', true);
             
             $.ajax({
-                url: FreeMailSMTPAdminSettings.ajaxUrl, 
+                url: ProMailSMTPAdminSettings.ajaxUrl, 
                 type: 'POST',
                 data: {
-                    action: 'free_mail_smtp_delete_all_data',
-                    nonce: FreeMailSMTPAdminSettings.nonce 
+                    action: 'pro_mail_smtp_delete_all_data',
+                    nonce: ProMailSMTPAdminSettings.nonce 
                 },
                 success: function(response) {
                     if (response.success) {
                         $('#data-deletion-modal').hide();
                         alert('All plugin data has been successfully deleted.');
-                        window.location.href = FreeMailSMTPAdminSettings.adminUrl || window.location.href;
+                        window.location.href = ProMailSMTPAdminSettings.adminUrl || window.location.href;
                     } else {
                         alert('Error: ' + (response.data || 'Unknown error occurred'));
                         $button.text('Permanently Delete All Data').prop('disabled', false);

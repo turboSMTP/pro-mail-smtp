@@ -2,25 +2,24 @@
 <div class="wrap">
     <div class="plugin-header">
     <span class="plugin-logo"></span>
-    <h1><?php esc_html_e('FREE MAIL', 'free-mail-smtp'); ?> <span><?php esc_html_e('SMTP', 'free-mail-smtp'); ?></span></h1>
-    </div>
+    <h1><span><?php esc_html_e('PRO', 'pro-mail-smtp'); ?> </span><?php esc_html_e(' MAIL SMTP', 'pro-mail-smtp'); ?></h1>    </div>
 
-    <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'free-mail-smtp'); ?></p>
+    <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'pro-mail-smtp'); ?></p>
 
-    <nav class="free-mail-smtp-nav-tab-wrapper">
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-providers')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Providers', 'free-mail-smtp'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-logs')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Email Logs', 'free-mail-smtp'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-analytics')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Providers Logs', 'free-mail-smtp'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-email-router')); ?>" class="free-mail-smtp-nav-tab free-mail-smtp-nav-tab-active"><?php esc_html_e('Email Router', 'free-mail-smtp'); ?></a>
-        <a href="<?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-settings')); ?>" class="free-mail-smtp-nav-tab"><?php esc_html_e('Settings', 'free-mail-smtp'); ?></a>
+    <nav class="pro-mail-smtp-nav-tab-wrapper">
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-providers')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Providers', 'pro-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-logs')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Email Logs', 'pro-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-analytics')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Providers Logs', 'pro-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-email-router')); ?>" class="pro-mail-smtp-nav-tab pro-mail-smtp-nav-tab-active"><?php esc_html_e('Email Router', 'pro-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-settings')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Settings', 'pro-mail-smtp'); ?></a>
     </nav>
 
-    <?php settings_errors('free_mail_smtp_messages'); ?>
+    <?php settings_errors('pro_mail_smtp_messages'); ?>
 
     <div class="tabset-content">
         <div class="table-header">
             <a href="#" class="page-title-action add-router-condition">
-                <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Router Condition', 'free-mail-smtp'); ?>
+                <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Router Condition', 'pro-mail-smtp'); ?>
             </a>
         </div>
 
@@ -28,9 +27,9 @@
             <table class="widefat fixed providers-table">
                 <thead>
                     <tr>
-                        <th class="column-label"><?php esc_html_e('Label', 'free-mail-smtp'); ?></th>
-                        <th class="column-provider"><?php esc_html_e('Enabled', 'free-mail-smtp'); ?></th>
-                        <th class="column-actions"><?php esc_html_e('Actions', 'free-mail-smtp'); ?></th>
+                        <th class="column-label"><?php esc_html_e('Label', 'pro-mail-smtp'); ?></th>
+                        <th class="column-provider"><?php esc_html_e('Enabled', 'pro-mail-smtp'); ?></th>
+                        <th class="column-actions"><?php esc_html_e('Actions', 'pro-mail-smtp'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,9 +37,9 @@
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
                                 <span class="empty-state-icon"></span>
-                                <p><?php esc_html_e('It seems you haven\'t added any routing condition yet. Get started now.', 'free-mail-smtp'); ?></p>
+                                <p><?php esc_html_e('It seems you haven\'t added any routing condition yet. Get started now.', 'pro-mail-smtp'); ?></p>
                                 <button type="button" class="button button-primary save-condition" id="add-router-condition-button">
-                                    <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Router Condition', 'free-mail-smtp'); ?>
+                                    <span class="dashicons dashicons-plus-alt2"></span> <?php esc_html_e('Add Router Condition', 'pro-mail-smtp'); ?>
                                 </button>
                             </td>
                         </tr>
@@ -60,10 +59,10 @@
                                 </td>
                                 <td class="column-actions">
                                     <button type="button" class="button button-primary edit-condition" data-id="<?php echo esc_attr($condition->id); ?>">
-                                        <span class="dashicons dashicons-edit"></span> <?php esc_html_e('Edit', 'free-mail-smtp'); ?>
+                                        <span class="dashicons dashicons-edit"></span> <?php esc_html_e('Edit', 'pro-mail-smtp'); ?>
                                     </button>
                                     <button type="button" class="button button-secondary delete-condition" data-id="<?php echo esc_attr($condition->id); ?>">
-                                        <span class="dashicons dashicons-trash"></span> <?php esc_html_e('Delete', 'free-mail-smtp'); ?>
+                                        <span class="dashicons dashicons-trash"></span> <?php esc_html_e('Delete', 'pro-mail-smtp'); ?>
                                     </button>
                                 </td>
                             </tr>
@@ -75,12 +74,12 @@
         <div id="router-modal" class="modal" style="display:none;">
             <div class="conditions-modal-content">
                 <div class="conditions-modal-header">
-                    <h2><?php esc_html_e('Configure Router Condition', 'free-mail-smtp'); ?></h2>
-                    <button type="button" onclick="FreeMailSMTPRouter.closeModal(false)" class="conditions-modal-close">&times;</button>
+                    <h2><?php esc_html_e('Configure Router Condition', 'pro-mail-smtp'); ?></h2>
+                    <button type="button" onclick="ProMailSMTPRouter.closeModal(false)" class="conditions-modal-close">&times;</button>
                 </div>
                 <div class="conditions-modal-body">
                     <?php
-                    $modal = FREE_MAIL_SMTP_PATH . '/views/admin/emailrouter/partials/modal.php';
+                    $modal = PRO_MAIL_SMTP_PATH . '/views/admin/emailrouter/partials/modal.php';
                     if (file_exists($modal)) {
                         include $modal;
                     }
@@ -88,8 +87,8 @@
             </div>
             <div class="conditions-modal-footer">
                 <div class="conditions-modal-footer-buttons">
-                    <button type="button" class="btn btn-secondary" onclick="FreeMailSMTPRouter.closeModal(false)"><?php esc_html_e('Close', 'free-mail-smtp'); ?></button>
-                    <button type="button" class="btn btn-primary save-condition" onclick="FreeMailSMTPRouter.saveRouter()"><?php esc_html_e('Save', 'free-mail-smtp'); ?></button>
+                    <button type="button" class="btn btn-secondary" onclick="ProMailSMTPRouter.closeModal(false)"><?php esc_html_e('Close', 'pro-mail-smtp'); ?></button>
+                    <button type="button" class="btn btn-primary save-condition" onclick="ProMailSMTPRouter.saveRouter()"><?php esc_html_e('Save', 'pro-mail-smtp'); ?></button>
                 </div>
             </div>
         </div>

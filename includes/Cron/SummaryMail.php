@@ -1,17 +1,17 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Cron;
+namespace TurboSMTP\ProMailSMTP\Cron;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class SummaryMail implements CronInterface
 {
-    private $hook = 'free_mail_smtp_summary_cron';
+    private $hook = 'pro_mail_smtp_summary_cron';
     private $interval;
 
     public function __construct()
     {
-        $frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
-        $this->interval = $frequency === 'weekly' ? 'weekly' : 'free_mail_smtp_monthly';
+        $frequency = get_option('pro_mail_smtp_summary_frequency', 'weekly');
+        $this->interval = $frequency === 'weekly' ? 'weekly' : 'pro_mail_smtp_monthly';
         add_action($this->hook, [$this, 'handle']);
         add_action('init', [$this, 'maybe_toggle_schedule']);
         add_filter('cron_schedules', [$this, 'add_monthly_interval']);
@@ -19,9 +19,9 @@ class SummaryMail implements CronInterface
 
     public function add_monthly_interval($schedules)
     {
-        $schedules['free_mail_smtp_monthly'] = [
+        $schedules['pro_mail_smtp_monthly'] = [
             'interval' => 30 * DAY_IN_SECONDS,
-            'display' => __('Once Monthly', 'free-mail-smtp')
+            'display' => __('Once Monthly', 'pro-mail-smtp')
         ];
         return $schedules;
     }
@@ -59,7 +59,7 @@ class SummaryMail implements CronInterface
 
     public function maybe_toggle_schedule()
     {
-        $enable_summary = get_option('free_mail_smtp_enable_summary', 0);
+        $enable_summary = get_option('pro_mail_smtp_enable_summary', 0);
         if ($enable_summary) {
             $this->register();
         } else {
@@ -70,7 +70,7 @@ class SummaryMail implements CronInterface
     public function handle()
     {
         $logs = $this->get_logs_since_last_summary();
-        $admin_email = get_option('free_mail_smtp_summary_email', get_option('admin_email'));
+        $admin_email = get_option('pro_mail_smtp_summary_email', get_option('admin_email'));
 
         $subject = sprintf('Email Log Summary - %s', get_bloginfo('name'));
         $message = $this->prepare_summary_message($logs);
@@ -81,7 +81,7 @@ class SummaryMail implements CronInterface
     {
         global $wpdb;
 
-        $frequency = get_option('free_mail_smtp_summary_frequency', 'weekly');
+        $frequency = get_option('pro_mail_smtp_summary_frequency', 'weekly');
         if ($frequency === 'weekly') {
             $date_range = '-7 days';
         } else {
@@ -95,7 +95,7 @@ class SummaryMail implements CronInterface
                 provider, 
                 status, 
                 COUNT(*) as count 
-             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
+             FROM $wpdb->prefix" . "pro_mail_smtp_email_log 
              WHERE sent_at >= %s 
              GROUP BY provider, status",
             $since_date
@@ -106,7 +106,7 @@ class SummaryMail implements CronInterface
             "SELECT 
                 status, 
                 COUNT(*) as count 
-             FROM $wpdb->prefix" . "free_mail_smtp_email_log 
+             FROM $wpdb->prefix" . "pro_mail_smtp_email_log 
              WHERE sent_at >= %s 
              GROUP BY status",
             $since_date
@@ -124,7 +124,7 @@ class SummaryMail implements CronInterface
     {
         $period_text = ($logs['period'] === 'weekly') ? 'Week' : 'Month';
 
-        $message = "Free Mail SMTP Plugin: Email Summary for the Past {$period_text}\n";
+        $message = "Pro Mail SMTP Plugin: Email Summary for the Past {$period_text}\n";
         $message .= "Period: " . gmdate('Y-m-d', strtotime($logs['since_date'])) . " to " . gmdate('Y-m-d') . "\n\n";
 
         $providers = [];

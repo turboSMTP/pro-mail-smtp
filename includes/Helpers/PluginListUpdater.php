@@ -1,6 +1,6 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Helpers;
+namespace TurboSMTP\ProMailSMTP\Helpers;
  if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginListUpdater {
@@ -49,6 +49,6 @@ class PluginListUpdater {
             'name' => 'Core WP',
             'path' => 'Core WP',
         ];
-        update_option( 'free_mail_smtp_active_plugins_list', $plugins );
+        update_option( 'pro_mail_smtp_active_plugins_list', $plugins );
     }
 }

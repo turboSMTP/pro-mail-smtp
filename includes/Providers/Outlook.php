@@ -1,6 +1,6 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Providers;
+namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Outlook extends BaseProvider
@@ -31,22 +31,22 @@ class Outlook extends BaseProvider
         if (isset($token['expires_in'])) {
             $token['expires_at'] = time() + $token['expires_in']; 
         }
-        update_option('free_mail_smtp_outlook_access_token', $token);
+        update_option('pro_mail_smtp_outlook_access_token', $token);
     }
 
     private function save_refresh_token($token)
     {
-        update_option('free_mail_smtp_outlook_refresh_token', $token);
+        update_option('pro_mail_smtp_outlook_refresh_token', $token);
     }
 
     private function get_access_token()
     {
-        return get_option('free_mail_smtp_outlook_access_token');
+        return get_option('pro_mail_smtp_outlook_access_token');
     }
 
     private function get_refresh_token()
     {
-        return get_option('free_mail_smtp_outlook_refresh_token');
+        return get_option('pro_mail_smtp_outlook_refresh_token');
     }
 
     public function send($data)
@@ -133,22 +133,22 @@ class Outlook extends BaseProvider
             $site_name = get_bloginfo('name');
             $site_url = get_bloginfo('url');
             
-            $from_email = get_option('free_mail_smtp_from_email', get_option('admin_email'));
+            $from_email = get_option('pro_mail_smtp_from_email', get_option('admin_email'));
             if (empty($from_email) || !is_string($from_email)) {
                 $from_email = $admin_email;
             }
             
             $test_data = [
                 'to' => [$admin_email],
-                'subject' => 'Free Mail SMTP: Outlook Test Email',
+                'subject' => 'Pro Mail SMTP: Outlook Test Email',
                 'message' => sprintf(
-                    'This is a test email from %s (%s) to verify your Outlook email configuration with Free Mail SMTP plugin.<br><br>If you\'re reading this, your Outlook connection is working properly!<br><br>Sent: %s',
+                    'This is a test email from %s (%s) to verify your Outlook email configuration with Pro Mail SMTP plugin.<br><br>If you\'re reading this, your Outlook connection is working properly!<br><br>Sent: %s',
                     $site_name,
                     $site_url,
                     gmdate('Y-m-d H:i:s')
                 ),
                 'from_email' => $from_email,
-                'from_name' => 'Free Mail SMTP Test'
+                'from_name' => 'Pro Mail SMTP Test'
             ];
             
             $result = $this->send($test_data);
@@ -171,7 +171,7 @@ class Outlook extends BaseProvider
         $params = [
             'client_id'     => $this->config_keys['client_id'],
             'response_type' => 'code',
-            'redirect_uri'  => admin_url('admin.php?page=free-mail-smtp-providers'),
+            'redirect_uri'  => admin_url('admin.php?page=pro-mail-smtp-providers'),
             'response_mode' => 'query',
             'scope'         => 'offline_access Mail.Send',
             'state'         => 'outlook'
@@ -218,7 +218,7 @@ class Outlook extends BaseProvider
                     'client_secret' => $this->config_keys['client_secret'],
                     'code' => $code,
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers')
+                    'redirect_uri' => admin_url('admin.php?page=pro-mail-smtp-providers')
                 ],
                 true,
                 'POST',

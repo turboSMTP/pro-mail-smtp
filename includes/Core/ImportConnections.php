@@ -1,6 +1,6 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Core;
+namespace TurboSMTP\ProMailSMTP\Core;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
@@ -28,7 +28,7 @@ class ImportConnections
     {
         $wpMailSMTP = $this->wpmailOption;
         if (!$wpMailSMTP) {
-            $this->dismissNotice('free_mail_smtp_import_wpmail_notice_dismissed');
+            $this->dismissNotice('pro_mail_smtp_import_wpmail_notice_dismissed');
             return false;
         }
         return true;
@@ -39,7 +39,7 @@ class ImportConnections
         $easySMTP = $this->easysmtpOption;
 
         if (!$easySMTP || !is_array($easySMTP)) {
-            $this->dismissNotice('free_mail_smtp_import_easysmtp_notice_dismissed');
+            $this->dismissNotice('pro_mail_smtp_import_easysmtp_notice_dismissed');
             return false;
         }
         return true;

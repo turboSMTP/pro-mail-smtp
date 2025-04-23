@@ -1,12 +1,12 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\Email;
+namespace TurboSMTP\ProMailSMTP\Email;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
-use TurboSMTP\FreeMailSMTP\Email\EmailFormatterService;
-use TurboSMTP\FreeMailSMTP\Email\EmailRoutingService;
-use TurboSMTP\FreeMailSMTP\Core\WPMailCaller;
-use TurboSMTP\FreeMailSMTP\Providers\PhpMailerProvider;
+use TurboSMTP\ProMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\ProMailSMTP\Email\EmailFormatterService;
+use TurboSMTP\ProMailSMTP\Email\EmailRoutingService;
+use TurboSMTP\ProMailSMTP\Core\WPMailCaller;
+use TurboSMTP\ProMailSMTP\Providers\PhpMailerProvider;
 
 /**
  * Class Manager
@@ -14,7 +14,7 @@ use TurboSMTP\FreeMailSMTP\Providers\PhpMailerProvider;
  * Manages email sending operations through multiple providers with routing capabilities.
  * Handles provider initialization, email routing, and sending attempts with fallback support.
  * 
- * @package TurboSMTP\FreeMailSMTP\Email
+ * @package TurboSMTP\ProMailSMTP\Email
  */
 class Manager {
     private $connections = [];
@@ -41,7 +41,7 @@ class Manager {
      * @return void
      */
     public function init_providers() {
-        $conn_repo = new \TurboSMTP\FreeMailSMTP\DB\ConnectionRepository();
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
         $provider_configs = $conn_repo->get_all_connections();
         foreach ($provider_configs as $config) {
             if (!empty($config->provider) && !empty($config->id) && !empty($config->priority)) {
@@ -84,7 +84,7 @@ class Manager {
             return true;
         }
 
-        if(get_option('free_mail_smtp_fallback_to_wp_mail', true)) {
+        if(get_option('pro_mail_smtp_fallback_to_wp_mail', true)) {
             return $this->fallback_to_wp_mail($args);
         }
         return false;
@@ -212,7 +212,7 @@ class Manager {
      */
     private function log_email($data, $result, $provider, $status, $error = null) {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
         foreach ($data['to'] as $to) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery

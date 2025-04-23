@@ -1,11 +1,11 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Cron;
+namespace TurboSMTP\ProMailSMTP\Cron;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class LogsCleanup implements CronInterface
 {
-    private $hook = 'free_mail_smtp_cleanup_logs';
+    private $hook = 'pro_mail_smtp_cleanup_logs';
     private $interval = 'daily';
 
     public function __construct()
@@ -46,7 +46,7 @@ class LogsCleanup implements CronInterface
 
     public function handle()
     {
-        $current_retention = get_option('free_mail_smtp_retention_duration', 'forever');
+        $current_retention = get_option('pro_mail_smtp_retention_duration', 'forever');
 
         if ($current_retention === 'forever') {
             return;
@@ -58,7 +58,7 @@ class LogsCleanup implements CronInterface
     private function auto_delete_logs($retention)
     {
         global $wpdb;
-        $table_name = $wpdb->prefix . 'free_mail_smtp_email_log';
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         $cutoff = '';
 
         switch ($retention) {
