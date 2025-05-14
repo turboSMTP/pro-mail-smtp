@@ -1,6 +1,6 @@
-# Free Mail SMTP
+# Pro Mail SMTP
 
-![Free Mail SMTP](assets/img/icon-svg.svg)
+![Pro Mail SMTP](assets/img/icon-svg.svg)
 
 A powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
 
@@ -55,13 +55,13 @@ A powerful WordPress plugin that enhances email deliverability by connecting you
 
 ### General Setup
 
-1. Navigate to **Free Mail SMTP → Settings**
+1. Navigate to **Pro Mail SMTP → Settings**
 2. Configure your default "From Email" and "From Name"
 3. Choose whether to enable email summaries and set your preferred frequency
 
 ### Adding Email Providers
 
-1. Go to **Free Mail SMTP → Providers**
+1. Go to **Pro Mail SMTP → Providers**
 2. Click **Add Provider**
 3. Select your email service provider
 4. Enter your credentials:
@@ -73,7 +73,7 @@ A powerful WordPress plugin that enhances email deliverability by connecting you
 
 ### Email Routing (Optional)
 
-1. Navigate to **Free Mail SMTP → Email Router**
+1. Navigate to **Pro Mail SMTP → Email Router**
 2. Create rules to route specific emails through particular providers
 3. Set conditions based on recipient email, source plugin, or other factors
 
@@ -83,7 +83,7 @@ A powerful WordPress plugin that enhances email deliverability by connecting you
 
 Access detailed logs of all emails sent through the plugin:
 
-1. Go to **Free Mail SMTP → Email Logs**
+1. Go to **Pro Mail SMTP → Email Logs**
 2. View status, recipient, subject, and timestamp
 3. Click on any email to see its full details including headers and content
 
@@ -91,7 +91,7 @@ Access detailed logs of all emails sent through the plugin:
 
 View performance metrics for each provider:
 
-1. Navigate to **Free Mail SMTP → Providers Logs**
+1. Navigate to **Pro Mail SMTP → Providers Logs**
 2. See delivery rates, bounces, and other provider-specific metrics
 
 ## 🧩 Advanced Usage
@@ -108,10 +108,10 @@ When detected, you'll see an import banner on the Providers page.
 
 For plugin cleanup or troubleshooting:
 
-1. Go to **Free Mail SMTP → Settings**
+1. Go to **Pro Mail SMTP → Settings**
 2. Scroll to the Data Management section
 3. Use with caution - deletion actions cannot be undone
 
 ## 📄 License
 
-Free Mail SMTP is licensed under the [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.txt)
+Pro Mail SMTP is licensed under the [GPL-2.0+](http://www.gnu.org/licenses/gpl-2.0.txt)

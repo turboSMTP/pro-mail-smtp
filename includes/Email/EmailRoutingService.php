@@ -1,8 +1,8 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\Email;
+namespace TurboSMTP\ProMailSMTP\Email;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-use TurboSMTP\FreeMailSMTP\DB\ConditionRepository;
+use TurboSMTP\ProMailSMTP\DB\ConditionRepository;
 
 class EmailRoutingService {
    private $conditionRepo;
@@ -115,7 +115,6 @@ class EmailRoutingService {
             default:
                 $result = false;
         }
-
         return $result;
     }
 

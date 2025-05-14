@@ -8,7 +8,7 @@
         <span class="pagination-links">
             <button type="button" id="prev-page" class="prev-page button pagination-form-submit" disabled>
                 <span aria-hidden="true">‹</span>
-                <span class="screen-reader-text"><?php esc_html_e('Previous page', 'free-mail-smtp'); ?></span>
+                <span class="screen-reader-text"><?php esc_html_e('Previous page', 'pro-mail-smtp'); ?></span>
             </button>
             
             <span class="paging-input">
@@ -17,14 +17,14 @@
             
             <button type="button" id="next-page" class="next-page button pagination-form-submit">
                 <span aria-hidden="true">›</span>
-                <span class="screen-reader-text"><?php esc_html_e('Next page', 'free-mail-smtp'); ?></span>
+                <span class="screen-reader-text"><?php esc_html_e('Next page', 'pro-mail-smtp'); ?></span>
             </button>
         </span>
     </div>
 </div>
 
 <form id="pagination-form" method="post" style="display: none;">
-    <?php wp_nonce_field('free_mail_smtp_analytics', 'free_mail_smtp_analytics_nonce'); ?>
+    <?php wp_nonce_field('pro_mail_smtp_analytics', 'pro_mail_smtp_analytics_nonce'); ?>
     <input type="hidden" name="filter_action" value="filter_analytics">
     <input type="hidden" name="page" id="pagination-page-input" value="1">
     <input type="hidden" name="provider" id="pagination-provider-input" value="">

@@ -1,10 +1,10 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Cron;
+namespace TurboSMTP\ProMailSMTP\Cron;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Interface for all cron jobs in the Free Mail SMTP plugin.
+ * Interface for all cron jobs in the Pro Mail SMTP plugin.
  *
  * @since 1.0.0
  */

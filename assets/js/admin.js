@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-  console.log("Free Mail SMTP Admin JS loaded");
+  console.log("Pro Mail SMTP Admin JS loaded");
 
   var modal = $("#provider-modal");
   $('.add-provider, #add-provider-button').on('click', function() {
@@ -13,10 +13,10 @@ $('#import').on('click', function() {
     var plugin = $(this).data('plugin');
 
     $.ajax({
-        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        url: ProMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'free_mail_smtp_import_connections',
+            action: 'pro_mail_smtp_import_connections',
             nonce: import_nonce,
             plugin: plugin
         },
@@ -44,12 +44,12 @@ $('#import').on('click', function() {
     var provider = $(this).data('provider');
     
     $.ajax({
-        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        url: ProMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'free_mail_smtp_load_provider_form',
+            action: 'pro_mail_smtp_load_provider_form',
             provider: provider,
-            nonce: FreeMailSMTPAdminProviders.nonce
+            nonce: ProMailSMTPAdminProviders.nonce
         },
         success: function(response) {
             if (response.success) {
@@ -75,12 +75,12 @@ $('#import').on('click', function() {
 $(document).on('submit', '#provider-form', function(e) {
     e.preventDefault();    
     $.ajax({
-        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        url: ProMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'free_mail_smtp_save_provider',
+            action: 'pro_mail_smtp_save_provider',
             formData: $(this).serialize(),
-            nonce: FreeMailSMTPAdminProviders.nonce
+            nonce: ProMailSMTPAdminProviders.nonce
         },
         success: function(response) {
             
@@ -134,11 +134,11 @@ $('.test-provider').on('click', function(e) {
     var button = $(this);
     button.prop('disabled', true).text('Testing...');
     $.ajax({
-        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        url: ProMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'free_mail_smtp_test_provider_connection',
-            nonce: FreeMailSMTPAdminProviders.nonce,
+            action: 'pro_mail_smtp_test_provider_connection',
+            nonce: ProMailSMTPAdminProviders.nonce,
             connection_id: button.data('connection_id')
         },
         success: function(response) {
@@ -167,12 +167,12 @@ $('.test-provider').on('click', function(e) {
     var button = $(this);
     var connection_id = button.data("connection_id");
     $.ajax({
-      url: FreeMailSMTPAdminProviders.ajaxUrl,
+      url: ProMailSMTPAdminProviders.ajaxUrl,
       method: "POST",
       data: {
-        action: "free_mail_smtp_delete_provider",
+        action: "pro_mail_smtp_delete_provider",
         connection_id: connection_id,
-        nonce: FreeMailSMTPAdminProviders.nonce,
+        nonce: ProMailSMTPAdminProviders.nonce,
       },
       success: function (response) {
         if (response.success) {
@@ -192,12 +192,12 @@ $('.test-provider').on('click', function(e) {
     $('#step-provider').hide();
     modal.show();
     $.ajax({
-        url: FreeMailSMTPAdminProviders.ajaxUrl,
+        url: ProMailSMTPAdminProviders.ajaxUrl,
         method: 'POST',
         data: {
-            action: 'free_mail_smtp_load_provider_form',
+            action: 'pro_mail_smtp_load_provider_form',
             provider: config.provider,
-            nonce: FreeMailSMTPAdminProviders.nonce,
+            nonce: ProMailSMTPAdminProviders.nonce,
             connection_id: connection_id
         },
         success: function(response) {

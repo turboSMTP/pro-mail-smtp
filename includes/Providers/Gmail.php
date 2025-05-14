@@ -1,6 +1,6 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Providers;
+namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 class Gmail extends BaseProvider
 {
@@ -36,31 +36,31 @@ class Gmail extends BaseProvider
         if (isset($token_data['expires_in'])) {
             $token_data['created_at'] = time();
         }
-        update_option('free_mail_smtp_gmail_access_token_data', $token_data);
+        update_option('pro_mail_smtp_gmail_access_token_data', $token_data);
         $this->access_token_data = $token_data;
     }
 
     private function get_access_token_data()
     {
         if ($this->access_token_data === null) {
-            $this->access_token_data = get_option('free_mail_smtp_gmail_access_token_data', false);
+            $this->access_token_data = get_option('pro_mail_smtp_gmail_access_token_data', false);
         }
         return $this->access_token_data;
     }
 
     private function save_refresh_token($token)
     {
-        update_option('free_mail_smtp_gmail_refresh_token', $token);
+        update_option('pro_mail_smtp_gmail_refresh_token', $token);
     }
 
     private function get_refresh_token()
     {
-        return get_option('free_mail_smtp_gmail_refresh_token');
+        return get_option('pro_mail_smtp_gmail_refresh_token');
     }
 
     private function save_access_token($token)
     {
-        update_option('free_mail_smtp_gmail_access_token', $token);
+        update_option('pro_mail_smtp_gmail_access_token', $token);
     }
 
     private function get_valid_access_token()
@@ -75,7 +75,7 @@ class Gmail extends BaseProvider
         if (time() >= $expires_at) {
             $refresh_token = $this->get_refresh_token();
             if (empty($refresh_token)) {
-                delete_option('free_mail_smtp_gmail_access_token_data');
+                delete_option('pro_mail_smtp_gmail_access_token_data');
                 $this->access_token_data = null;
                 throw new \Exception('Refresh token is missing or invalid. Re-authorization required.');
             }
@@ -87,9 +87,9 @@ class Gmail extends BaseProvider
                 $this->save_access_token($new_token_data['access_token']);
                 return $new_token_data['access_token'];
             } catch (\Exception $e) {
-                delete_option('free_mail_smtp_gmail_access_token_data');
-                delete_option('free_mail_smtp_gmail_refresh_token');
-                delete_option('free_mail_smtp_gmail_access_token');
+                delete_option('pro_mail_smtp_gmail_access_token_data');
+                delete_option('pro_mail_smtp_gmail_refresh_token');
+                delete_option('pro_mail_smtp_gmail_access_token');
                 $this->access_token_data = null;
                 throw new \Exception('Authentication expired or failed to refresh. Please reconnect your Gmail account. Details: ' . esc_html($e->getMessage()));
             }
@@ -282,7 +282,7 @@ class Gmail extends BaseProvider
     {
         $params = [
             'client_id' => $this->config_keys['client_id'],
-            'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
+            'redirect_uri' => admin_url('admin.php?page=pro-mail-smtp-providers'),
             'response_type' => 'code',
             'scope' => implode(' ', self::SCOPES),
             'access_type' => 'offline',
@@ -305,7 +305,7 @@ class Gmail extends BaseProvider
                 'code' => $code,
                 'client_id' => $this->config_keys['client_id'],
                 'client_secret' => $this->config_keys['client_secret'],
-                'redirect_uri' => admin_url('admin.php?page=free-mail-smtp-providers'),
+                'redirect_uri' => admin_url('admin.php?page=pro-mail-smtp-providers'),
                 'grant_type' => 'authorization_code',
             ],
         ];
@@ -321,9 +321,9 @@ class Gmail extends BaseProvider
         $http_code = wp_remote_retrieve_response_code($response);
 
         if ($http_code >= 400 || empty($data) || isset($data['error']) || !isset($data['access_token'])) {
-            delete_option('free_mail_smtp_gmail_access_token_data');
-            delete_option('free_mail_smtp_gmail_refresh_token');
-            delete_option('free_mail_smtp_gmail_access_token');
+            delete_option('pro_mail_smtp_gmail_access_token_data');
+            delete_option('pro_mail_smtp_gmail_refresh_token');
+            delete_option('pro_mail_smtp_gmail_access_token');
             $this->access_token_data = null;
             throw new \Exception('Failed to exchange authorization code for token: ' . esc_html($this->get_error_message($body, $http_code)));
         }

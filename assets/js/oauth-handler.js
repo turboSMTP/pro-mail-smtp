@@ -1,9 +1,9 @@
 /**
- * Free Mail SMTP OAuth Handler
+ * Pro Mail SMTP OAuth Handler
  * This script runs on all WordPress admin pages to catch OAuth redirects
  */
 (function () {
-  console.log("Free Mail SMTP OAuth Handler loaded");
+  console.log("Pro Mail SMTP OAuth Handler loaded");
   // Execute immediately to capture parameters as early as possible
   function handleOAuthCallback() {
     try {
@@ -25,7 +25,7 @@
         processOAuthCallback(code, state, notificationDiv);
       }
     } catch (error) {
-      console.error("Error in Free Mail SMTP OAuth handler:", error);
+      console.error("Error in Pro Mail SMTP OAuth handler:", error);
     }
   }
 
@@ -36,22 +36,22 @@
 
   function processOAuthCallback(code, state, notificationDiv) {
     if (
-      typeof FreeMailSMTPOAuth === "undefined" ||
-      typeof FreeMailSMTPOAuth.ajaxUrl === "undefined" ||
-      typeof FreeMailSMTPOAuth.nonce === "undefined"
+      typeof ProMailSMTPOAuth === "undefined" ||
+      typeof ProMailSMTPOAuth.ajaxUrl === "undefined" ||
+      typeof ProMailSMTPOAuth.nonce === "undefined"
     ) {
       console.error(
-        "FreeMailSMTP Error: Localization data (FreeMailSMTPOAuth) not available."
+        "ProMailSMTP Error: Localization data (ProMailSMTPOAuth) not available."
       );
       return;
     }
 
-    var ajaxUrl = FreeMailSMTPOAuth.ajaxUrl; 
-    var nonce = FreeMailSMTPOAuth.nonce; 
+    var ajaxUrl = ProMailSMTPOAuth.ajaxUrl; 
+    var nonce = ProMailSMTPOAuth.nonce; 
 
     if (!ajaxUrl) {
       console.error(
-        "FreeMailSMTP Error: ajaxUrl is missing from localization data."
+        "ProMailSMTP Error: ajaxUrl is missing from localization data."
       );
       return;
     }
@@ -60,7 +60,7 @@
       url: ajaxUrl,
       type: "POST",
       data: {
-        action: "free_mail_smtp_set_oauth_token",
+        action: "pro_mail_smtp_set_oauth_token",
         code: code,
         nonce: nonce,
         provider_type: state,
@@ -72,10 +72,10 @@
           notificationDiv.style.borderLeftColor = "#46b450";
 
           if (
-            typeof FreeMailSMTPOAuth !== "undefined" &&
-            FreeMailSMTPOAuth.redirectUrl
+            typeof ProMailSMTPOAuth !== "undefined" &&
+            ProMailSMTPOAuth.redirectUrl
           ) {
-            window.location.href = FreeMailSMTPOAuth.redirectUrl;
+            window.location.href = ProMailSMTPOAuth.redirectUrl;
           } else {
             var newUrl =
               window.location.protocol +

@@ -1,10 +1,10 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\Email;
+namespace TurboSMTP\ProMailSMTP\Email;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Class EmailFormatterService
- * Handles email formatting and processing for the Free Mail SMTP plugin.
+ * Handles email formatting and processing for the Pro Mail SMTP plugin.
  */
 class EmailFormatterService
 {
@@ -34,8 +34,8 @@ class EmailFormatterService
             'to' => $to,
             'subject' => $args['subject'],
             'message' => $args['message'],
-            'from_email' =>  $headers['from_email'] ?? get_option('free_mail_smtp_from_email', get_option('admin_email')) ,
-            'from_name' => $headers['from_name'] ?? get_option('free_mail_smtp_from_name', get_option('blog_name')),
+            'from_email' =>  isset($headers['from_email']) ? $headers['from_email'] : get_option('pro_mail_smtp_from_email', get_option('admin_email')) ,
+            'from_name' => isset($headers['from_name']) ? $headers['from_name'] : get_option('pro_mail_smtp_from_name', get_bloginfo('name')),
             'reply_to' => $headers['reply_to'] ?? '',
             'cc' => $headers['cc'] ?? [],
             'bcc' => $headers['bcc'] ?? [],

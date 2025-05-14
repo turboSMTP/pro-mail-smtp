@@ -1,4 +1,4 @@
-=== Free Mail SMTP ===
+=== Pro Mail SMTP ===
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.8
@@ -11,7 +11,7 @@ Enhance email deliverability by connecting WordPress to SMTP providers with auto
 
 == Description ==
 
-Free Mail SMTP is a powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
+Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
 
 = 🚀 Features =
 
@@ -49,21 +49,21 @@ Free Mail SMTP is a powerful WordPress plugin that enhances email deliverability
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/free-mail-smtp` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/pro-mail-smtp` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Navigate to **Free Mail SMTP → Settings** to configure the plugin
+3. Navigate to **Pro Mail SMTP → Settings** to configure the plugin
 
 == Configuration ==
 
 = General Setup =
 
-1. Navigate to **Free Mail SMTP → Settings**
+1. Navigate to **Pro Mail SMTP → Settings**
 2. Configure your default "From Email" and "From Name"
 3. Choose whether to enable email summaries and set your preferred frequency
 
 = Adding Email Providers =
 
-1. Go to **Free Mail SMTP → Providers**
+1. Go to **Pro Mail SMTP → Providers**
 2. Click **Add Provider**
 3. Select your email service provider
 4. Enter your credentials:
@@ -75,7 +75,7 @@ Free Mail SMTP is a powerful WordPress plugin that enhances email deliverability
 
 = Email Routing (Optional) =
 
-1. Navigate to **Free Mail SMTP → Email Router**
+1. Navigate to **Pro Mail SMTP → Email Router**
 2. Create rules to route specific emails through particular providers
 3. Set conditions based on recipient email, source plugin, or other factors
 
@@ -83,7 +83,7 @@ Free Mail SMTP is a powerful WordPress plugin that enhances email deliverability
 
 = Which email services does this plugin support? =
 
-Free Mail SMTP supports standard SMTP servers, Gmail (with OAuth), Brevo, TurboSMTP, SMTP2GO, Mailgun, and many other providers.
+Pro Mail SMTP supports standard SMTP servers, Gmail (with OAuth), Brevo, TurboSMTP, SMTP2GO, Mailgun, and many other providers.
 
 = Can I use multiple email providers? =
 
@@ -91,7 +91,7 @@ Yes! You can configure multiple providers and set priorities for automatic failo
 
 = Will this plugin work with contact form plugins? =
 
-Yes, Free Mail SMTP works with all major contact form plugins including Contact Form 7, WPForms, Gravity Forms, and more.
+Yes, Pro Mail SMTP works with all major contact form plugins including Contact Form 7, WPForms, Gravity Forms, and more.
 
 == Screenshots ==
 
@@ -104,75 +104,103 @@ Yes, Free Mail SMTP works with all major contact form plugins including Contact 
 
 == Third-Party Services ==
 
-Free Mail SMTP connects to various third-party email service providers to send your WordPress site's emails. When you configure and use these services, your site will transmit data to these external services. Below is information about each service:
+Pro Mail SMTP connects to various third-party email service providers to send your WordPress site's emails. When you configure and use these services, your site will transmit data to these external services. Below is information about each service:
 
-= Gmail =
-* **Service Description**: Google's email service used for sending emails from your WordPress site.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, sender information, and authentication data.
-* **When Data is Sent**: When an email is sent through Gmail via the plugin and during authentication.
-* **Terms of Service**: [https://policies.google.com/terms](https://policies.google.com/terms)
-* **Privacy Policy**: [https://policies.google.com/privacy](https://policies.google.com/privacy)
+=== Google / Gmail ===
+*   **Service Description:** This integration allows your WordPress site to send emails using your Gmail or Google Workspace account via the official Google APIs, typically using OAuth 2.0 for secure authentication.
+*   **What data is sent and when:**
+    *   **Authentication:** When you authorize the plugin to connect to your Google account, authentication data (such as OAuth 2.0 tokens, Client ID, and Client Secret, if applicable) is exchanged with Google's authentication servers (e.g., `https://accounts.google.com/o/oauth2/v2/auth`, `https://oauth2.googleapis.com/token`) to securely link your account. This happens during the setup process for the Gmail mailer.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Gmail connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Google's email sending servers (e.g., `https://www.googleapis.com/gmail/v1/users/me/messages/send`) for delivery.
+*   **Service Provider:** Google LLC
+*   **Terms of Service:** You can find Google's Terms of Service here: https://policies.google.com/terms
+*   **Privacy Policy:** Google's Privacy Policy is available here: https://policies.google.com/privacy
 
-= Brevo (formerly Sendinblue) =
-* **Service Description**: Email marketing and transactional email service.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through Brevo via the plugin.
-* **Terms of Service**: [https://www.brevo.com/legal/termsofuse/](https://www.brevo.com/legal/termsofuse/)
-* **Privacy Policy**: [https://www.brevo.com/legal/privacy-policy/](https://www.brevo.com/legal/privacy-policy/)
+=== Brevo (formerly Sendinblue) ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the Brevo (formerly Sendinblue) email service via their API.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use Brevo, your API key is stored by the plugin. This API key is sent to Brevo's API endpoints (e.g., `https://api.brevo.com/v3/...`) for authentication with each email sent from your WordPress site.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Brevo connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Brevo's servers for delivery.
+*   **Service Provider:** Brevo
+*   **Terms of Service:** You can find Brevo's Terms of Use here: https://www.brevo.com/legal/termsofuse/
+*   **Privacy Policy:** Brevo's Privacy Policy is available here: https://www.brevo.com/legal/privacy-policy/
 
-= Outlook/Microsoft =
-* **Service Description**: Microsoft's email service used for sending emails.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, sender information, and authentication data.
-* **When Data is Sent**: When an email is sent through Outlook via the plugin and during authentication.
-* **Terms of Service**: [https://www.microsoft.com/licensing/terms/](https://www.microsoft.com/licensing/terms/)
-* **Privacy Policy**: [https://privacy.microsoft.com/](https://privacy.microsoft.com/)
+=== Microsoft / Outlook / Office 365 ===
+*   **Service Description:** This integration allows your WordPress site to send emails using your Outlook.com or Microsoft 365 account via Microsoft's APIs, typically using OAuth 2.0 for secure authentication.
+*   **What data is sent and when:**
+    *   **Authentication:** When you authorize the plugin to connect to your Microsoft account, authentication data (such as OAuth 2.0 tokens, Client ID, and Client Secret, if applicable) is exchanged with Microsoft's authentication servers (e.g., `https://login.microsoftonline.com/common/oauth2/v2.0/authorize`, `https://login.microsoftonline.com/common/oauth2/v2.0/token`) to securely link your account. This happens during the setup process for the Outlook/Microsoft mailer.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Microsoft connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Microsoft's email sending servers (e.g., via the Microsoft Graph API) for delivery.
+*   **Service Provider:** Microsoft Corporation
+*   **Terms of Service:** You can find the Microsoft Services Agreement here: https://www.microsoft.com/en-us/servicesagreement/
+*   **Privacy Policy:** Microsoft's Privacy Statement is available here: https://privacy.microsoft.com/en-us/privacystatement
 
-= Mailgun =
-* **Service Description**: Email API service for sending, receiving, and tracking emails.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through Mailgun via the plugin.
-* **Terms of Service**: [https://www.mailgun.com/terms/](https://www.mailgun.com/terms/)
-* **Privacy Policy**: [https://www.mailgun.com/privacy-policy/](https://www.mailgun.com/privacy-policy/)
+=== Mailgun ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the Mailgun email service via their API.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use Mailgun, your API key and sending domain are stored by the plugin. The API key is sent to Mailgun's API endpoints (e.g., `https://api.mailgun.net/v3/...`) for authentication with each email sent from your WordPress site.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Mailgun connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Mailgun's servers for delivery.
+*   **Service Provider:** Mailgun Technologies, Inc.
+*   **Terms of Service:** You can find Mailgun's Terms of Service here: https://www.mailgun.com/terms/
+*   **Privacy Policy:** Mailgun's Privacy Policy is available here: https://www.mailgun.com/privacy-policy/
 
-= Postmark =
-* **Service Description**: Transactional email delivery service.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through Postmark via the plugin.
-* **Terms of Service**: [https://postmarkapp.com/terms-of-service](https://postmarkapp.com/terms-of-service)
-* **Privacy Policy**: [https://wildbit.com/privacy-policy](https://wildbit.com/privacy-policy)
+=== Postmark ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the Postmark transactional email service via their API.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use Postmark, your Server API Token is stored by the plugin. This token is sent to Postmark's API endpoints (e.g., `https://api.postmarkapp.com/email`) for authentication with each email sent from your WordPress site.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Postmark connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Postmark's servers for delivery.
+*   **Service Provider:** Wildbit LLC (the company behind Postmark)
+*   **Terms of Service:** You can find Postmark's Terms of Service here: https://postmarkapp.com/terms-of-service
+*   **Privacy Policy:** Wildbit's Privacy Policy (covering Postmark) is available here: https://wildbit.com/privacy-policy
 
-= Sendgrid =
-* **Service Description**: Email delivery platform for transactional and marketing emails.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through Sendgrid via the plugin.
-* **Terms of Service**: [https://sendgrid.com/policies/tos/](https://sendgrid.com/policies/tos/)
-* **Privacy Policy**: [https://sendgrid.com/policies/privacy/](https://sendgrid.com/policies/privacy/)
+=== SendGrid ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the SendGrid email delivery service via their API.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use SendGrid, your API key is stored by the plugin. This API key is sent to SendGrid's API endpoints (e.g., `https://api.sendgrid.com/v3/mail/send`) for authentication with each email sent from your WordPress site.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured SendGrid connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to SendGrid's servers for delivery.
+*   **Service Provider:** Twilio Inc. (the company behind SendGrid)
+*   **Terms of Service:** You can find SendGrid's Terms of Service here: https://sendgrid.com/policies/tos/
+*   **Privacy Policy:** SendGrid's Privacy Policy is available here: https://sendgrid.com/policies/privacy/
 
-= SMTP2Go =
-* **Service Description**: Email delivery service for reliable email sending.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through SMTP2Go via the plugin.
-* **Terms of Service**: [https://www.smtp2go.com/terms-of-service/](https://www.smtp2go.com/terms-of-service/)
-* **Privacy Policy**: [https://www.smtp2go.com/privacy-policy/](https://www.smtp2go.com/privacy-policy/)
+=== SMTP2GO ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the SMTP2GO email delivery service via their API or SMTP.
+*   **What data is sent and when (API Method):**
+    *   **Authentication:** When you configure the plugin to use SMTP2GO via API, your API key is stored by the plugin. This API key is sent to SMTP2GO's API endpoints (e.g., `https://api.smtp2go.com/v3/...`) for authentication with each email sent.
+    *   **Email Transmission:** When an email is sent using a configured SMTP2GO API connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to SMTP2GO's servers.
+*   **What data is sent and when (SMTP Method):**
+    *   **Authentication:** If configured via SMTP, your SMTP credentials (hostname, port, username, password) are sent to SMTP2GO's SMTP servers for authentication with each email.
+    *   **Email Transmission:** When an email is sent using a configured SMTP2GO SMTP connection, the email content is transmitted to SMTP2GO's SMTP servers.
+*   **Service Provider:** SMTP2GO
+*   **Terms of Service:** You can find SMTP2GO's Terms of Service here: https://www.smtp2go.com/terms-of-service/
+*   **Privacy Policy:** SMTP2GO's Privacy Policy is available here: https://www.smtp2go.com/privacy-policy/
 
-= Sparkpost =
-* **Service Description**: Email delivery service for sending and analyzing emails.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through Sparkpost via the plugin.
-* **Terms of Service**: [https://www.sparkpost.com/policies/tou/](https://www.sparkpost.com/policies/tou/)
-* **Privacy Policy**: [https://www.sparkpost.com/policies/privacy/](https://www.sparkpost.com/policies/privacy/)
+=== SparkPost ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the SparkPost email delivery service via their API.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use SparkPost, your API key is stored by the plugin. This API key is sent to SparkPost's API endpoints (e.g., `https://api.sparkpost.com/api/v1/...`) for authentication with each email sent from your WordPress site.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured SparkPost connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to SparkPost's servers for delivery.
+*   **Service Provider:** Message Systems, Inc. (SparkPost)
+*   **Terms of Service:** You can find SparkPost's Terms of Use here: https://www.sparkpost.com/policies/tou/
+*   **Privacy Policy:** SparkPost's Privacy Policy is available here: https://www.sparkpost.com/policies/privacy/
 
-= TurboSMTP =
-* **Service Description**: Professional SMTP relay service for reliable email delivery.
-* **Data Transmitted**: Email content (subject, body, attachments), recipient email addresses, and sender information.
-* **When Data is Sent**: When an email is sent through TurboSMTP via the plugin.
-* **Terms of Service**: [https://www.serversmtp.com/en/terms-of-service](https://www.serversmtp.com/en/terms-of-service)
-* **Privacy Policy**: [https://www.serversmtp.com/en/privacy-policy](https://www.serversmtp.com/en/privacy-policy)
+=== TurboSMTP ===
+*   **Service Description:** This integration allows your WordPress site to send emails using the TurboSMTP transactional email service.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use TurboSMTP, your API key (and potentially username/password) is stored by the plugin and sent to TurboSMTP's API endpoint (e.g., `https://api.turbo-smtp.com/api/v2/mail/send`) for authentication with each email sent.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured TurboSMTP connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to TurboSMTP's servers for delivery.
+*   **Service Provider:** Delivery Media S.R.L. (the company behind TurboSMTP)
+*   **Terms of Service:** You can find TurboSMTP's Terms and Conditions here: https://www.serversmtp.com/terms-and-conditions/
+*   **Privacy Policy:** TurboSMTP's Privacy Policy is available here: https://www.serversmtp.com/privacy-policy/
 
-= Other SMTP Servers =
-When using custom SMTP servers, your email data will be transmitted to the SMTP service you configure. Please refer to your SMTP service provider's terms of service and privacy policy for details on how they handle your data.
+=== Other SMTP Servers (Generic SMTP) ===
+*   **Service Description:** This integration allows your WordPress site to send emails using any standard SMTP server you configure (e.g., your web host's mail server, or other third-party SMTP providers not explicitly listed above).
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure a generic SMTP connection, your SMTP credentials (hostname, port, username, password, encryption type) are stored by the plugin. These credentials are sent to your configured SMTP server for authentication each time an email is sent from your WordPress site. We recommend using constants defined in `wp-config.php` for sensitive data like passwords where possible.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured generic SMTP connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to your configured SMTP server for delivery.
+*   **Service Provider:** This will be the specific SMTP provider you have chosen to configure.
+*   **Terms of Service & Privacy Policy:** You are responsible for obtaining and reviewing the terms of service and privacy policy of the specific SMTP provider you configure. These documents will be provided by that third-party service.
 
-**Important Note**: This plugin does not collect or share any data with these services beyond what is necessary to send emails. Your email content and recipient information is only sent to the services you explicitly configure in the plugin settings.
+**User Responsibility:**
+It is your responsibility as the user of this plugin to choose your email sending service, configure it correctly, and to review and agree to the terms and privacy policies of any third-party email provider you decide to use. Pro Mail SMTP facilitates the connection to these services based on the information and credentials you provide; it does not control and is not responsible for the practices of these third-party services.
+This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
 
@@ -182,4 +210,4 @@ When using custom SMTP servers, your email data will be transmitted to the SMTP 
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of Free Mail SMTP
+Initial release of Pro Mail SMTP

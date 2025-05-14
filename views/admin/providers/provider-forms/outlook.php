@@ -3,10 +3,10 @@
     
     <h3><?php echo isset($is_edit) && $is_edit ? 'Edit Outlook Configuration' : 'Add Outlook Connection'; ?></h3>
     <p class="description">Enter your Outlook API credentials below.</p>
-    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo esc_url(admin_url('admin.php?page=free-mail-smtp-providers')); ?></code></p>
+    <p class="description">Note: Ensure your redirect URL is set to <code><?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-providers')); ?></code></p>
 
     <form id="provider-form" method="post">
-    <?php wp_nonce_field('free_mail_smtp_nonce_providers', 'free_mail_smtp_nonce_providers'); ?>
+    <?php wp_nonce_field('pro_mail_smtp_nonce_providers', 'pro_mail_smtp_nonce_providers'); ?>
         
         <input type="hidden" name="provider" id="provider" value="outlook">
         <input type="hidden" name="connection_id" id="connection_id" value="">

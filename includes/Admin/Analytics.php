@@ -1,8 +1,8 @@
 <?php
-namespace TurboSMTP\FreeMailSMTP\Admin;
+namespace TurboSMTP\ProMailSMTP\Admin;
 
-use TurboSMTP\FreeMailSMTP\DB\ConnectionRepository;
-use TurboSMTP\FreeMailSMTP\Providers\ProviderFactory;
+use TurboSMTP\ProMailSMTP\DB\ConnectionRepository;
+use TurboSMTP\ProMailSMTP\Providers\ProviderFactory;
 class Analytics {
     private $providers = [];
     private $plugin_path;
@@ -10,42 +10,42 @@ class Analytics {
     private $provider_factory;
 
     public function __construct() {
-        $this->plugin_path = FREE_MAIL_SMTP_PATH;
+        $this->plugin_path = PRO_MAIL_SMTP_PATH;
         $this->connection_repository = new ConnectionRepository();
         $this->providers = $this->connection_repository->get_all_connections();
         $this->provider_factory = new ProviderFactory();
 
-        add_action('wp_ajax_free_mail_smtp_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
+        add_action('wp_ajax_pro_mail_smtp_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
     public function enqueue_scripts($hook) {
 
-        if ($hook !== 'free-mail-smtp_page_free-mail-smtp-analytics') {
+        if ($hook !== 'pro-mail-smtp_page_pro-mail-smtp-analytics') {
             return;
         }
     
         wp_enqueue_style(
-            'free-mail-smtp-analytics',
-            plugins_url('/assets/css/analytics.css', FREE_MAIL_SMTP_FILE),
+            'pro-mail-smtp-analytics',
+            plugins_url('/assets/css/analytics.css', PRO_MAIL_SMTP_FILE),
             [],
-            FREE_MAIL_SMTP_VERSION
+            PRO_MAIL_SMTP_VERSION
         );
     
         wp_enqueue_script(
-            'free-mail-smtp-analytics',
-            plugins_url('/assets/js/analytics.js', FREE_MAIL_SMTP_FILE),
+            'pro-mail-smtp-analytics',
+            plugins_url('/assets/js/analytics.js', PRO_MAIL_SMTP_FILE),
             ['jquery'],
-            FREE_MAIL_SMTP_VERSION,
+            PRO_MAIL_SMTP_VERSION,
             true
         );
 
         wp_localize_script(
-            'free-mail-smtp-analytics',
-            'FreeMailSMTPAnalytics',
+            'pro-mail-smtp-analytics',
+            'ProMailSMTPAnalytics',
             [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('free_mail_smtp_analytics')
+                'nonce' => wp_create_nonce('pro_mail_smtp_analytics')
             ]
         );
     }
@@ -92,9 +92,8 @@ class Analytics {
         ];
         
         if (isset($_POST['filter_action']) && $_POST['filter_action'] === 'filter_analytics') {
-            // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-            if (!isset($_POST['free_mail_smtp_analytics_nonce']) || 
-                !wp_verify_nonce($_POST['free_mail_smtp_analytics_nonce'], 'free_mail_smtp_analytics')) {
+            if (!isset($_POST['pro_mail_smtp_analytics_nonce']) || 
+                !wp_verify_nonce(sanitize_text_field( wp_unslash($_POST['pro_mail_smtp_analytics_nonce'])), 'pro_mail_smtp_analytics')) {
                 wp_die('Security check failed. Please try again.');
             }
             
@@ -107,11 +106,11 @@ class Analytics {
                 'per_page'          => isset($_POST['per_page']) ? (int) $_POST['per_page'] : $defaults['per_page']
             ];
             
-            update_user_meta(get_current_user_id(), 'free_mail_smtp_analytics_filters', $filter_data);
+            update_user_meta(get_current_user_id(), 'pro_mail_smtp_analytics_filters', $filter_data);
             return $filter_data;
         }
         
-        $saved_filters = get_user_meta(get_current_user_id(), 'free_mail_smtp_analytics_filters', true);
+        $saved_filters = get_user_meta(get_current_user_id(), 'pro_mail_smtp_analytics_filters', true);
         if (!empty($saved_filters) && is_array($saved_filters)) {
             return array_merge($defaults, $saved_filters);
         }
@@ -120,7 +119,7 @@ class Analytics {
     }
 
     public function fetch_provider_analytics() {
-        check_ajax_referer('free_mail_smtp_analytics', 'nonce', true);
+        check_ajax_referer('pro_mail_smtp_analytics', 'nonce', true);
 
         $provider_id = isset($_POST['filters']['provider']) ? sanitize_text_field(wp_unslash($_POST['filters']['provider'])) : '';
         $status = isset($_POST['filters']['status']) ? sanitize_text_field(wp_unslash($_POST['filters']['status'])) : '';

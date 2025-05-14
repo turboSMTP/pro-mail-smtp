@@ -1,6 +1,6 @@
 <?php
 
-namespace TurboSMTP\FreeMailSMTP\Helpers;
+namespace TurboSMTP\ProMailSMTP\Helpers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class PluginSourceCache {
