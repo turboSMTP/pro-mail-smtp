@@ -92,9 +92,8 @@ class Analytics {
         ];
         
         if (isset($_POST['filter_action']) && $_POST['filter_action'] === 'filter_analytics') {
-            // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
             if (!isset($_POST['pro_mail_smtp_analytics_nonce']) || 
-                !wp_verify_nonce($_POST['pro_mail_smtp_analytics_nonce'], 'pro_mail_smtp_analytics')) {
+                !wp_verify_nonce(sanitize_text_field( wp_unslash($_POST['pro_mail_smtp_analytics_nonce'])), 'pro_mail_smtp_analytics')) {
                 wp_die('Security check failed. Please try again.');
             }
             

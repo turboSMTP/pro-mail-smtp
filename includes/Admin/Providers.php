@@ -123,7 +123,7 @@ class Providers
             return;
         }
         
-		// phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         $form_data_string = wp_unslash($_POST['formData']);
         
         parse_str($form_data_string, $form_data);

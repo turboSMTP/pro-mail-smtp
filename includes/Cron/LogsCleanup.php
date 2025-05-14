@@ -75,8 +75,7 @@ class LogsCleanup implements CronInterface
                 return;
         }
 
-        $table_name_esc = esc_sql($table_name);
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $wpdb->query($wpdb->prepare("DELETE FROM {$table_name_esc} WHERE sent_at < %s", $cutoff));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $wpdb->query($wpdb->prepare("DELETE FROM %i WHERE sent_at < %s", $table_name, $cutoff));
     }
 }

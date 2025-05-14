@@ -98,7 +98,7 @@ class Logs
 
             <nav class="pro-mail-smtp-nav-tab-wrapper">
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-providers')); ?>" class="pro-mail-smtp-nav-tab">Providers</a>
-                <a href="<?php echo esc_url(admin_url('admin.php?page=pro_mail_smtp_logs')); ?>" class="pro-mail-smtp-nav-tab pro-mail-smtp-nav-tab-active">Email Logs</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-logs')); ?>" class="pro-mail-smtp-nav-tab pro-mail-smtp-nav-tab-active">Email Logs</a>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-analytics')); ?>" class="pro-mail-smtp-nav-tab">Providers Logs</a>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-email-router')); ?>" class="pro-mail-smtp-nav-tab">Email Router</a>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-settings')); ?>" class="pro-mail-smtp-nav-tab">Settings</a>
@@ -387,9 +387,8 @@ class Logs
             'orderby'   => 'sent_at',
             'order'     => 'desc',
         ];
-        // phpcs:disable WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
         if (isset($_POST['pro_mail_smtp_logs_filter_nonce']) && 
-            wp_verify_nonce($_POST['pro_mail_smtp_logs_filter_nonce'], 'pro_mail_smtp_logs_filter')) {
+            wp_verify_nonce(sanitize_text_field( wp_unslash ($_POST['pro_mail_smtp_logs_filter_nonce'])), 'pro_mail_smtp_logs_filter')) {
             
             $filter_data = [
                 'paged'     => isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : $defaults['paged'],

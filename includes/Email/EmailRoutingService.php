@@ -115,7 +115,6 @@ class EmailRoutingService {
             default:
                 $result = false;
         }
-
         return $result;
     }
 

@@ -77,23 +77,20 @@ class EmailRouter {
             return;
         }
 
-        $unslashed_data = wp_unslash( $_POST );
-        // phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        $data = isset($unslashed_data['data']) ? $unslashed_data['data'] : array();
         $prepared_data = [
-            'connection_id'        => sanitize_text_field($data['connection']['selected']),
-            'condition_data'       => wp_json_encode($data['conditions']),
-            'condition_label'      => sanitize_text_field($data['label']),
-            'overwrite_connection' => $data['connection']['enabled'] ? 1 : 0,
-            'overwrite_sender'     => $data['email']['enabled'] ? 1 : 0,
-            'forced_senderemail'   => $data['email']['enabled'] ? sanitize_email($data['email']['email']) : null,
-            'forced_sendername'    => $data['email']['enabled'] ? sanitize_text_field($data['email']['name']) : null,
-            'is_enabled'           => $data['is_enabled'],
+            'connection_id'        => isset($_POST['data']['connection']['selected'])? sanitize_text_field(wp_unslash($_POST['data']['connection']['selected'])) : null,
+            'condition_data'       => isset($_POST['data']['conditions']) ? wp_json_encode( map_deep( wp_unslash( $_POST['data']['conditions'] ), 'sanitize_text_field' ) ) : wp_json_encode([]),
+            'condition_label'      => isset($_POST['data']['label']) ? sanitize_text_field(wp_unslash($_POST['data']['label'])) : '',
+            'overwrite_connection' => isset($_POST['data']['connection']['enabled']) ? 1 : 0,
+            'overwrite_sender'     => isset($_POST['data']['email']['enabled']) ? 1 : 0,
+            'forced_senderemail'   => isset($_POST['data']['email']['enabled']) ? (isset($_POST['data']['email']['email']) ? sanitize_email(wp_unslash($_POST['data']['email']['email'])): null) : null,
+            'forced_sendername'    => isset($_POST['data']['email']['enabled']) ? (isset($_POST['data']['email']['name'])  ? sanitize_text_field(wp_unslash($_POST['data']['email']['name'])) : null) : null,
+            'is_enabled'           => isset($_POST['data']['is_enabled']) ? absint($_POST['data']['is_enabled']) : 0,
         ];
 
         $condition_repo = new \TurboSMTP\ProMailSMTP\DB\ConditionRepository();
-        if (isset($data['id']) && !empty($data['id'])) {
-            $condition_id = absint($data['id']);
+        if (isset($_POST['data']['id']) && !empty($_POST['data']['id'])) {
+            $condition_id = absint($_POST['data']['id']);
             $success = $condition_repo->update_condition($condition_id, $prepared_data);
             
             if (!$success) {

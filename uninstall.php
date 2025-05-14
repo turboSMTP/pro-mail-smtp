@@ -19,8 +19,8 @@ $tables_to_drop = [
 ];
 
 foreach ($tables_to_drop as $table_name) {
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-    $wpdb->query("DROP TABLE IF EXISTS {$table_name}");
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
+    $wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %i", $table_name));
 }
 
 $options_to_delete = [

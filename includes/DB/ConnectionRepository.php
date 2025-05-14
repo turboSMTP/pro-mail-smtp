@@ -14,15 +14,15 @@ class ConnectionRepository {
     
     public function insert_connection($connection_id, $provider, $connection_data, $priority = 0, $connection_label = '') {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $count = $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM %i", $this->table));
 
 
         if ($count >= 5) {
             return new \WP_Error('max_entries', 'Maximum number of connections reached.');
         }
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE priority = %d", $priority));
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM %i WHERE priority = %d", $this->table, $priority));
 
         if ($exists > 0) {
             return new \WP_Error('duplicate_priority', 'The priority value must be unique.');
@@ -59,8 +59,8 @@ class ConnectionRepository {
         $new_priority = ($priority !== null) ? intval($priority) : intval($current->priority);
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $exists = $wpdb->get_var($wpdb->prepare(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table is safe, constructed with $wpdb->prefix
-            "SELECT COUNT(*) FROM {$this->table} WHERE priority = %d AND connection_id != %s",
+            "SELECT COUNT(*) FROM %i WHERE priority = %d AND connection_id != %s",
+            $this->table,
             $new_priority,
             $connection_id
         ));
@@ -94,8 +94,7 @@ class ConnectionRepository {
         global $wpdb;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $row = $wpdb->get_row(
-            // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table is safe, constructed with $wpdb->prefix
-            $wpdb->prepare("SELECT * FROM {$this->table} WHERE connection_id = %s", $connection_id)
+            $wpdb->prepare("SELECT * FROM %i WHERE connection_id = %s", $this->table, $connection_id)
         );
         if ($row) {
             $row->connection_data = json_decode($row->connection_data, true);
@@ -111,8 +110,8 @@ class ConnectionRepository {
     
     public function get_all_connections() {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $results = $wpdb->get_results("SELECT * FROM {$this->table} ORDER BY priority ASC");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $results = $wpdb->get_results($wpdb->prepare("SELECT * FROM %i ORDER BY priority ASC", $this->table));
         if ($results) {
             foreach ($results as &$row) {
                 $decoded_data = json_decode($row->connection_data, true);
@@ -124,8 +123,8 @@ class ConnectionRepository {
 
     public function get_available_priority() {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-        $results = $wpdb->get_results("SELECT priority FROM {$this->table} ORDER BY priority ASC");
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        $results = $wpdb->get_results($wpdb->prepare("SELECT * FROM %i ORDER BY priority ASC", $this->table));
         $priorities = [];
         if ($results) {
             foreach ($results as $row) {
@@ -143,10 +142,10 @@ class ConnectionRepository {
 
     public function provider_exists($provider) {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         $count = $wpdb->get_var($wpdb->prepare(
-        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $this->table is safe, constructed with $wpdb->prefix
-        "SELECT COUNT(*) FROM {$this->table} WHERE provider = %s",
+        "SELECT COUNT(*) FROM %i WHERE provider = %s",
+        $this->table,
             $provider
         ));
         return $count > 0;

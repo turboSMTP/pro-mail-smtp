@@ -57,9 +57,9 @@ class WPMailCaller
 
         $mu_plugins_path = defined('WPMU_PLUGIN_DIR') ? trailingslashit(wp_normalize_path(WPMU_PLUGIN_DIR)) : null;
 
-        $plugins_path = defined('WP_PLUGIN_DIR') ? trailingslashit(wp_normalize_path(WP_PLUGIN_DIR)) : null;
+        $plugins_path = defined('WP_PLUGIN_DIR') ? trailingslashit(wp_normalize_path(dirname( PRO_MAIL_SMTP_PATH ))) : null;
 
-        $wp_includes_path = (defined('ABSPATH') && defined('WPINC')) ? trailingslashit(wp_normalize_path(ABSPATH . WPINC)) : null;
+        $wp_includes_folder = (defined('ABSPATH') && defined('WPINC')) ? trailingslashit(wp_normalize_path(WPINC)) : null;
 
         $themes_path = function_exists('get_theme_root') ? trailingslashit(wp_normalize_path(get_theme_root())) : null;
      
@@ -72,7 +72,7 @@ class WPMailCaller
         elseif ($plugins_path && strpos($normalized_source_file, $plugins_path) === 0) {
             $source_type = $this->extractPluginFolderName($normalized_source_file, $plugins_path);
         }
-        elseif ($wp_includes_path && strpos($normalized_source_file, $wp_includes_path) === 0) {
+        elseif ($wp_includes_folder && strpos($normalized_source_file, $wp_includes_folder) === 0) {
             $source_type = self::CORE_WP;
         }
         elseif ($themes_path && strpos($normalized_source_file, $themes_path) === 0) {

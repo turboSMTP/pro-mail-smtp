@@ -43,7 +43,7 @@ class Plugin
         $email_manager = new \TurboSMTP\ProMailSMTP\Email\Manager();
         add_filter('pre_wp_mail', function ($pre, $atts) use ($email_manager) {
             $this->wp_mail_caller->getSourcePluginName();
-            return $email_manager->send_mail($pre, $atts);
+            return $email_manager->sendMail($pre, $atts);
         }, 10, 2);
     }
 
