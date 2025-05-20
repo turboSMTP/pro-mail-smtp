@@ -5,7 +5,7 @@
  * Version: 1.0.0
  * Author: turbosmtp
  * Text Domain: pro-mail-smtp
- * Domain Path: /assets/languages
+ * Domain Path: /languages
  * License: GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 6.3

@@ -1,4 +1,5 @@
 === Pro Mail SMTP ===
+Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.8
@@ -16,36 +17,36 @@ Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability 
 = 🚀 Features =
 
 * **Multiple Provider Support**:
-  * Standard SMTP servers
-  * Gmail (with secure OAuth authentication)
-  * Brevo (formerly Sendinblue)
-  * TurboSMTP
-  * SMTP2GO
-  * Mailgun
-  * And more...
+    * Standard SMTP servers
+    * Gmail (with secure OAuth authentication)
+    * Brevo (formerly Sendinblue)
+    * TurboSMTP
+    * SMTP2GO
+    * Mailgun
+    * And more...
 
 * **Smart Email Routing**:
-  * Route emails through specific providers based on custom conditions
-  * Automatic failover system using priority levels
-  * Set conditions based on email type, recipient, or sending plugin
+    * Route emails through specific providers based on custom conditions
+    * Automatic failover system using priority levels
+    * Set conditions based on email type, recipient, or sending plugin
 
 * **Comprehensive Logging**:
-  * Track email status (sent, delivered, failed)
-  * View detailed error messages
-  * Configurable log retention
-  * Email content inspection
+    * Track email status (sent, delivered, failed)
+    * View detailed error messages
+    * Configurable log retention
+    * Email content inspection
 
 * **Analytics Dashboard**:
-  * Monitor provider performance
-  * View delivery rates
-  * Track email engagement
-  * Regular summary reports
+    * Monitor provider performance
+    * View delivery rates
+    * Track email engagement
+    * Regular summary reports
 
 * **Advanced Settings**:
-  * Custom From Email and From Name
-  * OAuth authentication for supported providers
-  * Fallback to WordPress mail system
-  * Easy import from other SMTP plugins
+    * Custom From Email and From Name
+    * OAuth authentication for supported providers
+    * Fallback to WordPress mail system
+    * Easy import from other SMTP plugins
 
 == Installation ==
 
@@ -67,9 +68,9 @@ Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability 
 2. Click **Add Provider**
 3. Select your email service provider
 4. Enter your credentials:
-   * For SMTP: Server, port, username, password, encryption type
-   * For API-based services: API key and required settings
-   * For OAuth services: Follow the authentication flow
+    * For SMTP: Server, port, username, password, encryption type
+    * For API-based services: API key and required settings
+    * For OAuth services: Follow the authentication flow
 5. Set a priority level for each provider (lower numbers = higher priority)
 6. Test the connection before saving
 
