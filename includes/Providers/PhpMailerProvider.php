@@ -55,7 +55,7 @@ class PhpMailerProvider {
                 }
             }
             
-            $test = $mail->send();
+            // $test = $mail->send();
             if (!$mail->send()) {
                 throw new \Exception($mail->ErrorInfo);
             }

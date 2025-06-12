@@ -70,19 +70,13 @@ class Providers
                 'adminUrl' => admin_url('admin.php?page=pro-mail-smtp-settings'),
                 'debug' => true
             ]);
-            wp_localize_script('pro-mail-smtp-admin', 'ProMailSMTPOAuth', [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'redirectUrl' => admin_url('admin.php?page=pro-mail-smtp-providers'),
-                'nonce' => wp_create_nonce('pro_mail_smtp_set_oauth_token'),
-                'debug' => true
-            ]);
             
             wp_localize_script(
                 'pro-mail-smtp-oauth-handler',
                 'ProMailSMTPOAuth',
                 array(
                     'ajaxUrl' => admin_url('admin-ajax.php'),
-                    'nonce'   => wp_create_nonce('pro_mail_smtp_oauth_nonce'),
+                    'nonce'   => wp_create_nonce('pro_mail_smtp_set_oauth_token'),
                     'redirectUrl' => admin_url('admin.php?page=pro-mail-smtp-providers')
                 )
             );

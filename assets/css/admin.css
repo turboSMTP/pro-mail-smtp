@@ -649,3 +649,30 @@ input[type="email"] {
   margin-right: 10px;
 }
 
+.connections-count {
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 12px;
+    gap: 4px;
+}
+.connections-current {
+    color: #ff6e79;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.connections-divider {
+    color: #888;
+    font-size: 1.1em;
+}
+.connections-max {
+    color: #888;
+    font-size: 1.1em;
+}
+.connections-label {
+    margin-left: 6px;
+    color: #555;
+    font-size: 0.95em;
+    font-weight: normal;
+}
