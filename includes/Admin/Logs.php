@@ -102,6 +102,7 @@ class Logs
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-analytics')); ?>" class="pro-mail-smtp-nav-tab">Providers Logs</a>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-email-router')); ?>" class="pro-mail-smtp-nav-tab">Email Router</a>
                 <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-settings')); ?>" class="pro-mail-smtp-nav-tab">Settings</a>
+                <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-about')); ?>" class="pro-mail-smtp-nav-tab">About</a>
             </nav>
                 <div class="logs-retention-settings">
                 <h2><?php esc_html_e('Logs Retention Settings', 'pro-mail-smtp'); ?></h2>

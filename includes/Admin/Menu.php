@@ -66,6 +66,13 @@ class Menu {
                 'capability' => 'manage_options',
                 'slug' => 'pro-mail-smtp-settings',
                 'callback' => 'render_settings_page'
+            ],
+            [
+                'title' => 'About',
+                'menu_title' => 'About',
+                'capability' => 'manage_options',
+                'slug' => 'pro-mail-smtp-about',
+                'callback' => 'render_about_page'
             ]
         ];
 
@@ -98,5 +105,9 @@ class Menu {
 
     public function render_settings_page() {
         (new Settings())->render();
+    }
+
+    public function render_about_page() {
+        (new About())->render();
     }
 }
