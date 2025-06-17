@@ -3,9 +3,14 @@
 namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 class OtherSMTP
 {
     private $smtpHost;
@@ -113,7 +118,7 @@ class OtherSMTP
 
     private function mail_add_attachment($smtp, $attachment)
     {
-        $smtp->addAttachment($attachment);
+            $smtp->addAttachment($attachment);
     }
 
     private function mail_send($smtp, $recipients, $subject, $body, $headers)
@@ -134,13 +139,13 @@ class OtherSMTP
 
         if (isset($headers['Cc'])) {
             foreach ((array)$headers['Cc'] as $cc) {
-                $smtp->addCC($cc);
+                    $smtp->addCC($cc);
             }
         }
 
         if (isset($headers['Bcc'])) {
             foreach ((array)$headers['Bcc'] as $bcc) {
-                $smtp->addBCC($bcc);
+                    $smtp->addBCC($bcc);
             }
         }
 
@@ -152,7 +157,7 @@ class OtherSMTP
 
     private function mail_close($smtp)
     {
-        $smtp->smtpClose();
+            $smtp->smtpClose();
     }
 
     public function test_connection()

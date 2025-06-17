@@ -2,8 +2,15 @@
 namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+}
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+
+
 
 class PhpMailerProvider {
     /**
@@ -23,6 +30,11 @@ class PhpMailerProvider {
 
         if (empty($email_data['to'])) {
             throw new \Exception('Recipient(s) cannot be empty');
+        }
+
+        // Check if PHP mail() function is available
+        if (!function_exists('mail')) {
+            throw new \Exception('PHP mail() function is not available on this server. Please configure SMTP settings.');
         }
 
         $mail = new PHPMailer(true);
@@ -55,7 +67,6 @@ class PhpMailerProvider {
                 }
             }
             
-            // $test = $mail->send();
             if (!$mail->send()) {
                 throw new \Exception($mail->ErrorInfo);
             }
