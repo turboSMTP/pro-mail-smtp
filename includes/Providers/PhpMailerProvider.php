@@ -505,8 +505,6 @@ class PhpMailerProvider {
             $phpmailer = new \PHPMailer\PHPMailer\PHPMailer( true );
             return $phpmailer;
         } catch ( \Exception $e ) {
-            // Log error for debugging
-            error_log( 'PHPMailer creation failed: ' . $e->getMessage() );
             return false;
         }
     }

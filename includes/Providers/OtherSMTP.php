@@ -27,9 +27,8 @@ class OtherSMTP
         $this->smtpHost = $credentials['smtp_host'];
         $this->smtpPort = $credentials['smtp_port'] ?? 587;
         $this->smtpSecurity = $credentials['smtp_encryption'] ?? 'tls';
-        $this->smtpForcedSenderEmail = $credentials['smtp_forced_sender_email'] ?? '';
+        $this->smtpForcedSenderEmail = $credentials['email_from_overwrite'] ?? '';
     }
-
     public function send($params)
     {
         try {
@@ -40,7 +39,7 @@ class OtherSMTP
             $recipients = array_filter($params['to'], function ($email) {
                 return filter_var($email, FILTER_VALIDATE_EMAIL);
             });
-
+            
             if (empty($recipients)) {
                 throw new Exception('No valid recipient email addresses found');
             }
