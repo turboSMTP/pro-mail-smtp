@@ -57,7 +57,6 @@ class Outlook extends BaseProvider
                 throw new \Exception('Outlook authentication required');
             }
 
-            // Fixed token expiration check
             if (isset($token['expires_at']) && time() >= $token['expires_at']) {
                 $this->refresh_token($token['refresh_token']);
                 $token = $this->get_access_token();
@@ -197,15 +196,6 @@ class Outlook extends BaseProvider
     public function get_analytics($filters = [])
     {
         return [];
-    }
-
-    private function get_message_headers($message)
-    {
-        $headers = [];
-        foreach ($message->getPayload()->getHeaders() as $header) {
-            $headers[strtolower($header->getName())] = $header->getValue();
-        }
-        return $headers;
     }
 
     public function handle_oauth_callback($code)

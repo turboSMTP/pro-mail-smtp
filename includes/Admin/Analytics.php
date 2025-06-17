@@ -129,7 +129,7 @@ class Analytics {
         $per_page = isset($_POST['filters']['per_page']) ? max(1, (int) $_POST['filters']['per_page']) : 10;
 
         if (empty($provider_id)) {
-            wp_send_json_error('Provider ID is required');
+            wp_send_json_error('Please setup a connection to fetch analytics.');
             return;
         }
 

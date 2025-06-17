@@ -3,9 +3,14 @@
 namespace TurboSMTP\ProMailSMTP\Providers;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+if (!class_exists('PHPMailer\PHPMailer\PHPMailer')) {
+    require_once ABSPATH . WPINC . '/PHPMailer/PHPMailer.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/SMTP.php';
+    require_once ABSPATH . WPINC . '/PHPMailer/Exception.php';
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
 class OtherSMTP
 {
     private $smtpHost;
@@ -22,9 +27,8 @@ class OtherSMTP
         $this->smtpHost = $credentials['smtp_host'];
         $this->smtpPort = $credentials['smtp_port'] ?? 587;
         $this->smtpSecurity = $credentials['smtp_encryption'] ?? 'tls';
-        $this->smtpForcedSenderEmail = $credentials['smtp_forced_sender_email'] ?? '';
+        $this->smtpForcedSenderEmail = $credentials['email_from_overwrite'] ?? '';
     }
-
     public function send($params)
     {
         try {
@@ -35,7 +39,7 @@ class OtherSMTP
             $recipients = array_filter($params['to'], function ($email) {
                 return filter_var($email, FILTER_VALIDATE_EMAIL);
             });
-
+            
             if (empty($recipients)) {
                 throw new Exception('No valid recipient email addresses found');
             }
@@ -113,7 +117,7 @@ class OtherSMTP
 
     private function mail_add_attachment($smtp, $attachment)
     {
-        $smtp->addAttachment($attachment);
+            $smtp->addAttachment($attachment);
     }
 
     private function mail_send($smtp, $recipients, $subject, $body, $headers)
@@ -134,13 +138,13 @@ class OtherSMTP
 
         if (isset($headers['Cc'])) {
             foreach ((array)$headers['Cc'] as $cc) {
-                $smtp->addCC($cc);
+                    $smtp->addCC($cc);
             }
         }
 
         if (isset($headers['Bcc'])) {
             foreach ((array)$headers['Bcc'] as $bcc) {
-                $smtp->addBCC($bcc);
+                    $smtp->addBCC($bcc);
             }
         }
 
@@ -152,7 +156,7 @@ class OtherSMTP
 
     private function mail_close($smtp)
     {
-        $smtp->smtpClose();
+            $smtp->smtpClose();
     }
 
     public function test_connection()

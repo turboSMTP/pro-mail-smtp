@@ -2,8 +2,9 @@
 
 <div class="wrap">
     <div class="plugin-header">
-    <span class="plugin-logo"></span>
-    <h1><span><?php esc_html_e('PRO', 'pro-mail-smtp'); ?> </span><?php esc_html_e(' MAIL SMTP', 'pro-mail-smtp'); ?></h1>    </div>
+        <span class="plugin-logo"></span>
+        <h1><span><?php esc_html_e('PRO', 'pro-mail-smtp'); ?> </span><?php esc_html_e(' MAIL SMTP', 'pro-mail-smtp'); ?></h1>
+    </div>
 
     <p class="description"><?php esc_html_e('Setup custom SMTP or popular Providers to improve your WordPress email deliverability.', 'pro-mail-smtp'); ?></p>
 
@@ -13,6 +14,7 @@
         <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-analytics')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Providers Logs', 'pro-mail-smtp'); ?></a>
         <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-email-router')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Email Router', 'pro-mail-smtp'); ?></a>
         <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-settings')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('Settings', 'pro-mail-smtp'); ?></a>
+        <a href="<?php echo esc_url(admin_url('admin.php?page=pro-mail-smtp-about')); ?>" class="pro-mail-smtp-nav-tab"><?php esc_html_e('About', 'pro-mail-smtp'); ?></a>
     </nav>
 
     <?php settings_errors('pro_mail_smtp_messages'); ?>
@@ -38,6 +40,15 @@
             </a>
         </div>
 
+        <?php
+        $total_connections = !empty($providers_config) ? count($providers_config) : 0;
+        ?>
+        <div class="connections-count" style="margin-bottom:10px;">
+            <span class="connections-label"><?php esc_html_e('Connections', 'pro-mail-smtp');?></span>
+            <span class="connections-current"><?php echo esc_html($total_connections); ?></span>
+            <spam class="connections-divider"><?php esc_html_e('/', 'pro-mail-smtp');?></spam>
+            <span class="connections-max"><?php esc_html_e('5', 'pro-mail-smtp');?></span>
+        </div>
         <!-- Providers Table -->
         <div class="providers-table-wrapper">
             <table class="widefat fixed providers-table">
@@ -54,8 +65,8 @@
                     <?php if (empty($providers_config)): ?>
                         <tr class="no-items">
                             <td colspan="5" class="empty-state">
-                            <span class="empty-state-icon"></span>
-                            <p><?php esc_html_e('It seems you haven\'t added any providers yet.', 'pro-mail-smtp'); ?></p>
+                                <span class="empty-state-icon"></span>
+                                <p><?php esc_html_e('It seems you haven\'t added any providers yet.', 'pro-mail-smtp'); ?></p>
                                 <p>
                                     <?php esc_html_e('Our plugin supports the most important SMTP providers to improve email deliverability.', 'pro-mail-smtp'); ?>
                                 </p>
@@ -65,7 +76,7 @@
                                     foreach ($providers_list as $provider): ?>
                                         <?php if ($provider['name'] !== 'other'): ?>
                                             <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider['name']); ?>"
-      title="<?php echo esc_attr($provider['label']); ?>"></span>
+                                                title="<?php echo esc_attr($provider['label']); ?>"></span>
 
                                         <?php endif; ?>
                                     <?php endforeach; ?>
@@ -90,8 +101,8 @@
                                     <?php echo esc_html($provider->priority); ?>
                                 </td>
                                 <td class="column-provider">
-                                <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider->provider); ?>"
-      title="<?php echo esc_attr($providers_list[$provider->provider]['label']); ?>"></span>
+                                    <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider->provider); ?>"
+                                        title="<?php echo esc_attr($providers_list[$provider->provider]['label']); ?>"></span>
 
                                     <strong><?php echo esc_html($providers_list[$provider->provider]['label']); ?></strong>
                                 </td>
@@ -152,7 +163,7 @@
                                         <div class="ribbon-recommended"><?php esc_html_e('Recommended', 'pro-mail-smtp'); ?></div>
                                     <?php endif; ?>
                                     <span class="provider-icon-css provider-icon-<?php echo esc_attr($key); ?>"
-      title="<?php echo esc_attr($info['label']);?>"></span>
+                                        title="<?php echo esc_attr($info['label']); ?>"></span>
 
                                     <h4><?php echo esc_html($info['label']); ?></h4>
                                 </div>

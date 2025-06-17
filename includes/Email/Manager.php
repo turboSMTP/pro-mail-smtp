@@ -98,17 +98,19 @@ class Manager {
     }
 
     private function fallbackToWpMail($args) {
+        $current_email_data = $this->emailFormatterService->format($args);
+        try {
         $phpmailer = new PhpMailerProvider();
         $result = $phpmailer->send($args);
-        $current_email_data = $this->emailFormatterService->format($args);
-
         if($result) {
             $this->logEmail($current_email_data, $result, 'phpmailer', 'sent');
             return true;
         }
-
-        $this->logEmail($current_email_data ?? [], null, 'phpmailer', 'failed', 'All providers failed to send email');
-        return false;
+    } catch (\Exception $e) {
+            $error_message = $e->getMessage();
+            $this->logEmail($current_email_data, null, 'phpmailer', 'failed', $error_message);
+            return false;
+        }
     }
 
     /**
@@ -219,7 +221,6 @@ class Manager {
     private function logEmail($data, $result, $provider, $status, $error = null) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
-
         foreach ($data['to'] as $to) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $wpdb->insert(

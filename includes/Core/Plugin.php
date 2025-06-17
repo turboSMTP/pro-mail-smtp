@@ -38,6 +38,7 @@ class Plugin
             new \TurboSMTP\ProMailSMTP\Admin\Analytics();
             new \TurboSMTP\ProMailSMTP\Admin\EmailRouter();
             new \TurboSMTP\ProMailSMTP\Admin\Settings();
+            new \TurboSMTP\ProMailSMTP\Admin\About();
         }
 
         $email_manager = new \TurboSMTP\ProMailSMTP\Email\Manager();
@@ -61,6 +62,7 @@ class Plugin
             'pro-mail-smtp_page_pro-mail-smtp-analytics',
             'pro-mail-smtp_page_pro-mail-smtp-email-router',
             'pro-mail-smtp_page_pro-mail-smtp-settings',
+            'pro-mail-smtp_page_pro-mail-smtp-about',
 
         ];
 

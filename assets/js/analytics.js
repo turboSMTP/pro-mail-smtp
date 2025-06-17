@@ -120,7 +120,7 @@ jQuery(document).ready(function($) {
                     $('#next-page').prop('disabled', isLastPage);
 
                 } else {
-                    alert('Error loading analytics: ' + (response.data || 'Unknown error'));
+                    alert('Error loading provider logs: ' + (response.data || 'Unknown error'));
                     tbody.find('.loading-message').text('Error loading data');
                     $('#current-page').text('1');
                     $('#prev-page').prop('disabled', true);
