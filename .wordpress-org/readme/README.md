@@ -3,7 +3,7 @@ Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.8
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -204,6 +204,10 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+= 1.1.0 =
+* Fix Default PHPMailer issue
+* Fix OtherSMTP Provider issue
+* New About page
 
 = 1.0.0 =
 * Initial release
