@@ -12,10 +12,14 @@ if (!defined('ABSPATH')) {
     <thead>
         <tr>        <?php foreach ($columns as $key => $label): ?>
             <th scope="col"
-                class="manage-column column-<?php echo esc_attr($key); ?> <?php echo esc_attr(call_user_func($data['get_column_sort_class'], $key, $filters)); ?>">
-                <a href="#" class="sort-column" data-column="<?php echo esc_attr($key); ?>">
+                class="manage-column column-<?php echo esc_attr($key); ?> <?php echo $key !== 'actions' ? esc_attr(call_user_func($data['get_column_sort_class'], $key, $filters)) : ''; ?>">
+                <?php if ($key !== 'actions'): ?>
+                    <a href="#" class="sort-column" data-column="<?php echo esc_attr($key); ?>">
+                        <span><?php echo esc_html($label); ?></span>
+                    </a>
+                <?php else: ?>
                     <span><?php echo esc_html($label); ?></span>
-                </a>
+                <?php endif; ?>
             </th>
         <?php endforeach; ?>
         </tr>
@@ -50,9 +54,50 @@ if (!defined('ABSPATH')) {
                         <span class="status-badge status-<?php echo esc_attr($log->status); ?>">
                             <?php echo esc_html(ucfirst($log->status)); ?>
                         </span>
+                        <?php if (isset($log->is_resent) && $log->is_resent == 1): ?>
+                            <br><small class="resent-indicator">
+                                <span class="dashicons dashicons-email-alt"></span>
+                                <?php esc_html_e('Resent', 'pro-mail-smtp'); ?>
+                            </small>
+                        <?php endif; ?>
+                        <?php if (isset($log->retry_count) && $log->retry_count > 0): ?>
+                            <br><small class="retry-count">
+                                <span class="dashicons dashicons-update"></span>
+                                <?php printf(esc_html__('Retries: %d', 'pro-mail-smtp'), (int)$log->retry_count); ?>
+                            </small>
+                        <?php endif; ?>
                     </td>
                     <td class="column-details">
                         <?php echo esc_html($log->error_message); ?>
+                    </td>
+                    <td class="column-actions">
+                        <div class="action-buttons">
+                            <button type="button" 
+                                    class="button button-secondary action-btn view-btn" 
+                                    data-log-id="<?php echo esc_attr($log->id); ?>"
+                                    title="<?php esc_attr_e('View email details', 'pro-mail-smtp'); ?>">
+                                <span class="dashicons dashicons-visibility"></span>
+                                <?php esc_html_e('View', 'pro-mail-smtp'); ?>
+                            </button>
+                            
+                            <?php if ($log->status === 'failed'): ?>
+                                <button type="button" 
+                                        class="button button-primary action-btn resend-btn" 
+                                        data-log-id="<?php echo esc_attr($log->id); ?>"
+                                        title="<?php esc_attr_e('Resend failed email', 'pro-mail-smtp'); ?>">
+                                    <span class="dashicons dashicons-email-alt"></span>
+                                    <?php esc_html_e('Resend', 'pro-mail-smtp'); ?>
+                                </button>
+                            <?php else: ?>
+                                <button type="button" 
+                                        class="button button-secondary action-btn resend-btn" 
+                                        disabled
+                                        title="<?php esc_attr_e('Only failed emails can be resent', 'pro-mail-smtp'); ?>">
+                                    <span class="dashicons dashicons-email-alt"></span>
+                                    <?php esc_html_e('Resend', 'pro-mail-smtp'); ?>
+                                </button>
+                            <?php endif; ?>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

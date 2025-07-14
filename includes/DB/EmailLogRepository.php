@@ -71,4 +71,36 @@ class EmailLogRepository {
         $allowed = ['sent_at', 'provider', 'to_email', 'subject', 'status'];
         return in_array($orderby, $allowed, true) ? $orderby : 'sent_at';
     }
+
+    /**
+     * Get a single log entry by ID
+     */
+    public function get_log_by_id($log_id) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
+        
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        return $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM %i WHERE id = %d",
+            $table_name,
+            $log_id
+        ));
+    }
+
+    /**
+     * Mark a log entry as resent
+     */
+    public function mark_as_resent($log_id) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
+        
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        return $wpdb->update(
+            $table_name,
+            ['is_resent' => 1],
+            ['id' => $log_id],
+            ['%d'],
+            ['%d']
+        );
+    }
 }

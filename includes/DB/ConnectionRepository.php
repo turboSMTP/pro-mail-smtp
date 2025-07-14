@@ -90,16 +90,13 @@ class ConnectionRepository {
         );
     }
     
+    /**
+     * Get a single connection by connection ID
+     */
     public function get_connection($connection_id) {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $row = $wpdb->get_row(
-            $wpdb->prepare("SELECT * FROM %i WHERE connection_id = %s", $this->table, $connection_id)
-        );
-        if ($row) {
-            $row->connection_data = json_decode($row->connection_data, true);
-        }
-        return $row;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+        return $wpdb->get_row($wpdb->prepare("SELECT * FROM %i WHERE connection_id = %s", $this->table, $connection_id));
     }
     
     public function delete_connection($connection_id) {

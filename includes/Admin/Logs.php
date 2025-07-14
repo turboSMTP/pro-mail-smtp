@@ -20,6 +20,9 @@ class Logs
     public function __construct()
     {
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
+        add_action('wp_ajax_pro_mail_smtp_view_email_log', [$this, 'ajax_view_email_log']);
+        add_action('wp_ajax_pro_mail_smtp_resend_email_log', [$this, 'ajax_resend_email_log']);
+        add_action('wp_ajax_pro_mail_smtp_get_resend_modal', [$this, 'ajax_get_resend_modal']);
         $this->log_repository = new EmailLogRepository();
         $this->providers_list = include __DIR__ . '/../../config/providers-list.php';
     }
@@ -37,6 +40,15 @@ class Logs
             ['jquery'],
             PRO_MAIL_SMTP_VERSION,
             true
+        );
+
+        wp_localize_script(
+            'pro-mail-smtp-logs',
+            'proMailSMTPLogs',
+            [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('pro_mail_smtp_logs_nonce')
+            ]
         );
 
         wp_enqueue_style(
@@ -219,5 +231,210 @@ class Logs
         }
         
         return $defaults;
+    }
+
+    /**
+     * AJAX handler for viewing email log details
+     */
+    public function ajax_view_email_log()
+    {
+        check_ajax_referer('pro_mail_smtp_logs_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('You do not have permission to perform this action.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log_id = isset($_POST['log_id']) ? absint($_POST['log_id']) : 0;
+        if (!$log_id) {
+            wp_send_json_error(['message' => __('Invalid log ID.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log = $this->log_repository->get_log_by_id($log_id);
+        if (!$log) {
+            wp_send_json_error(['message' => __('Log entry not found.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        // Format the log data for display
+        $formatted_log = [
+            'id' => $log->id,
+            'provider' => ucfirst($log->provider),
+            'from_email' => $log->from_email ?? 'N/A',
+            'to_email' => $log->to_email,
+            'cc_email' => $log->cc_email ?? 'N/A',
+            'bcc_email' => $log->bcc_email ?? 'N/A',
+            'reply_to' => $log->reply_to ?? 'N/A',
+            'subject' => $log->subject,
+            'status' => ucfirst($log->status),
+            'sent_at' => LogsHelper::format_date($log->sent_at),
+            'message_id' => $log->message_id,
+            'error_message' => $log->error_message,
+            'email_content' => $log->message ?? (isset($log->email_content) ? $log->email_content : 'N/A'),
+            'email_headers' => $log->headers ? json_decode($log->headers, true) : (isset($log->email_headers) ? json_decode($log->email_headers, true) : null),
+            'attachment_data' => $log->attachment_data ? json_decode($log->attachment_data, true) : null,
+            'is_resent' => $log->is_resent ?? false,
+            'retry_count' => $log->retry_count ?? 0,
+        ];
+
+        wp_send_json_success(['log' => $formatted_log]);
+    }
+
+    /**
+     * AJAX handler for getting resend modal with provider selection
+     */
+    public function ajax_get_resend_modal()
+    {
+        check_ajax_referer('pro_mail_smtp_logs_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('You do not have permission to perform this action.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log_id = isset($_POST['log_id']) ? absint($_POST['log_id']) : 0;
+        if (!$log_id) {
+            wp_send_json_error(['message' => __('Invalid log ID.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log = $this->log_repository->get_log_by_id($log_id);
+        if (!$log) {
+            wp_send_json_error(['message' => __('Log entry not found.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        if ($log->status !== 'failed') {
+            wp_send_json_error(['message' => __('Only failed emails can be resent.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        // Get available providers
+        $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
+        $provider_configs = $conn_repo->get_all_connections();
+        
+        $providers = [];
+        foreach ($provider_configs as $config) {
+            $providers[] = [
+                'id' => $config->connection_id,
+                'label' => $config->connection_label,
+                'provider' => $config->provider
+            ];
+        }
+
+        // Add fallback option
+        $providers[] = [
+            'id' => 'fallback',
+            'label' => __('Fallback (PHP Mail)', 'pro-mail-smtp'),
+            'provider' => 'phpmailer'
+        ];
+
+        wp_send_json_success([
+            'log' => [
+                'id' => $log->id,
+                'to_email' => $log->to_email,
+                'subject' => $log->subject,
+                'email_content' => $log->message ?? (isset($log->email_content) ? $log->email_content : ''),
+                'email_headers' => $log->headers ? json_decode($log->headers, true) : (isset($log->email_headers) ? json_decode($log->email_headers, true) : []),
+                'provider' => $log->provider,
+                'status' => $log->status,
+                'sent_at' => LogsHelper::format_date($log->sent_at)
+            ],
+            'providers' => $providers
+        ]);
+    }
+
+    /**
+     * AJAX handler for resending failed emails with selected provider
+     */
+    public function ajax_resend_email_log()
+    {
+        check_ajax_referer('pro_mail_smtp_logs_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('You do not have permission to perform this action.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log_id = isset($_POST['log_id']) ? absint($_POST['log_id']) : 0;
+        $provider_id = isset($_POST['provider_id']) ? sanitize_text_field(wp_unslash($_POST['provider_id'])) : '';
+        $to_email = isset($_POST['to_email']) ? sanitize_email(wp_unslash($_POST['to_email'])) : '';
+        $subject = isset($_POST['subject']) ? sanitize_text_field(wp_unslash($_POST['subject'])) : '';
+        $message = isset($_POST['message']) ? wp_unslash($_POST['message']) : '';
+        
+        if (!$log_id) {
+            wp_send_json_error(['message' => __('Invalid log ID.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        if (empty($provider_id)) {
+            wp_send_json_error(['message' => __('Please select a provider.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        if (empty($to_email) || empty($subject)) {
+            wp_send_json_error(['message' => __('Recipient email and subject are required.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        $log = $this->log_repository->get_log_by_id($log_id);
+        if (!$log) {
+            wp_send_json_error(['message' => __('Log entry not found.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        if ($log->status !== 'failed') {
+            wp_send_json_error(['message' => __('Only failed emails can be resent.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        try {
+            // Parse headers and attachments from stored data
+            $headers = [];
+            $attachments = [];
+            
+            // Check both old and new column names for backward compatibility
+            $stored_headers_data = $log->headers ?? (isset($log->email_headers) ? $log->email_headers : '');
+            if (!empty($stored_headers_data)) {
+                $stored_headers = json_decode($stored_headers_data, true);
+                if (is_array($stored_headers)) {
+                    $headers = $stored_headers;
+                    // Extract attachments if they were stored in headers
+                    if (isset($headers['attachments'])) {
+                        $attachments = $headers['attachments'];
+                        unset($headers['attachments']); // Remove from headers as it's handled separately
+                    }
+                }
+            }
+            
+            // Check for attachment data in the new column
+            if (!empty($log->attachment_data)) {
+                $attachment_data = json_decode($log->attachment_data, true);
+                if (is_array($attachment_data)) {
+                    $attachments = array_merge($attachments, $attachment_data);
+                }
+            }
+
+            // Use the Email Manager's manual resend function with modal data
+            $email_manager = new \TurboSMTP\ProMailSMTP\Email\Manager();
+            $result = $email_manager->manual_resend_email(
+                $to_email,
+                $subject,
+                $message,
+                $headers,
+                $attachments,
+                $provider_id,
+                $log_id
+            );
+
+            if ($result['success']) {
+                wp_send_json_success(['message' => $result['message']]);
+            } else {
+                wp_send_json_error(['message' => $result['message']]);
+            }
+        } catch (\Exception $e) {
+            wp_send_json_error(['message' => sprintf(__('Error resending email: %s', 'pro-mail-smtp'), $e->getMessage())]);
+        }
     }
 }

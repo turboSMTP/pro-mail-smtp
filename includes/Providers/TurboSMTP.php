@@ -43,7 +43,6 @@ class TurboSMTP extends BaseProvider
         if (!empty($data['bcc'])) {
             $payload['bcc'] = implode(",", $data['bcc']);
         }
-
         if (!empty($data['attachments'])) {
             $payload['attachments'] = array_map(function ($attachment) {
                 return [
