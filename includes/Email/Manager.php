@@ -9,6 +9,7 @@ use TurboSMTP\ProMailSMTP\Email\EmailFormatterService;
 use TurboSMTP\ProMailSMTP\Email\EmailRoutingService;
 use TurboSMTP\ProMailSMTP\Core\WPMailCaller;
 use TurboSMTP\ProMailSMTP\Providers\PhpMailerProvider;
+use TurboSMTP\ProMailSMTP\Alerts\AlertService;
 
 /**
  * Class Manager
@@ -24,6 +25,7 @@ class Manager {
     private $emailFormatterService;
     private $emailRoutingService;
     private $wpMailCaller;
+    private $alertService;
     private $providersInitialized = false;
 
     /**
@@ -35,6 +37,7 @@ class Manager {
         $this->emailFormatterService = new EmailFormatterService();
         $this->emailRoutingService = new EmailRoutingService();
         $this->wpMailCaller = new WPMailCaller();
+        $this->alertService = new AlertService();
     }
 
     /**
@@ -236,6 +239,17 @@ class Manager {
                 ],
                 ['%s', '%s', '%s', '%s', '%s', '%s', '%s']
             );
+            
+            // Process alerts for failed emails
+            if ($status === 'failed') {
+                $alert_data = [
+                    'subject' => $data['subject'] ?? '',
+                    'to_email' => $to,
+                    'error_message' => $error,
+                    'provider' => $provider,
+                ];
+                $this->alertService->process_email_failure($alert_data);
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ namespace TurboSMTP\ProMailSMTP\Core;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Installer {
-    private $db_version = '1.0';
+    private $db_version = '1.4';
     public function install() {
         $installed_version = get_option('pro_mail_smtp_db_version', '0');
         $this->create_default_options();
@@ -11,12 +11,18 @@ class Installer {
         if ($installed_version === '0') {
             $this->update_db_1_0();
         }
-        // Future updates
-        // if (version_compare($installed_version, '1.1', '<')) {
-        // }
+        
+        // Alerts Feature Migration
+        if (version_compare($installed_version, '1.4', '<')) {
+            $this->update_db_1_4();
+        }
         
         update_option('pro_mail_smtp_db_version', $this->db_version);
-
+        
+        // Log successful migration
+        if (function_exists('error_log')) {
+            error_log("Pro Mail SMTP: Database successfully upgraded to version {$this->db_version} - Alerts Feature");
+        }
     }
     
     private function create_default_options() {
@@ -95,5 +101,43 @@ class Installer {
         
         dbDelta($sql_conditions);
         
+    }
+    
+    private function update_db_1_4() {
+        global $wpdb;
+        
+        // Alerts Feature Migration
+        $alerts_table = $wpdb->prefix . 'pro_mail_smtp_alert_configs';
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql_alerts = "CREATE TABLE IF NOT EXISTS $alerts_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            channel_type varchar(20) NOT NULL,
+            config_name varchar(255) NOT NULL,
+            webhook_url text NOT NULL,
+            failure_threshold int NOT NULL DEFAULT 0,
+            is_enabled boolean NOT NULL DEFAULT 1,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY channel_type (channel_type),
+            KEY is_enabled (is_enabled),
+            KEY failure_threshold (failure_threshold)
+        ) $charset_collate;";
+        
+        if (!function_exists('dbDelta')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        }
+        dbDelta($sql_alerts);
+        
+        // Add alert-specific configuration options
+        add_option('pro_mail_smtp_alerts_enabled', true);
+        add_option('pro_mail_smtp_alerts_max_per_day', 50); // Prevent runaway alerts
+        add_option('pro_mail_smtp_alerts_webhook_timeout', 30); // Webhook timeout in seconds
+        
+        // Log successful migration
+        if (function_exists('error_log')) {
+            error_log('Pro Mail SMTP: Alerts feature migration completed successfully (v1.4)');
+        }
     }
 }

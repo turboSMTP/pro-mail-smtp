@@ -61,6 +61,13 @@ class Menu {
                 'callback' => 'render_email_router_page'
             ],
             [
+                'title' => 'Alerts',
+                'menu_title' => 'Alerts',
+                'capability' => 'manage_options',
+                'slug' => 'pro-mail-smtp-alerts',
+                'callback' => 'render_alerts_page'
+            ],
+            [
                 'title' => 'Settings',
                 'menu_title' => 'Settings',
                 'capability' => 'manage_options',
@@ -101,6 +108,10 @@ class Menu {
     }
     public function render_email_router_page() {
         (new EmailRouter())->render();
+    }
+
+    public function render_alerts_page() {
+        (new Alerts())->render();
     }
 
     public function render_settings_page() {
