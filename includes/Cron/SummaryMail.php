@@ -69,6 +69,10 @@ class SummaryMail implements CronInterface
 
     public function handle()
     {
+        if (!get_option('pro_mail_smtp_enable_summary', 0)) {
+            $this->deregister();
+            return;
+        }
         $logs = $this->get_logs_since_last_summary();
         $admin_email = get_option('pro_mail_smtp_summary_email', get_option('admin_email'));
 

@@ -371,7 +371,7 @@ class Manager {
                 
                 return [
                     'success' => true,
-                    'message' => 'Email resent successfully via ' . $connection['provider']
+                    'message' => 'Email resent successfully via ' . $connection['name']
                 ];
             } else {
                 throw new \Exception('Provider failed to send email');
