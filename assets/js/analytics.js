@@ -202,5 +202,81 @@ jQuery(document).ready(function($) {
             .replace(/'/g, "&#039;");
     }
 
+    // GDPR Banner functionality for TurboSMTP
+    function updateGDPRBanner() {
+        var providerId = $('#provider-filter').val();
+        var $banner = $('.turbo-smtp-gdpr-banner');
+        
+        console.log('updateGDPRBanner called with providerId:', providerId);
+        
+        if (!providerId || providerId === '') {
+            console.log('No provider selected, hiding banner');
+            $banner.hide();
+            return;
+        }
+        
+        // Make AJAX call to get provider configuration
+        $.ajax({
+            url: ProMailSMTPAnalytics.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'pro_mail_smtp_get_provider_config',
+                provider_id: providerId,
+                nonce: ProMailSMTPAnalytics.nonce
+            },
+            success: function(response) {
+                console.log('AJAX response:', response);
+                
+                if (response.success && response.data) {
+                    var providerConfig = response.data;
+                    console.log('Provider config:', providerConfig);
+                    
+                    // Check if it's TurboSMTP EU
+                    if (providerConfig.provider_class === 'TurboSMTP') {
+                        console.log('Found TurboSMTP provider');
+                        try {
+                            var configKeys = JSON.parse(providerConfig.config_keys);
+                            console.log('Config keys:', configKeys);
+                            
+                            if (configKeys.region === 'eu') {
+                                console.log('EU region detected, showing banner');
+                                $banner.fadeIn(300);
+                            } else {
+                                console.log('Non-EU region (' + configKeys.region + '), hiding banner');
+                                $banner.fadeOut(300);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing config keys:', e);
+                            $banner.hide();
+                        }
+                    } else {
+                        console.log('Non-TurboSMTP provider (' + providerConfig.provider_class + '), hiding banner');
+                        $banner.fadeOut(300);
+                    }
+                } else {
+                    console.log('No valid response data, hiding banner');
+                    $banner.hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching provider config:', error);
+                $banner.hide();
+            }
+        });
+    }
+    
+    // Initialize banner on page load and when provider changes
+    $(document).ready(function() {
+        // Update banner when provider selection changes
+        $('#provider-filter').on('change', function() {
+            updateGDPRBanner();
+        });
+        
+        // Update banner immediately on page load after a short delay to ensure DOM is ready
+        setTimeout(function() {
+            updateGDPRBanner();
+        }, 500);
+    });
+
     loadAnalyticsData();
 });

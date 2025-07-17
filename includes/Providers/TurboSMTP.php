@@ -95,9 +95,9 @@ class TurboSMTP extends BaseProvider
             'from' => $filters['date_from'],
             'to' => $filters['date_to'],
             'page' => $filters['page'] ?? 1,
-            'limit' => $filters['per_page'] ?? 5,
-            'status' => ['SUCCESS', 'FAIL']
+            'limit' => $filters['per_page'] ?? 5
         ], false, 'GET');
+        
         $data = [];
         $data['data'] = $this->format_analytics_response($response);
         $data['columns'] = $this->analytics_table_columns();

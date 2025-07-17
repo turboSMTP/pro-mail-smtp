@@ -8,45 +8,76 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, logging, and advanced routing.
+Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, proactive alerts, advanced analytics, and intelligent routing.
 
 == Description ==
 
-Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
+Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance with advanced analytics, receive proactive failure alerts, and ensure reliable email delivery with intelligent routing.
+
+**🚨 NEW: Proactive Email Failure Alerts** - Get instant notifications via Slack, Discord, Microsoft Teams, or custom webhooks when emails fail to deliver. Never miss a critical email delivery issue again!
+
+**📊 NEW: Advanced Analytics Dashboard** - Monitor real-time provider performance, view detailed delivery metrics, and track email engagement with comprehensive analytics for Gmail, Mailgun, SendGrid, and more.
+
+**🎯 NEW: Enhanced Email Routing** - Create sophisticated routing rules with advanced conditional logic, regex matching, and source application detection to ensure emails are delivered through the optimal provider.
 
 = 🚀 Features =
 
 * **Multiple Provider Support**:
     * Standard SMTP servers
     * Gmail (with secure OAuth authentication)
+    * Microsoft Outlook (with OAuth authentication)
     * Brevo (formerly Sendinblue)
     * TurboSMTP
     * SMTP2GO
     * Mailgun
+    * SendGrid
+    * Postmark
+    * SparkPost
     * And more...
 
 * **Smart Email Routing**:
     * Route emails through specific providers based on custom conditions
     * Automatic failover system using priority levels
     * Set conditions based on email type, recipient, or sending plugin
+    * Advanced conditional logic with multiple operators (contains, starts with, regex, etc.)
+    * Support for source application detection
+
+* **Proactive Alert System** 🚨:
+    * Real-time email failure notifications
+    * Multi-channel alert support (Slack, Discord, Microsoft Teams, Custom Webhooks)
+    * Smart threshold-based alerts to prevent spam
+    * Consolidated failure reports when thresholds are reached
+    * Individual alerts for immediate critical failures
+    * Test alert functionality to verify configurations
 
 * **Comprehensive Logging**:
     * Track email status (sent, delivered, failed)
     * View detailed error messages
     * Configurable log retention
     * Email content inspection
+    * Email resend functionality from logs
+    * Full email header and body inspection
 
-* **Analytics Dashboard**:
-    * Monitor provider performance
-    * View delivery rates
-    * Track email engagement
+* **Advanced Analytics Dashboard**:
+    * Monitor provider performance metrics
+    * View delivery rates and engagement statistics
+    * Track email analytics per provider
     * Regular summary reports
+    * Date range filtering and pagination
+    * Export capabilities for detailed analysis
+
+* **Enhanced Security & Authentication**:
+    * OAuth 2.0 authentication for Gmail and Outlook
+    * Secure API key management
+    * SSL/TLS encryption support
+    * Connection validation and testing
 
 * **Advanced Settings**:
-    * Custom From Email and From Name
-    * OAuth authentication for supported providers
+    * Custom From Email and From Name per routing condition
     * Fallback to WordPress mail system
-    * Easy import from other SMTP plugins
+    * Easy import from other SMTP plugins (WP Mail SMTP, Easy SMTP)
+    * Bulk email management and cleanup tools
+    * Multi-attachment support with various file types
 
 == Installation ==
 
@@ -79,12 +110,35 @@ Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability 
 1. Navigate to **Pro Mail SMTP → Email Router**
 2. Create rules to route specific emails through particular providers
 3. Set conditions based on recipient email, source plugin, or other factors
+4. Use advanced operators like "contains", "starts with", "regex match", etc.
+5. Configure custom sender email and name for specific routing conditions
+
+= Proactive Email Alerts Setup =
+
+1. Navigate to **Pro Mail SMTP → Alerts**
+2. Click **Add New Alert** to create your first alert configuration
+3. Choose your notification channel:
+    * **Slack**: Enter your Slack webhook URL
+    * **Discord**: Enter your Discord webhook URL
+    * **Microsoft Teams**: Enter your Teams webhook URL
+    * **Custom Webhook**: Enter any custom webhook endpoint
+4. Set your **failure threshold**:
+    * `0` = Immediate alerts for every failure
+    * `1+` = Consolidated alerts when threshold is reached
+5. Configure alert settings and test the connection
+6. Enable the alert and save your configuration
+
+**Alert Features:**
+* **Smart Thresholds**: Prevent notification spam with configurable failure thresholds
+* **Consolidated Reports**: When multiple failures occur, get summarized reports instead of individual alerts
+* **Rich Formatting**: Alerts include detailed failure information, provider details, and site context
+* **Test Functionality**: Verify your alert configuration with test notifications
 
 == Frequently Asked Questions ==
 
 = Which email services does this plugin support? =
 
-Pro Mail SMTP supports standard SMTP servers, Gmail (with OAuth), Brevo, TurboSMTP, SMTP2GO, Mailgun, and many other providers.
+Pro Mail SMTP supports standard SMTP servers, Gmail (with OAuth), Microsoft Outlook (with OAuth), Brevo, TurboSMTP, SMTP2GO, Mailgun, SendGrid, Postmark, SparkPost, and many other providers.
 
 = Can I use multiple email providers? =
 
@@ -94,14 +148,31 @@ Yes! You can configure multiple providers and set priorities for automatic failo
 
 Yes, Pro Mail SMTP works with all major contact form plugins including Contact Form 7, WPForms, Gravity Forms, and more.
 
+= How do the email failure alerts work? =
+
+The plugin can send real-time notifications when emails fail to deliver. You can configure alerts to go to Slack, Discord, Microsoft Teams, or custom webhooks. Set thresholds to receive either immediate notifications or consolidated reports when multiple failures occur.
+
+= Can I see analytics for my email providers? =
+
+Yes! The plugin provides detailed analytics for API-based providers like Gmail, Mailgun, SendGrid, and others. You can view delivery rates, send times, recipient information, and more.
+
+= How does the email routing system work? =
+
+The email routing system allows you to create rules that automatically route emails through specific providers based on conditions like recipient email, subject line, source plugin, or message content. You can use advanced operators like "contains", "regex match", and more.
+
+= Is OAuth authentication secure? =
+
+Yes, the plugin uses OAuth 2.0 for Gmail and Outlook authentication, which is more secure than traditional username/password authentication. Your actual login credentials are never stored in the plugin.
+
 == Screenshots ==
 
-1. Provider configuration screen
-2. Email logs view
-3. Providers Logs Page
-4. Settings page
-5. Email Router Configurations
-6. Email Router page
+1. Provider configuration screen with OAuth authentication
+2. Email logs view with detailed error messages and resend functionality
+3. Provider analytics dashboard with real-time metrics
+4. Settings page with advanced configuration options
+5. Email router configurations with conditional logic
+6. Proactive alerts setup with multi-channel support
+7. Email failure alerts dashboard
 
 == Third-Party Services ==
 
@@ -204,6 +275,20 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+
+= 1.5.1 =
+* **New Feature**: Proactive Email Failure Alerts System
+  * Multi-channel alert support (Slack, Discord, Microsoft Teams, Custom Webhooks)
+  * Smart threshold-based alerts to prevent notification spam
+  * Consolidated failure reports with detailed analytics
+  * Test alert functionality for configuration verification
+* **New Feature**: Email Resend Functionality
+  * Resend failed emails directly from logs with different providers
+  * Full email header and body inspection
+  * Improved error message handling
+* **Enhancement**: Enhanced security with better API key management
+* **Fix**: Various bug fixes and performance improvements
+
 = 1.1.1 =
 * Fix Default PHPMailer issue
 * Fix OtherSMTP Provider issue

@@ -16,6 +16,7 @@ class Analytics {
         $this->provider_factory = new ProviderFactory();
 
         add_action('wp_ajax_pro_mail_smtp_fetch_provider_analytics', [$this, 'fetch_provider_analytics']);
+        add_action('wp_ajax_pro_mail_smtp_get_provider_config', [$this, 'get_provider_config_ajax']);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
@@ -51,10 +52,18 @@ class Analytics {
     }
 
     public function render() {
+        $filters = $this->get_filter_values();
+        $selected_provider_config = null;
+        
+        if (!empty($filters['selected_provider'])) {
+            $selected_provider_config = $this->get_provider_config($filters['selected_provider']);
+        }
+        
         $data = [
             'providers' => $this->providers,
-            'filters' => $this->get_filter_values(),
-            'analytics_data' => $this->get_analytics_data()
+            'filters' => $filters,
+            'analytics_data' => $this->get_analytics_data(),
+            'selected_provider_config' => $selected_provider_config
         ];
 
         $view_file = $this->plugin_path . '/views/admin/analytics/index.php';
@@ -112,10 +121,17 @@ class Analytics {
         
         $saved_filters = get_user_meta(get_current_user_id(), 'pro_mail_smtp_analytics_filters', true);
         if (!empty($saved_filters) && is_array($saved_filters)) {
-            return array_merge($defaults, $saved_filters);
+            $merged_filters = array_merge($defaults, $saved_filters);
+        } else {
+            $merged_filters = $defaults;
         }
         
-        return $defaults;
+        // Auto-select first provider if none is selected
+        if (empty($merged_filters['selected_provider']) && !empty($this->providers)) {
+            $merged_filters['selected_provider'] = $this->providers[0]->connection_id;
+        }
+        
+        return $merged_filters;
     }
 
     public function fetch_provider_analytics() {
@@ -150,6 +166,26 @@ class Analytics {
         }
     }
 
+    public function get_provider_config_ajax() {
+        check_ajax_referer('pro_mail_smtp_analytics', 'nonce', true);
+        
+        $provider_id = isset($_POST['provider_id']) ? sanitize_text_field(wp_unslash($_POST['provider_id'])) : '';
+        
+        if (empty($provider_id)) {
+            wp_send_json_error('Provider ID is required.');
+            return;
+        }
+        
+        $provider_config = $this->get_provider_config($provider_id);
+        
+        if (!$provider_config) {
+            wp_send_json_error('Provider configuration not found.');
+            return;
+        }
+        
+        wp_send_json_success($provider_config);
+    }
+
     private function get_provider_analytics($provider_id, $filters) {
         $provider_config = $this->get_provider_config($provider_id);
 
@@ -165,6 +201,15 @@ class Analytics {
         if (!$connection) {
             return null;
         }
-       return $connection;
+        
+        $providers_config = include PRO_MAIL_SMTP_PATH . 'config/providers-list.php';
+        $provider_class = isset($providers_config[$connection->provider]['class']) 
+            ? $providers_config[$connection->provider]['class'] 
+            : ucfirst($connection->provider);
+        
+        $connection->provider_class = $provider_class;
+        $connection->config_keys = json_encode($connection->connection_data);
+        
+        return $connection;
     }
 }
