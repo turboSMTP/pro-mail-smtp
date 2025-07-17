@@ -276,7 +276,7 @@ This plugin does not collect or share any data with these services beyond what i
 
 == Changelog ==
 
-= 1.5.1 =
+= 1.6.1 =
 * **New Feature**: Proactive Email Failure Alerts System
   * Multi-channel alert support (Slack, Discord, Microsoft Teams, Custom Webhooks)
   * Smart threshold-based alerts to prevent notification spam
