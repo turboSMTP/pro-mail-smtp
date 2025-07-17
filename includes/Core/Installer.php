@@ -3,20 +3,28 @@ namespace TurboSMTP\ProMailSMTP\Core;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Installer {
-    private $db_version = '1.0';
+    private $db_version = '1.6';
     public function install() {
         $installed_version = get_option('pro_mail_smtp_db_version', '0');
+
         $this->create_default_options();
 
         if ($installed_version === '0') {
             $this->update_db_1_0();
         }
-        // Future updates
-        // if (version_compare($installed_version, '1.1', '<')) {
-        // }
+        
+        // Alerts Feature Migration
+        if (version_compare($installed_version, '1.4', '<')) {
+            $this->update_db_1_4();
+        }
+        
+        // Email Content Storage Migration / Email Resend and Retry Tracking
+        if (version_compare($installed_version, '1.5', '<')) {
+            $this->update_db_1_5();
+        }
         
         update_option('pro_mail_smtp_db_version', $this->db_version);
-
+        
     }
     
     private function create_default_options() {
@@ -95,5 +103,89 @@ class Installer {
         
         dbDelta($sql_conditions);
         
+    }
+    
+    private function update_db_1_4() {
+        global $wpdb;
+        
+        // Alerts Feature Migration
+        $alerts_table = $wpdb->prefix . 'pro_mail_smtp_alert_configs';
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql_alerts = "CREATE TABLE IF NOT EXISTS $alerts_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            channel_type varchar(20) NOT NULL,
+            config_name varchar(255) NOT NULL,
+            webhook_url text NOT NULL,
+            failure_threshold int NOT NULL DEFAULT 0,
+            is_enabled boolean NOT NULL DEFAULT 1,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY channel_type (channel_type),
+            KEY is_enabled (is_enabled),
+            KEY failure_threshold (failure_threshold)
+        ) $charset_collate;";
+        
+        if (!function_exists('dbDelta')) {
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        }
+        dbDelta($sql_alerts);
+        
+        // Add alert-specific configuration options
+        add_option('pro_mail_smtp_alerts_enabled', true);
+        add_option('pro_mail_smtp_alerts_max_per_day', 50); // Prevent runaway alerts
+        add_option('pro_mail_smtp_alerts_webhook_timeout', 30); // Webhook timeout in seconds
+        
+    }
+
+    private function update_db_1_5() {
+        global $wpdb;
+        
+        // Enhanced Email Logging Schema Migration
+        $email_log_table = $wpdb->prefix . 'pro_mail_smtp_email_log';
+        
+        // Check existing columns to avoid duplicates
+        $columns = $wpdb->get_col("DESCRIBE $email_log_table");
+        
+        // Add new columns for comprehensive email logging (only if they don't exist)
+        if (!in_array('from_email', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN from_email VARCHAR(255) NULL AFTER provider");
+        }
+        if (!in_array('cc_email', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN cc_email TEXT NULL AFTER to_email");
+        }
+        if (!in_array('bcc_email', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN bcc_email TEXT NULL AFTER cc_email");
+        }
+        if (!in_array('reply_to', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN reply_to VARCHAR(255) NULL AFTER bcc_email");
+        }
+        if (!in_array('message', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN message LONGTEXT NULL AFTER subject");
+        }
+        if (!in_array('headers', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN headers LONGTEXT NULL AFTER message");
+        }
+        if (!in_array('attachment_data', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN attachment_data LONGTEXT NULL AFTER headers");
+        }
+        if (!in_array('is_resent', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN is_resent BOOLEAN NOT NULL DEFAULT 0 AFTER attachment_data");
+        }
+        if (!in_array('retry_count', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN retry_count INT NOT NULL DEFAULT 0 AFTER is_resent");
+        }
+        
+        // Drop unused columns (only if they exist)
+        if (in_array('delivered_at', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN delivered_at");
+        }
+        if (in_array('opened_at', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN opened_at");
+        }
+        if (in_array('clicked_at', $columns)) {
+            $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN clicked_at");
+        }
     }
 }

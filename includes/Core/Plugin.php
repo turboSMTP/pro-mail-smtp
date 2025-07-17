@@ -37,6 +37,7 @@ class Plugin
             new \TurboSMTP\ProMailSMTP\Admin\Logs();
             new \TurboSMTP\ProMailSMTP\Admin\Analytics();
             new \TurboSMTP\ProMailSMTP\Admin\EmailRouter();
+            new \TurboSMTP\ProMailSMTP\Admin\Alerts();
             new \TurboSMTP\ProMailSMTP\Admin\Settings();
             new \TurboSMTP\ProMailSMTP\Admin\About();
         }

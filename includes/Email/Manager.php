@@ -9,6 +9,7 @@ use TurboSMTP\ProMailSMTP\Email\EmailFormatterService;
 use TurboSMTP\ProMailSMTP\Email\EmailRoutingService;
 use TurboSMTP\ProMailSMTP\Core\WPMailCaller;
 use TurboSMTP\ProMailSMTP\Providers\PhpMailerProvider;
+use TurboSMTP\ProMailSMTP\Alerts\AlertService;
 
 /**
  * Class Manager
@@ -24,6 +25,7 @@ class Manager {
     private $emailFormatterService;
     private $emailRoutingService;
     private $wpMailCaller;
+    private $alertService;
     private $providersInitialized = false;
 
     /**
@@ -35,6 +37,7 @@ class Manager {
         $this->emailFormatterService = new EmailFormatterService();
         $this->emailRoutingService = new EmailRoutingService();
         $this->wpMailCaller = new WPMailCaller();
+        $this->alertService = new AlertService();
     }
 
     /**
@@ -103,12 +106,12 @@ class Manager {
         $phpmailer = new PhpMailerProvider();
         $result = $phpmailer->send($args);
         if($result) {
-            $this->logEmail($current_email_data, $result, 'phpmailer', 'sent');
+            $this->logEmail($current_email_data, $result, 'phpmailer', 'sent', null, false, 0);
             return true;
         }
     } catch (\Exception $e) {
             $error_message = $e->getMessage();
-            $this->logEmail($current_email_data, null, 'phpmailer', 'failed', $error_message);
+            $this->logEmail($current_email_data, null, 'phpmailer', 'failed', $error_message, false, 0);
             return false;
         }
     }
@@ -184,7 +187,7 @@ class Manager {
                     if (!$provider_data['overwrite_connection']) {
                         try {
                             $result = $provider['instance']->send($current_email_data);
-                            $this->logEmail($current_email_data, $result, $provider['name'], 'sent');
+                            $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0);
                             return true;
                         } catch (\Exception $e) {
                             continue;
@@ -194,7 +197,7 @@ class Manager {
                     $provider = $provider_data;
                 }
                 $result = $provider['instance']->send($current_email_data);
-                $this->logEmail($current_email_data, $result, $provider['name'], 'sent');
+                $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0);
                 return true;
             } catch (\Exception $e) {
                 $provider_name = isset($provider_data['provider']) ? $provider_data['provider']['name'] : $provider_data['name'];
@@ -202,7 +205,7 @@ class Manager {
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
-                $this->logEmail($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage());
+                $this->logEmail($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage(), false, 0);
             }
         }
         return false;
@@ -214,28 +217,196 @@ class Manager {
      * @param array  $data     Email data
      * @param array  $result   Provider response
      * @param string $provider Provider name
-     * @param string $status   Status of the email (sent/failed)
+     * @param string $status   Status of the email (sent/failed/resent)
      * @param string $error    Error message if any
+     * @param bool   $is_resent Whether this is a resend attempt
+     * @param int    $retry_count Number of retry attempts
      * @return void
      */
-    private function logEmail($data, $result, $provider, $status, $error = null) {
+    private function logEmail($data, $result, $provider, $status, $error = null, $is_resent = false, $retry_count = 0) {
         global $wpdb;
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
-        foreach ($data['to'] as $to) {
+        
+        $recipients = is_array($data['to']) ? $data['to'] : [$data['to']];
+        
+        foreach ($recipients as $to) {
+            // Save email content for failed emails and resent emails to allow viewing
+            $message_content = ($status === 'failed' || $status === 'resent') ? ($data['message'] ?? '') : null;
+            $headers_data = (($status === 'failed' || $status === 'resent') && !empty($data['headers'])) ? json_encode($data['headers']) : null;
+            
+            // Extract CC and BCC from headers
+            $cc_emails = '';
+            $bcc_emails = '';
+            $reply_to = '';
+            if (!empty($data['headers']) && is_array($data['headers'])) {
+                foreach ($data['headers'] as $header) {
+                    if (is_string($header)) {
+                        if (stripos($header, 'Cc:') === 0) {
+                            $cc_emails = trim(substr($header, 3));
+                        } elseif (stripos($header, 'Bcc:') === 0) {
+                            $bcc_emails = trim(substr($header, 4));
+                        } elseif (stripos($header, 'Reply-To:') === 0) {
+                            $reply_to = trim(substr($header, 9));
+                        }
+                    }
+                }
+            }
+            
+            // Handle attachments (store for failed and resent emails)
+            $attachment_data = null;
+            if (($status === 'failed' || $status === 'resent') && !empty($data['attachments']) && is_array($data['attachments'])) {
+                $attachment_data = json_encode($data['attachments']);
+            }
+            
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-            $wpdb->insert(
+            $insert_result = $wpdb->insert(
                 $table_name,
                 [
                     'provider' => $provider,
+                    'from_email' => $data['from_email'] ?? '',
                     'to_email' => $to,
+                    'cc_email' => $cc_emails,
+                    'bcc_email' => $bcc_emails,
+                    'reply_to' => $reply_to,
                     'subject' => $data['subject'] ?? '',
+                    'message' => $message_content,
+                    'headers' => $headers_data,
+                    'attachment_data' => $attachment_data,
                     'status' => $status,
                     'message_id' => $result['message_id'] ?? null,
                     'error_message' => $error,
-                    'sent_at' => current_time('mysql')
+                    'is_resent' => $is_resent ? 1 : 0,
+                    'retry_count' => $retry_count,
+                    'sent_at' => gmdate('Y-m-d H:i:s')
                 ],
-                ['%s', '%s', '%s', '%s', '%s', '%s', '%s']
+                ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s']
             );
+            
+            // Process alerts for failed emails
+            if ($status === 'failed') {
+                $alert_data = [
+                    'subject' => $data['subject'] ?? '',
+                    'to_email' => $to,
+                    'error_message' => $error,
+                    'provider' => $provider,
+                ];
+                $this->alertService->process_email_failure($alert_data);
+            }
         }
+    }
+
+    /**
+     * Manually resend an email with a specific provider
+     *
+     * @param string $to Recipient email
+     * @param string $subject Email subject
+     * @param string $message Email content
+     * @param array $headers Email headers
+     * @param array $attachments Email attachments
+     * @param int $connection_id Provider connection ID
+     * @param int $original_log_id Original log ID for tracking resends
+     * @return array Result with success status and message
+     */
+    public function manual_resend_email($to, $subject, $message, $headers = [], $attachments = [], $connection_id = null, $original_log_id = null)
+    {
+        try {
+            // Get retry count for the original email if tracking resends
+            $retry_count = 0;
+            if ($original_log_id) {
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
+                $retry_count = $wpdb->get_var($wpdb->prepare(
+                    "SELECT MAX(retry_count) + 1 FROM $table_name WHERE id = %d OR 
+                     (to_email = %s AND subject = %s)", 
+                    $original_log_id, $to, $subject
+                ));
+                $retry_count = $retry_count ? (int)$retry_count : 1;
+            }
+             if (!$this->providersInitialized) {
+            $this->initProviders();
+            }
+            // Get the specific connection/provider
+            $connection = null;
+            foreach ($this->connections as $conn) {
+                if ($conn['connection_id'] == $connection_id) {
+                    $connection = $conn;
+                    break;
+                }
+            }
+
+            if (!$connection) {
+                throw new \Exception('Provider connection not found');
+            }
+            
+            // Prepare email data in wp_mail format
+            $email_data = [
+                'to' => $to,
+                'subject' => $subject,
+                'message' => $message,
+                'headers' => $headers,
+                'attachments' => [],
+            ];
+            
+            // Format the email data
+            $formatted_data = $this->emailFormatterService->format($email_data);
+            $formatted_data['attachments'] = $attachments;
+            // Create provider instance
+
+            $provider_instance = $connection['instance'];
+            
+            if (!$provider_instance) {
+                throw new \Exception('Could not create provider instance for: ' . $connection['name']);
+            }
+            
+            // Send the email
+            $result = $provider_instance->send($formatted_data);
+            if ($result) {
+                // Log successful resend
+                $this->logEmail($formatted_data, $result, $connection['name'], 'resent', null, true, $retry_count);
+                
+                // Mark original email as resent if we have the original log ID
+                if ($original_log_id) {
+                    $this->markEmailAsResent($original_log_id);
+                }
+                
+                return [
+                    'success' => true,
+                    'message' => 'Email resent successfully via ' . $connection['name']
+                ];
+            } else {
+                throw new \Exception('Provider failed to send email');
+            }
+            
+        } catch (\Exception $e) {
+            // Log the failure with retry count
+            if (isset($formatted_data)) {
+                $this->logEmail($formatted_data, null, $connection['name'] ?? 'unknown', 'failed', $e->getMessage(), false, $retry_count);
+            }
+            
+            return [
+                'success' => false,
+                'message' => 'Failed to resend email: ' . $e->getMessage()
+            ];
+        }
+    }
+
+    /**
+     * Mark an email as resent in the database
+     *
+     * @param int $log_id Original log ID
+     * @return void
+     */
+    private function markEmailAsResent($log_id)
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
+        
+        $wpdb->update(
+            $table_name,
+            ['is_resent' => 1],
+            ['id' => $log_id],
+            ['%d'],
+            ['%d']
+        );
     }
 }

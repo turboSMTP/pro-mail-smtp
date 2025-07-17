@@ -90,7 +90,10 @@ class ConnectionRepository {
         );
     }
     
-    public function get_connection($connection_id) {
+    /**
+     * Get a single connection by connection ID
+     */
+  public function get_connection($connection_id) {
         global $wpdb;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $row = $wpdb->get_row(
