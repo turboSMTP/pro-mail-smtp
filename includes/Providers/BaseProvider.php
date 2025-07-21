@@ -11,10 +11,10 @@ abstract class BaseProvider {
     
     abstract public function send($data);
     
-    protected function request($endpoint, $data = [], $override_base_api_url = false, $method = 'POST', $is_form_data = false) {
+    protected function request($endpoint, $data = [], $override_base_api_url = false, $method = 'POST', $is_form_data = false, $headers = []) {
         $args = [
             'method' => $method,
-            'headers' => $this->get_headers(),
+            'headers' => !empty($headers) ? $headers : $this->get_headers(),
             'timeout' => 30,
         ];
         

@@ -3,7 +3,7 @@ Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.8
-Stable tag: 1.1.0
+Stable tag: 1.6.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -276,7 +276,7 @@ This plugin does not collect or share any data with these services beyond what i
 
 == Changelog ==
 
-= 1.6.1 =
+= 1.6.2 =
 * **New Feature**: Proactive Email Failure Alerts System
   * Multi-channel alert support (Slack, Discord, Microsoft Teams, Custom Webhooks)
   * Smart threshold-based alerts to prevent notification spam

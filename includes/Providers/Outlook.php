@@ -29,7 +29,7 @@ class Outlook extends BaseProvider
     private function save_access_token($token)
     {
         if (isset($token['expires_in'])) {
-            $token['expires_at'] = time() + $token['expires_in']; 
+            $token['expires_at'] = time() + $token['expires_in'];
         }
         update_option('pro_mail_smtp_outlook_access_token', $token);
     }
@@ -51,6 +51,13 @@ class Outlook extends BaseProvider
 
     public function send($data)
     {
+        $token = $this->get_access_token();
+        error_log('Pro Mail SMTP Outlook Provider: token: ' . print_r($token, true));
+        
+        $expires_at_readable = isset($token['expires_at']) ? date('Y-m-d H:i:s', $token['expires_at']) : 'not set';
+        $current_time_readable = date('Y-m-d H:i:s', time());
+        error_log('Pro Mail SMTP Outlook Provider: Token expires_at: ' . $expires_at_readable . ', Current time: ' . $current_time_readable);
+
         try {
             $token = $this->get_access_token();
             if (empty($token['access_token'])) {
@@ -58,7 +65,7 @@ class Outlook extends BaseProvider
             }
 
             if (isset($token['expires_at']) && time() >= $token['expires_at']) {
-                $this->refresh_token($token['refresh_token']);
+                $this->refresh_token($this->get_refresh_token());
                 $token = $this->get_access_token();
             }
             $email_from = $this->config_keys['email_from_overwrite'] ?? $data['from_email'];
@@ -240,9 +247,13 @@ class Outlook extends BaseProvider
                     'refresh_token' => $refresh_token,
                     'grant_type' => 'refresh_token'
                 ],
-                false,
-                'POST'
-            );
+                true,
+                'POST',
+                true,
+                [
+                    'Content-Type' => 'application/x-www-form-urlencoded'
+                ]
+                );
 
             if (isset($response['error'])) {
                 throw new \Exception('Failed to refresh token: ' . ($response['error_description'] ?? $response['error']));
@@ -252,7 +263,6 @@ class Outlook extends BaseProvider
             if (!empty($response['refresh_token'])) {
                 $this->save_refresh_token($response['refresh_token']);
             }
-            
             return $response;
         } catch (\Exception $e) {
             throw new \Exception('Authentication expired. Please reconnect your Outlook account.');

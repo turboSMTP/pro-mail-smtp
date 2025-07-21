@@ -13,14 +13,23 @@
       var code = queryParams.get("code") || hashParams.get("code");
       var state = queryParams.get("state") || hashParams.get("state");
       if (code && state && isOAuthProvider(state)) {
+        // Extract provider name for display
+        var displayProvider = state.toLowerCase();
+        var supportedProviders = ["gmail", "outlook"];
+        for (var i = 0; i < supportedProviders.length; i++) {
+          if (displayProvider.endsWith(supportedProviders[i])) {
+            displayProvider = supportedProviders[i];
+            break;
+          }
+        }
+        
         // Show processing notification
         var notificationDiv = document.createElement("div");
         notificationDiv.style.cssText =
           "position:fixed;top:32px;right:20px;background:#fff;padding:10px 20px;border-left:4px solid #46b450;box-shadow:0 1px 1px rgba(0,0,0,.04);z-index:999999";
         notificationDiv.innerHTML =
-          "Processing " + state + " authentication...";
+          "Processing " + displayProvider + " authentication...";
         document.body.appendChild(notificationDiv);
-
         // Process the OAuth callback
         processOAuthCallback(code, state, notificationDiv);
       }
@@ -31,7 +40,10 @@
 
   function isOAuthProvider(state) {
     var supportedProviders = ["gmail", "outlook"];
-    return supportedProviders.includes(state.toLowerCase());
+    var stateLower = state.toLowerCase();
+    return supportedProviders.some(function(provider) {
+      return stateLower.endsWith(provider);
+    });
   }
 
   function processOAuthCallback(code, state, notificationDiv) {
@@ -45,7 +57,17 @@
       );
       return;
     }
-
+    
+    // Extract the actual provider name from the state (remove any prefix)
+    var providerType = state.toLowerCase();
+    var supportedProviders = ["gmail", "outlook"];
+    for (var i = 0; i < supportedProviders.length; i++) {
+      if (providerType.endsWith(supportedProviders[i])) {
+        providerType = supportedProviders[i];
+        break;
+      }
+    }
+  
     var ajaxUrl = ProMailSMTPOAuth.ajaxUrl; 
     var nonce = ProMailSMTPOAuth.nonce; 
 
@@ -63,12 +85,12 @@
         action: "pro_mail_smtp_set_oauth_token",
         code: code,
         nonce: nonce,
-        provider_type: state,
+        provider_type: providerType,
       },
       success: function (response) {
         if (response.success) {
           notificationDiv.innerHTML =
-            state + " connected successfully! Redirecting...";
+            providerType + " connected successfully! Redirecting...";
           notificationDiv.style.borderLeftColor = "#46b450";
 
           if (
@@ -88,10 +110,9 @@
             }, 1000);
           }
         } else {
-          console.error("Failed to connect " + state + ":", response.data);
           notificationDiv.innerHTML =
             "Failed to connect " +
-            state +
+            providerType +
             ": " +
             (response.data || "Unknown error");
           notificationDiv.style.borderLeftColor = "#dc3232";

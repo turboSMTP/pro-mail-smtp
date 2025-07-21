@@ -146,7 +146,6 @@ class Providers
             wp_send_json_error('Unauthorized');
             return;
         }
-
         if (empty($_POST['provider_type'])) {
             wp_send_json_error('Provider type not found');
             return;
