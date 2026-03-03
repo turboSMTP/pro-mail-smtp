@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($alert_configs as $config): ?>
+                        <?php foreach ($alert_configs as $config): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                             <tr>
                                 <td class="config-name">
                                     <strong><?php echo esc_html($config->config_name); ?></strong>

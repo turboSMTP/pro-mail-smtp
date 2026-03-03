@@ -57,7 +57,8 @@ class EmailLogRepository {
         $values[] = $per_page;
         $values[] = $offset;
 
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared
+        // $order is guaranteed to be 'ASC' or 'DESC' by the ternary above; $sql uses %i for table/column identifiers.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return $wpdb->get_results($wpdb->prepare($sql, $values));
     }
 

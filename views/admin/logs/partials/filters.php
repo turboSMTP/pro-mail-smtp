@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
             <!-- Provider Filter -->
             <select name="provider" class="provider-filter">
                 <option value=""><?php esc_html_e('All Providers', 'pro-mail-smtp'); ?></option>
-                <?php foreach ($providers as $key => $provider): ?>
+                <?php foreach ($providers as $key => $provider): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                     <option value="<?php echo esc_attr($key); ?>"
                         <?php selected(esc_attr($filters['provider']), $key); ?>>
                         <?php echo esc_html($provider); ?>

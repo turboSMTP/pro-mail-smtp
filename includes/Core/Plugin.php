@@ -42,9 +42,37 @@ class Plugin
             new \TurboSMTP\ProMailSMTP\Admin\About();
         }
 
+        // CF7's array_filter in WPCF7_Mail::compose() accidentally strips uploaded file
+        // paths (absolute paths get mangled by path_join), so wp_mail receives an empty
+        // attachments array. We capture the real paths here, before that filter runs,
+        // and inject them back in the pre_wp_mail handler below.
+        $cf7_stashed_attachments = [];
+
+        add_filter('wpcf7_mail_components', function ($components) use (&$cf7_stashed_attachments) {
+            if (class_exists('WPCF7_Submission')) {
+                $submission = \WPCF7_Submission::get_instance();
+                if ($submission) {
+                    foreach ($submission->uploaded_files() as $paths) {
+                        foreach ((array) $paths as $path) {
+                            if (is_string($path) && file_exists($path)) {
+                                $cf7_stashed_attachments[] = $path;
+                            }
+                        }
+                    }
+                }
+            }
+            return $components;
+        }, 10, 1);
+
         $email_manager = new \TurboSMTP\ProMailSMTP\Email\Manager();
-        add_filter('pre_wp_mail', function ($pre, $atts) use ($email_manager) {
+        add_filter('pre_wp_mail', function ($pre, $atts) use ($email_manager, &$cf7_stashed_attachments) {
             $this->wp_mail_caller->getSourcePluginName();
+
+            if (!empty($cf7_stashed_attachments)) {
+                $atts['attachments'] = array_merge((array) ($atts['attachments'] ?? []), $cf7_stashed_attachments);
+                $cf7_stashed_attachments = [];
+            }
+
             return $email_manager->sendMail($pre, $atts);
         }, 10, 2);
     }

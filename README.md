@@ -1,8 +1,12 @@
 # Pro Mail SMTP
 
-![Pro Mail SMTP](assets/img/icon-svg.svg)
+**Stable tag:** 1.6.3
+**Tested up to:** 6.9
+**License:** GPLv2 or later
+**License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-A powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance, and ensure reliable email delivery.
+![Pro Mail SMTP](assets/img/icon-svg.svg)
+Enhance email deliverability with multiple SMTP providers, automatic failover, proactive alerts, analytics, and smart routing.
 
 ## 🚀 Features
 

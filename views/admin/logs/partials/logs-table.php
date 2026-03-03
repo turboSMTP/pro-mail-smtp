@@ -10,7 +10,7 @@ if (!defined('ABSPATH')) {
 
 <table class="wp-list-table widefat fixed striped">
     <thead>
-        <tr>        <?php foreach ($columns as $key => $label): ?>
+        <tr>        <?php foreach ($columns as $key => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
             <th scope="col"
                 class="manage-column column-<?php echo esc_attr($key); ?> <?php echo $key !== 'actions' ? esc_attr(call_user_func($data['get_column_sort_class'], $key, $filters)) : ''; ?>">
                 <?php if ($key !== 'actions'): ?>
@@ -33,7 +33,7 @@ if (!defined('ABSPATH')) {
                 </td>
             </tr>
         <?php else: ?>
-            <?php foreach ($logs as $log): ?>
+            <?php foreach ($logs as $log): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                 <tr>
                     <td class="column-date">
                         <?php echo esc_html(call_user_func($data['format_date'], $log->sent_at)); ?><br>
@@ -63,7 +63,9 @@ if (!defined('ABSPATH')) {
                         <?php if (isset($log->retry_count) && $log->retry_count > 0): ?>
                             <br><small class="retry-count">
                                 <span class="dashicons dashicons-update"></span>
-                                <?php printf(esc_html__('Retries: %d', 'pro-mail-smtp'), (int)$log->retry_count); ?>
+                                <?php
+                                // translators: %d is the number of times the email was retried.
+                                printf(esc_html__('Retries: %d', 'pro-mail-smtp'), (int)$log->retry_count); ?>
                             </small>
                         <?php endif; ?>
                     </td>
@@ -106,7 +108,7 @@ if (!defined('ABSPATH')) {
 
     <tfoot>
         <tr>
-            <?php foreach ($columns as $key => $label): ?>
+            <?php foreach ($columns as $key => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                 <th scope="col" class="manage-column column-<?php echo esc_attr($key); ?>">
                     <?php echo esc_html($label); ?>
                 </th>

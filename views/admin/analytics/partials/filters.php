@@ -1,8 +1,10 @@
 <?php if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly ?>
 
 <?php
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View-scope date variables
 $current_month_start = gmdate('Y-m-01');
 $current_month_end = gmdate('Y-m-d');
+// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
 <div class="tablenav top">
     <div class="alignleft actions filters-group">
@@ -14,7 +16,7 @@ $current_month_end = gmdate('Y-m-d');
             
             <label for="provider-filter">Provider</label>
             <select id="provider-filter" name="provider">
-                <?php foreach ($data['providers'] as $provider): ?>
+                <?php foreach ($data['providers'] as $provider): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                     <option value="<?php echo esc_attr($provider->connection_id); ?>"
                             <?php selected($data['filters']['selected_provider'], $provider->connection_id); ?>>
                         <?php echo esc_html($provider->connection_label); ?>

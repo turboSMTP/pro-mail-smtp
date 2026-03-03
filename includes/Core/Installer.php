@@ -145,46 +145,59 @@ class Installer {
         // Enhanced Email Logging Schema Migration
         $email_log_table = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
-        // Check existing columns to avoid duplicates
-        $columns = $wpdb->get_col("DESCRIBE $email_log_table");
-        
+        // $email_log_table is safely constructed from $wpdb->prefix + a hardcoded string.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $columns = $wpdb->get_col( "DESCRIBE $email_log_table" ); // phpcs:ignore
+
         // Add new columns for comprehensive email logging (only if they don't exist)
         if (!in_array('from_email', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN from_email VARCHAR(255) NULL AFTER provider");
         }
         if (!in_array('cc_email', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN cc_email TEXT NULL AFTER to_email");
         }
         if (!in_array('bcc_email', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN bcc_email TEXT NULL AFTER cc_email");
         }
         if (!in_array('reply_to', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN reply_to VARCHAR(255) NULL AFTER bcc_email");
         }
         if (!in_array('message', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN message LONGTEXT NULL AFTER subject");
         }
         if (!in_array('headers', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN headers LONGTEXT NULL AFTER message");
         }
         if (!in_array('attachment_data', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN attachment_data LONGTEXT NULL AFTER headers");
         }
         if (!in_array('is_resent', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN is_resent BOOLEAN NOT NULL DEFAULT 0 AFTER attachment_data");
         }
         if (!in_array('retry_count', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table ADD COLUMN retry_count INT NOT NULL DEFAULT 0 AFTER is_resent");
         }
         
         // Drop unused columns (only if they exist)
         if (in_array('delivered_at', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN delivered_at");
         }
         if (in_array('opened_at', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN opened_at");
         }
         if (in_array('clicked_at', $columns)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN clicked_at");
         }
     }

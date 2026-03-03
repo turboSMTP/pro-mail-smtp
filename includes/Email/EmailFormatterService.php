@@ -30,16 +30,18 @@ class EmailFormatterService
     {
         $to = is_array($args['to']) ? $args['to'] : [$args['to']];
         $headers = $this->parse_headers($args['headers']);
-        $result =  [
-            'to' => $to,
-            'subject' => $args['subject'],
-            'message' => $args['message'],
-            'from_email' =>  isset($headers['from_email']) ? $headers['from_email'] : get_option('pro_mail_smtp_from_email', get_option('admin_email')) ,
-            'from_name' => isset($headers['from_name']) ? $headers['from_name'] : get_option('pro_mail_smtp_from_name', get_bloginfo('name')),
-            'reply_to' => $headers['reply_to'] ?? '',
-            'cc' => $headers['cc'] ?? [],
-            'bcc' => $headers['bcc'] ?? [],
-            'attachments' => $this->prepare_attachments($args['attachments'])
+        $result = [
+            'to'             => $to,
+            'subject'        => $args['subject'],
+            'message'        => $args['message'],
+            'from_email'     => isset($headers['from_email']) ? $headers['from_email'] : get_option('pro_mail_smtp_from_email', get_option('admin_email')),
+            'from_name'      => isset($headers['from_name'])  ? $headers['from_name']  : get_option('pro_mail_smtp_from_name', get_bloginfo('name')),
+            'reply_to'       => $headers['reply_to']       ?? '',
+            'cc'             => $headers['cc']             ?? [],
+            'bcc'            => $headers['bcc']            ?? [],
+            'content_type'   => $headers['content_type']   ?? '',
+            'custom_headers' => $headers['custom_headers'] ?? [],
+            'attachments'    => $this->prepare_attachments($args['attachments']),
         ];
         return $result;
     }
@@ -52,7 +54,10 @@ class EmailFormatterService
      */
     private function parse_headers($headers)
     {
-        $parsed_headers = [];
+        $parsed_headers = [
+            'custom_headers' => [],
+        ];
+
         if (empty($headers)) {
             return $parsed_headers;
         }
@@ -60,18 +65,20 @@ class EmailFormatterService
         if (!is_array($headers)) {
             $headers = explode("\n", str_replace("\r\n", "\n", $headers));
         }
+
         foreach ($headers as $header) {
             if (strpos($header, ':') === false) {
                 continue;
             }
+
             list($name, $value) = explode(':', trim($header), 2);
-            $name = strtolower(trim($name));
+            $name  = strtolower(trim($name));
             $value = trim($value);
 
             switch ($name) {
                 case 'from':
                     $parsed_headers['from_email'] = $this->extract_email($value);
-                    $parsed_headers['from_name'] = $this->extract_name($value);
+                    $parsed_headers['from_name']  = $this->extract_name($value);
                     break;
                 case 'reply-to':
                     $parsed_headers['reply_to'] = $this->extract_email($value);
@@ -82,8 +89,13 @@ class EmailFormatterService
                 case 'bcc':
                     $parsed_headers['bcc'] = $this->extract_addresses($value);
                     break;
+                case 'content-type':
+                    // Preserve the full Content-Type value (e.g. "text/html; charset=UTF-8")
+                    $parsed_headers['content_type'] = $value;
+                    break;
                 default:
-                    // Ignore other headers
+                    // Preserve all other custom headers (X-*, MIME-Version, etc.)
+                    $parsed_headers['custom_headers'][ trim($name) ] = $value;
                     break;
             }
         }
@@ -101,25 +113,31 @@ class EmailFormatterService
         if (empty($attachments)) {
             return [];
         }
-    
+
         if (!is_array($attachments)) {
             $attachments = [$attachments];
         }
-    
+
         $prepared_attachments = [];
 
         foreach ($attachments as $attachment) {
+            // Resolve relative paths against WP_CONTENT_DIR if needed.
+            // CF7 normally passes absolute paths; some other plugins use relative ones.
+            if (!path_is_absolute($attachment)) {
+                $attachment = path_join(WP_CONTENT_DIR, $attachment);
+            }
+
             if (file_exists($attachment)) {
                 $prepared_attachments[] = [
-                    'path' => $attachment,
-                    'name' => basename($attachment),
-                    'size' => filesize($attachment),
-                    'type' => mime_content_type($attachment),
-                    'content' => base64_encode(file_get_contents($attachment))
+                    'path'    => $attachment,
+                    'name'    => basename($attachment),
+                    'size'    => filesize($attachment),
+                    'type'    => mime_content_type($attachment),
+                    'content' => base64_encode(file_get_contents($attachment)) // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
                 ];
             }
         }
-    
+
         return $prepared_attachments;
     }
 

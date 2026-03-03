@@ -361,7 +361,7 @@ class Logs
         $provider_id = isset($_POST['provider_id']) ? sanitize_text_field(wp_unslash($_POST['provider_id'])) : '';
         $to_email = isset($_POST['to_email']) ? sanitize_email(wp_unslash($_POST['to_email'])) : '';
         $subject = isset($_POST['subject']) ? sanitize_text_field(wp_unslash($_POST['subject'])) : '';
-        $message = isset($_POST['message']) ? wp_unslash($_POST['message']) : '';
+        $message = isset($_POST['message']) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
         
         if (!$log_id) {
             wp_send_json_error(['message' => __('Invalid log ID.', 'pro-mail-smtp')]);
@@ -434,6 +434,7 @@ class Logs
                 wp_send_json_error(['message' => $result['message']]);
             }
         } catch (\Exception $e) {
+            // translators: %s is the error message returned by the exception.
             wp_send_json_error(['message' => sprintf(__('Error resending email: %s', 'pro-mail-smtp'), $e->getMessage())]);
         }
     }

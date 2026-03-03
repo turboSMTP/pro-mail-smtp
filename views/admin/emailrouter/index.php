@@ -46,7 +46,7 @@
                             </td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($conditions_list as $condition): ?>
+                        <?php foreach ($conditions_list as $condition): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                             <tr>
                                 <td class="column-label">
                                     <strong><?php echo esc_html($condition->condition_label); ?></strong>
@@ -81,6 +81,7 @@
                 </div>
                 <div class="conditions-modal-body">
                     <?php
+                    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
                     $modal = PRO_MAIL_SMTP_PATH . '/views/admin/emailrouter/partials/modal.php';
                     if (file_exists($modal)) {
                         include $modal;

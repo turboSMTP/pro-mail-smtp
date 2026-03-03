@@ -42,6 +42,7 @@
         </div>
 
         <?php
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
         $total_connections = !empty($providers_config) ? count($providers_config) : 0;
         ?>
         <div class="connections-count" style="margin-bottom:10px;">
@@ -74,6 +75,7 @@
                                 <p><?php esc_html_e('Get started now.', 'pro-mail-smtp'); ?></p>
                                 <div class="suggested-providers">
                                     <?php
+                                    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
                                     foreach ($providers_list as $provider): ?>
                                         <?php if ($provider['name'] !== 'other'): ?>
                                             <span class="provider-icon-css provider-icon-<?php echo esc_attr($provider['name']); ?>"
@@ -88,10 +90,11 @@
                             </td>
                         </tr>
                     <?php else: ?>
-                        <?php foreach ($providers_config as $index => $provider): ?>
+                        <?php foreach ($providers_config as $index => $provider): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                             <tr>
                                 <td class="column-label">
                                     <?php
+                                    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
                                     $label = isset($provider->connection_data['connection_label'])
                                         ? $provider->connection_data['connection_label']
                                         : $provider->provider . '-' . $provider->connection_id;
@@ -158,7 +161,7 @@
                     <div class="wizard-step" id="step-provider">
                         <p class="description"><?php esc_html_e('Select a provider to configure your email settings.', 'pro-mail-smtp'); ?></p>
                         <div class="provider-grid">
-                            <?php foreach ($providers_list as $key => $info): ?>
+                            <?php foreach ($providers_list as $key => $info): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                                 <div class="provider-card <?php echo !empty($info['recommended']) ? 'recommended' : ''; ?>" data-provider="<?php echo esc_attr($key); ?>">
                                     <?php if ($info['recommended']): ?>
                                         <div class="ribbon-recommended"><?php esc_html_e('Recommended', 'pro-mail-smtp'); ?></div>

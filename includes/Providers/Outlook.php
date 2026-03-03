@@ -52,11 +52,9 @@ class Outlook extends BaseProvider
     public function send($data)
     {
         $token = $this->get_access_token();
-        error_log('Pro Mail SMTP Outlook Provider: token: ' . print_r($token, true));
-        
-        $expires_at_readable = isset($token['expires_at']) ? date('Y-m-d H:i:s', $token['expires_at']) : 'not set';
-        $current_time_readable = date('Y-m-d H:i:s', time());
-        error_log('Pro Mail SMTP Outlook Provider: Token expires_at: ' . $expires_at_readable . ', Current time: ' . $current_time_readable);
+        $expires_at_readable = isset($token['expires_at']) ? gmdate('Y-m-d H:i:s', $token['expires_at']) : 'not set';
+        $current_time_readable = gmdate('Y-m-d H:i:s', time());
+
 
         try {
             $token = $this->get_access_token();
@@ -96,10 +94,10 @@ class Outlook extends BaseProvider
             if (!empty($data['attachments'])) {
                 $email_data['message']['attachments'] = array_map(function($attachment) {
                     return [
-                        '@odata.type' => '#microsoft.graph.fileAttachment',
-                        'name' => $attachment['name'],
-                        'contentType' => $attachment['type'],
-                        'contentBytes' => base64_encode($attachment['content'])
+                        '@odata.type'  => '#microsoft.graph.fileAttachment',
+                        'name'         => $attachment['name'],
+                        'contentType'  => $attachment['type'],
+                        'contentBytes' => $attachment['content'], // already base64-encoded by EmailFormatterService
                     ];
                 }, $data['attachments']);
             }

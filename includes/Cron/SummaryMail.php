@@ -92,7 +92,9 @@ class SummaryMail implements CronInterface
             $date_range = '-30 days';
         }
 
-        $since_date = gmdate('Y-m-d H:i:s', strtotime($date_range));
+        $since_date = current_time('mysql', false);
+        // Rewind to compute the $date_range offset using wp_date for timezone-aware calculation
+        $since_date = wp_date('Y-m-d H:i:s', strtotime($date_range));
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         $results = $wpdb->get_results($wpdb->prepare(
             "SELECT 
@@ -129,7 +131,7 @@ class SummaryMail implements CronInterface
         $period_text = ($logs['period'] === 'weekly') ? 'Week' : 'Month';
 
         $message = "Pro Mail SMTP Plugin: Email Summary for the Past {$period_text}\n";
-        $message .= "Period: " . gmdate('Y-m-d', strtotime($logs['since_date'])) . " to " . gmdate('Y-m-d') . "\n\n";
+        $message .= "Period: " . wp_date('Y-m-d', strtotime($logs['since_date'])) . " to " . wp_date('Y-m-d') . "\n\n";
 
         $providers = [];
         foreach ($logs['by_provider'] as $entry) {

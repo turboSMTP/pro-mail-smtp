@@ -13,30 +13,25 @@ class AlertConfigRepository {
 
     public function get_all_alert_configs() {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        $configs = $wpdb->get_results(
-            "SELECT * FROM {$this->table} ORDER BY created_at DESC"
-        );
+        // $this->table is safely built from $wpdb->prefix + a hardcoded string — safe to interpolate.
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $configs = $wpdb->get_results( "SELECT * FROM {$this->table} ORDER BY created_at DESC" );
         
         return $this->normalize_configs($configs);
     }
 
     public function get_alert_config($id) {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        $config = $wpdb->get_row(
-            $wpdb->prepare("SELECT * FROM {$this->table} WHERE id = %d", $id)
-        );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $config = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$this->table} WHERE id = %d", $id ) );
         
         return $this->normalize_config($config);
     }
 
     public function get_enabled_alert_configs() {
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        $configs = $wpdb->get_results(
-            "SELECT * FROM {$this->table} WHERE is_enabled = 1"
-        );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $configs = $wpdb->get_results( "SELECT * FROM {$this->table} WHERE is_enabled = 1" );
         
         return $this->normalize_configs($configs);
     }
@@ -110,15 +105,8 @@ class AlertConfigRepository {
         
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        return $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$table_name} 
-                 WHERE status = 'failed' 
-                 AND DATE(sent_at) = %s",
-                $date
-            )
-        );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+        return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table_name} WHERE status = 'failed' AND DATE(sent_at) = %s", $date ) );
     }
 
     public function get_recent_failures($limit = 10) {
@@ -126,16 +114,8 @@ class AlertConfigRepository {
         
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-        return $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM {$table_name} 
-                 WHERE status = 'failed' 
-                 ORDER BY sent_at DESC 
-                 LIMIT %d",
-                $limit
-            )
-        );
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+        return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE status = 'failed' ORDER BY sent_at DESC LIMIT %d", $limit ) );
     }
 
     /**

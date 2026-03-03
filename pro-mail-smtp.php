@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Pro Mail SMTP
- * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, proactive alerts, advanced analytics, and intelligent routing.
- * Version: 1.6.2
+ * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, alerts, advanced analytics, and smart routing.
+ * Version: 1.6.3
  * Author: turbosmtp
  * Author URI:        https://www.serversmtp.com
  * Text Domain: pro-mail-smtp
@@ -17,19 +17,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PRO_MAIL_SMTP_VERSION', '1.6.1');
+define('PRO_MAIL_SMTP_VERSION', '1.6.3');
 define('PRO_MAIL_SMTP_FILE', __FILE__);
 define('PRO_MAIL_SMTP_PATH', plugin_dir_path(__FILE__));
 define('PRO_MAIL_SMTP_URL', plugin_dir_url(__FILE__));
 
-function pro_mail_smtp_load_textdomain() {
-    load_plugin_textdomain(
-        'pro-mail-smtp',
-        false,
-        dirname(plugin_basename(PRO_MAIL_SMTP_FILE)) . '/languages/'
-    );
-}
-add_action('init', 'pro_mail_smtp_load_textdomain');
+
 
 // Autoloader
 spl_autoload_register(function ($class) {

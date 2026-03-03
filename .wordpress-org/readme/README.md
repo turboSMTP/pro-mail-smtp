@@ -2,13 +2,13 @@
 Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
-Tested up to: 6.8
-Stable tag: 1.6.2
+Tested up to: 6.9
+Stable tag: 1.6.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, proactive alerts, advanced analytics, and intelligent routing.
+Enhance email deliverability with multiple SMTP providers, automatic failover, proactive alerts, analytics, and smart routing.
 
 == Description ==
 
@@ -275,6 +275,11 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+
+= 1.6.3 =
+* **Fix**: HTML emails (CF7, WooCommerce, WPForms) now render correctly — Content-Type header is no longer stripped
+* **Fix**: PDF and binary attachments no longer arrive corrupted when using Gmail or Outlook providers
+* **Fix**: Email timestamps and charset now respect WordPress site settings
 
 = 1.6.2 =
 * **New Feature**: Proactive Email Failure Alerts System

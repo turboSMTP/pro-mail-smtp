@@ -47,7 +47,7 @@
                         </div>
                         <div class="section-content" id="connectionContent">
                             <select id="connectionSelect" class="field-select">
-                                <?php foreach ($connections_list as $connection): ?>
+                                <?php foreach ($connections_list as $connection): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                                     <option value="<?php echo esc_attr($connection->connection_id); ?>">
                                         <?php echo esc_html($connection->connection_label); ?>
                                     </option>
