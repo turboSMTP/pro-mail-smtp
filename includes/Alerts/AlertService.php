@@ -33,13 +33,11 @@ class AlertService {
         foreach ($enabled_configs as $config) {
             // Ensure config is a proper object
             if (!is_object($config)) {
-                error_log('AlertService: Invalid config in enabled_configs - expected object, got ' . gettype($config));
                 continue;
             }
             
             // Ensure required properties exist
             if (!isset($config->failure_threshold)) {
-                error_log('AlertService: Config missing failure_threshold property');
                 continue;
             }
             
@@ -57,7 +55,7 @@ class AlertService {
                     // Send consolidated alert with all recent failures
                     $this->send_consolidated_alert($config, $recent_failures, $failure_count);
                 } else {
-                    error_log("AlertService: Threshold not reached, no alert sent");
+                    // Threshold not yet reached; no alert sent.
                 }
             }
         }
@@ -69,13 +67,11 @@ class AlertService {
     public function send_alert($config, $email_data, $failure_count = null) {
         // Ensure config is a proper object
         if (!is_object($config)) {
-            error_log('AlertService: Invalid config passed - expected object, got ' . gettype($config));
             return false;
         }
         
         // Ensure required properties exist
         if (!isset($config->channel_type) || !isset($config->webhook_url)) {
-            error_log('AlertService: Config missing required properties');
             return false;
         }
         
@@ -105,13 +101,11 @@ class AlertService {
     public function send_consolidated_alert($config, $recent_failures, $failure_count) {
         // Ensure config is a proper object
         if (!is_object($config)) {
-            error_log('AlertService: Invalid config passed to send_consolidated_alert - expected object, got ' . gettype($config));
             return false;
         }
         
         // Ensure required properties exist
         if (!isset($config->channel_type) || !isset($config->webhook_url)) {
-            error_log('AlertService: Config missing required properties in send_consolidated_alert');
             return false;
         }
         
@@ -335,8 +329,7 @@ class AlertService {
             'timeout' => 30,
         ]);
 
-        if (\is_wp_error($response)) {
-            error_log('Pro Mail SMTP Alert: Failed to send webhook: ' . $response->get_error_message());
+        if ( \is_wp_error($response) ) {
             return false;
         }
 

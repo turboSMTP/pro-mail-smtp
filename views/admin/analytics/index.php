@@ -20,6 +20,7 @@
     <?php settings_errors('pro_mail_smtp_messages'); ?>
     <!-- Filters Section -->
     <?php 
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
     $filters_file = PRO_MAIL_SMTP_PATH . 'views/admin/analytics/partials/filters.php'; 
     if (file_exists($filters_file)) {
         include $filters_file;
@@ -28,6 +29,7 @@
     
     <!-- GDPR Compliance Banner for TurboSMTP EU (always included, controlled by JavaScript) -->
     <?php 
+    // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
     $show_banner_initially = false;
     if (isset($data['selected_provider_config']) && $data['selected_provider_config']) {
         if ($data['selected_provider_config']->provider_class === 'TurboSMTP') {
@@ -37,6 +39,7 @@
             }
         }
     }
+    // phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
     ?>
     <div class="turbo-smtp-gdpr-banner" <?php echo $show_banner_initially ? 'style="display: block;"' : ''; ?>>
         <div class="gdpr-banner-content">
@@ -55,6 +58,7 @@
     
     <!-- Analytics Table -->
     <?php 
+    // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
     $table_file = PRO_MAIL_SMTP_PATH . 'views/admin/analytics/partials/table.php';
     if (file_exists($table_file)) {
         include $table_file;

@@ -129,6 +129,7 @@ class ImportConnections
 
     private function decodeWpMailPassword($encrypted)
     {
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- External hook from WP Mail SMTP plugin
         if (apply_filters('wp_mail_smtp_helpers_crypto_stop', false) ||
             !function_exists('\mb_strlen') || 
             !function_exists('\mb_substr') || 
@@ -164,6 +165,7 @@ class ImportConnections
         }
 
         $secret_key = get_option('wp_mail_smtp_mail_key');
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- External hook from WP Mail SMTP plugin
         $secret_key = apply_filters('wp_mail_smtp_helpers_crypto_get_secret_key', $secret_key);
         
         if (false !== $secret_key) {

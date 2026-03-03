@@ -1,8 +1,11 @@
 <?php
 namespace TurboSMTP\ProMailSMTP\Admin;
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 use TurboSMTP\ProMailSMTP\DB\ConnectionRepository;
 use TurboSMTP\ProMailSMTP\Providers\ProviderFactory;
+
 class Analytics {
     private $providers = [];
     private $plugin_path;

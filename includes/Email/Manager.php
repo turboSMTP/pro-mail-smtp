@@ -315,11 +315,9 @@ class Manager {
             if ($original_log_id) {
                 global $wpdb;
                 $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
-                $retry_count = $wpdb->get_var($wpdb->prepare(
-                    "SELECT MAX(retry_count) + 1 FROM $table_name WHERE id = %d OR 
-                     (to_email = %s AND subject = %s)", 
-                    $original_log_id, $to, $subject
-                ));
+                // $table_name is built from $wpdb->prefix + a hardcoded string — safe to interpolate.
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,PluginCheck.Security.DirectDB.UnescapedDBParameter
+                $retry_count = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(retry_count) + 1 FROM $table_name WHERE id = %d OR (to_email = %s AND subject = %s)", $original_log_id, $to, $subject ) );
                 $retry_count = $retry_count ? (int)$retry_count : 1;
             }
              if (!$this->providersInitialized) {
@@ -401,6 +399,7 @@ class Manager {
         global $wpdb;
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->update(
             $table_name,
             ['is_resent' => 1],

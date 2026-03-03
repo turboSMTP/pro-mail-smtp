@@ -185,12 +185,14 @@ class Gmail extends BaseProvider
         $email_parts[] = "";
 
         $email_parts[] = "--{$boundary}";
-        if ($data['message'] !== wp_strip_all_tags($data['message'])) {
-            $content_type = 'text/html';
+        if (!empty($data['content_type'])) {
+            // Use the Content-Type provided by wp_mail (may include charset)
+            $email_parts[] = "Content-Type: {$data['content_type']}";
         } else {
-            $content_type = 'text/plain';
+            $charset       = get_bloginfo('charset') ?: 'UTF-8';
+            $content_type  = ($data['message'] !== wp_strip_all_tags($data['message'])) ? 'text/html' : 'text/plain';
+            $email_parts[] = "Content-Type: {$content_type}; charset={$charset}";
         }
-        $email_parts[] = "Content-Type: {$content_type}; charset=UTF-8";
         $email_parts[] = "Content-Transfer-Encoding: base64";
         $email_parts[] = "";
         $email_parts[] = rtrim(base64_encode($data['message']));
@@ -206,7 +208,7 @@ class Gmail extends BaseProvider
                 $email_parts[] = "Content-Disposition: attachment; filename=\"{$attachment['name']}\"";
                 $email_parts[] = "Content-Transfer-Encoding: base64";
                 $email_parts[] = "";
-                $email_parts[] = $attachment['content'];
+                $email_parts[] = chunk_split($attachment['content']);
                 $email_parts[] = "";
             }
         }

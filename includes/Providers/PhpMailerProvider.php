@@ -115,7 +115,9 @@ class PhpMailerProvider {
          * @param null|bool $return Short-circuit return value.
          * @param array     $atts Array of the pro_mail_smtp arguments.
          */
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Hook is pro_mail_smtp prefixed
         $pre_mail = \apply_filters( 'pre_pro_mail_smtp_phpmailer', null, $atts );
+
 
         if ( null !== $pre_mail ) {
             return $pre_mail ? ['message_id' => 'pre_filtered', 'provider_response' => 'short_circuited'] : false;

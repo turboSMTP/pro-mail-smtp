@@ -45,7 +45,7 @@ class OtherSMTP
             }
             
             $subject = sanitize_text_field($params['subject']);
-            $body = wp_kses_post($params['message']);
+            $body = $params['message'];
             $email_from = $this->smtpForcedSenderEmail ? $this->smtpForcedSenderEmail : $params['from_email'];
             $from = filter_var($email_from , FILTER_VALIDATE_EMAIL);
             $fromName = sanitize_text_field($params['from_name'] ?? '');
@@ -58,7 +58,7 @@ class OtherSMTP
                 'From' => $fromName ? "$fromName <$from>" : $from,
                 'Reply-To' => $replyTo,
                 'X-Mailer' => 'PHP/' . phpversion(),
-                'Content-Type' => 'text/html; charset=UTF-8'
+                'Content-Type' => 'text/html; charset=' . get_bloginfo('charset')
             ];
 
             if (!empty($cc)) {
@@ -72,12 +72,19 @@ class OtherSMTP
             $smtp = $this->mail_init();
             $this->mail_set_options($smtp);
 
-            if (!empty($attachments)) {
-                foreach ($attachments as $attachment) {
-                    if (is_string($attachment) && file_exists($attachment)) {
-                        $this->mail_add_attachment($smtp, $attachment);
-                    } elseif (is_array($attachment) && isset($attachment['path']) && file_exists($attachment['path'])) {
+            foreach ($attachments as $attachment) {
+                if (is_string($attachment) && file_exists($attachment)) {
+                    $this->mail_add_attachment($smtp, $attachment);
+                } elseif (is_array($attachment) && isset($attachment['path'])) {
+                    if (file_exists($attachment['path'])) {
                         $this->mail_add_attachment($smtp, $attachment['path']);
+                    } elseif (!empty($attachment['content'])) {
+                        $this->mail_add_string_attachment(
+                            $smtp,
+                            base64_decode($attachment['content']), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+                            $attachment['name'] ?? basename($attachment['path']),
+                            $attachment['type'] ?? 'application/octet-stream'
+                        );
                     }
                 }
             }
@@ -117,7 +124,12 @@ class OtherSMTP
 
     private function mail_add_attachment($smtp, $attachment)
     {
-            $smtp->addAttachment($attachment);
+        $smtp->addAttachment($attachment);
+    }
+
+    private function mail_add_string_attachment($smtp, $content, $filename, $mime_type = 'application/octet-stream')
+    {
+        $smtp->addStringAttachment($content, $filename, 'base64', $mime_type);
     }
 
     private function mail_send($smtp, $recipients, $subject, $body, $headers)
@@ -149,8 +161,7 @@ class OtherSMTP
         }
 
         $smtp->Subject = $subject;
-        $smtp->Body = $body;
-        $smtp->isHTML(true);
+        $smtp->msgHTML($body);
         return $smtp->send();
     }
 

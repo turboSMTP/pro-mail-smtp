@@ -81,9 +81,9 @@ class Alerts {
         }
 
         $config_data = [
-            'channel_type' => sanitize_text_field($_POST['data']['channel_type'] ?? ''),
-            'config_name' => sanitize_text_field($_POST['data']['config_name'] ?? ''),
-            'webhook_url' => esc_url_raw($_POST['data']['webhook_url'] ?? ''),
+            'channel_type' => sanitize_text_field( wp_unslash( $_POST['data']['channel_type'] ?? '' ) ),
+            'config_name'  => sanitize_text_field( wp_unslash( $_POST['data']['config_name'] ?? '' ) ),
+            'webhook_url'  => esc_url_raw( wp_unslash( $_POST['data']['webhook_url'] ?? '' ) ),
             'failure_threshold' => absint($_POST['data']['failure_threshold'] ?? 0),
             'is_enabled' => intval($_POST['data']['is_enabled'] ?? 0) === 1 ? 1 : 0,
         ];
@@ -232,7 +232,7 @@ class Alerts {
                 'to_email' => 'user' . ($i + 1) . '@example.com',
                 'provider' => $providers[array_rand($providers)],
                 'error_message' => $error_types[array_rand($error_types)],
-                'sent_at' => date('Y-m-d H:i:s', strtotime('-' . rand(1, 60) . ' minutes')),
+                'sent_at' => wp_date('Y-m-d H:i:s', strtotime('-' . wp_rand(1, 60) . ' minutes')),
                 'status' => 'failed'
             ];
             $mock_failures[] = $mock_failure;

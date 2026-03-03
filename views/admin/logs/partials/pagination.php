@@ -11,6 +11,7 @@ if ($total_pages <= 1) {
     return;
 }
 
+// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View-scope template variable
 $current_page = $filters['paged'];
 ?>
 
@@ -27,12 +28,14 @@ $current_page = $filters['paged'];
         
         <span class="pagination-links">
             <?php 
+            // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- View-scope pagination variables
             $first_page_disabled = $current_page <= 1 ? 'disabled' : '';
             $prev_page = max(1, $current_page - 1);
             $prev_page_disabled = $current_page <= 1 ? 'disabled' : '';
             $next_page = min($total_pages, $current_page + 1);
             $next_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
             $last_page_disabled = $current_page >= $total_pages ? 'disabled' : '';
+            // phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
             ?>
             
             <button type="button" 

@@ -63,13 +63,13 @@ class LogsCleanup implements CronInterface
 
         switch ($retention) {
             case '1_week':
-                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 week'));
+                $cutoff = wp_date('Y-m-d H:i:s', strtotime('-1 week'));
                 break;
             case '1_month':
-                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 month'));
+                $cutoff = wp_date('Y-m-d H:i:s', strtotime('-1 month'));
                 break;
             case '1_year':
-                $cutoff = gmdate('Y-m-d H:i:s', strtotime('-1 year'));
+                $cutoff = wp_date('Y-m-d H:i:s', strtotime('-1 year'));
                 break;
             default:
                 return;

@@ -12,18 +12,18 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 
 // --- Database Table Deletion ---
 global $wpdb;
-$tables_to_drop = [
+$pro_mail_smtp_tables_to_drop = [
     $wpdb->prefix . 'pro_mail_smtp_email_log',
     $wpdb->prefix . 'pro_mail_smtp_email_router_conditions',
     $wpdb->prefix . 'pro_mail_smtp_connections',
 ];
 
-foreach ($tables_to_drop as $table_name) {
+foreach ($pro_mail_smtp_tables_to_drop as $pro_mail_smtp_table_name) {
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange
-    $wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %i", $table_name));
+    $wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS %i", $pro_mail_smtp_table_name));
 }
 
-$options_to_delete = [
+$pro_mail_smtp_options_to_delete = [
     'pro_mail_smtp_db_version',
     'pro_mail_smtp_from_email',
     'pro_mail_smtp_from_name',
@@ -40,16 +40,16 @@ $options_to_delete = [
     'pro_mail_smtp_retention_duration'
 ];
 
-foreach ($options_to_delete as $option_name) {
-    delete_option($option_name);
+foreach ($pro_mail_smtp_options_to_delete as $pro_mail_smtp_option_name) {
+    delete_option($pro_mail_smtp_option_name);
 }
 
-$cron_hooks = [
+$pro_mail_smtp_cron_hooks = [
     'pro_mail_smtp_summary_cron',
     'pro_mail_smtp_log_cleanup_cron',
     
 ];
 
-foreach ($cron_hooks as $hook) {
-    wp_clear_scheduled_hook($hook);
+foreach ($pro_mail_smtp_cron_hooks as $pro_mail_smtp_hook) {
+    wp_clear_scheduled_hook($pro_mail_smtp_hook);
 }
