@@ -69,6 +69,10 @@ class ProviderManager
         if (isset($data['connection_id']) && !empty($data['connection_id'])) {
             $connection_id = sanitize_text_field($data['connection_id']);
             $result = $this->conn_repo->update_connection($connection_id, $config_keys, $connection_label, $priority);
+            if (is_wp_error($result)) {
+                wp_send_json_error($result->get_error_message());
+                return;
+            }
             if ($result === false) {
                 wp_send_json_error('Failed to update provider.');
                 return;

@@ -19,15 +19,18 @@ class OtherSMTP
     private $smtpPassword;
     private $smtpSecurity;
     private $smtpForcedSenderEmail;
+    private $smtpAuth;
 
     public function __construct($credentials)
     {
-        $this->smtpUsername = $credentials['smtp_user'];
-        $this->smtpPassword = $credentials['smtp_pw'];
+        $this->smtpUsername = $credentials['smtp_user'] ?? '';
+        $this->smtpPassword = $credentials['smtp_pw'] ?? '';
         $this->smtpHost = $credentials['smtp_host'];
         $this->smtpPort = $credentials['smtp_port'] ?? 587;
         $this->smtpSecurity = $credentials['smtp_encryption'] ?? 'tls';
         $this->smtpForcedSenderEmail = $credentials['email_from_overwrite'] ?? '';
+        // Default to true for backwards compatibility with existing connections
+        $this->smtpAuth = isset($credentials['smtp_auth']) ? (bool) $credentials['smtp_auth'] : true;
     }
     public function send($params)
     {
@@ -111,9 +114,11 @@ class OtherSMTP
         $smtp->isSMTP();
         $smtp->Host = $this->smtpHost;
         $smtp->Port = $this->smtpPort;
-        $smtp->SMTPAuth = true;
-        $smtp->Username = $this->smtpUsername;
-        $smtp->Password = $this->smtpPassword;
+        $smtp->SMTPAuth = $this->smtpAuth;
+        if ($this->smtpAuth) {
+            $smtp->Username = $this->smtpUsername;
+            $smtp->Password = $this->smtpPassword;
+        }
 
         if ($this->smtpSecurity === 'tls') {
             $smtp->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;

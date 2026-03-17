@@ -8,9 +8,21 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
+<div class="tablenav top">
+    <div class="alignleft actions bulkactions">
+        <button type="button" class="button action" id="bulk-delete-logs">
+            <?php esc_html_e('Delete Selected', 'pro-mail-smtp'); ?>
+        </button>
+    </div>
+</div>
+
 <table class="wp-list-table widefat fixed striped">
     <thead>
-        <tr>        <?php foreach ($columns as $key => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
+        <tr>
+            <th scope="col" class="manage-column check-column">
+                <input type="checkbox" id="select-all-logs">
+            </th>
+            <?php foreach ($columns as $key => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
             <th scope="col"
                 class="manage-column column-<?php echo esc_attr($key); ?> <?php echo $key !== 'actions' ? esc_attr(call_user_func($data['get_column_sort_class'], $key, $filters)) : ''; ?>">
                 <?php if ($key !== 'actions'): ?>
@@ -28,13 +40,16 @@ if (!defined('ABSPATH')) {
     <tbody>
         <?php if (empty($logs)): ?>
             <tr class="no-items">
-                <td class="colspanchange" colspan="<?php echo count($columns); ?>">
+                <td class="colspanchange" colspan="<?php echo count($columns) + 1; ?>">
                     <?php esc_html_e('No logs found.', 'pro-mail-smtp'); ?>
                 </td>
             </tr>
         <?php else: ?>
             <?php foreach ($logs as $log): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                 <tr>
+                    <th scope="row" class="check-column">
+                        <input type="checkbox" name="log_ids[]" value="<?php echo esc_attr($log->id); ?>">
+                    </th>
                     <td class="column-date">
                         <?php echo esc_html(call_user_func($data['format_date'], $log->sent_at)); ?><br>
                         <small><?php echo esc_html(call_user_func($data['time_diff'], $log->sent_at)); ?></small>
@@ -108,6 +123,9 @@ if (!defined('ABSPATH')) {
 
     <tfoot>
         <tr>
+            <th scope="col" class="manage-column check-column">
+                <input type="checkbox" id="select-all-logs-bottom">
+            </th>
             <?php foreach ($columns as $key => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
                 <th scope="col" class="manage-column column-<?php echo esc_attr($key); ?>">
                     <?php echo esc_html($label); ?>

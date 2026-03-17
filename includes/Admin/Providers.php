@@ -261,10 +261,18 @@ class Providers
             return;
         }
         $provider = sanitize_text_field(wp_unslash($_POST['provider']));
-        $is_edit = isset($_POST['connection_id']) ? true : false;
+        $is_edit = isset($_POST['connection_id']) && !empty($_POST['connection_id']);
+        $connection_data = [];
+
         if ($is_edit) {
             $connection_id = sanitize_text_field(wp_unslash($_POST['connection_id']));
+            $conn_repo = new \TurboSMTP\ProMailSMTP\DB\ConnectionRepository();
+            $connection = $conn_repo->get_connection($connection_id);
+            if ($connection && !empty($connection->connection_data)) {
+                $connection_data = (array) $connection->connection_data;
+            }
         }
+
         $form_file = $this->plugin_path . "/views/admin/providers/provider-forms/{$provider}.php";
 
         if (file_exists($form_file)) {
