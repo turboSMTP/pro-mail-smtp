@@ -3,7 +3,7 @@ Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.9
-Stable tag: 1.6.3
+Stable tag: 1.6.4
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -275,6 +275,10 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+
+= 1.6.4 =
+* **Feature:** Bulk deletion of selected email logs with per-row checkboxes and Select All toggle.
+* **Feature:** SMTP Authentication toggle for OtherSMTP — enable/disable username &amp; password per connection.
 
 = 1.6.3 =
 * **Fix**: HTML emails (CF7, WooCommerce, WPForms) now render correctly — Content-Type header is no longer stripped

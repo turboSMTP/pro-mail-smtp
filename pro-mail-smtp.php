@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pro Mail SMTP
  * Description: Enhance email deliverability by connecting WordPress to SMTP providers with automatic failover, alerts, advanced analytics, and smart routing.
- * Version: 1.6.3
+ * Version: 1.6.4
  * Author: turbosmtp
  * Author URI:        https://www.serversmtp.com
  * Text Domain: pro-mail-smtp
@@ -17,7 +17,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('PRO_MAIL_SMTP_VERSION', '1.6.3');
+define('PRO_MAIL_SMTP_VERSION', '1.6.4');
+
 define('PRO_MAIL_SMTP_FILE', __FILE__);
 define('PRO_MAIL_SMTP_PATH', plugin_dir_path(__FILE__));
 define('PRO_MAIL_SMTP_URL', plugin_dir_url(__FILE__));

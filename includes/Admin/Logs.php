@@ -23,6 +23,7 @@ class Logs
         add_action('wp_ajax_pro_mail_smtp_view_email_log', [$this, 'ajax_view_email_log']);
         add_action('wp_ajax_pro_mail_smtp_resend_email_log', [$this, 'ajax_resend_email_log']);
         add_action('wp_ajax_pro_mail_smtp_get_resend_modal', [$this, 'ajax_get_resend_modal']);
+        add_action('wp_ajax_pro_mail_smtp_delete_selected_logs', [$this, 'ajax_delete_selected_logs']);
         $this->log_repository = new EmailLogRepository();
         $this->providers_list = include __DIR__ . '/../../config/providers-list.php';
     }
@@ -437,5 +438,58 @@ class Logs
             // translators: %s is the error message returned by the exception.
             wp_send_json_error(['message' => sprintf(__('Error resending email: %s', 'pro-mail-smtp'), $e->getMessage())]);
         }
+    }
+
+    /**
+     * AJAX handler for deleting selected email log entries.
+     */
+    public function ajax_delete_selected_logs()
+    {
+        check_ajax_referer('pro_mail_smtp_logs_nonce', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(['message' => __('You do not have permission to perform this action.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash 
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $raw_ids = isset($_POST['log_ids']) && is_array($_POST['log_ids']) ? wp_unslash($_POST['log_ids']) : [];
+
+
+        $log_ids = array_values(
+            array_filter(
+                array_map('absint', $raw_ids),
+                function ($id) {
+                    return $id > 0;
+                }
+            )
+        );
+
+        if (empty($log_ids)) {
+            wp_send_json_error(['message' => __('No valid log IDs provided.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        global $wpdb;
+
+        $id_list = implode( ', ', array_map( 'intval', $log_ids ) );
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $deleted = $wpdb->query(
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+            "DELETE FROM `{$wpdb->prefix}pro_mail_smtp_email_log` WHERE id IN ({$id_list})"
+        );
+
+        if ($deleted === false) {
+            wp_send_json_error(['message' => __('Failed to delete log entries.', 'pro-mail-smtp')]);
+            return;
+        }
+
+        wp_send_json_success([
+            // translators: %d is the number of deleted email log entries.
+            'message' => sprintf(__('%d log(s) deleted successfully.', 'pro-mail-smtp'), $deleted),
+            'deleted' => $deleted,
+        ]);
     }
 }

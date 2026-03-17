@@ -409,5 +409,81 @@ jQuery(document).ready(function($) {
         }
     });
 
+    // ---------------------------------------------------------------
+    // Bulk Delete: Select All / Deselect All
+    // ---------------------------------------------------------------
+    function updateBulkBar() {
+        var count = $('input[name="log_ids[]"]:checked').length;
+        if (count > 0) {
+            $('#bulk-action-bar').slideDown(150);
+            $('#bulk-selected-count').text(count + ' selected');
+        } else {
+            $('#bulk-action-bar').slideUp(150);
+        }
+        // Sync "select all" checkboxes state
+        var total = $('input[name="log_ids[]"]').length;
+        $('#select-all-logs, #select-all-logs-bottom').prop('indeterminate', count > 0 && count < total);
+        $('#select-all-logs, #select-all-logs-bottom').prop('checked', count === total && total > 0);
+    }
+
+    $(document).on('change', '#select-all-logs, #select-all-logs-bottom', function() {
+        var checked = $(this).prop('checked');
+        $('input[name="log_ids[]"]').prop('checked', checked);
+        // Keep both selectors in sync
+        $('#select-all-logs, #select-all-logs-bottom').prop('checked', checked);
+        updateBulkBar();
+    });
+
+    $(document).on('change', 'input[name="log_ids[]"]', function() {
+        updateBulkBar();
+    });
+
+    $(document).on('click', '#bulk-deselect-btn', function() {
+        $('input[name="log_ids[]"]').prop('checked', false);
+        $('#select-all-logs, #select-all-logs-bottom').prop('checked', false);
+        updateBulkBar();
+    });
+
+    // ---------------------------------------------------------------
+    // Bulk Delete: AJAX handler
+    // ---------------------------------------------------------------
+    $(document).on('click', '#bulk-delete-logs, #bulk-delete-btn', function() {
+        var ids = $('input[name="log_ids[]"]:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (ids.length === 0) {
+            return;
+        }
+
+        // translators: %d is the number of selected log entries.
+        if (!window.confirm('Delete ' + ids.length + ' selected log(s)? This cannot be undone.')) {
+            return;
+        }
+
+        var $btn = $(this).prop('disabled', true);
+
+        $.ajax({
+            url: proMailSMTPLogs.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'pro_mail_smtp_delete_selected_logs',
+                log_ids: ids,
+                nonce: proMailSMTPLogs.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert('Error: ' + (response.data.message || 'Failed to delete logs.'));
+                    $btn.prop('disabled', false);
+                }
+            },
+            error: function() {
+                alert('Error: Could not reach the server. Please try again.');
+                $btn.prop('disabled', false);
+            }
+        });
+    });
 
 });
