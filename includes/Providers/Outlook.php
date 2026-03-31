@@ -175,7 +175,7 @@ class Outlook extends BaseProvider
         $params = [
             'client_id'     => $this->config_keys['client_id'],
             'response_type' => 'code',
-            'redirect_uri'  => admin_url('admin.php?page=pro-mail-smtp-providers'),
+            'redirect_uri'  => \TurboSMTP\ProMailSMTP\Admin\Providers::get_outlook_redirect_uri(),
             'response_mode' => 'query',
             'scope'         => 'offline_access Mail.Send',
             'state'         => 'outlook'
@@ -213,7 +213,7 @@ class Outlook extends BaseProvider
                     'client_secret' => $this->config_keys['client_secret'],
                     'code' => $code,
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => admin_url('admin.php?page=pro-mail-smtp-providers')
+                    'redirect_uri' => \TurboSMTP\ProMailSMTP\Admin\Providers::get_outlook_redirect_uri()
                 ],
                 true,
                 'POST',

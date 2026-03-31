@@ -31,6 +31,30 @@ class Plugin
         \TurboSMTP\ProMailSMTP\Cron\CronManager::get_instance()->activate_crons();
 
 
+        add_action('rest_api_init', function () {
+            register_rest_route('pro-mail-smtp/v1', '/oauth/outlook/callback', [
+                'methods'             => 'GET',
+                'callback'            => function (\WP_REST_Request $request) {
+                    $code  = sanitize_text_field($request->get_param('code') ?? '');
+                    $state = sanitize_text_field($request->get_param('state') ?? '');
+                    $error = sanitize_text_field($request->get_param('error') ?? '');
+
+                    $args = [
+                        'page'  => 'pro-mail-smtp-providers',
+                        'code'  => $code,
+                        'state' => $state,
+                    ];
+                    if ($error !== '') {
+                        $args['error'] = $error;
+                    }
+
+                    wp_safe_redirect(add_query_arg($args, admin_url('admin.php')));
+                    exit;
+                },
+                'permission_callback' => '__return_true',
+            ]);
+        });
+
         if (is_admin()) {
             new \TurboSMTP\ProMailSMTP\Admin\Menu();
             new \TurboSMTP\ProMailSMTP\Admin\Providers();

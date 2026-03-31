@@ -288,6 +288,11 @@ class Providers
         }
     }
 
+    public static function get_outlook_redirect_uri(): string
+    {
+        return rest_url('pro-mail-smtp/v1/oauth/outlook/callback');
+    }
+
     private function clear_provider_tokens($provider)
     {
         if ($provider['provider'] === 'gmail') {
