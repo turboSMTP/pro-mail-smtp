@@ -3,7 +3,7 @@ Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.9
-Stable tag: 1.6.4
+Stable tag: 1.6.5
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -275,6 +275,9 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+
+= 1.6.5 =
+* **Fix:** Outlook / Microsoft 365 OAuth setup now works with Azure — redirect URI no longer contains a query string.
 
 = 1.6.4 =
 * **Feature:** Bulk deletion of selected email logs with per-row checkboxes and Select All toggle.
