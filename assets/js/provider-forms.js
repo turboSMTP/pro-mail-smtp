@@ -23,7 +23,8 @@
         'gmail': ['client_id', 'client_secret'],
         'outlook': ['client_id', 'client_secret'],
         'turbosmtp': ['consumer_key', 'consumer_secret', 'region'],
-        'other': ['smtp_host', 'smtp_user', 'smtp_pw', 'smtp_encryption', 'smtp_port']
+        'other': ['smtp_host', 'smtp_user', 'smtp_pw', 'smtp_encryption', 'smtp_port'],
+        'amazonses': ['access_key_id', 'secret_access_key', 'region']
     };
 
     /**

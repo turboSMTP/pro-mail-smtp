@@ -160,8 +160,8 @@ class Gmail extends BaseProvider
         }
 
         $email_parts[] = "To: " . implode(', ', $to_emails);
-        $email_parts[] = "From: {$from_name} <{$email_from}>";
-        $email_parts[] = "Subject: {$data['subject']}";
+        $email_parts[] = "From: " . $this->encode_mime_header( $from_name ) . " <{$email_from}>";
+        $email_parts[] = "Subject: " . $this->encode_mime_header( $data['subject'] );
         $email_parts[] = "MIME-Version: 1.0";
         $email_parts[] = "Content-Type: multipart/mixed; boundary=\"{$boundary}\"";
 

@@ -3,7 +3,7 @@ namespace TurboSMTP\ProMailSMTP\Core;
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 class Installer {
-    private $db_version = '1.6';
+    private $db_version = '1.7';
     public function install() {
         $installed_version = get_option('pro_mail_smtp_db_version', '0');
 
@@ -22,7 +22,12 @@ class Installer {
         if (version_compare($installed_version, '1.5', '<')) {
             $this->update_db_1_5();
         }
-        
+
+        // Connection Label in Email Logs
+        if (version_compare($installed_version, '1.7', '<')) {
+            $this->update_db_1_7();
+        }
+
         update_option('pro_mail_smtp_db_version', $this->db_version);
         
     }
@@ -199,6 +204,17 @@ class Installer {
         if (in_array('clicked_at', $columns)) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
             $wpdb->query("ALTER TABLE $email_log_table DROP COLUMN clicked_at");
+        }
+    }
+
+    private function update_db_1_7() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'pro_mail_smtp_email_log';
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        $columns = $wpdb->get_col( "DESCRIBE $table" );
+        if ( ! in_array( 'connection_label', $columns ) ) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange, PluginCheck.Security.DirectDB.UnescapedDBParameter
+            $wpdb->query( "ALTER TABLE $table ADD COLUMN connection_label VARCHAR(255) NULL DEFAULT NULL AFTER provider" );
         }
     }
 }

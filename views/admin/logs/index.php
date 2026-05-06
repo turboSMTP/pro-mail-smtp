@@ -16,7 +16,7 @@ $logs = $data['logs'];
 $total_items = $data['total_items'];
 $total_pages = $data['total_pages'];
 $columns = $data['columns'];
-$providers = $data['providers'];
+$connections = $data['connections'];
 $statuses = $data['statuses'];
 // phpcs:enable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>

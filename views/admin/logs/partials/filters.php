@@ -18,13 +18,13 @@ if (!defined('ABSPATH')) {
         <?php wp_nonce_field('pro_mail_smtp_logs_filter', 'pro_mail_smtp_logs_filter_nonce'); ?>
         
         <div class="alignleft actions filters">
-            <!-- Provider Filter -->
-            <select name="provider" class="provider-filter">
-                <option value=""><?php esc_html_e('All Providers', 'pro-mail-smtp'); ?></option>
-                <?php foreach ($providers as $key => $provider): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
-                    <option value="<?php echo esc_attr($key); ?>"
-                        <?php selected(esc_attr($filters['provider']), $key); ?>>
-                        <?php echo esc_html($provider); ?>
+            <!-- Connection Filter -->
+            <select name="connection_label" class="connection-filter">
+                <option value=""><?php esc_html_e('All Connections', 'pro-mail-smtp'); ?></option>
+                <?php foreach ($connections as $value => $label): // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound ?>
+                    <option value="<?php echo esc_attr($value); ?>"
+                        <?php selected($filters['connection_label'], $value); ?>>
+                        <?php echo esc_html($label); ?>
                     </option>
                 <?php endforeach; ?>
             </select>

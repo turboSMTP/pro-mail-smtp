@@ -59,6 +59,9 @@ if (!defined('ABSPATH')) {
                             <?php echo esc_html(ucfirst($log->provider)); ?>
                         </span>
                     </td>
+                    <td class="column-connection_label">
+                        <?php echo esc_html($log->connection_label ?? ''); ?>
+                    </td>
                     <td class="column-to">
                         <?php echo esc_html($log->to_email); ?>
                     </td>

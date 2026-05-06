@@ -155,8 +155,8 @@
   border: 1px solid #e6e6e6;
 }
 
-/* Provider Icons */
-.column-provider {
+/* Provider Icons — flex only inside the providers list table */
+.providers-table .column-provider {
   display: flex;
   vertical-align: middle !important;
   gap: 8px;
@@ -624,6 +624,7 @@ input[type="email"] {
 .provider-icon-css.provider-icon-default { background-image: url('../img/providers/default.svg'); }
 .provider-icon-css.provider-icon-turbosmtp { background-image: url('../img/providers/turbosmtp.svg'); }
 .provider-icon-css.provider-icon-brevo { background-image: url('../img/providers/brevo.svg'); }
+.provider-icon-css.provider-icon-amazonses { background-image: url('../img/providers/amazonses.svg'); }
 
 
 

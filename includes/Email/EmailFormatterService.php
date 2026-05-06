@@ -34,8 +34,12 @@ class EmailFormatterService
             'to'             => $to,
             'subject'        => $args['subject'],
             'message'        => $args['message'],
-            'from_email'     => isset($headers['from_email']) ? $headers['from_email'] : get_option('pro_mail_smtp_from_email', get_option('admin_email')),
-            'from_name'      => isset($headers['from_name'])  ? $headers['from_name']  : get_option('pro_mail_smtp_from_name', get_bloginfo('name')),
+            'from_email'     => isset($headers['from_email']) && ! empty($headers['from_email'])
+                                    ? $headers['from_email']
+                                    : apply_filters( 'wp_mail_from', get_option('pro_mail_smtp_from_email', get_option('admin_email')) ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+            'from_name'      => isset($headers['from_name']) && ! empty($headers['from_name'])
+                                    ? $headers['from_name']
+                                    : apply_filters( 'wp_mail_from_name', get_option('pro_mail_smtp_from_name', get_bloginfo('name')) ), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
             'reply_to'       => $headers['reply_to']       ?? '',
             'cc'             => $headers['cc']             ?? [],
             'bcc'            => $headers['bcc']            ?? [],
@@ -162,7 +166,11 @@ class EmailFormatterService
      */
     private function extract_name($string) {
         if (preg_match('/(.+)<.+>/', $string, $matches)) {
-            return trim($matches[1]);
+            $name = trim($matches[1]);
+            if (function_exists('mb_decode_mimeheader')) {
+                $name = mb_decode_mimeheader($name);
+            }
+            return $name;
         }
         return '';
     }
