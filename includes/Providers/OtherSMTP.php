@@ -57,7 +57,7 @@ class OtherSMTP
                 'From' => $fromName ? "$fromName <$from>" : $from,
                 'Reply-To' => $replyTo,
                 'X-Mailer' => 'PHP/' . phpversion(),
-                'Content-Type' => 'text/html; charset=UTF-8'
+                'Content-Type' => 'text/html; charset=' . get_bloginfo('charset')
             ];
 
             if (!empty($cc)) {
@@ -95,7 +95,10 @@ class OtherSMTP
 
     private function mail_init()
     {
-        return new PHPMailer(true);
+		$smtp = new PHPMailer(true);
+		$smtp->CharSet = get_bloginfo('charset');
+		
+		return $smtp;
     }
 
     private function mail_set_options($smtp)
