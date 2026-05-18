@@ -1,11 +1,10 @@
 # Pro Mail SMTP
 
-**Stable tag:** 1.6.4
+**Stable tag:** 1.7
 **Tested up to:** 6.9
 **License:** GPLv2 or later
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
 
-![Pro Mail SMTP](assets/img/icon-svg.svg)
 Enhance email deliverability with multiple SMTP providers, automatic failover, proactive alerts, analytics, and smart routing.
 
 ## 🚀 Features
@@ -13,11 +12,12 @@ Enhance email deliverability with multiple SMTP providers, automatic failover, p
 - **Multiple Provider Support**:
   - Standard SMTP servers
   - Gmail (with secure OAuth authentication)
+  - Microsoft Outlook (with OAuth authentication)
+  - Amazon SES (AWS IAM credentials, 20+ regions)
   - Brevo (formerly Sendinblue)
   - TurboSMTP
   - SMTP2GO
   - Mailgun
-  - Microsoft Outlook
   - SendGrid
   - Postmark
   - SparkPost
@@ -139,7 +139,7 @@ Access detailed logs of all emails sent through the plugin:
 2. View status, recipient, subject, and timestamp
 3. Click on any email to see its full details including headers and content
 4. **Resend failed emails** directly from the log with different providers
-5. Filter logs by date range, status, and provider
+5. Filter logs by date range, status, and connection
 6. Export logs for external analysis
 
 ### Provider Analytics

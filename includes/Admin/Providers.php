@@ -214,14 +214,57 @@ class Providers
             $provider_instance = $this->provider_factory->get_provider_class($connection);
 
             $result = $provider_instance->test_connection();
+            $this->log_test_connection($connection, 'sent', null, is_array($result) ? ($result['message_id'] ?? null) : null);
             if ($result) {
                 wp_send_json_success($result);
             } else {
                 wp_send_json_error($result);
             }
         } catch (\Exception $e) {
+            $this->log_test_connection($connection, 'failed', $e->getMessage(), null);
             wp_send_json_error($e->getMessage());
         }
+    }
+
+    /**
+     * Write a log entry for a connection test attempt.
+     */
+    private function log_test_connection($connection, $status, $error_message = null, $message_id = null)
+    {
+        global $wpdb;
+
+        $admin_email = get_option('admin_email');
+        $from_email  = get_option('pro_mail_smtp_from_email', $admin_email);
+        if (empty($from_email)) {
+            $from_email = $admin_email;
+        }
+
+        $table = $wpdb->prefix . 'pro_mail_smtp_email_log';
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+        $wpdb->insert(
+            $table,
+            [
+                'provider'         => $connection->provider,
+                'connection_label' => $connection->connection_label ?? '',
+                'from_email'       => $from_email,
+                'to_email'         => $admin_email,
+                'cc_email'         => '',
+                'bcc_email'        => '',
+                'reply_to'         => '',
+                'subject'          => sprintf( 'Pro Mail SMTP: %s Connection Test', ucfirst( $connection->provider ) ),
+                'message'          => 'Connection test',
+                'headers'          => '[]',
+                'attachment_data'  => '[]',
+                'status'           => $status,
+                'error_message'    => $error_message,
+                'message_id'       => $message_id,
+                'is_resent'        => 0,
+                'retry_count'      => 0,
+                'sent_at'          => gmdate( 'Y-m-d H:i:s' ),
+            ],
+            [ '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s' ]
+        );
     }
 
     public function delete_provider()

@@ -70,13 +70,14 @@ return [
         'class' => 'Sendgrid',
         'description' => 'Sendgrid is a powerful email API service that allows you to send, receive, and track emails effortlessly.',
         'recommended' => false,
-    ]
-    // 'amazonses' => [
-    //     'label' => 'AmazonSES',
-    //     'class' => 'AmazonSES',
-    //     'description' => 'AmazonSES is a reliable email delivery service that ensures your emails reach the inbox.',
-    //     'recommended' => false,
-    // ],
+    ],
+    'amazonses' => [
+        'label'       => 'Amazon SES',
+        'name'        => 'amazonses',
+        'class'       => 'AmazonSES',
+        'description' => 'Amazon SES is a scalable email service built on the reliable and cost-effective AWS infrastructure.',
+        'recommended' => false,
+    ],
     // 'smtpcom' => [
     //     'label' => 'SMTPcom',
     //     'class' => 'SMTPcom',

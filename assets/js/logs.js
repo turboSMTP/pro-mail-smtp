@@ -1,4 +1,15 @@
 jQuery(document).ready(function($) {
+
+    function escHtml(str) {
+        if (str === null || str === undefined) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     // Simple test to see if jQuery and DOM are ready
     console.log('jQuery loaded, DOM ready');
     console.log('Found view buttons:', $('.view-btn').length);
@@ -58,7 +69,7 @@ jQuery(document).ready(function($) {
         var $form = $('.email-filters');
         
         // Reset all filter inputs
-        $form.find('.provider-filter').val('');
+        $form.find('.connection-filter').val('');
         $form.find('.status-filter').val('');
         $form.find('input[name="date_from"]').val('');
         $form.find('input[name="date_to"]').val('');
@@ -161,23 +172,23 @@ jQuery(document).ready(function($) {
     function showEmailLogModal(log) {
         // Remove existing modal if any
         $('#email-log-modal').remove();
-        
+
         // Format headers for display
         var headersHtml = 'N/A';
         if (log.email_headers && typeof log.email_headers === 'object') {
-            headersHtml = '<pre>' + JSON.stringify(log.email_headers, null, 2) + '</pre>';
+            headersHtml = '<pre>' + escHtml(JSON.stringify(log.email_headers, null, 2)) + '</pre>';
         }
-        
+
         // Format attachments for display
         var attachmentsHtml = 'N/A';
         if (log.attachment_data && Array.isArray(log.attachment_data) && log.attachment_data.length > 0) {
             attachmentsHtml = '<ul>';
             log.attachment_data.forEach(function(attachment) {
-                attachmentsHtml += '<li>' + (attachment.name || attachment) + '</li>';
+                attachmentsHtml += '<li>' + escHtml(attachment.name || attachment) + '</li>';
             });
             attachmentsHtml += '</ul>';
         }
-        
+
         var modalHtml = `
             <div id="email-log-modal" class="email-log-modal">
                 <div class="email-log-modal-content">
@@ -189,51 +200,51 @@ jQuery(document).ready(function($) {
                         <table class="email-log-details-table">
                             <tr>
                                 <th>ID:</th>
-                                <td>${log.id}</td>
+                                <td>${escHtml(log.id)}</td>
                             </tr>
                             <tr>
                                 <th>Provider:</th>
-                                <td>${log.provider}</td>
+                                <td>${escHtml(log.provider)}</td>
                             </tr>
                             <tr>
                                 <th>From Email:</th>
-                                <td>${log.from_email}</td>
+                                <td>${escHtml(log.from_email)}</td>
                             </tr>
                             <tr>
                                 <th>To Email:</th>
-                                <td>${log.to_email}</td>
+                                <td>${escHtml(log.to_email)}</td>
                             </tr>
                             <tr>
                                 <th>CC Email:</th>
-                                <td>${log.cc_email}</td>
+                                <td>${escHtml(log.cc_email)}</td>
                             </tr>
                             <tr>
                                 <th>BCC Email:</th>
-                                <td>${log.bcc_email}</td>
+                                <td>${escHtml(log.bcc_email)}</td>
                             </tr>
                             <tr>
                                 <th>Reply To:</th>
-                                <td>${log.reply_to}</td>
+                                <td>${escHtml(log.reply_to)}</td>
                             </tr>
                             <tr>
                                 <th>Subject:</th>
-                                <td>${log.subject}</td>
+                                <td>${escHtml(log.subject)}</td>
                             </tr>
                             <tr>
                                 <th>Status:</th>
-                                <td><span class="status-badge status-${log.status.toLowerCase()}">${log.status}</span></td>
+                                <td><span class="status-badge status-${escHtml(log.status.toLowerCase())}">${escHtml(log.status)}</span></td>
                             </tr>
                             <tr>
                                 <th>Sent At:</th>
-                                <td>${log.sent_at}</td>
+                                <td>${escHtml(log.sent_at)}</td>
                             </tr>
                             <tr>
                                 <th>Message ID:</th>
-                                <td>${log.message_id || 'N/A'}</td>
+                                <td>${escHtml(log.message_id || 'N/A')}</td>
                             </tr>
                             <tr>
                                 <th>Email Content:</th>
-                                <td class="email-content"><pre>${log.email_content || 'N/A'}</pre></td>
+                                <td class="email-content"><pre>${escHtml(log.email_content || 'N/A')}</pre></td>
                             </tr>
                             <tr>
                                 <th>Attachments:</th>
@@ -249,18 +260,18 @@ jQuery(document).ready(function($) {
                             </tr>
                             <tr>
                                 <th>Retry Count:</th>
-                                <td>${log.retry_count || 0}</td>
+                                <td>${escHtml(log.retry_count || 0)}</td>
                             </tr>
                             <tr>
                                 <th>Error Message:</th>
-                                <td class="error-message">${log.error_message || 'N/A'}</td>
+                                <td class="error-message">${escHtml(log.error_message || 'N/A')}</td>
                             </tr>
                         </table>
                     </div>
                 </div>
             </div>
         `;
-        
+
         $('body').append(modalHtml);
         $('#email-log-modal').show();
     }
@@ -268,11 +279,11 @@ jQuery(document).ready(function($) {
     function showResendModal(log, providers) {
         // Remove existing modal if any
         $('#resend-email-modal').remove();
-        
+
         var providersOptions = '';
         if (providers && providers.length > 0) {
             providers.forEach(function(provider) {
-                providersOptions += `<option value="${provider.id}">${provider.label || provider.title}</option>`;
+                providersOptions += `<option value="${escHtml(provider.id)}">${escHtml(provider.label || provider.title)}</option>`;
             });
         } else {
             providersOptions = '<option value="">No providers available</option>';
@@ -283,11 +294,11 @@ jQuery(document).ready(function($) {
         if (log.email_headers && log.email_headers.attachments && log.email_headers.attachments.length > 0) {
             attachmentsHtml = '<div class="detail-row"><strong>Attachments:</strong><ul>';
             log.email_headers.attachments.forEach(function(attachment) {
-                attachmentsHtml += `<li>${attachment}</li>`;
+                attachmentsHtml += `<li>${escHtml(attachment)}</li>`;
             });
             attachmentsHtml += '</ul></div>';
         }
-        
+
         var modalHtml = `
             <div id="resend-email-modal" class="resend-email-modal">
                 <div class="resend-email-modal-content">
@@ -299,19 +310,19 @@ jQuery(document).ready(function($) {
                         <div class="resend-details">
                             <div class="detail-row">
                                 <label for="resend-to"><strong>To:</strong></label>
-                                <input type="email" id="resend-to" class="regular-text" value="${log.to_email}" />
+                                <input type="email" id="resend-to" class="regular-text" value="${escHtml(log.to_email)}" />
                             </div>
                             <div class="detail-row">
                                 <label for="resend-subject"><strong>Subject:</strong></label>
-                                <input type="text" id="resend-subject" class="large-text" value="${log.subject}" />
+                                <input type="text" id="resend-subject" class="large-text" value="${escHtml(log.subject)}" />
                             </div>
                             <div class="detail-row">
                                 <label for="resend-message"><strong>Message:</strong></label>
-                                <textarea id="resend-message" rows="8" class="large-text">${log.email_content || ''}</textarea>
+                                <textarea id="resend-message" rows="8" class="large-text">${escHtml(log.email_content || '')}</textarea>
                             </div>
                             ${attachmentsHtml}
                             <div class="detail-row">
-                                <strong>Original Status:</strong> <span class="status-badge status-${log.status.toLowerCase()}">${log.status}</span>
+                                <strong>Original Status:</strong> <span class="status-badge status-${escHtml(log.status.toLowerCase())}">${escHtml(log.status)}</span>
                             </div>
                             <div class="detail-row">
                                 <label for="resend-provider"><strong>Select Provider:</strong></label>
@@ -321,7 +332,7 @@ jQuery(document).ready(function($) {
                             </div>
                         </div>
                         <div class="modal-actions">
-                            <button type="button" class="button button-primary" id="confirm-resend" data-log-id="${log.id}">
+                            <button type="button" class="button button-primary" id="confirm-resend" data-log-id="${escHtml(log.id)}">
                                 <span class="dashicons dashicons-email-alt"></span> Resend Email
                             </button>
                             <button type="button" class="button" id="cancel-resend">Cancel</button>
@@ -330,7 +341,7 @@ jQuery(document).ready(function($) {
                 </div>
             </div>
         `;
-        
+
         $('body').append(modalHtml);
         $('#resend-email-modal').show();
     }

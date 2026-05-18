@@ -55,4 +55,15 @@ abstract class BaseProvider {
     abstract public function test_connection();
 
     abstract public function get_analytics($filters = []);
+
+    /**
+     * RFC 2047 encodes a header value if it contains non-ASCII characters.
+     * Produces =?UTF-8?B?...?= base64 encoded words recognised by all email clients.
+     */
+    protected function encode_mime_header( $value ) {
+        if ( preg_match( '/[^\x20-\x7E]/', $value ) ) {
+            return '=?UTF-8?B?' . base64_encode( $value ) . '?=';
+        }
+        return $value;
+    }
 }

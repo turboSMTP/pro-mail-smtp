@@ -3,7 +3,7 @@ Contributors: turbosmtp, dueclic
 Tags: smtp, email, wp mail, gmail, outlook
 Requires at least: 5.5
 Tested up to: 6.9
-Stable tag: 1.6.5
+Stable tag: 1.7
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,11 +14,15 @@ Enhance email deliverability with multiple SMTP providers, automatic failover, p
 
 Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability by connecting your site to various email service providers. Configure multiple SMTP providers with automatic failover, track email performance with advanced analytics, receive proactive failure alerts, and ensure reliable email delivery with intelligent routing.
 
-**🚨 NEW: Proactive Email Failure Alerts** - Get instant notifications via Slack, Discord, Microsoft Teams, or custom webhooks when emails fail to deliver. Never miss a critical email delivery issue again!
+**☁️ NEW in 1.7: Amazon SES Support** - Connect to Amazon Simple Email Service for cost-effective, scalable email delivery. Configure with your AWS IAM credentials and choose from 20+ global regions.
 
-**📊 NEW: Advanced Analytics Dashboard** - Monitor real-time provider performance, view detailed delivery metrics, and track email engagement with comprehensive analytics for Gmail, Mailgun, SendGrid, and more.
+**📋 NEW in 1.7: Connection-Level Log Filtering** - Email logs now record the exact connection used per email. The log filter dropdown lists your configured connections by name so you can quickly isolate delivery issues per provider setup.
 
-**🎯 NEW: Enhanced Email Routing** - Create sophisticated routing rules with advanced conditional logic, regex matching, and source application detection to ensure emails are delivered through the optimal provider.
+**🚨 Proactive Email Failure Alerts** - Get instant notifications via Slack, Discord, Microsoft Teams, or custom webhooks when emails fail to deliver. Never miss a critical email delivery issue again!
+
+**📊 Advanced Analytics Dashboard** - Monitor real-time provider performance, view detailed delivery metrics, and track email engagement with comprehensive analytics for Gmail, Mailgun, SendGrid, and more.
+
+**🎯 Enhanced Email Routing** - Create sophisticated routing rules with advanced conditional logic, regex matching, and source application detection to ensure emails are delivered through the optimal provider.
 
 = 🚀 Features =
 
@@ -26,6 +30,7 @@ Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability 
     * Standard SMTP servers
     * Gmail (with secure OAuth authentication)
     * Microsoft Outlook (with OAuth authentication)
+    * Amazon SES (AWS IAM credentials, 20+ regions)
     * Brevo (formerly Sendinblue)
     * TurboSMTP
     * SMTP2GO
@@ -53,6 +58,7 @@ Pro Mail SMTP is a powerful WordPress plugin that enhances email deliverability 
 * **Comprehensive Logging**:
     * Track email status (sent, delivered, failed)
     * View detailed error messages
+    * Filter logs by connection name, status, date range, and search
     * Configurable log retention
     * Email content inspection
     * Email resend functionality from logs
@@ -253,6 +259,15 @@ Pro Mail SMTP connects to various third-party email service providers to send yo
 *   **Terms of Service:** You can find SparkPost's Terms of Use here: https://www.sparkpost.com/policies/tou/
 *   **Privacy Policy:** SparkPost's Privacy Policy is available here: https://www.sparkpost.com/policies/privacy/
 
+=== Amazon SES ===
+*   **Service Description:** This integration allows your WordPress site to send emails using Amazon Simple Email Service (SES) via the AWS API, authenticated with IAM Access Key credentials.
+*   **What data is sent and when:**
+    *   **Authentication:** When you configure the plugin to use Amazon SES, your AWS IAM Access Key ID and Secret Access Key are stored by the plugin. These credentials are used to sign requests to Amazon SES API endpoints (e.g., `https://email.<region>.amazonaws.com`) using AWS Signature Version 4.
+    *   **Email Transmission:** When an email is sent from your WordPress site using a configured Amazon SES connection, the email content (including sender address, recipient(s) address(es), subject, body, headers, and any attachments) is transmitted to Amazon's email sending servers for delivery.
+*   **Service Provider:** Amazon Web Services, Inc.
+*   **Terms of Service:** You can find the AWS Customer Agreement here: https://aws.amazon.com/agreement/
+*   **Privacy Policy:** Amazon's Privacy Notice is available here: https://aws.amazon.com/privacy/
+
 === TurboSMTP ===
 *   **Service Description:** This integration allows your WordPress site to send emails using the TurboSMTP transactional email service.
 *   **What data is sent and when:**
@@ -275,6 +290,12 @@ It is your responsibility as the user of this plugin to choose your email sendin
 This plugin does not collect or share any data with these services beyond what is necessary to send emails as per your configuration. Your email content and recipient information are only sent to the services you explicitly configure in the plugin settings.
 
 == Changelog ==
+
+= 1.7 =
+* **Feature:** Amazon SES provider — connect to Amazon Simple Email Service using AWS IAM credentials with support for 20+ global regions.
+* **Feature:** Connection label tracking in email logs — each log entry now records the specific connection used, and the logs filter dropdown lists connections by name instead of provider type.
+* **Fix:** Email log timestamps now respect the WordPress site timezone — "time ago" display and date-range filtering are now accurate regardless of server timezone.
+* **Fix:** Non-ASCII characters in email Subject and From Name (e.g. accented or international names) are now RFC 2047 encoded, preventing garbled headers in Gmail and Outlook.
 
 = 1.6.5 =
 * **Fix:** Outlook / Microsoft 365 OAuth setup now works with Azure — redirect URI no longer contains a query string.
@@ -310,6 +331,9 @@ This plugin does not collect or share any data with these services beyond what i
 * Initial release
 
 == Upgrade Notice ==
+
+= 1.7 =
+Adds Amazon SES provider and connection-label tracking in email logs (requires a one-time automatic database migration on upgrade). Fixes log timezone display and non-ASCII email header encoding.
 
 = 1.0.0 =
 Initial release of Pro Mail SMTP

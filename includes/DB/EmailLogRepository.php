@@ -23,6 +23,12 @@ class EmailLogRepository {
             $values[] = $filters['status'];
         }
 
+        if (!empty($filters['connection_label'])) {
+            $where .= $where !== '' ? ' AND ' : '';
+            $where .= 'connection_label = %s';
+            $values[] = $filters['connection_label'];
+        }
+
         if (!empty($filters['search'])) {
             $search_term = '%' . $wpdb->esc_like($filters['search']) . '%';
             $where .= $where !== '' ? ' AND ' : '';
@@ -34,13 +40,13 @@ class EmailLogRepository {
         if (!empty($filters['date_from'])) {
             $where .= $where !== '' ? ' AND ' : '';
             $where .= 'sent_at >= %s';
-            $values[] = $filters['date_from'] . ' 00:00:00';
+            $values[] = \get_gmt_from_date($filters['date_from'] . ' 00:00:00');
         }
 
         if (!empty($filters['date_to'])) {
             $where .= $where !== '' ? ' AND ' : '';
             $where .= 'sent_at <= %s';
-            $values[] = $filters['date_to'] . ' 23:59:59';
+            $values[] = \get_gmt_from_date($filters['date_to'] . ' 23:59:59');
         }
 
         if ($where !== '') {

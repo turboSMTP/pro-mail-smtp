@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 }
 
 use TurboSMTP\ProMailSMTP\DB\EmailLogRepository;
+use TurboSMTP\ProMailSMTP\DB\ConnectionRepository;
 use TurboSMTP\ProMailSMTP\Admin\Helpers\LogsHelper;
 
 /**
@@ -16,6 +17,7 @@ class Logs
     private $per_page = 20;
     private $providers_list = [];
     private $log_repository;
+    private $conn_repository;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class Logs
         add_action('wp_ajax_pro_mail_smtp_get_resend_modal', [$this, 'ajax_get_resend_modal']);
         add_action('wp_ajax_pro_mail_smtp_delete_selected_logs', [$this, 'ajax_delete_selected_logs']);
         $this->log_repository = new EmailLogRepository();
+        $this->conn_repository = new ConnectionRepository();
         $this->providers_list = include __DIR__ . '/../../config/providers-list.php';
     }
 
@@ -91,17 +94,17 @@ class Logs
             wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['pro_mail_smtp_logs_filter_nonce'])), 'pro_mail_smtp_logs_filter')) {
             
             $filter_data = [
-                'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : '',
+                'connection_label' => isset($_POST['connection_label']) ? sanitize_text_field(wp_unslash($_POST['connection_label'])) : '',
                 'status'    => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : '',
                 'search'    => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : '',
                 'date_from' => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : '',
                 'date_to'   => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : '',
                 'orderby'   => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : 'sent_at',
-                'order'     => isset($_POST['order']) && in_array(strtolower(wp_unslash($_POST['order'])), ['asc', 'desc'], true) 
-                            ? strtolower(sanitize_text_field(wp_unslash($_POST['order']))) 
+                'order'     => isset($_POST['order']) && in_array(strtolower(wp_unslash($_POST['order'])), ['asc', 'desc'], true)
+                            ? strtolower(sanitize_text_field(wp_unslash($_POST['order'])))
                             : 'desc',
             ];
-            
+
             update_user_meta(get_current_user_id(), 'pro_mail_smtp_log_filters', $filter_data);
         }
     }
@@ -124,7 +127,7 @@ class Logs
             'total_items' => $total_items,
             'total_pages' => $total_pages,
             'columns' => LogsHelper::get_columns(),
-            'providers' => LogsHelper::get_providers($this->providers_list),
+            'connections' => $this->get_connections_for_filter(),
             'statuses' => LogsHelper::get_statuses(),
             'format_date' => [LogsHelper::class, 'format_date'],
             'time_diff' => [LogsHelper::class, 'time_diff'],
@@ -147,6 +150,20 @@ class Logs
     }
 
     /**
+     * Build the connections list for the filter dropdown.
+     * Key = connection_label (stored in logs), value = display string.
+     */
+    private function get_connections_for_filter()
+    {
+        $connections = $this->conn_repository->get_all_connections();
+        $result = [];
+        foreach ($connections as $conn) {
+            $result[$conn->connection_label] = $conn->connection_label . ' (' . ucfirst($conn->provider) . ')';
+        }
+        return $result;
+    }
+
+    /**
      * Get logs from repository
      */
     private function get_logs($filters)
@@ -165,44 +182,44 @@ class Logs
     private function get_filters()
     {
         $defaults = [
-            'paged'     => 1,
-            'provider'  => '',
-            'status'    => '',
-            'search'    => '',
-            'date_from' => '',
-            'date_to'   => '',
-            'orderby'   => 'sent_at',
-            'order'     => 'desc',
+            'paged'             => 1,
+            'connection_label'  => '',
+            'status'            => '',
+            'search'            => '',
+            'date_from'         => '',
+            'date_to'           => '',
+            'orderby'           => 'sent_at',
+            'order'             => 'desc',
         ];
-        if (isset($_POST['pro_mail_smtp_logs_filter_nonce']) && 
+        if (isset($_POST['pro_mail_smtp_logs_filter_nonce']) &&
             wp_verify_nonce(sanitize_text_field( wp_unslash ($_POST['pro_mail_smtp_logs_filter_nonce'])), 'pro_mail_smtp_logs_filter')) {
-            
+
             $filter_data = [
-                'paged'     => isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : $defaults['paged'],
-                'provider'  => isset($_POST['provider']) ? sanitize_text_field(wp_unslash($_POST['provider'])) : $defaults['provider'],
-                'status'    => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : $defaults['status'],
-                'search'    => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : $defaults['search'],
-                'date_from' => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : $defaults['date_from'],
-                'date_to'   => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : $defaults['date_to'],
-                'orderby'   => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : $defaults['orderby'],
-                'order'     => isset($_POST['order']) && in_array(strtolower($_POST['order']), ['asc', 'desc'], true) 
-                            ? strtolower(sanitize_text_field(wp_unslash($_POST['order']))) 
-                            : $defaults['order'],
+                'paged'             => isset($_POST['paged']) ? max(1, absint($_POST['paged'])) : $defaults['paged'],
+                'connection_label'  => isset($_POST['connection_label']) ? sanitize_text_field(wp_unslash($_POST['connection_label'])) : $defaults['connection_label'],
+                'status'            => isset($_POST['status']) ? sanitize_text_field(wp_unslash($_POST['status'])) : $defaults['status'],
+                'search'            => isset($_POST['search']) ? sanitize_text_field(wp_unslash($_POST['search'])) : $defaults['search'],
+                'date_from'         => isset($_POST['date_from']) ? sanitize_text_field(wp_unslash($_POST['date_from'])) : $defaults['date_from'],
+                'date_to'           => isset($_POST['date_to']) ? sanitize_text_field(wp_unslash($_POST['date_to'])) : $defaults['date_to'],
+                'orderby'           => isset($_POST['orderby']) ? sanitize_text_field(wp_unslash($_POST['orderby'])) : $defaults['orderby'],
+                'order'             => isset($_POST['order']) && in_array(strtolower($_POST['order']), ['asc', 'desc'], true)
+                                    ? strtolower(sanitize_text_field(wp_unslash($_POST['order'])))
+                                    : $defaults['order'],
             ];
-            
-            $is_pagination_or_sort_only = isset($_POST['filter_action']) && 
+
+            $is_pagination_or_sort_only = isset($_POST['filter_action']) &&
                                           $_POST['filter_action'] === 'filter_logs' &&
                                           isset($_POST['paged']);
-                                          
-            $is_reset = isset($_POST['filter_action']) && 
+
+            $is_reset = isset($_POST['filter_action']) &&
                         $_POST['filter_action'] === 'filter_logs' &&
-                        empty($_POST['provider']) && 
-                        empty($_POST['status']) && 
-                        empty($_POST['search']) && 
-                        empty($_POST['date_from']) && 
+                        empty($_POST['connection_label']) &&
+                        empty($_POST['status']) &&
+                        empty($_POST['search']) &&
+                        empty($_POST['date_from']) &&
                         empty($_POST['date_to']) &&
                         $_POST['paged'] == 1 &&
-                        $_POST['orderby'] === 'sent_at' && 
+                        $_POST['orderby'] === 'sent_at' &&
                         $_POST['order'] === 'desc';
             
             if ($is_reset) {
@@ -210,7 +227,7 @@ class Logs
                 return $defaults;
             }
             
-            if (!$is_pagination_or_sort_only || isset($_POST['provider']) || isset($_POST['status']) || 
+            if (!$is_pagination_or_sort_only || isset($_POST['connection_label']) || isset($_POST['status']) ||
                 !empty($_POST['search']) || !empty($_POST['date_from']) || !empty($_POST['date_to'])) {
                 
                 $filter_save = $filter_data;

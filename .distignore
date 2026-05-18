@@ -4,7 +4,10 @@
 /node_modules
 /src
 /.idea
+/docs
 .distignore
 .gitignore
+.DS_Store
 README.md
 .nvmrc
+*.zip

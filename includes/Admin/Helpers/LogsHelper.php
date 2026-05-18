@@ -16,7 +16,7 @@ class LogsHelper
      */
     public static function format_date($date)
     {
-        return \date_i18n(\get_option('date_format') . ' ' . \get_option('time_format'), \strtotime($date));
+        return \date_i18n(\get_option('date_format') . ' ' . \get_option('time_format'), \strtotime($date . ' UTC'));
     }
 
     /**
@@ -24,7 +24,7 @@ class LogsHelper
      */
     public static function time_diff($date)
     {
-        return \human_time_diff(\strtotime($date), \current_time('timestamp')) . ' ' . \__('ago', 'pro-mail-smtp');
+        return \human_time_diff(\strtotime($date . ' UTC'), \time()) . ' ' . \__('ago', 'pro-mail-smtp');
     }
 
     /**
@@ -48,13 +48,14 @@ class LogsHelper
     public static function get_columns()
     {
         return [
-            'sent_at' => \__('Date', 'pro-mail-smtp'),
-            'provider' => \__('Provider', 'pro-mail-smtp'),
-            'to_email' => \__('To', 'pro-mail-smtp'),
-            'subject' => \__('Subject', 'pro-mail-smtp'),
-            'status' => \__('Status', 'pro-mail-smtp'),
-            'details' => \__('Details', 'pro-mail-smtp'),
-            'actions' => \__('Actions', 'pro-mail-smtp')
+            'sent_at'          => \__('Date', 'pro-mail-smtp'),
+            'provider'         => \__('Provider', 'pro-mail-smtp'),
+            'connection_label' => \__('Connection', 'pro-mail-smtp'),
+            'to_email'         => \__('To', 'pro-mail-smtp'),
+            'subject'          => \__('Subject', 'pro-mail-smtp'),
+            'status'           => \__('Status', 'pro-mail-smtp'),
+            'details'          => \__('Details', 'pro-mail-smtp'),
+            'actions'          => \__('Actions', 'pro-mail-smtp'),
         ];
     }
 

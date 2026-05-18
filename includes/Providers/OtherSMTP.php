@@ -106,7 +106,9 @@ class OtherSMTP
 
     private function mail_init()
     {
-        return new PHPMailer(true);
+        $smtp = new PHPMailer(true);
+		$smtp->CharSet = get_bloginfo('charset');
+		return $smtp;       
     }
 
     private function mail_set_options($smtp)

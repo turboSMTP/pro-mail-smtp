@@ -56,10 +56,11 @@ class Manager {
             if (!empty($config->provider) && !empty($config->id) && !empty($config->priority)) {
                 $instance = $this->providerFactory->get_provider_class($config);
                 $this->connections[] = [
-                    'instance' => $instance,
-                    'priority' => $config->priority,
-                    'name' => $config->provider,
-                    'connection_id' => $config->connection_id
+                    'instance'         => $instance,
+                    'priority'         => $config->priority,
+                    'name'             => $config->provider,
+                    'connection_id'    => $config->connection_id,
+                    'connection_label' => $config->connection_label,
                 ];
             }
         }
@@ -187,7 +188,7 @@ class Manager {
                     if (!$provider_data['overwrite_connection']) {
                         try {
                             $result = $provider['instance']->send($current_email_data);
-                            $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0);
+                            $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0, $provider['connection_label'] ?? '');
                             return true;
                         } catch (\Exception $e) {
                             continue;
@@ -197,15 +198,16 @@ class Manager {
                     $provider = $provider_data;
                 }
                 $result = $provider['instance']->send($current_email_data);
-                $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0);
+                $this->logEmail($current_email_data, $result, $provider['name'], 'sent', null, false, 0, $provider['connection_label'] ?? '');
                 return true;
             } catch (\Exception $e) {
                 $provider_name = isset($provider_data['provider']) ? $provider_data['provider']['name'] : $provider_data['name'];
+                $provider_label = isset($provider_data['provider']) ? ( $provider_data['provider']['connection_label'] ?? '' ) : ( $provider_data['connection_label'] ?? '' );
                 $error_messages[] = [
                     'provider' => $provider_name,
                     'error' => $e->getMessage()
                 ];
-                $this->logEmail($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage(), false, 0);
+                $this->logEmail($current_email_data ?? [], null, $provider_name, 'failed', $e->getMessage(), false, 0, $provider_label);
             }
         }
         return false;
@@ -223,7 +225,7 @@ class Manager {
      * @param int    $retry_count Number of retry attempts
      * @return void
      */
-    private function logEmail($data, $result, $provider, $status, $error = null, $is_resent = false, $retry_count = 0) {
+    private function logEmail($data, $result, $provider, $status, $error = null, $is_resent = false, $retry_count = 0, $connection_label = '') {
         global $wpdb;
         $table_name = $wpdb->prefix . 'pro_mail_smtp_email_log';
         
@@ -262,8 +264,9 @@ class Manager {
             $insert_result = $wpdb->insert(
                 $table_name,
                 [
-                    'provider' => $provider,
-                    'from_email' => $data['from_email'] ?? '',
+                    'provider'         => $provider,
+                    'connection_label' => $connection_label,
+                    'from_email'       => $data['from_email'] ?? '',
                     'to_email' => $to,
                     'cc_email' => $cc_emails,
                     'bcc_email' => $bcc_emails,
@@ -279,7 +282,7 @@ class Manager {
                     'retry_count' => $retry_count,
                     'sent_at' => gmdate('Y-m-d H:i:s')
                 ],
-                ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s']
+                ['%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s']
             );
             
             // Process alerts for failed emails
@@ -360,7 +363,7 @@ class Manager {
             $result = $provider_instance->send($formatted_data);
             if ($result) {
                 // Log successful resend
-                $this->logEmail($formatted_data, $result, $connection['name'], 'resent', null, true, $retry_count);
+                $this->logEmail($formatted_data, $result, $connection['name'], 'resent', null, true, $retry_count, $connection['connection_label'] ?? '');
                 
                 // Mark original email as resent if we have the original log ID
                 if ($original_log_id) {

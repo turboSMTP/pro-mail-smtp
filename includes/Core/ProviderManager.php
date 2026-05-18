@@ -32,7 +32,7 @@ class ProviderManager
         $config_keys = [];
         if (isset($data['config_keys']) && is_array($data['config_keys'])) {
             foreach ($data['config_keys'] as $key => $value) {
-                if(($key === 'client_secret' || $key === 'client_id' || $key === 'api_key' ) && empty($value)) {
+                if(($key === 'client_secret' || $key === 'client_id' || $key === 'api_key' || $key === 'access_key_id' || $key === 'secret_access_key') && empty($value)) {
                     wp_send_json_error('API key is required');
                     return;
                 } 
